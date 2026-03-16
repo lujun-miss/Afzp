@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服务商管理 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .sidebar-item {
+      transition: all 0.3s ease;
+    }
+    .sidebar-item:hover {
+      background: rgba(26, 159, 180, 0.1);
+    }
+    .sidebar-item.active {
+      background: rgba(26, 159, 180, 0.2);
+      border-left: 3px solid #1a5fb4;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="../web/dashboard.html" class="nav-link text-gray-300 hover:text-white">前端系统</a>
+        <a href="index.html" class="nav-link text-gray-300 hover:text-white">后台管理</a>
+        <a href="service.html" class="nav-link active text-white">服务商管理</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary);">
+          <i class="fas fa-handshake" style="color: var(--success);"></i>
+          <span>诚信金融服务有限公司</span>
+        </div>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="flex">
+    <!-- 侧边栏 -->
+    <div style="width: 260px; background: var(--dark-bg); border-right: 1px solid var(--border); position: fixed; top: 70px; bottom: 0; overflow-y: auto; padding: 20px;">
+      <div style="font-weight: 600; font-size: 16px; margin-bottom: 20px; color: var(--text-secondary);">服务商管理</div>
+      <div class="space-y-1">
+        <a href="#" class="sidebar-item active flex items-center gap-3 p-3 rounded-lg" style="color: var(--text-primary);">
+          <i class="fas fa-tachometer-alt w-5 text-center"></i>
+          <span>服务概览</span>
+        </a>
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg" style="color: var(--text-secondary);">
+          <i class="fas fa-concierge-bell w-5 text-center"></i>
+          <span>服务发布</span>
+        </a>
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg" style="color: var(--text-secondary);">
+          <i class="fas fa-clipboard-list w-5 text-center"></i>
+          <span>服务订单</span>
+        </a>
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg" style="color: var(--text-secondary);">
+          <i class="fas fa-comments w-5 text-center"></i>
+          <span>客户咨询</span>
+        </a>
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg" style="color: var(--text-secondary);">
+          <i class="fas fa-chart-bar w-5 text-center"></i>
+          <span>服务统计</span>
+        </a>
+        <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg" style="color: var(--text-secondary);">
+          <i class="fas fa-user-cog w-5 text-center"></i>
+          <span>服务商设置</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div style="flex: 1; margin-left: 260px; padding: 20px; margin-top: 70px;">
+      <div class="max-w-[1400px] mx-auto">
+        <!-- 页面标题 -->
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">服务概览</h1>
+            <p style="color: var(--text-secondary); font-size: 14px;">服务信息、订单数据、客户咨询</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-outline">
+              <i class="fas fa-refresh"></i> 刷新数据
+            </button>
+            <button class="btn btn-primary">
+              <i class="fas fa-plus"></i> 发布服务
+            </button>
+          </div>
+        </div>
+
+        <!-- 服务商信息卡片 -->
+        <div class="card mb-6">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-handshake"></i>
+              服务商信息
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div style="display: flex; align-items: center; gap: 20px;">
+              <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-handshake text-4xl"></i>
+              </div>
+              <div>
+                <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">诚信金融服务有限公司</div>
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">成立于2015年 | 金融服务机构</div>
+                <div class="flex items-center gap-4">
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
+                    <span style="font-size: 14px; color: var(--text-secondary);">鄄城县金融街</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <i class="fas fa-phone" style="color: var(--text-secondary);"></i>
+                    <span style="font-size: 14px; color: var(--text-secondary);">0530-7654321</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">发布服务</div>
+                <div style="font-size: 24px; font-weight: 700;">12</div>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">服务订单</div>
+                <div style="font-size: 24px; font-weight: 700; color: var(--success);">256</div>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">客户满意度</div>
+                <div style="font-size: 24px; font-weight: 700; color: var(--gold);">98%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 服务数据 -->
+        <div class="grid grid-cols-2 gap-6 mb-6">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-chart-line"></i>
+                服务订单趋势
+              </div>
+            </div>
+            <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-chart-line text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
+              <div style="position: absolute; text-align: center;">
+                <div style="font-size: 14px; color: var(--text-secondary);">订单趋势图表</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">近6个月订单数据</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-chart-pie"></i>
+                服务类型分布
+              </div>
+            </div>
+            <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-chart-pie text-6xl" style="color: var(--success); opacity: 0.5;"></i>
+              <div style="position: absolute; text-align: center;">
+                <div style="font-size: 14px; color: var(--text-secondary);">服务类型分布</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">各服务类型占比</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 发布的服务 -->
+        <div class="card mb-6">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-concierge-bell"></i>
+              发布的服务
+            </div>
+            <a href="#" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="space-y-4">
+            <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-weight: 600; font-size: 16px;">产业振兴贷</div>
+                <span class="tag tag-success">已发布</span>
+              </div>
+              <div class="grid grid-cols-3 gap-4 mb-4">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-secondary);">服务类型</span>
+                  <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">金融服务</span>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-secondary);">服务费用</span>
+                  <span style="font-size: 14px; font-weight: 600; color: var(--gold);">年化利率 3.8%</span>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-secondary);">发布时间</span>
+                  <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">2026-03-10</span>
+                </div>
+              </div>
+              <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                为发制品企业提供低息贷款，最高额度500万元，政府贴息30%，支持企业扩大生产和技术改造。
+              </div>
+              <div class="flex items-center justify-between">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-eye" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 12px; color: var(--text-secondary);">258次浏览</span>
+                  <span style="margin: 0 8px; color: var(--text-secondary);">|</span>
+                  <i class="fas fa-file-signature" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 12px; color: var(--text-secondary);">32次申请</span>
+                </div>
+                <div class="flex gap-2">
+                  <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+                    <i class="fas fa-edit"></i> 编辑
+                  </button>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                    <i class="fas fa-chart-bar"></i> 查看数据
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-weight: 600; font-size: 16px;">外贸企业贷</div>
+                <span class="tag tag-success">已发布</span>
+              </div>
+              <div class="grid grid-cols-3 gap-4 mb-4">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-secondary);">服务类型</span>
+                  <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">金融服务</span>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-secondary);">服务费用</span>
+                  <span style="font-size: 14px; font-weight: 600; color: var(--gold);">年化利率 4.2%</span>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 12px; color: var(--text-secondary);">发布时间</span>
+                  <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">2026-03-05</span>
+                </div>
+              </div>
+              <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                专为外贸型发制品企业设计，基于出口订单和应收账款融资，最高额度300万元。
+              </div>
+              <div class="flex items-center justify-between">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-eye" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 12px; color: var(--text-secondary);">186次浏览</span>
+                  <span style="margin: 0 8px; color: var(--text-secondary);">|</span>
+                  <i class="fas fa-file-signature" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 12px; color: var(--text-secondary);">25次申请</span>
+                </div>
+                <div class="flex gap-2">
+                  <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+                    <i class="fas fa-edit"></i> 编辑
+                  </button>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                    <i class="fas fa-chart-bar"></i> 查看数据
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 待处理订单 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-clipboard-list"></i>
+              待处理订单
+            </div>
+            <span class="tag tag-warning">8项待处理</span>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>订单编号</th>
+                <th>服务名称</th>
+                <th>企业名称</th>
+                <th>申请时间</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>20260316001</td>
+                <td>产业振兴贷</td>
+                <td>兴隆发制品有限公司</td>
+                <td>2026-03-16 10:23</td>
+                <td><span class="tag tag-primary">待审核</span></td>
+                <td>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">处理</button>
+                </td>
+              </tr>
+              <tr>
+                <td>20260316002</td>
+                <td>外贸企业贷</td>
+                <td>华宇贸易有限公司</td>
+                <td>2026-03-16 09:45</td>
+                <td><span class="tag tag-primary">待审核</span></td>
+                <td>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">处理</button>
+                </td>
+              </tr>
+              <tr>
+                <td>20260315008</td>
+                <td>产业振兴贷</td>
+                <td>恒达发制品有限公司</td>
+                <td>2026-03-15 16:30</td>
+                <td><span class="tag tag-warning">处理中</span></td>
+                <td>
+                  <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">查看</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

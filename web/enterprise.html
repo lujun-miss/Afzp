@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企业画像</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="dashboard.html" class="nav-link text-gray-300 hover:text-white">产业仪表盘</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">运行监测</a>
+        <a href="enterprise.html" class="nav-link active text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">供应链协同</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">企业画像</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">全方位展示企业信息、信用评级、成长轨迹</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">
+          <i class="fas fa-file-export"></i> 批量导出
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-plus"></i> 新增企业
+        </button>
+      </div>
+    </div>
+
+    <!-- 企业统计概览 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">企业总数</span>
+          <div style="width: 40px; height: 40px; background: rgba(26,95,180,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-building" style="color: var(--primary);"></i>
+          </div>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">186</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">本月新增 8 家</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">规上企业</span>
+          <div style="width: 40px; height: 40px; background: rgba(201,162,39,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-award" style="color: var(--gold);"></i>
+          </div>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">42</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">占比 22.6%</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">AAA级信用</span>
+          <div style="width: 40px; height: 40px; background: rgba(16,185,129,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-certificate" style="color: var(--success);"></i>
+          </div>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">68</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">占比 36.6%</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">高新技术企业</span>
+          <div style="width: 40px; height: 40px; background: rgba(245,158,11,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-lightbulb" style="color: var(--warning);"></i>
+          </div>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">15</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">占比 8.1%</div>
+      </div>
+    </div>
+
+    <!-- 企业分布分析 -->
+    <div class="grid grid-cols-3 gap-5 mb-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-chart-pie"></i>
+            企业类型分布
+          </div>
+        </div>
+        <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="typeChart"></canvas>
+        </div>
+        <div style="margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; background: var(--primary); border-radius: 2px;"></span>
+              发套制造
+            </span>
+            <span style="font-weight: 600;">58家 (31%)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; background: var(--gold); border-radius: 2px;"></span>
+              档发加工
+            </span>
+            <span style="font-weight: 600;">86家 (46%)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; background: var(--success); border-radius: 2px;"></span>
+              原料贸易
+            </span>
+            <span style="font-weight: 600;">42家 (23%)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-star"></i>
+            信用评级分布
+          </div>
+        </div>
+        <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="creditChart"></canvas>
+        </div>
+        <div style="margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; background: var(--success); border-radius: 2px;"></span>
+              AAA级
+            </span>
+            <span style="font-weight: 600;">68家</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; background: var(--primary); border-radius: 2px;"></span>
+              AA级
+            </span>
+            <span style="font-weight: 600;">78家</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; background: var(--warning); border-radius: 2px;"></span>
+              A级及以下
+            </span>
+            <span style="font-weight: 600;">40家</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-trophy"></i>
+            龙头企业TOP5
+          </div>
+        </div>
+        <div style="max-height: 320px; overflow-y: auto;">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000;">1</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600;">瑞发制品有限公司</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">年产值 3.2亿元</div>
+            </div>
+            <span class="tag tag-success">AAA</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #C0C0C0, #808080); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000;">2</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600;">华鑫发制品股份有限公司</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">年产值 2.8亿元</div>
+            </div>
+            <span class="tag tag-success">AAA</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #CD7F32, #8B4513); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff;">3</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600;">东方美发制品</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">年产值 1.9亿元</div>
+            </div>
+            <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">AA</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div style="width: 32px; height: 32px; background: var(--card-bg); border: 2px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">4</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600;">金发丝制品厂</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">年产值 1.5亿元</div>
+            </div>
+            <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">AA</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0;">
+            <div style="width: 32px; height: 32px; background: var(--card-bg); border: 2px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">5</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600;">美之源发制品</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">年产值 1.2亿元</div>
+            </div>
+            <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">AA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 企业列表 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-list"></i>
+          企业名录
+        </div>
+        <div class="flex gap-3">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="搜索企业名称、信用代码..." style="width: 260px; padding: 10px 12px 10px 40px;">
+          </div>
+          <select style="background: var(--dark-bg); border: 1px solid var(--border); color: var(--text-primary); padding: 10px 16px; border-radius: 10px; font-size: 14px;">
+            <option>全部类型</option>
+            <option>发套制造</option>
+            <option>档发加工</option>
+            <option>原料贸易</option>
+          </select>
+          <select style="background: var(--dark-bg); border: 1px solid var(--border); color: var(--text-primary); padding: 10px 16px; border-radius: 10px; font-size: 14px;">
+            <option>全部等级</option>
+            <option>AAA级</option>
+            <option>AA级</option>
+            <option>A级</option>
+          </select>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>企业信息</th>
+            <th>企业类型</th>
+            <th>注册资本</th>
+            <th>年产值</th>
+            <th>信用评级</th>
+            <th>成立时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100&h=100&fit=crop" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover;" alt="企业">
+                <div>
+                  <div style="font-weight: 600;">瑞发制品有限公司</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">91371700MA3XXXXXX</div>
+                </div>
+              </div>
+            </td>
+            <td>发套制造</td>
+            <td>5,000万元</td>
+            <td>3.2亿元</td>
+            <td><span class="tag tag-success">AAA</span></td>
+            <td>2010-05-12</td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+                <i class="fas fa-eye"></i> 查看画像
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=100&fit=crop" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover;" alt="企业">
+                <div>
+                  <div style="font-weight: 600;">华鑫发制品股份有限公司</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">91371700MA3YYYYYY</div>
+                </div>
+              </div>
+            </td>
+            <td>全产业链</td>
+            <td>8,000万元</td>
+            <td>2.8亿元</td>
+            <td><span class="tag tag-success">AAA</span></td>
+            <td>2008-03-20</td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+                <i class="fas fa-eye"></i> 查看画像
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&h=100&fit=crop" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover;" alt="企业">
+                <div>
+                  <div style="font-weight: 600;">金发丝制品厂</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">91371700MA3ZZZZZZ</div>
+                </div>
+              </div>
+            </td>
+            <td>档发加工</td>
+            <td>1,200万元</td>
+            <td>1.5亿元</td>
+            <td><span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">AA</span></td>
+            <td>2015-08-08</td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+                <i class="fas fa-eye"></i> 查看画像
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=100&h=100&fit=crop" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover;" alt="企业">
+                <div>
+                  <div style="font-weight: 600;">美之源发制品</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">91371700MA3AAAAAA</div>
+                </div>
+              </div>
+            </td>
+            <td>外贸出口</td>
+            <td>800万元</td>
+            <td>1.2亿元</td>
+            <td><span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">AA</span></td>
+            <td>2012-11-15</td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+                <i class="fas fa-eye"></i> 查看画像
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    new Chart(document.getElementById('typeChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['发套制造', '档发加工', '原料贸易'],
+        datasets: [{
+          data: [58, 86, 42],
+          backgroundColor: ['#1a5fb4', '#c9a227', '#10b981'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    new Chart(document.getElementById('creditChart'), {
+      type: 'bar',
+      data: {
+        labels: ['AAA', 'AA', 'A', 'BBB'],
+        datasets: [{
+          data: [68, 78, 32, 8],
+          backgroundColor: ['#10b981', '#1a5fb4', '#f59e0b', '#ef4444'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { display: false },
+          x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

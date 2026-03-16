@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产业仪表盘</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="dashboard.html" class="nav-link active text-white">产业仪表盘</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">运行监测</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">供应链协同</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">产业仪表盘</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">实时掌握鄄城县发制品产业运行态势</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">
+          <i class="fas fa-calendar"></i> 2026年3月
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-download"></i> 导出报告
+        </button>
+      </div>
+    </div>
+
+    <!-- 核心指标卡片区 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="card stat-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">产业总产值</span>
+          <i class="fas fa-coins" style="color: var(--gold);"></i>
+        </div>
+        <div class="stat-value">128.6亿</div>
+        <div class="stat-label">元（年度累计）</div>
+        <div class="stat-change up">
+          <i class="fas fa-arrow-up"></i> +12.3% 同比
+        </div>
+      </div>
+      
+      <div class="card stat-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">在产企业</span>
+          <i class="fas fa-industry" style="color: var(--primary);"></i>
+        </div>
+        <div class="stat-value">186家</div>
+        <div class="stat-label">规上企业 42 家</div>
+        <div class="stat-change up">
+          <i class="fas fa-arrow-up"></i> +8家 新增
+        </div>
+      </div>
+      
+      <div class="card stat-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">出口总额</span>
+          <i class="fas fa-ship" style="color: var(--success);"></i>
+        </div>
+        <div class="stat-value">$9.8亿</div>
+        <div class="stat-label">美元（年度累计）</div>
+        <div class="stat-change up">
+          <i class="fas fa-arrow-up"></i> +15.6% 同比
+        </div>
+      </div>
+      
+      <div class="card stat-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">就业人数</span>
+          <i class="fas fa-users" style="color: var(--warning);"></i>
+        </div>
+        <div class="stat-value">4.2万</div>
+        <div class="stat-label">产业从业人员</div>
+        <div class="stat-change up">
+          <i class="fas fa-arrow-up"></i> +5.2% 同比
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间区域：地图和趋势 -->
+    <div class="grid grid-cols-3 gap-5 mb-6">
+      <!-- 产业地图 -->
+      <div class="card col-span-2">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-map-marked-alt"></i>
+            产业空间分布
+          </div>
+          <div class="flex gap-2">
+            <span class="tag tag-success">正常生产 156家</span>
+            <span class="tag tag-warning">部分停产 18家</span>
+            <span class="tag tag-danger">完全停产 12家</span>
+          </div>
+        </div>
+        <div style="height: 360px; background: linear-gradient(135deg, rgba(26,95,180,0.1) 0%, rgba(201,162,39,0.05) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=400&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3; position: absolute;" alt="map">
+          <div style="position: relative; z-index: 1; text-align: center;">
+            <i class="fas fa-map" style="font-size: 48px; color: var(--primary); margin-bottom: 16px;"></i>
+            <p style="color: var(--text-secondary);">3D产业地图可视化区域</p>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">显示鄄城县发制品企业空间分布及产能热力</p>
+          </div>
+          <!-- 模拟地图标记 -->
+          <div style="position: absolute; top: 30%; left: 25%; width: 20px; height: 20px; background: var(--success); border-radius: 50%; box-shadow: 0 0 20px var(--success); animation: pulse 2s infinite;"></div>
+          <div style="position: absolute; top: 45%; left: 60%; width: 16px; height: 16px; background: var(--success); border-radius: 50%; box-shadow: 0 0 15px var(--success);"></div>
+          <div style="position: absolute; top: 60%; left: 40%; width: 18px; height: 18px; background: var(--warning); border-radius: 50%; box-shadow: 0 0 15px var(--warning);"></div>
+          <div style="position: absolute; top: 35%; left: 75%; width: 14px; height: 14px; background: var(--danger); border-radius: 50%; box-shadow: 0 0 15px var(--danger);"></div>
+        </div>
+      </div>
+
+      <!-- 今日动态 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-bolt"></i>
+            今日产业动态
+          </div>
+        </div>
+        <div style="max-height: 360px; overflow-y: auto;">
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag tag-success">生产</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">10:23</span>
+            </div>
+            <p style="font-size: 14px;">瑞发制品有限公司今日开工率100%，新增订单$50万</p>
+          </div>
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag tag-warning">预警</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">09:45</span>
+            </div>
+            <p style="font-size: 14px;">人发原材料价格上涨3%，建议关注库存</p>
+          </div>
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">物流</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">09:12</span>
+            </div>
+            <p style="font-size: 14px;">青岛港今日发出发制品集装箱12个，货值$280万</p>
+          </div>
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag tag-success">政策</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">08:30</span>
+            </div>
+            <p style="font-size: 14px;">新出口退税政策发布，预计惠及全县80%企业</p>
+          </div>
+          <div style="padding: 16px 0;">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag" style="background: rgba(201,162,39,0.15); color: var(--gold);">展会</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">昨天</span>
+            </div>
+            <p style="font-size: 14px;">广交会发制品展区报名开始，已有32家企业报名</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部区域 -->
+    <div class="grid grid-cols-2 gap-5">
+      <!-- 产业链分析 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-project-diagram"></i>
+            产业链流转分析
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+            <i class="fas fa-expand"></i> 查看详情
+          </button>
+        </div>
+        <div style="height: 280px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="chainChart"></canvas>
+        </div>
+        <div class="grid grid-cols-4 gap-4 mt-4" style="text-align: center;">
+          <div>
+            <div style="font-size: 20px; font-weight: 700; color: var(--primary);">32家</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">原料供应</div>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700; color: var(--gold);">86家</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">档发加工</div>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700; color: var(--success);">58家</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">发套制作</div>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700; color: var(--warning);">42家</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">外贸出口</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 出口目的地 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-globe-americas"></i>
+            出口目的地分布
+          </div>
+          <select style="background: var(--dark-bg); border: 1px solid var(--border); color: var(--text-primary); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+            <option>2026年</option>
+            <option>2025年</option>
+          </select>
+        </div>
+        <div style="height: 280px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="exportChart"></canvas>
+        </div>
+        <div class="flex justify-between mt-4" style="padding: 0 20px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 12px; height: 12px; background: var(--primary); border-radius: 2px;"></span>
+            <span style="font-size: 12px;">北美 35%</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 12px; height: 12px; background: var(--gold); border-radius: 2px;"></span>
+            <span style="font-size: 12px;">非洲 28%</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 12px; height: 12px; background: var(--success); border-radius: 2px;"></span>
+            <span style="font-size: 12px;">欧洲 22%</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 12px; height: 12px; background: var(--warning); border-radius: 2px;"></span>
+            <span style="font-size: 12px;">其他 15%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+  </style>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 产业链流转图
+    const chainCtx = document.getElementById('chainChart').getContext('2d');
+    new Chart(chainCtx, {
+      type: 'bar',
+      data: {
+        labels: ['原料采购', '档发加工', '发套制作', '质检包装', '出口贸易'],
+        datasets: [{
+          label: '产值（亿元）',
+          data: [12.5, 35.8, 42.6, 8.3, 29.4],
+          backgroundColor: [
+            'rgba(26, 95, 180, 0.8)',
+            'rgba(201, 162, 39, 0.8)',
+            'rgba(16, 185, 129, 0.8)',
+            'rgba(245, 158, 11, 0.8)',
+            'rgba(239, 68, 68, 0.8)'
+          ],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#94a3b8' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#94a3b8' }
+          }
+        }
+      }
+    });
+
+    // 出口目的地饼图
+    const exportCtx = document.getElementById('exportChart').getContext('2d');
+    new Chart(exportCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['北美', '非洲', '欧洲', '其他'],
+        datasets: [{
+          data: [35, 28, 22, 15],
+          backgroundColor: [
+            '#1a5fb4',
+            '#c9a227',
+            '#10b981',
+            '#f59e0b'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

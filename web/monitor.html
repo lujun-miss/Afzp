@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产业运行监测</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="dashboard.html" class="nav-link text-gray-300 hover:text-white">产业仪表盘</a>
+        <a href="monitor.html" class="nav-link active text-white">运行监测</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">供应链协同</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">产业运行监测</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">实时监控发制品产业生产、销售、物流全链条</p>
+      </div>
+      <div class="flex gap-3">
+        <span class="tag tag-success" style="display: flex; align-items: center; gap: 6px;">
+          <span style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite;"></span>
+          实时监测中
+        </span>
+        <button class="btn btn-outline">
+          <i class="fas fa-filter"></i> 筛选
+        </button>
+      </div>
+    </div>
+
+    <!-- 关键指标 -->
+    <div class="grid grid-cols-5 gap-4 mb-6">
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 28px; font-weight: 700; color: var(--primary);">86.5%</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">平均开工率</div>
+        <div class="stat-change up" style="margin-top: 8px; justify-content: center;">
+          <i class="fas fa-arrow-up"></i> +2.3%
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 28px; font-weight: 700; color: var(--gold);">12.5万</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">今日产量（件）</div>
+        <div class="stat-change up" style="margin-top: 8px; justify-content: center;">
+          <i class="fas fa-arrow-up"></i> +8.5%
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 28px; font-weight: 700; color: var(--success);">$890万</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">今日出口额</div>
+        <div class="stat-change up" style="margin-top: 8px; justify-content: center;">
+          <i class="fas fa-arrow-up"></i> +12.1%
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 28px; font-weight: 700; color: var(--warning);">127辆</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">在途物流车辆</div>
+        <div class="stat-change up" style="margin-top: 8px; justify-content: center;">
+          <i class="fas fa-arrow-up"></i> +5辆
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 28px; font-weight: 700; color: var(--danger);">3</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">异常预警</div>
+        <div class="stat-change down" style="margin-top: 8px; justify-content: center;">
+          <i class="fas fa-arrow-down"></i> -2
+        </div>
+      </div>
+    </div>
+
+    <!-- 生产监测 -->
+    <div class="grid grid-cols-2 gap-5 mb-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-chart-area"></i>
+            产能趋势监测
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">日</button>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">周</button>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">月</button>
+          </div>
+        </div>
+        <div style="height: 300px;">
+          <canvas id="capacityChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            实时预警监控
+          </div>
+          <span class="tag tag-danger">3条待处理</span>
+        </div>
+        <div style="max-height: 300px; overflow-y: auto;">
+          <div style="padding: 16px; background: rgba(239,68,68,0.1); border-left: 3px solid var(--danger); border-radius: 8px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-2">
+              <span class="tag tag-danger">库存预警</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">10分钟前</span>
+            </div>
+            <p style="font-size: 14px; margin-bottom: 8px;">华鑫发制品库存周转天数超过45天，建议关注销售策略</p>
+            <div class="flex gap-2">
+              <button class="btn btn-primary" style="padding: 4px 10px; font-size: 12px;">查看详情</button>
+              <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;">忽略</button>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); border-radius: 8px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-2">
+              <span class="tag tag-warning">设备异常</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">25分钟前</span>
+            </div>
+            <p style="font-size: 14px; margin-bottom: 8px;">瑞发制品3号车间设备温度异常，已自动发送维护提醒</p>
+            <div class="flex gap-2">
+              <button class="btn btn-primary" style="padding: 4px 10px; font-size: 12px;">查看详情</button>
+              <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;">已处理</button>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); border-radius: 8px;">
+            <div class="flex items-center justify-between mb-2">
+              <span class="tag tag-warning">订单延迟</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">1小时前</span>
+            </div>
+            <p style="font-size: 14px; margin-bottom: 8px;">金发丝制品订单#2026031501可能延期交付，需协调产能</p>
+            <div class="flex gap-2">
+              <button class="btn btn-primary" style="padding: 4px 10px; font-size: 12px;">查看详情</button>
+              <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;">已处理</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 企业实时状态 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-list-alt"></i>
+          企业实时生产状态
+        </div>
+        <div class="flex gap-3">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="搜索企业名称..." style="width: 200px; padding: 8px 12px 8px 36px;">
+          </div>
+          <select style="background: var(--dark-bg); border: 1px solid var(--border); color: var(--text-primary); padding: 8px 12px; border-radius: 8px; font-size: 14px;">
+            <option>全部状态</option>
+            <option>正常生产</option>
+            <option>部分停产</option>
+            <option>完全停产</option>
+          </select>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>企业名称</th>
+            <th>状态</th>
+            <th>今日产量</th>
+            <th>开工率</th>
+            <th>在制订单</th>
+            <th>设备状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--gold)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600;">瑞发制品有限公司</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">规上企业 | 发套制造</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-success">正常生产</span></td>
+            <td>3,250件</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-fill" style="width: 95%; background: var(--success);"></div>
+                </div>
+                <span style="font-size: 12px;">95%</span>
+              </div>
+            </td>
+            <td>12个</td>
+            <td><span style="color: var(--success);"><i class="fas fa-check-circle"></i> 正常</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">详情</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--gold)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600;">华鑫发制品股份有限公司</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">规上企业 | 全产业链</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-warning">部分停产</span></td>
+            <td>2,180件</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-fill" style="width: 65%; background: var(--warning);"></div>
+                </div>
+                <span style="font-size: 12px;">65%</span>
+              </div>
+            </td>
+            <td>8个</td>
+            <td><span style="color: var(--warning);"><i class="fas fa-exclamation-circle"></i> 1台维护</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">详情</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--gold)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600;">金发丝制品厂</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">中小企业 | 档发加工</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-success">正常生产</span></td>
+            <td>1,560件</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-fill" style="width: 88%; background: var(--success);"></div>
+                </div>
+                <span style="font-size: 12px;">88%</span>
+              </div>
+            </td>
+            <td>6个</td>
+            <td><span style="color: var(--success);"><i class="fas fa-check-circle"></i> 正常</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">详情</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--gold)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600;">美之源发制品</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">中小企业 | 外贸出口</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-success">正常生产</span></td>
+            <td>980件</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-fill" style="width: 92%; background: var(--success);"></div>
+                </div>
+                <span style="font-size: 12px;">92%</span>
+              </div>
+            </td>
+            <td>4个</td>
+            <td><span style="color: var(--success);"><i class="fas fa-check-circle"></i> 正常</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">详情</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--gold)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600;">东方美发制品</div>
+                  <div style="font-size: 12px; color: var(--text-secondary);">规上企业 | 化纤发</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-danger">完全停产</span></td>
+            <td>0件</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-fill" style="width: 0%; background: var(--danger);"></div>
+                </div>
+                <span style="font-size: 12px;">0%</span>
+              </div>
+            </td>
+            <td>-</td>
+            <td><span style="color: var(--danger);"><i class="fas fa-times-circle"></i> 设备检修</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">详情</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <span style="color: var(--text-secondary); font-size: 14px;">共 186 家企业，显示 1-5 条</span>
+        <div class="flex gap-2">
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">上一页</button>
+          <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">1</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">2</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">3</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">下一页</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    const capacityCtx = document.getElementById('capacityChart').getContext('2d');
+    new Chart(capacityCtx, {
+      type: 'line',
+      data: {
+        labels: ['3/10', '3/11', '3/12', '3/13', '3/14', '3/15', '3/16'],
+        datasets: [{
+          label: '实际产能',
+          data: [82, 85, 83, 87, 84, 88, 86.5],
+          borderColor: '#1a5fb4',
+          backgroundColor: 'rgba(26, 95, 180, 0.1)',
+          fill: true,
+          tension: 0.4
+        }, {
+          label: '目标产能',
+          data: [90, 90, 90, 90, 90, 90, 90],
+          borderColor: '#c9a227',
+          borderDash: [5, 5],
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#94a3b8' }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            min: 70,
+            max: 100,
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#94a3b8' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#94a3b8' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

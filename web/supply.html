@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>供应链协同</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="dashboard.html" class="nav-link text-gray-300 hover:text-white">产业仪表盘</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">运行监测</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link active text-white">供应链协同</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">供应链协同</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">原材料供需对接、产能共享、物流协同</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">
+          <i class="fas fa-handshake"></i> 发布需求
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-plus"></i> 发布供应
+        </button>
+      </div>
+    </div>
+
+    <!-- 供需概览 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">今日供需发布</span>
+          <i class="fas fa-clipboard-list" style="color: var(--primary);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">28</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">供应 18 / 需求 10</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">撮合成功订单</span>
+          <i class="fas fa-check-circle" style="color: var(--success);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">156</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">本月累计 金额 ¥2,860万</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">闲置产能共享</span>
+          <i class="fas fa-share-alt" style="color: var(--gold);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">32%</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">12家企业发布闲置产能</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">在途物流</span>
+          <i class="fas fa-truck" style="color: var(--warning);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">127辆</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">货物总值 ¥1,250万</div>
+      </div>
+    </div>
+
+    <!-- 原材料价格监测 -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-chart-line"></i>
+          原材料价格走势
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">人发</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">化纤</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">辅料</button>
+        </div>
+      </div>
+      <div style="height: 200px; display: flex; align-items: flex-end; gap: 8px; padding: 20px 0;">
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 120px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600;">¥380</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-secondary);">3/10</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 140px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600;">¥420</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-secondary);">3/11</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 130px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600;">¥395</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-secondary);">3/12</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 150px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600;">¥450</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-secondary);">3/13</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 145px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600;">¥435</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-secondary);">3/14</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 160px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600;">¥468</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-secondary);">3/15</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div style="width: 100%; height: 155px; background: linear-gradient(180deg, var(--gold) 0%, rgba(201,162,39,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-shadow: 0 0 20px rgba(201,162,39,0.3);">
+            <span style="font-size: 12px; font-weight: 600;">¥458</span>
+          </div>
+          <span style="font-size: 12px; color: var(--gold); font-weight: 600;">今日</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(26,95,180,0.1); border-radius: 10px; margin-top: 16px;">
+        <i class="fas fa-info-circle" style="color: var(--primary); font-size: 20px;"></i>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; margin-bottom: 4px;">价格预警</div>
+          <div style="font-size: 14px; color: var(--text-secondary);">人发原材料价格近7天上涨 20.5%，建议关注库存情况，适时调整采购策略。</div>
+        </div>
+        <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">查看详情</button>
+      </div>
+    </div>
+
+    <!-- 供需信息 -->
+    <div class="grid grid-cols-2 gap-5">
+      <!-- 供应信息 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-boxes"></i>
+            最新供应信息
+          </div>
+          <a href="#" style="font-size: 14px; color: var(--primary);">查看更多 <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div>
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag tag-success">供应</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">2小时前</span>
+            </div>
+            <h4 style="font-weight: 600; margin-bottom: 8px;">优质人发原材料 50公斤</h4>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+              <span><i class="fas fa-weight-hanging"></i> 50kg</span>
+              <span><i class="fas fa-tag"></i> ¥420/kg</span>
+              <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">鑫</div>
+                <span style="font-size: 14px;">鑫源原料贸易</span>
+              </div>
+              <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">立即联系</button>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag tag-success">供应</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">5小时前</span>
+            </div>
+            <h4 style="font-weight: 600; margin-bottom: 8px;">高温丝化纤发 200公斤</h4>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+              <span><i class="fas fa-weight-hanging"></i> 200kg</span>
+              <span><i class="fas fa-tag"></i> ¥85/kg</span>
+              <span><i class="fas fa-map-marker-alt"></i> 菏泽市</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">化</div>
+                <span style="font-size: 14px;">华东化纤原料</span>
+              </div>
+              <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">立即联系</button>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px;">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag" style="background: rgba(245,158,11,0.15); color: var(--warning);">产能</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">8小时前</span>
+            </div>
+            <h4 style="font-weight: 600; margin-bottom: 8px;">闲置档发加工产能 5000件/月</h4>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+              <span><i class="fas fa-cogs"></i> 档发加工</span>
+              <span><i class="fas fa-clock"></i> 3个月</span>
+              <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">美</div>
+                <span style="font-size: 14px;">美达发制品</span>
+              </div>
+              <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">立即联系</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 需求信息 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-shopping-cart"></i>
+            最新需求信息
+          </div>
+          <a href="#" style="font-size: 14px; color: var(--primary);">查看更多 <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div>
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">求购</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">1小时前</span>
+            </div>
+            <h4 style="font-weight: 600; margin-bottom: 8px;">采购人发原材料 100公斤</h4>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+              <span><i class="fas fa-weight-hanging"></i> 100kg</span>
+              <span><i class="fas fa-yen-sign"></i> 预算 ¥400-450/kg</span>
+              <span><i class="fas fa-calendar"></i> 7天内</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">瑞</div>
+                <span style="font-size: 14px;">瑞发制品</span>
+              </div>
+              <button class="btn btn-outline" style="padding: 6px 16px; font-size: 12px;">我要供货</button>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">求购</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">3小时前</span>
+            </div>
+            <h4 style="font-weight: 600; margin-bottom: 8px;">采购发网、发夹等辅料</h4>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+              <span><i class="fas fa-box"></i> 大量</span>
+              <span><i class="fas fa-yen-sign"></i> 面议</span>
+              <span><i class="fas fa-calendar"></i> 长期合作</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">华</div>
+                <span style="font-size: 14px;">华鑫发制品</span>
+              </div>
+              <button class="btn btn-outline" style="padding: 6px 16px; font-size: 12px;">我要供货</button>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px;">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag" style="background: rgba(201,162,39,0.15); color: var(--gold);">外协</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">6小时前</span>
+            </div>
+            <h4 style="font-weight: 600; margin-bottom: 8px;">发套缝制外协加工 3000件</h4>
+            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
+              <span><i class="fas fa-tshirt"></i> 女式长卷发</span>
+              <span><i class="fas fa-yen-sign"></i> ¥15-20/件</span>
+              <span><i class="fas fa-calendar"></i> 15天交付</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">金</div>
+                <span style="font-size: 14px;">金发丝制品</span>
+              </div>
+              <button class="btn btn-outline" style="padding: 6px 16px; font-size: 12px;">我要接单</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

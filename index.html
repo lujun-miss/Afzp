@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鄄城县发制品产业大脑 - 中国发都 智慧产业</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0e1a;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* 导航栏 */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s;
+      background: transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 15px 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #c9a227 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, #c9a227 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #c9a227;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-btn {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(26, 95, 180, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse at center, #1a2744 0%, #0a0e1a 70%);
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(26, 95, 180, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(201, 162, 39, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(26, 95, 180, 0.05) 0%, transparent 70%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+      100% { transform: perspective(500px) rotateX(60deg) translateY(60px); }
+    }
+
+    .hero-content {
+      text-align: center;
+      z-index: 10;
+      max-width: 1000px;
+      padding: 0 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      background: rgba(26, 95, 180, 0.2);
+      border: 1px solid rgba(26, 95, 180, 0.4);
+      border-radius: 50px;
+      font-size: 14px;
+      color: #64b5f6;
+      margin-bottom: 30px;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    .hero-badge i {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero-title {
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, #1a5fb4 0%, #c9a227 50%, #1a5fb4 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 3s linear infinite;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-size: 24px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 50px;
+      font-weight: 300;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin-bottom: 50px;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #c9a227 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-stat-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 8px;
+    }
+
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      animation: fadeInUp 0.8s ease 0.8s both;
+    }
+
+    .hero-btn-primary {
+      padding: 18px 40px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(26, 95, 180, 0.4);
+    }
+
+    .hero-btn-secondary {
+      padding: 18px 40px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-btn-secondary:hover {
+      border-color: #c9a227;
+      color: #c9a227;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Features Section */
+    .features {
+      padding: 120px 60px;
+      background: linear-gradient(180deg, #0a0e1a 0%, #0d1321 100%);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(201, 162, 39, 0.15);
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      border-radius: 50px;
+      font-size: 14px;
+      color: #c9a227;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: rgba(255,255,255,0.6);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(26, 95, 180, 0.1) 0%, rgba(26, 95, 180, 0.02) 100%);
+      border: 1px solid rgba(26, 95, 180, 0.2);
+      border-radius: 20px;
+      padding: 40px;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(26, 95, 180, 0.4);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 24px;
+    }
+
+    .feature-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .feature-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+    }
+
+    /* Data Section */
+    .data-section {
+      padding: 120px 60px;
+      background: #0a0e1a;
+      position: relative;
+    }
+
+    .data-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.5), transparent);
+    }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto 60px;
+    }
+
+    .data-card {
+      background: linear-gradient(135deg, rgba(26, 95, 180, 0.15) 0%, rgba(26, 95, 180, 0.02) 100%);
+      border: 1px solid rgba(26, 95, 180, 0.2);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .data-card:hover {
+      transform: scale(1.05);
+      border-color: rgba(201, 162, 39, 0.4);
+    }
+
+    .data-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      color: #c9a227;
+    }
+
+    .data-value {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #c9a227 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .data-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .data-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: #10b981;
+      margin-top: 10px;
+    }
+
+    /* Map Section */
+    .map-section {
+      padding: 120px 60px;
+      background: linear-gradient(180deg, #0d1321 0%, #0a0e1a 100%);
+    }
+
+    .map-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .map-visual {
+      height: 500px;
+      background: 
+        radial-gradient(circle at 30% 50%, rgba(26, 95, 180, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(201, 162, 39, 0.15) 0%, transparent 40%);
+      border-radius: 24px;
+      border: 1px solid rgba(26, 95, 180, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+    }
+
+    .map-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .map-point {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #c9a227;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #c9a227;
+      animation: pointPulse 2s infinite;
+    }
+
+    @keyframes pointPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    .map-info h3 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .map-info p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .map-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .map-stat {
+      background: rgba(26, 95, 180, 0.1);
+      border: 1px solid rgba(26, 95, 180, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .map-stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #c9a227;
+      margin-bottom: 5px;
+    }
+
+    .map-stat-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 60px;
+      background: radial-gradient(ellipse at center, #1a2744 0%, #0a0e1a 70%);
+      text-align: center;
+    }
+
+    .cta-box {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 60px;
+      background: linear-gradient(135deg, rgba(26, 95, 180, 0.2) 0%, rgba(26, 95, 180, 0.05) 100%);
+      border: 1px solid rgba(26, 95, 180, 0.3);
+      border-radius: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(201, 162, 39, 0.1) 0%, transparent 60%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .cta-desc {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 40px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 60px;
+      background: #050810;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .footer-brand-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #c9a227 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .footer-brand-text {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .footer-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
+    }
+
+    .footer-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #c9a227;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #c9a227;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 40px auto 0;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Scroll animations */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar" id="navbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-industry"></i>
+      </div>
+      <div class="logo-text">鄄城发制品产业大脑</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home">首页</a></li>
+      <li><a href="#features">核心功能</a></li>
+      <li><a href="#data">产业数据</a></li>
+      <li><a href="#map">产业地图</a></li>
+      <li><a href="web/dashboard.html">系统入口</a></li>
+      <li><a href="#about">关于我们</a></li>
+    </ul>
+    <button class="nav-btn" onclick="enterSystem()">
+      <i class="fas fa-sign-in-alt"></i> 进入系统
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-circle"></i>
+        中国发都 · 智慧产业
+      </div>
+      <h1 class="hero-title">
+        鄄城县<br>
+        <span class="highlight">发制品产业大脑</span>
+      </h1>
+      <p class="hero-subtitle">
+        以数据驱动产业治理现代化，打造全球发制品产业数字化标杆
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">186</div>
+          <div class="hero-stat-label">在产企业</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">128.6亿</div>
+          <div class="hero-stat-label">年产值（元）</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">$9.8亿</div>
+          <div class="hero-stat-label">年出口额</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">4.2万</div>
+          <div class="hero-stat-label">从业人员</div>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <button class="hero-btn-primary" onclick="enterSystem()">
+          <i class="fas fa-rocket"></i>
+          立即体验
+        </button>
+        <button class="hero-btn-secondary" onclick="scrollToSection('features')">
+          <i class="fas fa-play-circle"></i>
+          了解更多
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-header scroll-reveal">
+      <div class="section-tag">核心能力</div>
+      <h2 class="section-title">六大功能模块</h2>
+      <p class="section-subtitle">覆盖产业全链条，提供从生产到销售的全方位数字化服务</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3 class="feature-title">产业仪表盘</h3>
+        <p class="feature-desc">实时展示产业核心指标、产业链分析、出口分布等关键数据，一屏掌握产业全景</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">
+          <i class="fas fa-eye"></i>
+        </div>
+        <h3 class="feature-title">运行监测</h3>
+        <p class="feature-desc">实时监控企业生产状态、产能利用率、设备运行情况，智能预警异常状况</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <h3 class="feature-title">企业画像</h3>
+        <p class="feature-desc">360度企业视图，信用评级、成长档案、行业排名，精准服务企业需求</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">
+          <i class="fas fa-link"></i>
+        </div>
+        <h3 class="feature-title">供应链协同</h3>
+        <p class="feature-desc">原材料供需对接、产能共享、物流协同，打通产业链上下游资源</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">
+          <i class="fas fa-globe"></i>
+        </div>
+        <h3 class="feature-title">市场洞察</h3>
+        <p class="feature-desc">全球市场趋势分析、热门产品预测、AI智能预警，助力企业把握商机</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">
+          <i class="fas fa-landmark"></i>
+        </div>
+        <h3 class="feature-title">政务服务</h3>
+        <p class="feature-desc">政策发布、在线办事、政企互动，打造一站式企业服务平台</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Section -->
+  <section class="data-section" id="data">
+    <div class="section-header scroll-reveal">
+      <div class="section-tag">实时数据</div>
+      <h2 class="section-title">产业运行态势</h2>
+      <p class="section-subtitle">数据驱动决策，实时掌握产业发展动态</p>
+    </div>
+    <div class="data-grid">
+      <div class="data-card scroll-reveal">
+        <div class="data-icon"><i class="fas fa-industry"></i></div>
+        <div class="data-value">86.5%</div>
+        <div class="data-label">平均开工率</div>
+        <div class="data-change"><i class="fas fa-arrow-up"></i> +2.3%</div>
+      </div>
+      <div class="data-card scroll-reveal">
+        <div class="data-icon"><i class="fas fa-boxes"></i></div>
+        <div class="data-value">12.5万</div>
+        <div class="data-label">今日产量（件）</div>
+        <div class="data-change"><i class="fas fa-arrow-up"></i> +8.5%</div>
+      </div>
+      <div class="data-card scroll-reveal">
+        <div class="data-icon"><i class="fas fa-ship"></i></div>
+        <div class="data-value">$890万</div>
+        <div class="data-label">今日出口额</div>
+        <div class="data-change"><i class="fas fa-arrow-up"></i> +12.1%</div>
+      </div>
+      <div class="data-card scroll-reveal">
+        <div class="data-icon"><i class="fas fa-truck"></i></div>
+        <div class="data-value">127辆</div>
+        <div class="data-label">在途物流车辆</div>
+        <div class="data-change"><i class="fas fa-arrow-up"></i> +3.5%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="map-section" id="map">
+    <div class="map-container">
+      <div class="map-info scroll-reveal">
+        <div class="section-tag">空间分布</div>
+        <h3>产业空间布局</h3>
+        <p>鄄城县发制品产业已形成"一区多园"的空间布局，产业集聚效应显著。通过数字化手段，实现产业空间可视化，助力精准招商和科学规划。</p>
+        <div class="map-stats">
+          <div class="map-stat">
+            <div class="map-stat-value">42家</div>
+            <div class="map-stat-label">规上企业</div>
+          </div>
+          <div class="map-stat">
+            <div class="map-stat-value">8个</div>
+            <div class="map-stat-label">产业园区</div>
+          </div>
+          <div class="map-stat">
+            <div class="map-stat-value">156家</div>
+            <div class="map-stat-label">正常生产企业</div>
+          </div>
+          <div class="map-stat">
+            <div class="map-stat-value">30家</div>
+            <div class="map-stat-label">停产/检修企业</div>
+          </div>
+        </div>
+      </div>
+      <div class="map-visual scroll-reveal">
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=600&fit=crop" alt="产业地图">
+        <div class="map-overlay">
+          <i class="fas fa-map-marked-alt" style="font-size: 60px; color: rgba(201, 162, 39, 0.5); margin-bottom: 20px;"></i>
+          <p style="color: rgba(255,255,255,0.6);">3D产业空间分布可视化</p>
+        </div>
+        <div class="map-point" style="top: 30%; left: 25%;"></div>
+        <div class="map-point" style="top: 45%; left: 60%; animation-delay: 0.5s;"></div>
+        <div class="map-point" style="top: 60%; left: 40%; animation-delay: 1s;"></div>
+        <div class="map-point" style="top: 35%; left: 75%; animation-delay: 1.5s;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" id="about">
+    <div class="cta-box scroll-reveal">
+      <div class="cta-content">
+        <h2 class="cta-title">开启产业数字化新时代</h2>
+        <p class="cta-desc">加入鄄城县发制品产业大脑，共享产业数据，共创智慧未来</p>
+        <button class="hero-btn-primary" onclick="enterSystem()">
+          <i class="fas fa-rocket"></i>
+          立即进入系统
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-brand-icon">
+            <i class="fas fa-industry"></i>
+          </div>
+          <div class="footer-brand-text">鄄城发制品产业大脑</div>
+        </div>
+        <p class="footer-desc">
+          以数据驱动产业治理现代化，打造全球发制品产业数字化标杆平台，助力鄄城县发制品产业高质量发展。
+        </p>
+      </div>
+      <div>
+        <h4 class="footer-title">快速链接</h4>
+        <ul class="footer-links">
+          <li><a href="#home">首页</a></li>
+          <li><a href="#features">核心功能</a></li>
+          <li><a href="#data">产业数据</a></li>
+          <li><a href="#map">产业地图</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-title">功能模块</h4>
+        <ul class="footer-links">
+          <li><a href="web/dashboard.html">产业仪表盘</a></li>
+          <li><a href="web/monitor.html">运行监测</a></li>
+          <li><a href="web/enterprise.html">企业画像</a></li>
+          <li><a href="web/supply.html">供应链协同</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-title">联系我们</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-phone"></i> 0530-XXXXXXX</a></li>
+          <li><a href="#"><i class="fas fa-envelope"></i> contact@juancheng.gov.cn</a></li>
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i> 山东省菏泽市鄄城县</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 鄄城县发制品产业大脑 版权所有</div>
+      <div>技术支持：鄄城县工业和信息化局</div>
+    </div>
+  </footer>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // 滚动显示动画
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+      observer.observe(el);
+    });
+
+    // 平滑滚动
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 进入系统
+    function enterSystem() {
+      window.location.href = 'web/dashboard.html';
+    }
+
+    // 导航链接平滑滚动
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        scrollToSection(targetId);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="../web/dashboard.html" class="nav-link text-gray-300 hover:text-white">前端系统</a>
+        <a href="index.html" class="nav-link active text-white">后台管理</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary);">
+          <i class="fas fa-user-shield" style="color: var(--gold);"></i>
+          <span>管理员</span>
+        </div>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">后台管理</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">系统配置、数据管理、权限控制</p>
+      </div>
+    </div>
+
+    <!-- 管理概览 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">注册用户</span>
+          <i class="fas fa-users" style="color: var(--primary);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">1,286</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">企业用户 186 / 个人 1,100</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">数据接入</span>
+          <i class="fas fa-database" style="color: var(--success);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">156万</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">今日新增 12,580 条</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">系统告警</span>
+          <i class="fas fa-bell" style="color: var(--warning);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700;">3</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">待处理告警</div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">系统运行</span>
+          <i class="fas fa-server" style="color: var(--gold);"></i>
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--success);">正常</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">运行时长 128天</div>
+      </div>
+    </div>
+
+    <!-- 管理菜单 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="card" style="cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-building" style="font-size: 24px;"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">企业管理</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">企业信息审核、档案管理</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card" style="cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-user-shield" style="font-size: 24px;"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">权限管理</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">角色配置、权限分配</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card" style="cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-chart-bar" style="font-size: 24px;"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">数据管理</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">数据采集、清洗、分析</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card" style="cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-cog" style="font-size: 24px;"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">系统设置</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">参数配置、日志管理</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 用户管理和系统日志 -->
+    <div class="grid grid-cols-2 gap-5">
+      <!-- 最近注册用户 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-user-plus"></i>
+            最近注册用户
+          </div>
+          <a href="#" style="font-size: 14px; color: var(--primary);">查看全部</a>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>用户信息</th>
+              <th>注册时间</th>
+              <th>类型</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">兴</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">兴隆发制品</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">138****5678</div>
+                  </div>
+                </div>
+              </td>
+              <td>2026-03-16 10:23</td>
+              <td>企业</td>
+              <td><span class="tag tag-success">已审核</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 36px; height: 36px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">王</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">王建国</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">139****1234</div>
+                  </div>
+                </div>
+              </td>
+              <td>2026-03-16 09:45</td>
+              <td>个人</td>
+              <td><span class="tag" style="background: rgba(245,158,11,0.15); color: var(--warning);">待审核</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 36px; height: 36px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">华</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">华宇贸易</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">137****9876</div>
+                  </div>
+                </div>
+              </td>
+              <td>2026-03-15 16:30</td>
+              <td>企业</td>
+              <td><span class="tag tag-success">已审核</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 36px; height: 36px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">李</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">李秀英</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">150****2468</div>
+                  </div>
+                </div>
+              </td>
+              <td>2026-03-15 14:12</td>
+              <td>个人</td>
+              <td><span class="tag tag-success">已审核</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 系统操作日志 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-history"></i>
+            系统操作日志
+          </div>
+          <a href="#" style="font-size: 14px; color: var(--primary);">查看全部</a>
+        </div>
+        <div style="max-height: 320px; overflow-y: auto;">
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag tag-success">新增</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-16 10:30:25</span>
+            </div>
+            <p style="font-size: 14px;">管理员 <strong>张局长</strong> 新增了企业 <strong>兴隆发制品</strong></p>
+          </div>
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">修改</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-16 09:15:18</span>
+            </div>
+            <p style="font-size: 14px;">管理员 <strong>李科长</strong> 修改了政策 <strong>出口退税申报指南</strong></p>
+          </div>
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag tag-warning">审核</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-16 08:45:33</span>
+            </div>
+            <p style="font-size: 14px;">管理员 <strong>王主任</strong> 审核通过了企业 <strong>华宇贸易</strong> 的注册申请</p>
+          </div>
+          <div style="padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag tag-danger">删除</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-15 17:20:45</span>
+            </div>
+            <p style="font-size: 14px;">管理员 <strong>张局长</strong> 删除了过期的供需信息 <strong>3条</strong></p>
+          </div>
+          <div style="padding: 16px 0;">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="tag" style="background: rgba(16,185,129,0.15); color: var(--success);">导出</span>
+              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-15 15:30:12</span>
+            </div>
+            <p style="font-size: 14px;">管理员 <strong>李科长</strong> 导出了 <strong>2026年2月产业运行报告</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

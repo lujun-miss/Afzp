@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>市场洞察</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="dashboard.html" class="nav-link text-gray-300 hover:text-white">产业仪表盘</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">运行监测</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">供应链协同</a>
+        <a href="market.html" class="nav-link active text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">市场洞察</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">全球市场趋势、竞品分析、智能预警</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">
+          <i class="fas fa-file-alt"></i> 生成报告
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-bell"></i> 设置预警
+        </button>
+      </div>
+    </div>
+
+    <!-- 全球市场概览 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="card">
+        <div class="flex items-center gap-3 mb-3">
+          <img src="https://flagcdn.com/w40/us.png" style="width: 32px; border-radius: 4px;" alt="US">
+          <span style="font-weight: 600;">北美市场</span>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 4px;">$3.43亿</div>
+        <div style="font-size: 12px; color: var(--text-secondary);">年度出口额</div>
+        <div class="stat-change up" style="margin-top: 8px;">
+          <i class="fas fa-arrow-up"></i> +18.2% 同比
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center gap-3 mb-3">
+          <img src="https://flagcdn.com/w40/ng.png" style="width: 32px; border-radius: 4px;" alt="NG">
+          <span style="font-weight: 600;">非洲市场</span>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 4px;">$2.74亿</div>
+        <div style="font-size: 12px; color: var(--text-secondary);">年度出口额</div>
+        <div class="stat-change up" style="margin-top: 8px;">
+          <i class="fas fa-arrow-up"></i> +22.5% 同比
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center gap-3 mb-3">
+          <img src="https://flagcdn.com/w40/eu.png" style="width: 32px; border-radius: 4px;" alt="EU">
+          <span style="font-weight: 600;">欧洲市场</span>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 4px;">$2.16亿</div>
+        <div style="font-size: 12px; color: var(--text-secondary);">年度出口额</div>
+        <div class="stat-change up" style="margin-top: 8px;">
+          <i class="fas fa-arrow-up"></i> +8.7% 同比
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="flex items-center gap-3 mb-3">
+          <i class="fas fa-globe" style="font-size: 24px; color: var(--primary);"></i>
+          <span style="font-weight: 600;">其他市场</span>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 4px;">$1.47亿</div>
+        <div style="font-size: 12px; color: var(--text-secondary);">年度出口额</div>
+        <div class="stat-change up" style="margin-top: 8px;">
+          <i class="fas fa-arrow-up"></i> +15.3% 同比
+        </div>
+      </div>
+    </div>
+
+    <!-- 趋势分析 -->
+    <div class="grid grid-cols-2 gap-5 mb-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-chart-line"></i>
+            出口趋势分析
+          </div>
+          <select style="background: var(--dark-bg); border: 1px solid var(--border); color: var(--text-primary); padding: 8px 12px; border-radius: 8px; font-size: 14px;">
+            <option>近12个月</option>
+            <option>近6个月</option>
+            <option>近3个月</option>
+          </select>
+        </div>
+        <div style="height: 300px;">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-fire"></i>
+            热门产品趋势
+          </div>
+        </div>
+        <div style="max-height: 300px; overflow-y: auto;">
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-2">
+              <span style="font-weight: 600;">1. 女式长卷发发套</span>
+              <span class="tag tag-success">热度 +45%</span>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-heart" style="color: var(--danger);"></i> 北美、欧洲</span>
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-palette"></i> 深棕、黑色</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 92%; background: linear-gradient(90deg, var(--danger), var(--warning));"></div>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-2">
+              <span style="font-weight: 600;">2. 非洲辫发套</span>
+              <span class="tag tag-success">热度 +38%</span>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-heart" style="color: var(--danger);"></i> 非洲、北美</span>
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-palette"></i> 彩色、金色</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%; background: linear-gradient(90deg, var(--warning), var(--success));"></div>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
+            <div class="flex items-center justify-between mb-2">
+              <span style="font-weight: 600;">3. 男士短发发块</span>
+              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">热度 +25%</span>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-heart" style="color: var(--danger);"></i> 欧洲、日本</span>
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-palette"></i> 灰白、自然黑</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 72%; background: var(--primary);"></div>
+            </div>
+          </div>
+          
+          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px;">
+            <div class="flex items-center justify-between mb-2">
+              <span style="font-weight: 600;">4. 化纤接发束</span>
+              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">热度 +18%</span>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-heart" style="color: var(--danger);"></i> 全球</span>
+              <span style="font-size: 12px; color: var(--text-secondary);"><i class="fas fa-palette"></i> 多色可选</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 58%; background: var(--primary);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 智能预警 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-brain"></i>
+          AI智能预警
+        </div>
+        <div class="flex gap-2">
+          <span class="tag tag-success">正常 12</span>
+          <span class="tag tag-warning">关注 3</span>
+          <span class="tag tag-danger">预警 1</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-5">
+        <div style="padding: 20px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px;">
+          <div class="flex items-center gap-3 mb-3">
+            <div style="width: 40px; height: 40px; background: var(--danger); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <span class="tag tag-danger">高风险</span>
+          </div>
+          <h4 style="font-weight: 600; margin-bottom: 8px;">汇率波动预警</h4>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">美元兑人民币汇率近30天波动超过3%，建议锁定汇率或调整报价策略。</p>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">查看详情</button>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">已知晓</button>
+          </div>
+        </div>
+        
+        <div style="padding: 20px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px;">
+          <div class="flex items-center gap-3 mb-3">
+            <div style="width: 40px; height: 40px; background: var(--warning); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-eye"></i>
+            </div>
+            <span class="tag tag-warning">需关注</span>
+          </div>
+          <h4 style="font-weight: 600; margin-bottom: 8px;">非洲市场需求放缓</h4>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">尼日利亚市场近两周订单量下降15%，建议关注当地经济形势变化。</p>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">查看详情</button>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">已知晓</button>
+          </div>
+        </div>
+        
+        <div style="padding: 20px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px;">
+          <div class="flex items-center gap-3 mb-3">
+            <div style="width: 40px; height: 40px; background: var(--warning); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-boxes"></i>
+            </div>
+            <span class="tag tag-warning">需关注</span>
+          </div>
+          <h4 style="font-weight: 600; margin-bottom: 8px;">原材料价格上涨</h4>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">人发原材料价格连续7天上涨，累计涨幅20%，建议适量备货。</p>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">查看详情</button>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">已知晓</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月', '2月', '3月'],
+        datasets: [{
+          label: '北美',
+          data: [2800, 2950, 3100, 3250, 3400, 3350, 3500, 3650, 3800, 3600, 3750, 3900],
+          borderColor: '#1a5fb4',
+          backgroundColor: 'rgba(26, 95, 180, 0.1)',
+          fill: true,
+          tension: 0.4
+        }, {
+          label: '非洲',
+          data: [2200, 2350, 2400, 2550, 2600, 2750, 2800, 2950, 3100, 3000, 3150, 3300],
+          borderColor: '#c9a227',
+          backgroundColor: 'rgba(201, 162, 39, 0.1)',
+          fill: true,
+          tension: 0.4
+        }, {
+          label: '欧洲',
+          data: [1800, 1850, 1900, 1950, 2000, 2050, 2100, 2150, 2200, 2100, 2150, 2200],
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#94a3b8' }
+          }
+        },
+        scales: {
+          y: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#94a3b8' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#94a3b8' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
