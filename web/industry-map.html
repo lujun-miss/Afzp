@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发制品行业图谱 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .map-container {
+      background: var(--dark-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      min-height: 400px;
+    }
+    .node-card {
+      background: linear-gradient(135deg, rgba(26, 95, 180, 0.1) 0%, rgba(26, 95, 180, 0.05) 100%);
+      border: 1px solid rgba(26, 95, 180, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .node-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(26, 95, 180, 0.2);
+      border-color: rgba(26, 95, 180, 0.5);
+    }
+    .connection-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">发制品驾驶舱</a>
+        <a href="industry-map.html" class="nav-link active text-white">行业图谱</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">运行监测</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">供应链协同</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="shop.html" class="nav-link text-gray-300 hover:text-white">企业商城</a>
+        <a href="hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+        <a href="finance.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">发制品行业图谱</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">
+          <i class="fas fa-expand"></i> 全屏查看
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-download"></i> 导出图谱
+        </button>
+      </div>
+    </div>
+
+    <!-- 产业链图谱 -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-project-diagram"></i>
+          产业链图谱
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">全景</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">上游</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">中游</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">下游</button>
+        </div>
+      </div>
+      <div class="map-container">
+        <div style="display: flex; align-items: center; justify-content: center; height: 400px; position: relative;">
+          <i class="fas fa-project-diagram text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
+          <div style="position: absolute; text-align: center;">
+            <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">发制品产业链全景图</div>
+            <div style="font-size: 14px; color: var(--text-secondary);">原料收购 → 档发加工 → 发套制作 → 外贸出口</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 产业节点 -->
+    <div class="grid grid-cols-4 gap-5 mb-6">
+      <div class="node-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-leaf text-xl"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">原料收购</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">产业链上游</div>
+          </div>
+        </div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+          人发、化纤原料收购，建立稳定的原料供应渠道
+        </div>
+        <div class="flex items-center justify-between">
+          <div style="font-size: 12px; color: var(--text-secondary);">
+            <i class="fas fa-building"></i> 28家企业
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+            查看详情
+          </button>
+        </div>
+      </div>
+      
+      <div class="node-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-cogs text-xl"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">档发加工</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">产业链中游</div>
+          </div>
+        </div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+          档发整理、分类、加工，为发套制作提供优质原料
+        </div>
+        <div class="flex items-center justify-between">
+          <div style="font-size: 12px; color: var(--text-secondary);">
+            <i class="fas fa-building"></i> 65家企业
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+            查看详情
+          </button>
+        </div>
+      </div>
+      
+      <div class="node-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-hair text-xl"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">发套制作</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">产业链中游</div>
+          </div>
+        </div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+          假发设计、制作、包装，生产各类发制品产品
+        </div>
+        <div class="flex items-center justify-between">
+          <div style="font-size: 12px; color: var(--text-secondary);">
+            <i class="fas fa-building"></i> 86家企业
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+            查看详情
+          </button>
+        </div>
+      </div>
+      
+      <div class="node-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--warning), #ea580c); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-globe text-xl"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 16px;">外贸出口</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">产业链下游</div>
+          </div>
+        </div>
+        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+          国际市场开拓、跨境电商、海外销售渠道建设
+        </div>
+        <div class="flex items-center justify-between">
+          <div style="font-size: 12px; color: var(--text-secondary);">
+            <i class="fas fa-building"></i> 42家企业
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
+            查看详情
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 企业关系网络 -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-network-wired"></i>
+          企业关系网络
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">供需关系</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">合作关系</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">竞争关系</button>
+        </div>
+      </div>
+      <div class="map-container">
+        <div style="display: flex; align-items: center; justify-content: center; height: 400px; position: relative;">
+          <i class="fas fa-network-wired text-6xl" style="color: var(--success); opacity: 0.5;"></i>
+          <div style="position: absolute; text-align: center;">
+            <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">企业关系网络图</div>
+            <div style="font-size: 14px; color: var(--text-secondary);">展示企业间的供需、合作、竞争关系</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 产业分布地图 -->
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-map-marked-alt"></i>
+            产业空间分布
+          </div>
+        </div>
+        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-map-marked-alt text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
+          <div style="position: absolute; text-align: center;">
+            <div style="font-size: 14px; color: var(--text-secondary);">产业空间分布地图</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">鄄城县产业园区分布</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-chart-pie"></i>
+            产业结构分析
+          </div>
+        </div>
+        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-chart-pie text-6xl" style="color: var(--gold); opacity: 0.5;"></i>
+          <div style="position: absolute; text-align: center;">
+            <div style="font-size: 14px; color: var(--text-secondary);">产业结构分析图表</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">各产业环节占比分布</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 重点企业 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-star"></i>
+          重点企业
+        </div>
+        <a href="#" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="grid grid-cols-4 gap-4">
+        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-building text-xl"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 16px;">兴隆发制品有限公司</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">龙头企业</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">年产值</span>
+              <span style="font-size: 16px; font-weight: 600; color: var(--success);">¥2.8亿</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
+              <span style="font-size: 16px; font-weight: 600;">1,280</span>
+            </div>
+          </div>
+          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+            主要产品：真人发假发、化纤假发
+          </div>
+        </div>
+        
+        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--success)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-building text-xl"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 16px;">华宇贸易有限公司</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">出口企业</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">年出口额</span>
+              <span style="font-size: 16px; font-weight: 600; color: var(--gold);">$1.5亿</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
+              <span style="font-size: 16px; font-weight: 600;">856</span>
+            </div>
+          </div>
+          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+            主要市场：美国、欧洲、非洲
+          </div>
+        </div>
+        
+        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-building text-xl"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 16px;">恒达发制品有限公司</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">加工企业</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">年加工量</span>
+              <span style="font-size: 16px; font-weight: 600;">580吨</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
+              <span style="font-size: 16px; font-weight: 600;">456</span>
+            </div>
+          </div>
+          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+            主要产品：档发、发束
+          </div>
+        </div>
+        
+        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--warning)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--warning), #ea580c); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-building text-xl"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 16px;">精工器械有限公司</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">配套企业</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">年销售额</span>
+              <span style="font-size: 16px; font-weight: 600; color: var(--success);">¥6,800万</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
+              <span style="font-size: 16px; font-weight: 600;">128</span>
+            </div>
+          </div>
+          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+            主要产品：发制品工具、设备
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
