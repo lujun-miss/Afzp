@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统入口 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .role-card {
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+    }
+    .role-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(26, 159, 180, 0.2);
+      border-color: var(--primary);
+    }
+    .feature-card {
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(26, 159, 180, 0.15);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="system-entry.html" class="nav-link active text-white">系统入口</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>返回首页</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="text-center mb-12">
+      <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">系统功能导航</h1>
+      <p style="color: var(--text-secondary); font-size: 16px; max-width: 800px; margin: 0 auto;">根据您的身份选择相应的功能入口，开始使用发制品产业大脑平台</p>
+    </div>
+
+    <!-- 角色选择 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      <!-- 游客 -->
+      <div class="role-card bg-gradient-to-br from-dark-bg to-dark-bg-alt rounded-xl p-8 text-center">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-600 to-blue-400 flex items-center justify-center">
+          <i class="fas fa-user text-white text-3xl"></i>
+        </div>
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">游客</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">浏览产业信息、了解政策动态</p>
+        <a href="cockpit.html" class="btn btn-primary w-full">
+          <i class="fas fa-eye"></i> 浏览系统
+        </a>
+      </div>
+
+      <!-- 企业 -->
+      <div class="role-card bg-gradient-to-br from-dark-bg to-dark-bg-alt rounded-xl p-8 text-center">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400 flex items-center justify-center">
+          <i class="fas fa-building text-white text-3xl"></i>
+        </div>
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">企业用户</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">查看行业数据、发布供需信息</p>
+        <a href="shop.html" class="btn btn-primary w-full">
+          <i class="fas fa-store"></i> 企业中心
+        </a>
+      </div>
+
+      <!-- 服务商 -->
+      <div class="role-card bg-gradient-to-br from-dark-bg to-dark-bg-alt rounded-xl p-8 text-center">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-green-600 to-green-400 flex items-center justify-center">
+          <i class="fas fa-handshake text-white text-3xl"></i>
+        </div>
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">服务商</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">发布服务、对接企业需求</p>
+        <a href="supply.html" class="btn btn-primary w-full">
+          <i class="fas fa-cogs"></i> 服务中心
+        </a>
+      </div>
+
+      <!-- 政府 -->
+      <div class="role-card bg-gradient-to-br from-dark-bg to-dark-bg-alt rounded-xl p-8 text-center">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-red-600 to-red-400 flex items-center justify-center">
+          <i class="fas fa-landmark text-white text-3xl"></i>
+        </div>
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">政府人员</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">产业监测、政策管理</p>
+        <a href="cockpit.html" class="btn btn-primary w-full">
+          <i class="fas fa-chart-line"></i> 管理中心
+        </a>
+      </div>
+    </div>
+
+    <!-- 核心功能 -->
+    <div class="mb-16">
+      <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">核心功能</h2>
+      <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">平台提供的主要功能模块</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 发制品驾驶舱 -->
+        <div class="feature-card bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-tachometer-alt text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600;">发制品驾驶舱</h3>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">实时监测产业运行数据，查看核心指标和趋势分析</p>
+          <a href="cockpit.html" class="text-primary hover:text-primary/80 flex items-center gap-2 mt-4">
+            <span>查看详情</span>
+            <i class="fas fa-arrow-right text-sm"></i>
+          </a>
+        </div>
+
+        <!-- 行业图谱 -->
+        <div class="feature-card bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center">
+              <i class="fas fa-project-diagram text-gold text-xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600;">行业图谱</h3>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">展示产业链结构，分析企业关系和产业生态</p>
+          <a href="industry-map.html" class="text-primary hover:text-primary/80 flex items-center gap-2 mt-4">
+            <span>查看详情</span>
+            <i class="fas fa-arrow-right text-sm"></i>
+          </a>
+        </div>
+
+        <!-- 企业画像 -->
+        <div class="feature-card bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-success/20 flex items-center justify-center">
+              <i class="fas fa-user-circle text-success text-xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600;">企业画像</h3>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">全方位展示企业信息、信用评级和成长轨迹</p>
+          <a href="enterprise.html" class="text-primary hover:text-primary/80 flex items-center gap-2 mt-4">
+            <span>查看详情</span>
+            <i class="fas fa-arrow-right text-sm"></i>
+          </a>
+        </div>
+
+        <!-- 供应链协同 -->
+        <div class="feature-card bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-warning/20 flex items-center justify-center">
+              <i class="fas fa-link text-warning text-xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600;">供应链协同</h3>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">原材料供需对接、产能共享和物流协同</p>
+          <a href="supply.html" class="text-primary hover:text-primary/80 flex items-center gap-2 mt-4">
+            <span>查看详情</span>
+            <i class="fas fa-arrow-right text-sm"></i>
+          </a>
+        </div>
+
+        <!-- 市场洞察 -->
+        <div class="feature-card bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-danger/20 flex items-center justify-center">
+              <i class="fas fa-chart-pie text-danger text-xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600;">市场洞察</h3>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">全球市场趋势分析、竞品分析和智能预警</p>
+          <a href="market.html" class="text-primary hover:text-primary/80 flex items-center gap-2 mt-4">
+            <span>查看详情</span>
+            <i class="fas fa-arrow-right text-sm"></i>
+          </a>
+        </div>
+
+        <!-- 政务服务 -->
+        <div class="feature-card bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-landmark text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600;">政务服务</h3>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">政策发布、在线办事和政企互动平台</p>
+          <a href="government.html" class="text-primary hover:text-primary/80 flex items-center gap-2 mt-4">
+            <span>查看详情</span>
+            <i class="fas fa-arrow-right text-sm"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 快速访问 -->
+    <div class="mb-12">
+      <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">快速访问</h2>
+      <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">常用功能快速入口</p>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <a href="shop.html" class="feature-card bg-dark-bg rounded-lg p-4 text-center border border-border">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
+            <i class="fas fa-shopping-bag text-primary text-xl"></i>
+          </div>
+          <span style="font-size: 14px;">企业商城</span>
+        </a>
+        
+        <a href="hr.html" class="feature-card bg-dark-bg rounded-lg p-4 text-center border border-border">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-users text-gold text-xl"></i>
+          </div>
+          <span style="font-size: 14px;">人力资源</span>
+        </a>
+        
+        <a href="finance.html" class="feature-card bg-dark-bg rounded-lg p-4 text-center border border-border">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-success/20 flex items-center justify-center">
+            <i class="fas fa-money-bill-wave text-success text-xl"></i>
+          </div>
+          <span style="font-size: 14px;">金融服务</span>
+        </a>
+        
+        <a href="monitor.html" class="feature-card bg-dark-bg rounded-lg p-4 text-center border border-border">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-warning/20 flex items-center justify-center">
+            <i class="fas fa-chart-line text-warning text-xl"></i>
+          </div>
+          <span style="font-size: 14px;">运行监测</span>
+        </a>
+        
+        <a href="industry-map.html" class="feature-card bg-dark-bg rounded-lg p-4 text-center border border-border">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-danger/20 flex items-center justify-center">
+            <i class="fas fa-map-marked-alt text-danger text-xl"></i>
+          </div>
+          <span style="font-size: 14px;">产业地图</span>
+        </a>
+        
+        <a href="cockpit.html" class="feature-card bg-dark-bg rounded-lg p-4 text-center border border-border">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
+            <i class="fas fa-brain text-primary text-xl"></i>
+          </div>
+          <span style="font-size: 14px;">AI助手</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
