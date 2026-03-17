@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发业智库 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .solution-card {
+      background: linear-gradient(135deg, rgba(26, 95, 180, 0.1) 0%, rgba(26, 95, 180, 0.05) 100%);
+      border: 1px solid rgba(26, 95, 180, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    .solution-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(26, 95, 180, 0.15);
+      border-color: rgba(26, 95, 180, 0.5);
+    }
+    .product-card {
+      background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(201, 162, 39, 0.05) 100%);
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(201, 162, 39, 0.15);
+      border-color: rgba(201, 162, 39, 0.5);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="shop.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+        <a href="finance.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link active text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-12">
+      <div>
+        <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">发业智库</h1>
+        <p style="color: var(--text-secondary); font-size: 16px;">数字化全栈方案 · 小快轻产品 · 智能解决方案</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">
+          <i class="fas fa-download"></i> 下载方案
+        </button>
+        <button class="btn btn-primary">
+          <i class="fas fa-phone"></i> 咨询服务
+        </button>
+      </div>
+    </div>
+
+    <!-- 数字化全栈方案 -->
+    <section class="mb-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 style="font-size: 24px; font-weight: 600;">
+          <i class="fas fa-code text-primary mr-2"></i>数字化全栈方案
+        </h2>
+        <a href="#" style="color: var(--text-secondary); font-size: 14px;">查看全部 <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 方案1 -->
+        <div class="solution-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-cloud text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 600;">云原生架构解决方案</h3>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">基于云原生技术栈，为企业提供弹性可扩展的IT架构，支持业务快速迭代和创新。</p>
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">容器化部署，快速弹性伸缩</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">微服务架构，独立部署维护</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">DevOps流程，自动化运维</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--primary); font-size: 14px; display: inline-flex items-center gap-2;">
+            了解详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 方案2 -->
+        <div class="solution-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-database text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 600;">大数据分析平台</h3>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">整合企业内外部数据，构建统一的数据中台，提供智能分析和决策支持。</p>
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">多源数据采集与整合</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">实时数据处理与分析</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">智能数据可视化大屏</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--primary); font-size: 14px; display: inline-flex items-center gap-2;">
+            了解详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 方案3 -->
+        <div class="solution-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-robot text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 600;">AI智能应用解决方案</h3>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">结合人工智能技术，为企业提供智能化的业务流程优化和决策支持。</p>
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">智能客服与营销</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">生产过程智能优化</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">市场趋势智能预测</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--primary); font-size: 14px; display: inline-flex items-center gap-2;">
+            了解详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 方案4 -->
+        <div class="solution-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-lock text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 600;">网络安全防护方案</h3>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">全方位的网络安全防护体系，保障企业数据和系统安全，满足合规要求。</p>
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">边界安全防护</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">数据加密与访问控制</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">安全审计与监控</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--primary); font-size: 14px; display: inline-flex items-center gap-2;">
+            了解详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 方案5 -->
+        <div class="solution-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-mobile-alt text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 600;">移动应用解决方案</h3>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">为企业打造定制化的移动应用，提升业务效率和用户体验。</p>
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">跨平台应用开发</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">实时数据同步</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">用户体验优化</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--primary); font-size: 14px; display: inline-flex items-center gap-2;">
+            了解详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 方案6 -->
+        <div class="solution-card">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-chart-line text-primary text-xl"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 600;">业务流程数字化方案</h3>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">将传统业务流程数字化，提高运营效率，降低管理成本。</p>
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">流程自动化与优化</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">电子审批与协同</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check text-success text-sm"></i>
+              <span style="font-size: 14px;">数据分析与决策支持</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--primary); font-size: 14px; display: inline-flex items-center gap-2;">
+            了解详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 小快轻产品 -->
+    <section class="mb-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 style="font-size: 24px; font-weight: 600;">
+          <i class="fas fa-bolt text-gold mr-2"></i>小快轻产品
+        </h2>
+        <a href="#" style="color: var(--text-secondary); font-size: 14px;">查看全部 <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- 产品1 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-chart-pie text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">智能报表生成器</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">快速生成各类业务报表，支持自定义模板和数据导出。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品2 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-calculator text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">成本计算器</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">快速计算产品成本，支持多维度成本分析和优化建议。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品3 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-barcode text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">二维码生成器</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">生成各类二维码，支持自定义样式和批量生成。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品4 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-file-alt text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">合同模板库</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">提供各类合同模板，支持在线编辑和下载。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品5 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-clock text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">项目进度跟踪</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">跟踪项目进度，支持任务分配和进度可视化。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品6 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-envelope text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">邮件模板工具</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">快速创建和发送标准化邮件，提高沟通效率。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品7 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-users text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">客户管理小助手</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">管理客户信息，跟踪沟通记录，提升客户服务质量。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+
+        <!-- 产品8 -->
+        <div class="product-card">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+            <i class="fas fa-lightbulb text-gold text-2xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">创意灵感库</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 12px;">收集和管理创意灵感，支持标签分类和搜索。</p>
+          <div class="flex justify-center">
+            <a href="#" class="btn btn-sm btn-outline" style="font-size: 12px;">
+              立即使用
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 成功案例 -->
+    <section class="mb-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 style="font-size: 24px; font-weight: 600;">
+          <i class="fas fa-star text-success mr-2"></i>成功案例
+        </h2>
+        <a href="#" style="color: var(--text-secondary); font-size: 14px;">查看全部 <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- 案例1 -->
+        <div class="bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">
+              <i class="fas fa-building text-success text-xl"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 18px; font-weight: 600;">某发制品企业数字化转型</h3>
+              <p style="color: var(--text-secondary); font-size: 14px;">通过云原生架构和大数据分析，实现业务流程全面数字化</p>
+            </div>
+          </div>
+          <div class="space-y-3 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check-circle text-success text-sm"></i>
+              <span style="font-size: 14px;">生产效率提升35%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check-circle text-success text-sm"></i>
+              <span style="font-size: 14px;">运营成本降低20%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check-circle text-success text-sm"></i>
+              <span style="font-size: 14px;">决策响应时间缩短60%</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--success); font-size: 14px; display: inline-flex items-center gap-2;">
+            查看详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- 案例2 -->
+        <div class="bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">
+              <i class="fas fa-industry text-success text-xl"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 18px; font-weight: 600;">产业园区智能管理平台</h3>
+              <p style="color: var(--text-secondary); font-size: 14px;">为发制品产业园区打造智能管理平台，实现园区运营数字化</p>
+            </div>
+          </div>
+          <div class="space-y-3 mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check-circle text-success text-sm"></i>
+              <span style="font-size: 14px;">园区管理效率提升45%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check-circle text-success text-sm"></i>
+              <span style="font-size: 14px;">能源消耗降低15%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-check-circle text-success text-sm"></i>
+              <span style="font-size: 14px;">企业满意度提升30%</span>
+            </div>
+          </div>
+          <a href="#" style="color: var(--success); font-size: 14px; display: inline-flex items-center gap-2;">
+            查看详情 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 咨询服务 -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-r from-primary/20 to-gold/20 rounded-xl p-8 border border-border">
+        <div class="text-center mb-8">
+          <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">专业咨询服务</h2>
+          <p style="color: var(--text-secondary); font-size: 16px; max-width: 800px; margin: 0 auto;">我们提供专业的数字化转型咨询服务，帮助企业制定个性化的数字化战略</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-dark-bg/70 rounded-xl p-6 border border-border">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+              <i class="fas fa-comments text-primary text-2xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">战略咨询</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; text-align: center;">制定数字化转型战略，明确发展路径和目标</p>
+          </div>
+          <div class="bg-dark-bg/70 rounded-xl p-6 border border-border">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/20 flex items-center justify-center">
+              <i class="fas fa-project-diagram text-gold text-2xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">方案设计</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; text-align: center;">设计个性化的数字化解决方案，满足企业特定需求</p>
+          </div>
+          <div class="bg-dark-bg/70 rounded-xl p-6 border border-border">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-success/20 flex items-center justify-center">
+              <i class="fas fa-hands-helping text-success text-2xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 8px;">实施支持</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; text-align: center;">提供全程实施支持，确保解决方案顺利落地</p>
+          </div>
+        </div>
+        <div class="mt-8 text-center">
+          <button class="btn btn-primary">
+            <i class="fas fa-phone"></i> 预约咨询
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发品溯源 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .trace-card {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    .trace-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(249, 115, 22, 0.15);
+      border-color: rgba(249, 115, 22, 0.5);
+    }
+    .step-card {
+      position: relative;
+      padding-left: 40px;
+    }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #f97316, rgba(249, 115, 22, 0.3));
+    }
+    .step-card::after {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #f97316;
+      z-index: 1;
+    }
+    .step-card:last-child::before {
+      display: none;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="shop.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+        <a href="finance.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link active text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 页面标题 -->
+    <div class="text-center mb-12">
+      <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">发品溯源</h1>
+      <p style="color: var(--text-secondary); font-size: 16px; max-width: 800px; margin: 0 auto;">产品全生命周期追溯，确保产品质量，提升消费者信任</p>
+    </div>
+
+    <!-- 溯源查询 -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-r from-orange-500/20 to-orange-600/10 rounded-xl p-8 border border-orange-500/30">
+        <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">
+          <i class="fas fa-search text-orange-500 mr-2"></i>产品溯源查询
+        </h2>
+        <div class="flex flex-col md:flex-row gap-4">
+          <input type="text" placeholder="请输入产品追溯码或批次号" class="flex-1 px-4 py-3 bg-dark-bg border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+          <button class="btn btn-primary" style="background: linear-gradient(90deg, #f97316, #ea580c); border: none;">
+            <i class="fas fa-search"></i> 开始追溯
+          </button>
+        </div>
+        <div class="mt-4 text-center">
+          <p style="color: var(--text-secondary); font-size: 14px;">示例追溯码：FP20260317001</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 追溯结果 -->
+    <section class="mb-16">
+      <div class="trace-card">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 4px;">产品信息</h2>
+            <p style="color: var(--text-secondary); font-size: 14px;">追溯码：FP20260317001</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center">
+              <i class="fas fa-check text-success"></i>
+            </div>
+            <span style="color: var(--success); font-size: 14px; font-weight: 500;">正品验证通过</span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-dark-bg/50 rounded-lg p-4">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">产品名称</div>
+            <div style="font-size: 16px; font-weight: 500;">真人发发条</div>
+          </div>
+          <div class="bg-dark-bg/50 rounded-lg p-4">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">生产企业</div>
+            <div style="font-size: 16px; font-weight: 500;">鄄城县润发制品有限公司</div>
+          </div>
+          <div class="bg-dark-bg/50 rounded-lg p-4">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">生产批次</div>
+            <div style="font-size: 16px; font-weight: 500;">20260317-001</div>
+          </div>
+          <div class="bg-dark-bg/50 rounded-lg p-4">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">生产日期</div>
+            <div style="font-size: 16px; font-weight: 500;">2026-03-17</div>
+          </div>
+          <div class="bg-dark-bg/50 rounded-lg p-4">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">有效期至</div>
+            <div style="font-size: 16px; font-weight: 500;">2028-03-16</div>
+          </div>
+          <div class="bg-dark-bg/50 rounded-lg p-4">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">产品标准</div>
+            <div style="font-size: 16px; font-weight: 500;">GB/T 23170-2008</div>
+          </div>
+        </div>
+
+        <!-- 全生命周期追溯 -->
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">
+          <i class="fas fa-history text-orange-500 mr-2"></i>全生命周期追溯
+        </h3>
+        <div class="space-y-6">
+          <!-- 原料采购 -->
+          <div class="step-card">
+            <div class="bg-dark-bg/50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h4 style="font-size: 16px; font-weight: 500;">原料采购</h4>
+                <span style="font-size: 14px; color: var(--text-secondary);">2026-03-10</span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-leaf text-green-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">原料来源</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">印度进口真人发</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-certificate text-blue-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">检验报告</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">通过ISO9001质量认证</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 生产加工 -->
+          <div class="step-card">
+            <div class="bg-dark-bg/50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h4 style="font-size: 16px; font-weight: 500;">生产加工</h4>
+                <span style="font-size: 14px; color: var(--text-secondary);">2026-03-12 至 2026-03-15</span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-industry text-orange-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">生产工艺</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">精梳 → 染色 → 编织 → 检验</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-user text-blue-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">生产负责人</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">张师傅 (ID: SF202001)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 质量检测 -->
+          <div class="step-card">
+            <div class="bg-dark-bg/50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h4 style="font-size: 16px; font-weight: 500;">质量检测</h4>
+                <span style="font-size: 14px; color: var(--text-secondary);">2026-03-16</span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-vial text-purple-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">检测项目</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">拉力测试、耐洗测试、色牢度测试</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-check-circle text-success mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">检测结果</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">全部合格</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 包装入库 -->
+          <div class="step-card">
+            <div class="bg-dark-bg/50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h4 style="font-size: 16px; font-weight: 500;">包装入库</h4>
+                <span style="font-size: 14px; color: var(--text-secondary);">2026-03-17</span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-box text-green-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">包装规格</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">100g/盒，20盒/箱</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-warehouse text-blue-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">存储位置</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">A仓库 - 2楼 - 3区</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 物流运输 -->
+          <div class="step-card">
+            <div class="bg-dark-bg/50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h4 style="font-size: 16px; font-weight: 500;">物流运输</h4>
+                <span style="font-size: 14px; color: var(--text-secondary);">2026-03-18</span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-truck text-orange-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">物流公司</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">顺丰速运</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-route text-blue-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">运输路线</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">鄄城 → 济南 → 上海</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 销售终端 -->
+          <div class="step-card">
+            <div class="bg-dark-bg/50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h4 style="font-size: 16px; font-weight: 500;">销售终端</h4>
+                <span style="font-size: 14px; color: var(--text-secondary);">2026-03-19</span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-store text-green-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">销售店铺</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">上海发制品专卖店</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-receipt text-blue-500 mt-1"></i>
+                  <div>
+                    <div style="font-size: 14px; font-weight: 500;">销售单据</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);">XSD20260319001</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 质量认证 -->
+    <section class="mb-16">
+      <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">
+        <i class="fas fa-certificate text-blue-500 mr-2"></i>质量认证
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-dark-bg rounded-xl p-6 border border-border text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <i class="fas fa-iso text-blue-500 text-3xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">ISO9001</h3>
+          <p style="color: var(--text-secondary); font-size: 14px;">质量管理体系认证</p>
+        </div>
+        <div class="bg-dark-bg rounded-xl p-6 border border-border text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+            <i class="fas fa-recycle text-green-500 text-3xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">ISO14001</h3>
+          <p style="color: var(--text-secondary); font-size: 14px;">环境管理体系认证</p>
+        </div>
+        <div class="bg-dark-bg rounded-xl p-6 border border-border text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <i class="fas fa-shield-alt text-purple-500 text-3xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">OHSAS18001</h3>
+          <p style="color: var(--text-secondary); font-size: 14px;">职业健康安全管理体系认证</p>
+        </div>
+        <div class="bg-dark-bg rounded-xl p-6 border border-border text-center">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+            <i class="fas fa-award text-orange-500 text-3xl"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">CE认证</h3>
+          <p style="color: var(--text-secondary); font-size: 14px;">欧盟安全认证</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section class="mb-16">
+      <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">
+        <i class="fas fa-question-circle text-yellow-500 mr-2"></i>常见问题
+      </h2>
+      <div class="space-y-4">
+        <div class="bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-question text-yellow-500"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 500; margin-bottom: 4px;">如何查询产品追溯信息？</h3>
+              <p style="color: var(--text-secondary); font-size: 14px;">您可以在产品包装上找到追溯码，通过本页面的查询功能输入追溯码即可查看产品的全生命周期信息。</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-question text-yellow-500"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 500; margin-bottom: 4px;">追溯信息包含哪些内容？</h3>
+              <p style="color: var(--text-secondary); font-size: 14px;">追溯信息包含产品的原料来源、生产加工、质量检测、包装入库、物流运输和销售终端等全生命周期信息。</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark-bg rounded-xl p-6 border border-border">
+          <div class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-question text-yellow-500"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 500; margin-bottom: 4px;">如何辨别产品真伪？</h3>
+              <p style="color: var(--text-secondary); font-size: 14px;">通过本系统查询追溯码，系统会显示产品的验证结果。如果验证通过，说明产品为正品；如果验证失败，可能为假冒产品。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-r from-orange-500/20 to-orange-600/10 rounded-xl p-8 border border-orange-500/30">
+        <div class="text-center mb-8">
+          <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">联系我们</h2>
+          <p style="color: var(--text-secondary); font-size: 14px;">如有任何疑问或建议，请随时联系我们</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-dark-bg/70 rounded-xl p-6 border border-border text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <i class="fas fa-phone text-orange-500 text-2xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">客服电话</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">400-123-4567</p>
+          </div>
+          <div class="bg-dark-bg/70 rounded-xl p-6 border border-border text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <i class="fas fa-envelope text-orange-500 text-2xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">电子邮箱</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">service@hairindustry.com</p>
+          </div>
+          <div class="bg-dark-bg/70 rounded-xl p-6 border border-border text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+              <i class="fas fa-map-marker-alt text-orange-500 text-2xl"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">地址</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">山东省菏泽市鄄城县发制品产业园</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 模拟追溯查询功能
+    document.querySelector('button[style*="background: linear-gradient"]').addEventListener('click', function() {
+      const input = document.querySelector('input[placeholder="请输入产品追溯码或批次号"]');
+      const traceCode = input.value.trim();
+      
+      if (traceCode) {
+        // 模拟查询成功
+        alert('追溯查询成功！');
+      } else {
+        alert('请输入追溯码');
+      }
+    });
+  </script>
+</body>
+</html>

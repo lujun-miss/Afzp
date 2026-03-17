@@ -68,11 +68,12 @@
 
     .nav-links {
       display: flex;
+      align-items: center;
       gap: 40px;
       list-style: none;
     }
 
-    .nav-links a {
+    .nav-link {
       color: rgba(255,255,255,0.8);
       text-decoration: none;
       font-size: 15px;
@@ -81,11 +82,11 @@
       position: relative;
     }
 
-    .nav-links a:hover {
+    .nav-link:hover {
       color: #c9a227;
     }
 
-    .nav-links a::after {
+    .nav-link::after {
       content: '';
       position: absolute;
       bottom: -5px;
@@ -96,8 +97,13 @@
       transition: width 0.3s;
     }
 
-    .nav-links a:hover::after {
+    .nav-link:hover::after {
       width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
     }
 
     .nav-btn {
@@ -126,6 +132,61 @@
       position: relative;
       overflow: hidden;
       background: radial-gradient(ellipse at center, #1a2744 0%, #0a0e1a 70%);
+    }
+
+    /* Tab Navigation */
+    .tab-nav-container {
+      position: sticky;
+      top: 80px;
+      z-index: 100;
+      background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 0;
+    }
+
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(26, 95, 180, 0.1);
+      border: 1px solid rgba(26, 95, 180, 0.3);
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tab-btn:hover {
+      background: rgba(26, 95, 180, 0.2);
+      border-color: rgba(26, 95, 180, 0.5);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      border-color: #1a5fb4;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(26, 95, 180, 0.3);
+    }
+
+    .tab-btn i {
+      font-size: 16px;
+    }
+
+    .tab-btn span {
+      font-size: 14px;
     }
 
     .hero-bg {
@@ -410,74 +471,6 @@
       line-height: 1.7;
     }
 
-    /* Data Section */
-    .data-section {
-      padding: 120px 60px;
-      background: #0a0e1a;
-      position: relative;
-    }
-
-    .data-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.5), transparent);
-    }
-
-    .data-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
-      max-width: 1400px;
-      margin: 0 auto 60px;
-    }
-
-    .data-card {
-      background: linear-gradient(135deg, rgba(26, 95, 180, 0.15) 0%, rgba(26, 95, 180, 0.02) 100%);
-      border: 1px solid rgba(26, 95, 180, 0.2);
-      border-radius: 16px;
-      padding: 30px;
-      text-align: center;
-      transition: all 0.3s;
-    }
-
-    .data-card:hover {
-      transform: scale(1.05);
-      border-color: rgba(201, 162, 39, 0.4);
-    }
-
-    .data-icon {
-      font-size: 36px;
-      margin-bottom: 16px;
-      color: #c9a227;
-    }
-
-    .data-value {
-      font-size: 42px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff 0%, #c9a227 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-    }
-
-    .data-label {
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-    }
-
-    .data-change {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 13px;
-      color: #10b981;
-      margin-top: 10px;
-    }
-
     /* Map Section */
     .map-section {
       padding: 120px 60px;
@@ -720,6 +713,69 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+
+      .nav-links, .nav-actions {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero-title {
+        font-size: 36px;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+      }
+
+      .hero-stats {
+        gap: 30px;
+      }
+
+      .hero-stat-value {
+        font-size: 32px;
+      }
+
+      .hero-btns {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .data-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .map-stats {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .hero-stat-value {
+        font-size: 24px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -731,17 +787,29 @@
       </div>
       <div class="logo-text">鄄城发制品产业大脑</div>
     </div>
-    <ul class="nav-links">
-      <li><a href="#home">首页</a></li>
-      <li><a href="#features">核心功能</a></li>
-      <li><a href="#data">产业数据</a></li>
-      <li><a href="#map">产业地图</a></li>
-      <li><a href="web/system-entry.html">系统入口</a></li>
-      <li><a href="#about">关于我们</a></li>
-    </ul>
-    <button class="nav-btn" onclick="enterSystem()">
-      <i class="fas fa-sign-in-alt"></i> 进入系统
-    </button>
+    <div class="nav-links">
+      <a href="#home" class="nav-link">首页</a>
+      <a href="web/cockpit.html" class="nav-link">产业全景</a>
+      <a href="web/industry-map.html" class="nav-link">产业透视</a>
+      <a href="web/monitor.html" class="nav-link">安全防控</a>
+      <a href="web/enterprise.html" class="nav-link">企业画像</a>
+      <a href="web/supply.html" class="nav-link">资源枢纽</a>
+      <a href="web/market.html" class="nav-link">市场洞察</a>
+      <a href="web/government.html" class="nav-link">政务服务</a>
+      <a href="web/shop.html" class="nav-link">发品交易</a>
+      <a href="web/hr.html" class="nav-link">人力资源</a>
+      <a href="web/finance.html" class="nav-link">金融服务</a>
+      <a href="web/thinktank.html" class="nav-link">发业智库</a>
+      <a href="web/traceability.html" class="nav-link">发品溯源</a>
+    </div>
+    <div class="nav-actions">
+      <a href="web/login.html" class="nav-btn nav-btn-outline">
+        <i class="fas fa-sign-in-alt"></i> 登录
+      </a>
+      <a href="web/register.html" class="nav-btn">
+        <i class="fas fa-user-plus"></i> 注册
+      </a>
+    </div>
   </nav>
 
   <!-- Hero Section -->
@@ -762,27 +830,31 @@
       </p>
       <div class="hero-stats">
         <div class="hero-stat">
+          <div class="hero-stat-value">12.8万</div>
+          <div class="hero-stat-label">平台访问量</div>
+        </div>
+        <div class="hero-stat">
           <div class="hero-stat-value">186</div>
-          <div class="hero-stat-label">在产企业</div>
+          <div class="hero-stat-label">企业注册量</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-value">128.6亿</div>
-          <div class="hero-stat-label">年产值（元）</div>
+          <div class="hero-stat-value">42</div>
+          <div class="hero-stat-label">银企对接数</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-value">$9.8亿</div>
-          <div class="hero-stat-label">年出口额</div>
+          <div class="hero-stat-value">356</div>
+          <div class="hero-stat-label">资源对接数</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-value">4.2万</div>
-          <div class="hero-stat-label">从业人员</div>
+          <div class="hero-stat-value">89</div>
+          <div class="hero-stat-label">撮合交易数</div>
         </div>
       </div>
       <div class="hero-btns">
-        <button class="hero-btn-primary" onclick="enterSystem()">
+        <a href="web/cockpit.html" class="hero-btn-primary" style="text-decoration: none; display: inline-flex;">
           <i class="fas fa-rocket"></i>
           立即体验
-        </button>
+        </a>
         <button class="hero-btn-secondary" onclick="scrollToSection('features')">
           <i class="fas fa-play-circle"></i>
           了解更多
@@ -791,91 +863,142 @@
     </div>
   </section>
 
-  <!-- Features Section -->
+  <!-- Tab Navigation -->
+  <div class="tab-nav-container">
+    <div class="tab-nav">
+      <button class="tab-btn active" data-target="features">
+        <i class="fas fa-th-large"></i>
+        <span>核心功能</span>
+      </button>
+      <button class="tab-btn" data-target="map">
+        <i class="fas fa-map-marked-alt"></i>
+        <span>产业空间布局</span>
+      </button>
+      <button class="tab-btn" data-target="about">
+        <i class="fas fa-info-circle"></i>
+        <span>关于我们</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Access Section -->
   <section class="features" id="features">
     <div class="section-header scroll-reveal">
-      <div class="section-tag">核心能力</div>
-      <h2 class="section-title">六大功能模块</h2>
-      <p class="section-subtitle">覆盖产业全链条，提供从生产到销售的全方位数字化服务</p>
+      <div class="section-tag">快捷入口</div>
+      <h2 class="section-title">核心功能模块</h2>
+      <p class="section-subtitle">点击卡片直接进入功能页面，快速获取所需信息</p>
     </div>
     <div class="features-grid">
-      <div class="feature-card scroll-reveal">
-        <div class="feature-icon">
-          <i class="fas fa-chart-line"></i>
+      <a href="web/cockpit.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);">
+          <i class="fas fa-tachometer-alt"></i>
         </div>
-        <h3 class="feature-title">产业仪表盘</h3>
-        <p class="feature-desc">实时展示产业核心指标、产业链分析、出口分布等关键数据，一屏掌握产业全景</p>
-      </div>
-      <div class="feature-card scroll-reveal">
-        <div class="feature-icon">
-          <i class="fas fa-eye"></i>
+        <h3 class="feature-title">产业全景</h3>
+        <p class="feature-desc">产业宏观数据可视化展示和智能分析，支持领导层快速决策</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #1a5fb4; font-size: 14px;">
+          <span>进入全景</span>
+          <i class="fas fa-arrow-right"></i>
         </div>
-        <h3 class="feature-title">运行监测</h3>
-        <p class="feature-desc">实时监控企业生产状态、产能利用率、设备运行情况，智能预警异常状况</p>
-      </div>
-      <div class="feature-card scroll-reveal">
-        <div class="feature-icon">
+      </a>
+      <a href="web/industry-map.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #c9a227 0%, #9a7b1a 100%);">
+          <i class="fas fa-project-diagram"></i>
+        </div>
+        <h3 class="feature-title">产业透视</h3>
+        <p class="feature-desc">产业链结构与企业关系分析，识别产业集聚区，了解产业生态</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #c9a227; font-size: 14px;">
+          <span>查看透视</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/enterprise.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
           <i class="fas fa-building"></i>
         </div>
         <h3 class="feature-title">企业画像</h3>
-        <p class="feature-desc">360度企业视图，信用评级、成长档案、行业排名，精准服务企业需求</p>
-      </div>
-      <div class="feature-card scroll-reveal">
-        <div class="feature-icon">
+        <p class="feature-desc">企业基本信息查询，包括名称、地址、类型等，支持筛选定位</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #10b981; font-size: 14px;">
+          <span>查看企业</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/supply.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
           <i class="fas fa-link"></i>
         </div>
-        <h3 class="feature-title">供应链协同</h3>
-        <p class="feature-desc">原材料供需对接、产能共享、物流协同，打通产业链上下游资源</p>
-      </div>
-      <div class="feature-card scroll-reveal">
-        <div class="feature-icon">
-          <i class="fas fa-globe"></i>
+        <h3 class="feature-title">资源枢纽</h3>
+        <p class="feature-desc">原材料供需对接、产能共享、物流协同，打通产业链上下游</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #f59e0b; font-size: 14px;">
+          <span>进入枢纽</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/market.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+          <i class="fas fa-chart-pie"></i>
         </div>
         <h3 class="feature-title">市场洞察</h3>
-        <p class="feature-desc">全球市场趋势分析、热门产品预测、AI智能预警，助力企业把握商机</p>
-      </div>
-      <div class="feature-card scroll-reveal">
-        <div class="feature-icon">
+        <p class="feature-desc">全球市场趋势分析、竞品分析、智能预警，助力把握商机</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #ef4444; font-size: 14px;">
+          <span>查看市场</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/government.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
           <i class="fas fa-landmark"></i>
         </div>
         <h3 class="feature-title">政务服务</h3>
-        <p class="feature-desc">政策发布、在线办事、政企互动，打造一站式企业服务平台</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Data Section -->
-  <section class="data-section" id="data">
-    <div class="section-header scroll-reveal">
-      <div class="section-tag">实时数据</div>
-      <h2 class="section-title">产业运行态势</h2>
-      <p class="section-subtitle">数据驱动决策，实时掌握产业发展动态</p>
-    </div>
-    <div class="data-grid">
-      <div class="data-card scroll-reveal">
-        <div class="data-icon"><i class="fas fa-industry"></i></div>
-        <div class="data-value">86.5%</div>
-        <div class="data-label">平均开工率</div>
-        <div class="data-change"><i class="fas fa-arrow-up"></i> +2.3%</div>
-      </div>
-      <div class="data-card scroll-reveal">
-        <div class="data-icon"><i class="fas fa-boxes"></i></div>
-        <div class="data-value">12.5万</div>
-        <div class="data-label">今日产量（件）</div>
-        <div class="data-change"><i class="fas fa-arrow-up"></i> +8.5%</div>
-      </div>
-      <div class="data-card scroll-reveal">
-        <div class="data-icon"><i class="fas fa-ship"></i></div>
-        <div class="data-value">$890万</div>
-        <div class="data-label">今日出口额</div>
-        <div class="data-change"><i class="fas fa-arrow-up"></i> +12.1%</div>
-      </div>
-      <div class="data-card scroll-reveal">
-        <div class="data-icon"><i class="fas fa-truck"></i></div>
-        <div class="data-value">127辆</div>
-        <div class="data-label">在途物流车辆</div>
-        <div class="data-change"><i class="fas fa-arrow-up"></i> +3.5%</div>
-      </div>
+        <p class="feature-desc">政策发布、在线办事、政企互动，打造一站式服务平台</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #8b5cf6; font-size: 14px;">
+          <span>进入政务</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/shop.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <h3 class="feature-title">发品交易</h3>
+        <p class="feature-desc">产品展示与交易，连接供应商与采购商，促进产业流通</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #ec4899; font-size: 14px;">
+          <span>进入交易</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/monitor.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3 class="feature-title">安全防控</h3>
+        <p class="feature-desc">实时生产监控、设备运行监测、安全隐患预警，保障企业安全</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #6366f1; font-size: 14px;">
+          <span>进入防控</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/thinktank.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
+          <i class="fas fa-lightbulb"></i>
+        </div>
+        <h3 class="feature-title">发业智库</h3>
+        <p class="feature-desc">数字化全栈方案、小快轻产品，为企业提供智能化解决方案</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #14b8a6; font-size: 14px;">
+          <span>进入智库</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="web/traceability.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+          <i class="fas fa-search"></i>
+        </div>
+        <h3 class="feature-title">发品溯源</h3>
+        <p class="feature-desc">产品全生命周期追溯，确保产品质量，提升消费者信任</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #f97316; font-size: 14px;">
+          <span>进入溯源</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -1019,12 +1142,50 @@
     window.location.href = 'web/system-entry.html';
   }
 
+    // Tab导航功能
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const sections = {
+      'features': document.getElementById('features'),
+      'map': document.getElementById('map'),
+      'about': document.getElementById('about')
+    };
+
+    // 点击Tab按钮滚动到对应区域
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const target = this.getAttribute('data-target');
+        scrollToSection(target);
+      });
+    });
+
+    // 监听滚动，更新Tab激活状态
+    window.addEventListener('scroll', function() {
+      const scrollPos = window.scrollY + 200;
+      
+      let activeTab = 'features';
+      for (const [key, section] of Object.entries(sections)) {
+        if (section && section.offsetTop <= scrollPos) {
+          activeTab = key;
+        }
+      }
+
+      tabBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-target') === activeTab) {
+          btn.classList.add('active');
+        }
+      });
+    });
+
     // 导航链接平滑滚动
-    document.querySelectorAll('.nav-links a').forEach(link => {
+    document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href').substring(1);
-        scrollToSection(targetId);
+        const href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const targetId = href.substring(1);
+          scrollToSection(targetId);
+        }
       });
     });
   </script>
