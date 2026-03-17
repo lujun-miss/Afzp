@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a2744 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .register-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #c9a227 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .register-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-title h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .register-title p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+    }
+
+    .tab-container {
+      margin-bottom: 30px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-label.required::after {
+      content: '*';
+      color: #ef4444;
+      margin-left: 4px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #1a5fb4;
+      box-shadow: 0 0 0 3px rgba(26, 95, 180, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #1a5fb4;
+      box-shadow: 0 0 0 3px rgba(26, 95, 180, 0.1);
+    }
+
+    .form-select option {
+      background: #1a2744;
+      color: #fff;
+    }
+
+    .verify-code {
+      display: flex;
+      gap: 10px;
+    }
+
+    .verify-code .form-input {
+      flex: 1;
+    }
+
+    .verify-btn {
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #1a5fb4;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .verify-btn:hover {
+      background: rgba(26, 95, 180, 0.1);
+    }
+
+    .terms {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .terms input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #1a5fb4;
+    }
+
+    .terms label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+    }
+
+    .terms a {
+      color: #1a5fb4;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .terms a:hover {
+      color: #c9a227;
+    }
+
+    .register-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .register-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(26, 95, 180, 0.4);
+    }
+
+    .login-link {
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .login-link a {
+      color: #1a5fb4;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .login-link a:hover {
+      color: #c9a227;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="logo">
+      <a href="../index.html" style="text-decoration: none; color: inherit;">
+        <div class="logo-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <div class="logo-text">鄄城县发制品产业大脑</div>
+      </a>
+    </div>
+    
+    <div class="register-title">
+      <h2>注册账号</h2>
+      <p>请选择注册类型并填写相关信息</p>
+    </div>
+    
+    <div class="tab-container">
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="company">企业注册</button>
+        <button class="tab-btn" data-tab="personal">个人注册</button>
+      </div>
+      
+      <!-- 企业注册表单 -->
+      <div class="tab-content active" id="company">
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">企业名称</label>
+              <input type="text" class="form-input" placeholder="请输入企业全称" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">统一社会信用代码</label>
+              <input type="text" class="form-input" placeholder="请输入统一社会信用代码" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">注册地址</label>
+              <input type="text" class="form-input" placeholder="请输入企业注册地址" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">所属行业</label>
+              <select class="form-select" required>
+                <option value="">请选择行业</option>
+                <option value="hair">发制品制造</option>
+                <option value="trade">发制品贸易</option>
+                <option value="service">发制品服务</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">联系人姓名</label>
+              <input type="text" class="form-input" placeholder="请输入联系人姓名" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">联系电话</label>
+              <input type="tel" class="form-input" placeholder="请输入联系电话" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label required">邮箱地址</label>
+            <input type="email" class="form-input" placeholder="请输入邮箱地址" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">设置密码</label>
+              <input type="password" class="form-input" placeholder="请设置6-20位密码" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">确认密码</label>
+              <input type="password" class="form-input" placeholder="请确认密码" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label required">验证码</label>
+            <div class="verify-code">
+              <input type="text" class="form-input" placeholder="请输入验证码" required>
+              <button type="button" class="verify-btn">获取验证码</button>
+            </div>
+          </div>
+          
+          <div class="terms">
+            <input type="checkbox" id="company-terms" required>
+            <label for="company-terms">我已阅读并同意 <a href="#">《用户服务协议》</a> 和 <a href="#">《隐私政策》</a></label>
+          </div>
+          
+          <button type="submit" class="register-btn">
+            <i class="fas fa-user-plus mr-2"></i> 企业注册
+          </button>
+          
+          <div class="login-link">
+            已有账号？ <a href="login.html">立即登录</a>
+          </div>
+        </form>
+      </div>
+      
+      <!-- 个人注册表单 -->
+      <div class="tab-content" id="personal">
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">姓名</label>
+              <input type="text" class="form-input" placeholder="请输入真实姓名" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">身份证号</label>
+              <input type="text" class="form-input" placeholder="请输入身份证号" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">手机号码</label>
+              <input type="tel" class="form-input" placeholder="请输入手机号码" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">验证码</label>
+              <div class="verify-code">
+                <input type="text" class="form-input" placeholder="请输入验证码" required>
+                <button type="button" class="verify-btn">获取验证码</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label required">邮箱地址</label>
+            <input type="email" class="form-input" placeholder="请输入邮箱地址" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required">设置密码</label>
+              <input type="password" class="form-input" placeholder="请设置6-20位密码" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required">确认密码</label>
+              <input type="password" class="form-input" placeholder="请确认密码" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">职业</label>
+            <select class="form-select">
+              <option value="">请选择职业</option>
+              <option value="employee">企业员工</option>
+              <option value="student">学生</option>
+              <option value="freelancer">自由职业者</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+          
+          <div class="terms">
+            <input type="checkbox" id="personal-terms" required>
+            <label for="personal-terms">我已阅读并同意 <a href="#">《用户服务协议》</a> 和 <a href="#">《隐私政策》</a></label>
+          </div>
+          
+          <button type="submit" class="register-btn">
+            <i class="fas fa-user-plus mr-2"></i> 个人注册
+          </button>
+          
+          <div class="login-link">
+            已有账号？ <a href="login.html">立即登录</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 选项卡切换
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // 移除所有选项卡的active类
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // 添加当前选项卡的active类
+        this.classList.add('active');
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // 获取验证码按钮点击处理
+    document.querySelectorAll('.verify-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        let countdown = 60;
+        this.disabled = true;
+        this.textContent = `${countdown}秒后重新获取`;
+        
+        const timer = setInterval(() => {
+          countdown--;
+          this.textContent = `${countdown}秒后重新获取`;
+          if (countdown <= 0) {
+            clearInterval(timer);
+            this.disabled = false;
+            this.textContent = '获取验证码';
+          }
+        }, 1000);
+        
+        alert('验证码已发送到您的手机/邮箱');
+      });
+    });
+
+    // 注册表单提交处理
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // 这里可以添加注册逻辑
+        alert('注册成功！');
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+</body>
+</html>
