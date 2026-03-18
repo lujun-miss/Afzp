@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+</head>
+<body>
+    <div id="testMap" style="width: 600px; height: 400px;"></div>
+    <script>
+        console.log('Testing ECharts world map...');
+        try {
+            const chart = echarts.init(document.getElementById('testMap'));
+            const option = {
+                geo: {
+                    map: 'world'
+                }
+            };
+            chart.setOption(option);
+            console.log('World map initialized successfully!');
+        } catch (error) {
+            console.error('Error initializing world map:', error);
+        }
+    </script>
+</body>
+</html>

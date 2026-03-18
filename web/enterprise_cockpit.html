@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业驾驶舱 - 鄄城YYY发制品集团</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: #0a1129;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 顶部标题栏 */
+        .top-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(16, 25, 48, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 20px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        .company-tags {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tag::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateX(100%) rotate(45deg); opacity: 0; }
+        }
+
+        .tag.leading {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #0f1a2f;
+        }
+
+        .tag.aeo {
+            background: linear-gradient(135deg, #ff2d75 0%, #ff6b6b 100%);
+            color: #ffffff;
+        }
+
+        .tag.high-tech {
+            background: linear-gradient(135deg, #fac858 0%, #f78a55 100%);
+            color: #0f1a2f;
+        }
+
+        .core-metrics {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .metric-value {
+            font-weight: bold;
+            color: #00f2fe;
+            text-shadow: 0 0 5px rgba(0, 242, 254, 0.5);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-btn {
+            padding: 8px 20px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 6px;
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 242, 254, 0.2);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        /* 地图容器 */
+        .map-container {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background: #0a1129;
+        }
+
+        #industryMap {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 悬浮面板通用样式 */
+        .floating-panel {
+            position: absolute;
+            background: rgba(16, 25, 48, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .floating-panel:hover {
+            box-shadow: 0 6px 30px rgba(0, 242, 254, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00f2fe;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title i {
+            font-size: 16px;
+        }
+
+        /* 左上角面板：企业核心状态 */
+        .status-panel {
+            top: 90px;
+            left: 20px;
+            width: 300px;
+            height: 200px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .status-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(0.8); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(0.8); opacity: 1; }
+        }
+
+        /* 右上角面板：全球贸易预警 */
+        .alert-panel {
+            top: 90px;
+            right: 20px;
+            width: 300px;
+            height: 200px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .alert-icon {
+            font-size: 16px;
+        }
+
+        .alert-high {
+            color: #ff4560;
+        }
+
+        .alert-medium {
+            color: #ffa726;
+        }
+
+        .alert-low {
+            color: #48bb78;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .alert-desc {
+            font-size: 11px;
+            color: #a0aec0;
+        }
+
+        /* 左侧中面板：经营健康度仪表 */
+        .health-panel {
+            top: 310px;
+            left: 20px;
+            width: 300px;
+            height: 250px;
+        }
+
+        #healthGauge {
+            width: 100%;
+            height: 200px;
+        }
+
+        /* 右侧中面板：实时订单与物流 */
+        .orders-panel {
+            top: 310px;
+            right: 20px;
+            width: 300px;
+            height: 250px;
+        }
+
+        #orderFlow {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+
+        .order-list {
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            font-size: 11px;
+            color: #e2e8f0;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .order-item:hover {
+            background: rgba(0, 242, 254, 0.1);
+        }
+
+        /* 底部面板：多维度趋势与对比 */
+        .trend-panel {
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 200px;
+        }
+
+        .trend-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .trend-tab {
+            padding: 6px 16px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 4px;
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trend-tab.active {
+            background: rgba(0, 242, 254, 0.3);
+        }
+
+        .trend-content {
+            display: flex;
+            gap: 20px;
+            height: 140px;
+        }
+
+        .trend-chart {
+            flex: 2;
+        }
+
+        .radar-chart {
+            flex: 1;
+        }
+
+        #trendChart,
+        #radarChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 右侧滑出侧边栏 */
+        .sidebar {
+            position: absolute;
+            top: 70px;
+            right: -400px;
+            width: 400px;
+            bottom: 0;
+            background: rgba(16, 25, 48, 0.95);
+            backdrop-filter: blur(15px);
+            border-left: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 30px;
+            z-index: 200;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00f2fe;
+        }
+
+        .close-sidebar {
+            font-size: 20px;
+            color: #a0aec0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-sidebar:hover {
+            color: #ffffff;
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            width: 100px;
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .detail-value {
+            flex: 1;
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+
+        .highlight {
+            color: #00f2fe;
+            font-weight: 500;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .status-panel,
+            .alert-panel,
+            .health-panel,
+            .orders-panel {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                padding: 0 15px;
+            }
+
+            .company-name {
+                font-size: 16px;
+            }
+
+            .core-metrics {
+                gap: 15px;
+                font-size: 12px;
+            }
+
+            .status-panel,
+            .alert-panel,
+            .health-panel,
+            .orders-panel {
+                width: 200px;
+                padding: 15px;
+            }
+
+            .sidebar {
+                width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标题栏 -->
+    <header class="top-header">
+        <div class="company-info">
+            <h1 class="company-name">鄄城YYY发制品集团</h1>
+            <div class="company-tags">
+                <span class="tag leading">龙头企业</span>
+                <span class="tag aeo">AEO认证</span>
+                <span class="tag high-tech">高新技术企业</span>
+            </div>
+        </div>
+        <div class="core-metrics">
+            <div class="metric-item">
+                <span>本日营收：</span>
+                <span class="metric-value">¥ 328万</span>
+            </div>
+            <div class="metric-item">
+                <span>本月出口额：</span>
+                <span class="metric-value">$ 420万</span>
+            </div>
+            <div class="metric-item">
+                <span>实时订单：</span>
+                <span class="metric-value">156笔</span>
+            </div>
+        </div>
+        <div class="top-actions">
+            <button class="action-btn" onclick="window.location.href='industry-map.html'">返回图谱</button>
+            <button class="action-btn" onclick="refreshData()">刷新数据</button>
+            <button class="action-btn" onclick="toggleFullscreen()">全屏</button>
+        </div>
+    </header>
+
+    <!-- 地图容器 -->
+    <div class="map-container">
+        <div id="industryMap"></div>
+    </div>
+
+    <!-- 左上角面板：企业核心状态 -->
+    <div class="floating-panel status-panel">
+        <h3 class="panel-title"><i class="fas fa-bolt"></i> 企业核心状态</h3>
+        <div class="status-item">
+            <span class="status-label">在线设备数</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="status-value">24/28</span>
+                <div class="pulse-indicator"></div>
+            </div>
+        </div>
+        <div class="status-item">
+            <span class="status-label">当前生产线负荷</span>
+            <span class="status-value">85%</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">核心人才留存率</span>
+            <span class="status-value">85.3%</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">现金流健康指数</span>
+            <span class="status-value">优良</span>
+        </div>
+    </div>
+
+    <!-- 右上角面板：全球贸易预警 -->
+    <div class="floating-panel alert-panel">
+        <h3 class="panel-title"><i class="fas fa-exclamation-triangle"></i> 全球贸易预警</h3>
+        <div class="alert-item">
+            <div class="alert-icon alert-high">⚠️</div>
+            <div class="alert-content">
+                <div class="alert-title">美国市场</div>
+                <div class="alert-desc">关税风险 (高)</div>
+            </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-icon alert-medium">🔶</div>
+            <div class="alert-content">
+                <div class="alert-title">欧洲市场</div>
+                <div class="alert-desc">绿色壁垒 (中)</div>
+            </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-icon alert-low">✅</div>
+            <div class="alert-content">
+                <div class="alert-title">非洲市场</div>
+                <div class="alert-desc">风险较低</div>
+            </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-icon alert-low">✅</div>
+            <div class="alert-content">
+                <div class="alert-title">日韩市场</div>
+                <div class="alert-desc">风险较低</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 左侧中面板：经营健康度仪表 -->
+    <div class="floating-panel health-panel">
+        <h3 class="panel-title"><i class="fas fa-heartbeat"></i> 经营健康度</h3>
+        <div id="healthGauge"></div>
+    </div>
+
+    <!-- 右侧中面板：实时订单与物流 -->
+    <div class="floating-panel orders-panel">
+        <h3 class="panel-title"><i class="fas fa-truck"></i> 实时订单与物流</h3>
+        <div id="orderFlow"></div>
+        <div class="order-list">
+            <div class="order-item" onclick="highlightOrder('US-12345')">订单 #US-12345 | 美国 | $12,500</div>
+            <div class="order-item" onclick="highlightOrder('EU-67890')">订单 #EU-67890 | 欧洲 | €8,200</div>
+            <div class="order-item" onclick="highlightOrder('AF-24680')">订单 #AF-24680 | 非洲 | $5,600</div>
+        </div>
+    </div>
+
+    <!-- 底部面板：多维度趋势与对比 -->
+    <div class="floating-panel trend-panel">
+        <div class="trend-tabs">
+            <button class="trend-tab active" onclick="switchTrendTab('revenue')">营收趋势</button>
+            <button class="trend-tab" onclick="switchTrendTab('profit')">利润趋势</button>
+            <button class="trend-tab" onclick="switchTrendTab('export')">出口趋势</button>
+            <button class="trend-tab" onclick="switchTrendTab('comparison')">行业对比</button>
+        </div>
+        <div class="trend-content">
+            <div class="trend-chart">
+                <div id="trendChart"></div>
+            </div>
+            <div class="radar-chart">
+                <div id="radarChart"></div>
+            </div>
+        </div>
+        </div>
+
+    <!-- 右侧滑出侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">详细信息</h3>
+            <div class="close-sidebar" onclick="closeSidebar()"><i class="fas fa-times"></i></div>
+        </div>
+        <div class="sidebar-section">
+            <h4 class="sidebar-section-title">企业档案</h4>
+            <div class="detail-item">
+                <span class="detail-label">统一代码</span>
+                <span class="detail-value">91371726MA3CXXXXXX</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">企业地址</span>
+                <span class="detail-value">山东省菏泽市鄄城县发制品产业园88号</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">法人代表</span>
+                <span class="detail-value">张三</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">经营范围</span>
+                <span class="detail-value">发制品、假发、头套及相关配件的生产、销售；<span class="highlight">货物进出口</span>、<span class="highlight">技术进出口</span>；高端真人发套定制、<span class="highlight">化纤发制品研发</span>与<span class="highlight">制造</span>；假发护理产品生产销售。</span>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h4 class="sidebar-section-title">业务详情</h4>
+            <div class="detail-item">
+                <span class="detail-label">主要产品</span>
+                <span class="detail-value">高端发套、化纤假发、真人发制品</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">年出口额</span>
+                <span class="detail-value">$4,280万</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">主要市场</span>
+                <span class="detail-value">美国(40%)、欧洲(25%)、非洲(20%)、日韩(15%)</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let industryMapChart, healthGaugeChart, orderFlowChart, trendChart, radarChart;
+        let currentTrendTab = 'revenue';
+        
+        // 刷新数据
+        function refreshData() {
+            // 模拟数据刷新
+            alert('数据刷新中...');
+            setTimeout(() => {
+                alert('数据刷新完成');
+            }, 1000);
+        }
+        
+        // 全屏切换
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        
+        // 打开侧边栏
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('active');
+        }
+        
+        // 关闭侧边栏
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+        }
+        
+        // 高亮订单
+        function highlightOrder(orderId) {
+            // 模拟订单高亮
+            console.log('Highlighting order:', orderId);
+            // 这里可以实现地图上对应运输路径的高亮
+        }
+        
+        // 切换趋势标签
+        function switchTrendTab(tab) {
+            currentTrendTab = tab;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.trend-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // 更新趋势图
+            updateTrendChart();
+        }
+        
+        // 更新趋势图
+        function updateTrendChart() {
+            if (!trendChart) return;
+            
+            let data;
+            if (currentTrendTab === 'revenue') {
+                data = {
+                    months: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    values: [650, 720, 780, 850, 920, 880]
+                };
+            } else if (currentTrendTab === 'profit') {
+                data = {
+                    months: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    values: [117, 129.6, 140.4, 153, 165.6, 158.4]
+                };
+            } else if (currentTrendTab === 'export') {
+                data = {
+                    months: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    values: [280, 310, 350, 380, 410, 390]
+                };
+            } else {
+                data = {
+                    months: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    values: [115, 118, 120, 122, 125, 123]
+                };
+            }
+            
+            const option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data.months,
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#a0aec0'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#a0aec0'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'line',
+                    data: data.values,
+                    smooth: true,
+                    lineStyle: {
+                        color: '#00f2fe',
+                        width: 2
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(0, 242, 254, 0.3)' },
+                            { offset: 1, color: 'rgba(0, 242, 254, 0.1)' }
+                        ])
+                    },
+                    symbol: 'circle',
+                    symbolSize: 6,
+                    itemStyle: {
+                        color: '#00f2fe'
+                    }
+                }]
+            };
+            
+            trendChart.setOption(option);
+        }
+        
+        //  fallback function for industry map
+        function initIndustryMapFallback() {
+            console.log('Using fallback map implementation');
+            
+            // 简单的产业地图实现
+            const option = {
+                backgroundColor: '#0a1129',
+                title: {
+                    text: '产业地图',
+                    left: 'center',
+                    textStyle: {
+                        color: '#00f2fe',
+                        fontSize: 16
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}'
+                },
+                xAxis: {
+                    type: 'value',
+                    min: -180,
+                    max: 180,
+                    show: false
+                },
+                yAxis: {
+                    type: 'value',
+                    min: -90,
+                    max: 90,
+                    show: false
+                },
+                grid: {
+                    left: '0%',
+                    right: '0%',
+                    top: '0%',
+                    bottom: '0%'
+                },
+                series: [
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'cartesian2d',
+                        data: [
+                            { name: '鄄城YYY集团', value: [0, 0], symbolSize: 25, itemStyle: { color: '#ff2d75' } },
+                            { name: '美国', value: [-100, 40], symbolSize: 15, itemStyle: { color: '#ffa726' } },
+                            { name: '欧洲', value: [10, 50], symbolSize: 15, itemStyle: { color: '#ffa726' } },
+                            { name: '印度', value: [75, 20], symbolSize: 15, itemStyle: { color: '#00f2fe' } },
+                            { name: '非洲', value: [20, 0], symbolSize: 15, itemStyle: { color: '#ffa726' } }
+                        ],
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'right',
+                            color: '#ffffff',
+                            fontSize: 12
+                        }
+                    },
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'cartesian2d',
+                        effect: {
+                            show: true,
+                            period: 6,
+                            trailLength: 0.7,
+                            color: '#00f2fe',
+                            symbolSize: 6
+                        },
+                        lineStyle: {
+                            width: 2,
+                            opacity: 0.6,
+                            curveness: 0.2,
+                            color: '#00f2fe'
+                        },
+                        data: [
+                            { coords: [[0, 0], [-100, 40]] },
+                            { coords: [[0, 0], [10, 50]] },
+                            { coords: [[0, 0], [75, 20]] },
+                            { coords: [[0, 0], [20, 0]] }
+                        ]
+                    }
+                ]
+            };
+            
+            industryMapChart.setOption(option);
+            console.log('Map option set successfully');
+            console.log('Chart instance:', industryMapChart);
+        }
+        
+        // 初始化产业地图
+        function initIndustryMap() {
+            console.log('Starting map initialization...');
+            const mapElement = document.getElementById('industryMap');
+            console.log('Map element:', mapElement);
+            console.log('Map element dimensions:', mapElement.offsetWidth, 'x', mapElement.offsetHeight);
+            
+            if (!mapElement) {
+                console.error('Map element not found!');
+                return;
+            }
+            
+            if (mapElement.offsetWidth === 0 || mapElement.offsetHeight === 0) {
+                console.error('Map element has zero dimensions!');
+                // Try to set dimensions manually
+                mapElement.style.width = '100%';
+                mapElement.style.height = '100%';
+                console.log('Set map element dimensions to 100%');
+                console.log('New dimensions:', mapElement.offsetWidth, 'x', mapElement.offsetHeight);
+            }
+            
+            industryMapChart = echarts.init(mapElement);
+            console.log('ECharts instance created:', industryMapChart);
+            
+            if (!industryMapChart) {
+                console.error('Failed to create ECharts instance!');
+                return;
+            }
+            
+            // 直接使用 fallback 实现，因为世界地图数据加载失败
+            initIndustryMapFallback();
+        }
+        
+        // 根据坐标获取目标名称
+        function getTargetName(coords) {
+            if (coords[0] === -95.71 && coords[1] === 37.09) {
+                return '美国';
+            } else if (coords[0] === 10.0 && coords[1] === 50.0) {
+                return '欧洲';
+            } else if (coords[0] === 78.96 && coords[1] === 20.59) {
+                return '印度';
+            } else if (coords[0] === 20.0 && coords[1] === 5.0) {
+                return '非洲';
+            }
+            return '未知';
+        }
+        
+        // 筛选订单
+        function filterOrdersByRegion(region) {
+            console.log('筛选', region, '相关订单');
+            // 这里可以实现订单筛选逻辑
+        }
+        
+        // 高亮市场风险
+        function highlightMarketRisk(region) {
+            console.log('高亮', region, '市场风险');
+            // 这里可以实现风险高亮逻辑
+        }
+        
+        // 初始化健康度仪表
+        function initHealthGauge() {
+            healthGaugeChart = echarts.init(document.getElementById('healthGauge'));
+            
+            const option = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 180,
+                        endAngle: 0,
+                        min: 0,
+                        max: 100,
+                        splitNumber: 10,
+                        axisLine: {
+                            lineStyle: {
+                                width: 30,
+                                color: [
+                                    [0.6, '#ff4560'],
+                                    [0.8, '#ffa726'],
+                                    [1, '#00f2fe']
+                                ]
+                            }
+                        },
+                        pointer: {
+                            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                            length: '12%',
+                            width: 20,
+                            offsetCenter: [0, '-60%'],
+                            itemStyle: {
+                                color: 'auto'
+                            }
+                        },
+                        axisTick: {
+                            length: 12,
+                            lineStyle: {
+                                color: 'auto',
+                                width: 2
+                            }
+                        },
+                        splitLine: {
+                            length: 20,
+                            lineStyle: {
+                                color: 'auto',
+                                width: 5
+                            }
+                        },
+                        axisLabel: {
+                            color: '#464646',
+                            fontSize: 12,
+                            distance: -60,
+                            formatter: function (value) {
+                                if (value === 0 || value === 100) {
+                                    return value;
+                                }
+                                return '';
+                            }
+                        },
+                        title: {
+                            offsetCenter: [0, '-10%'],
+                            fontSize: 14,
+                            color: '#ffffff'
+                        },
+                        detail: {
+                            fontSize: 30,
+                            offsetCenter: [0, '-35%'],
+                            valueAnimation: true,
+                            formatter: function (value) {
+                                return Math.round(value) + '/100';
+                            },
+                            color: 'auto'
+                        },
+                        data: [
+                            {
+                                value: 92,
+                                name: '企业综合健康度'
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            healthGaugeChart.setOption(option);
+        }
+        
+        // 初始化订单流向图
+        function initOrderFlow() {
+            orderFlowChart = echarts.init(document.getElementById('orderFlow'));
+            
+            const option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#a0aec0',
+                        fontSize: 10
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#a0aec0',
+                        fontSize: 10
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'line',
+                    data: [120, 132, 101, 134, 90, 230],
+                    smooth: true,
+                    lineStyle: {
+                        color: '#ff2d75',
+                        width: 2
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(255, 45, 117, 0.3)' },
+                            { offset: 1, color: 'rgba(255, 45, 117, 0.1)' }
+                        ])
+                    },
+                    symbol: 'circle',
+                    symbolSize: 4,
+                    itemStyle: {
+                        color: '#ff2d75'
+                    }
+                }]
+            };
+            
+            orderFlowChart.setOption(option);
+        }
+        
+        // 初始化雷达图
+        function initRadarChart() {
+            radarChart = echarts.init(document.getElementById('radarChart'));
+            
+            const option = {
+                radar: {
+                    indicator: [
+                        { name: '行业规模', max: 100 },
+                        { name: '经营增长', max: 100 },
+                        { name: '人员规模', max: 100 },
+                        { name: '创新能力', max: 100 },
+                        { name: '资质水平', max: 100 },
+                        { name: '盈利能力', max: 100 }
+                    ],
+                    shape: 'polygon',
+                    splitNumber: 5,
+                    axisName: {
+                        color: '#a0aec0',
+                        fontSize: 10
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.3)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.5)']
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [85, 90, 75, 88, 92, 80],
+                                name: '本企业',
+                                areaStyle: {
+                                    color: 'rgba(0, 242, 254, 0.2)'
+                                },
+                                lineStyle: {
+                                    color: '#00f2fe',
+                                    width: 2
+                                },
+                                itemStyle: {
+                                    color: '#00f2fe'
+                                }
+                            },
+                            {
+                                value: [60, 50, 65, 55, 60, 50],
+                                name: '行业平均',
+                                areaStyle: {
+                                    color: 'rgba(255, 45, 117, 0.2)'
+                                },
+                                lineStyle: {
+                                    color: '#ff2d75',
+                                    width: 2
+                                },
+                                itemStyle: {
+                                    color: '#ff2d75'
+                                }
+                            }
+                        ]
+                    }
+                ],
+                legend: {
+                    data: ['本企业', '行业平均'],
+                    top: 0,
+                    textStyle: {
+                        color: '#ffffff',
+                        fontSize: 10
+                    }
+                }
+            };
+            
+            radarChart.setOption(option);
+        }
+        
+        // 初始化趋势图
+        function initTrendChart() {
+            trendChart = echarts.init(document.getElementById('trendChart'));
+            updateTrendChart();
+        }
+        
+        // 初始化产业地图（备用方案 - 笛卡尔坐标系）
+        function initIndustryMapFallback() {
+            console.log('Initializing map fallback...');
+            const mapElement = document.getElementById('industryMap');
+            
+            if (!mapElement) {
+                console.error('Map element not found!');
+                return;
+            }
+            
+            industryMapChart = echarts.init(mapElement);
+            console.log('ECharts instance created for fallback:', industryMapChart);
+            
+            // 节点数据
+            const nodes = [
+                { name: '鄄城YYY集团', value: [0, 0], category: 'hub' },
+                { name: '印度', value: [150, 50], category: 'upstream' },
+                { name: '东南亚', value: [100, -50], category: 'upstream' },
+                { name: '河南许昌', value: [50, 30], category: 'upstream' },
+                { name: '江浙地区', value: [70, -30], category: 'upstream' },
+                { name: '山东青岛', value: [30, 40], category: 'midstream' },
+                { name: '美国', value: [-200, 80], category: 'downstream' },
+                { name: '欧洲', value: [-100, 100], category: 'downstream' },
+                { name: '非洲', value: [-50, -20], category: 'downstream' },
+                { name: '日韩', value: [200, 60], category: 'downstream' }
+            ];
+
+            // 流动线数据
+            const links = [
+                { source: '印度', target: '鄄城YYY集团', value: 40, category: 'upstream' },
+                { source: '东南亚', target: '鄄城YYY集团', value: 30, category: 'upstream' },
+                { source: '河南许昌', target: '鄄城YYY集团', value: 50, category: 'upstream' },
+                { source: '江浙地区', target: '鄄城YYY集团', value: 35, category: 'upstream' },
+                { source: '鄄城YYY集团', target: '山东青岛', value: 20, category: 'midstream' },
+                { source: '山东青岛', target: '鄄城YYY集团', value: 15, category: 'midstream' },
+                { source: '鄄城YYY集团', target: '美国', value: 70, category: 'downstream' },
+                { source: '鄄城YYY集团', target: '欧洲', value: 40, category: 'downstream' },
+                { source: '鄄城YYY集团', target: '非洲', value: 50, category: 'downstream' },
+                { source: '鄄城YYY集团', target: '日韩', value: 30, category: 'downstream' }
+            ];
+
+            // 颜色配置
+            const colors = {
+                'hub': '#ff2d75',
+                'upstream': '#9a60b4',
+                'midstream': '#91cc75',
+                'downstream': '#ee6666'
+            };
+
+            // 构建节点数据
+            const scatterData = nodes.map(node => ({
+                name: node.name,
+                value: node.value,
+                category: node.category,
+                symbolSize: node.category === 'hub' ? 50 : 20 + node.value[2] * 0.3,
+                itemStyle: {
+                    color: colors[node.category],
+                    shadowBlur: node.category === 'hub' ? 30 : 15,
+                    shadowColor: colors[node.category]
+                },
+                label: {
+                    show: true,
+                    position: 'right',
+                    formatter: node.category === 'hub' ? '{a|' + node.name + '}' : node.name,
+                    color: '#fff',
+                    fontSize: node.category === 'hub' ? 16 : 12,
+                    fontWeight: node.category === 'hub' ? 'bold' : 'normal',
+                    rich: {
+                        a: {
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            color: '#ff2d75',
+                            padding: [8, 12],
+                            backgroundColor: 'rgba(0,0,0,0.6)',
+                            borderRadius: 8,
+                            borderColor: '#ff2d75',
+                            borderWidth: 2
+                        }
+                    }
+                }
+            }));
+
+            // 构建飞线数据
+            const linesData = links.map(link => ({
+                coords: [
+                    nodes.find(n => n.name === link.source).value,
+                    nodes.find(n => n.name === link.target).value
+                ],
+                value: link.value,
+                category: link.category,
+                lineStyle: {
+                    color: colors[link.category],
+                    width: 2 + link.value / 15,
+                    opacity: 0.8,
+                    curveness: 0.2
+                }
+            }));
+
+            const option = {
+                backgroundColor: '#0a1129',
+                title: {
+                    text: '产业地图',
+                    left: 'center',
+                    top: 10,
+                    textStyle: {
+                        color: '#00f2fe',
+                        fontSize: 20,
+                        fontWeight: 'bold'
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        if (params.seriesType === 'scatter') {
+                            return `<div style="font-weight:bold;color:#fff;">${params.name}</div>
+                                    <div style="color:#ccc;font-size:12px;">${getCategoryName(params.data.category)}</div>`;
+                        } else if (params.seriesType === 'lines') {
+                            return `<div style="font-weight:bold;color:#fff;">${params.data.category === 'upstream' ? '原料供应' : params.data.category === 'midstream' ? '中游协作' : '成品出口'}</div>
+                                    <div style="color:#ccc;font-size:12px;">流量值: ${params.data.value}</div>`;
+                        }
+                    },
+                    backgroundColor: 'rgba(16, 25, 48, 0.9)',
+                    borderColor: '#00f2fe',
+                    borderWidth: 1,
+                    textStyle: { color: '#ffffff' }
+                },
+                legend: {
+                    top: 50,
+                    left: 'center',
+                    textStyle: { color: '#ffffff', fontSize: 12 },
+                    itemWidth: 15,
+                    itemHeight: 15,
+                    backgroundColor: 'rgba(16, 25, 48, 0.8)',
+                    borderColor: '#00f2fe',
+                    borderWidth: 1,
+                    padding: [10, 20],
+                    data: ['核心枢纽', '上游原料', '中游生产', '下游市场'],
+                    show: true
+                },
+                xAxis: {
+                    type: 'value',
+                    min: -300,
+                    max: 300,
+                    show: false
+                },
+                yAxis: {
+                    type: 'value',
+                    min: -150,
+                    max: 150,
+                    show: false
+                },
+                grid: {
+                    left: '10%',
+                    right: '10%',
+                    top: '15%',
+                    bottom: '10%'
+                },
+                series: [
+                    {
+                        name: '产业链流向',
+                        type: 'lines',
+                        coordinateSystem: 'cartesian2d',
+                        zlevel: 1,
+                        data: linesData,
+                        effect: {
+                            show: true,
+                            period: 4,
+                            trailLength: 0.4,
+                            symbol: 'arrow',
+                            symbolSize: 8,
+                            color: '#00f2fe'
+                        },
+                        lineStyle: { curveness: 0.2 },
+                        emphasis: {
+                            lineStyle: { width: 6, opacity: 1 }
+                        }
+                    },
+                    {
+                        name: '核心枢纽',
+                        type: 'scatter',
+                        coordinateSystem: 'cartesian2d',
+                        data: scatterData.filter(item => item.category === 'hub'),
+                        symbolSize: function(val) { return val.symbolSize; },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    },
+                    {
+                        name: '上游原料',
+                        type: 'scatter',
+                        coordinateSystem: 'cartesian2d',
+                        data: scatterData.filter(item => item.category === 'upstream'),
+                        symbolSize: function(val) { return val.symbolSize; },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    },
+                    {
+                        name: '中游生产',
+                        type: 'scatter',
+                        coordinateSystem: 'cartesian2d',
+                        data: scatterData.filter(item => item.category === 'midstream'),
+                        symbolSize: function(val) { return val.symbolSize; },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    },
+                    {
+                        name: '下游市场',
+                        type: 'scatter',
+                        coordinateSystem: 'cartesian2d',
+                        data: scatterData.filter(item => item.category === 'downstream'),
+                        symbolSize: function(val) { return val.symbolSize; },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    }
+                ]
+            };
+            
+            industryMapChart.setOption(option);
+            console.log('Map fallback option set successfully');
+        }
+
+        // 初始化产业地图
+        function initIndustryMap() {
+            console.log('Initializing map...');
+            const mapElement = document.getElementById('industryMap');
+            console.log('Map element:', mapElement);
+            console.log('Map element dimensions:', mapElement.offsetWidth, 'x', mapElement.offsetHeight);
+            
+            if (!mapElement) {
+                console.error('Map element not found!');
+                return;
+            }
+            
+            industryMapChart = echarts.init(mapElement);
+            console.log('ECharts instance created:', industryMapChart);
+            
+            // 节点数据
+            const nodes = [
+                { name: '鄄城YYY集团', value: 100, coord: [115.5, 35.57], category: 'hub' },
+                { name: '印度', value: 40, coord: [78.96, 20.59], category: 'upstream' },
+                { name: '东南亚', value: 30, coord: [110.0, 13.0], category: 'upstream' },
+                { name: '河南许昌', value: 50, coord: [113.85, 34.04], category: 'upstream' },
+                { name: '江浙地区', value: 35, coord: [120.2, 30.3], category: 'upstream' },
+                { name: '山东青岛', value: 45, coord: [120.38, 36.07], category: 'midstream' },
+                { name: '美国', value: 70, coord: [-95.71, 37.09], category: 'downstream' },
+                { name: '欧洲', value: 40, coord: [10.0, 50.0], category: 'downstream' },
+                { name: '非洲', value: 50, coord: [20.0, 5.0], category: 'downstream' },
+                { name: '日韩', value: 30, coord: [135.0, 35.0], category: 'downstream' }
+            ];
+
+            // 流动线数据
+            const links = [
+                {
+                    source: '印度', target: '鄄城YYY集团', value: 40, category: 'upstream',
+                    info: {
+                        title: '印度 → 鄄城YYY集团（原料供应）',
+                        flowType: '真人发原料进口',
+                        companies: ['印度瑞贝卡发业原料公司', '孟买长发贸易集团']
+                    }
+                },
+                {
+                    source: '东南亚', target: '鄄城YYY集团', value: 30, category: 'upstream',
+                    info: {
+                        title: '东南亚 → 鄄城YYY集团（原料供应）',
+                        flowType: '化纤丝与真人发采购',
+                        companies: ['泰国曼谷发业贸易公司', '越南胡志明原料出口商']
+                    }
+                },
+                {
+                    source: '河南许昌', target: '鄄城YYY集团', value: 50, category: 'upstream',
+                    info: {
+                        title: '河南许昌 → 鄄城YYY集团（原料供应）',
+                        flowType: '国内回收档发供应',
+                        companies: ['许昌瑞贝卡发制品公司', '河南长发回收集团']
+                    }
+                },
+                {
+                    source: '江浙地区', target: '鄄城YYY集团', value: 35, category: 'upstream',
+                    info: {
+                        title: '江浙地区 → 鄄城YYY集团（辅料供应）',
+                        flowType: '辅料与化纤丝供应',
+                        companies: ['浙江网帽制品公司', '江苏化纤丝供应商']
+                    }
+                },
+                {
+                    source: '鄄城YYY集团', target: '山东青岛', value: 20, category: 'midstream',
+                    info: {
+                        title: '鄄城YYY集团 → 山东青岛（中游协作）',
+                        flowType: '半成品加工协作',
+                        companies: ['鄄城发业加工基地', '青岛假发制造公司']
+                    }
+                },
+                {
+                    source: '山东青岛', target: '鄄城YYY集团', value: 15, category: 'midstream',
+                    info: {
+                        title: '山东青岛 → 鄄城YYY集团（中游协作）',
+                        flowType: '成品回流与再加工',
+                        companies: ['青岛外贸发业公司', '鄄城精加工厂']
+                    }
+                },
+                {
+                    source: '鄄城YYY集团', target: '美国', value: 70, category: 'downstream',
+                    info: {
+                        title: '鄄城YYY集团 → 美国（成品出口）',
+                        flowType: '高端发套与假发出口',
+                        companies: ['美国BBB品牌进口商', '洛杉矶发业贸易公司']
+                    }
+                },
+                {
+                    source: '鄄城YYY集团', target: '欧洲', value: 40, category: 'downstream',
+                    info: {
+                        title: '鄄城YYY集团 → 欧洲（成品出口）',
+                        flowType: '时尚与医疗假发出口',
+                        companies: ['欧洲CCC进口商', '德国假发分销公司']
+                    }
+                },
+                {
+                    source: '鄄城YYY集团', target: '非洲', value: 50, category: 'downstream',
+                    info: {
+                        title: '鄄城YYY集团 → 非洲（成品出口）',
+                        flowType: '发条与发饰出口',
+                        companies: ['尼日利亚发业进口商', '南非假发贸易公司']
+                    }
+                },
+                {
+                    source: '鄄城YYY集团', target: '日韩', value: 30, category: 'downstream',
+                    info: {
+                        title: '鄄城YYY集团 → 日韩（成品出口）',
+                        flowType: '高品质假发出口',
+                        companies: ['日本东京发业进口商', '韩国首尔假发公司']
+                    }
+                }
+            ];
+
+            // 颜色配置
+            const colors = {
+                'hub': '#ff2d75',
+                'upstream': '#9a60b4',
+                'midstream': '#91cc75',
+                'downstream': '#ee6666'
+            };
+
+            // 构建节点数据 - 按类别分组
+            const nodesByCategory = {
+                'hub': [],
+                'upstream': [],
+                'midstream': [],
+                'downstream': []
+            };
+            
+            nodes.forEach(item => {
+                const node = {
+                    name: item.name,
+                    value: item.coord.concat(item.value),
+                    category: item.category,
+                    symbolSize: item.category === 'hub' ? 50 : 20 + item.value * 0.3,
+                    itemStyle: {
+                        color: colors[item.category],
+                        shadowBlur: item.category === 'hub' ? 30 : 15,
+                        shadowColor: colors[item.category]
+                    },
+                    label: {
+                        show: true,
+                        position: item.category === 'hub' ? 'top' : 'right',
+                        formatter: item.category === 'hub' ? '{a|' + item.name + '}' : item.name,
+                        color: '#fff',
+                        fontSize: item.category === 'hub' ? 16 : 12,
+                        fontWeight: item.category === 'hub' ? 'bold' : 'normal',
+                        rich: {
+                            a: {
+                                fontSize: 20,
+                                fontWeight: 'bold',
+                                color: '#ff2d75',
+                                padding: [8, 12],
+                                backgroundColor: 'rgba(0,0,0,0.6)',
+                                borderRadius: 8,
+                                borderColor: '#ff2d75',
+                                borderWidth: 2
+                            }
+                        }
+                    }
+                };
+                nodesByCategory[item.category].push(node);
+            });
+
+            // 构建飞线数据
+            const linesData = links.map(link => ({
+                coords: [nodes.find(n => n.name === link.source).coord, nodes.find(n => n.name === link.target).coord],
+                value: link.value,
+                category: link.category,
+                info: link.info,
+                lineStyle: {
+                    color: colors[link.category],
+                    width: 2 + link.value / 15,
+                    opacity: 0.8,
+                    curveness: 0.2
+                }
+            }));
+
+            const option = {
+                backgroundColor: '#0a1129',
+                title: {
+                    text: '产业地图',
+                    left: 'center',
+                    top: 10,
+                    textStyle: {
+                        color: '#00f2fe',
+                        fontSize: 20,
+                        fontWeight: 'bold'
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        if (params.seriesType === 'effectScatter') {
+                            return `<div style="font-weight:bold;color:#fff;">${params.name}</div>
+                                    <div style="color:#ccc;font-size:12px;">${getCategoryName(params.data.category)}</div>`;
+                        } else if (params.seriesType === 'lines') {
+                            return `<div style="font-weight:bold;color:#fff;">${params.data.info.title}</div>
+                                    <div style="color:#ccc;font-size:12px;">流量值: ${params.data.value}</div>
+                                    <div style="color:#ccc;font-size:12px;">${params.data.info.flowType}</div>`;
+                        }
+                    },
+                    backgroundColor: 'rgba(16, 25, 48, 0.9)',
+                    borderColor: '#00f2fe',
+                    borderWidth: 1,
+                    textStyle: { color: '#ffffff' }
+                },
+                legend: {
+                    top: 50,
+                    left: 'center',
+                    textStyle: { color: '#ffffff', fontSize: 12 },
+                    itemWidth: 15,
+                    itemHeight: 15,
+                    backgroundColor: 'rgba(16, 25, 48, 0.8)',
+                    borderColor: '#00f2fe',
+                    borderWidth: 1,
+                    padding: [10, 20],
+                    data: ['核心枢纽', '上游原料', '中游生产', '下游市场'],
+                    show: true
+                },
+                geo: {
+                    map: 'world',
+                    roam: true,
+                    zoom: 1.2,
+                    center: [105, 35],
+                    label: { show: true, color: '#ffffff', fontSize: 10 },
+                    itemStyle: {
+                        areaColor: '#1c1c3e',
+                        borderColor: '#3a3a5e',
+                        borderWidth: 1
+                    },
+                    emphasis: {
+                        itemStyle: { areaColor: '#2a2a4e' },
+                        label: { color: '#ffffff' }
+                    }
+                },
+                series: [
+                    {
+                        name: '产业链流向',
+                        type: 'lines',
+                        coordinateSystem: 'geo',
+                        zlevel: 1,
+                        data: linesData,
+                        effect: {
+                            show: true,
+                            period: 4,
+                            trailLength: 0.4,
+                            symbol: 'arrow',
+                            symbolSize: 8,
+                            color: '#00f2fe'
+                        },
+                        lineStyle: { curveness: 0.2 },
+                        emphasis: {
+                            lineStyle: { width: 6, opacity: 1 }
+                        }
+                    },
+                    {
+                        name: '核心枢纽',
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: nodesByCategory['hub'],
+                        symbolSize: function(val) { return val[2] / 2; },
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke',
+                            scale: 5,
+                            period: 4
+                        },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    },
+                    {
+                        name: '上游原料',
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: nodesByCategory['upstream'],
+                        symbolSize: function(val) { return val[2] / 2; },
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke',
+                            scale: 3,
+                            period: 4
+                        },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    },
+                    {
+                        name: '中游生产',
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: nodesByCategory['midstream'],
+                        symbolSize: function(val) { return val[2] / 2; },
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke',
+                            scale: 3,
+                            period: 4
+                        },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    },
+                    {
+                        name: '下游市场',
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: nodesByCategory['downstream'],
+                        symbolSize: function(val) { return val[2] / 2; },
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke',
+                            scale: 3,
+                            period: 4
+                        },
+                        emphasis: {
+                            scale: true,
+                            itemStyle: {
+                                shadowBlur: 30,
+                                shadowColor: 'rgba(255,255,255,0.8)'
+                            }
+                        }
+                    }
+                ]
+            };
+            
+            try {
+                industryMapChart.setOption(option);
+                console.log('Map option set successfully');
+            } catch (error) {
+                console.error('Error setting map option:', error);
+                console.log('Falling back to Cartesian coordinate system...');
+                initIndustryMapFallback();
+            }
+        }
+        
+        // 获取类别名称
+        function getCategoryName(category) {
+            const categoryMap = {
+                'hub': '核心枢纽',
+                'upstream': '上游原料',
+                'midstream': '中游生产',
+                'downstream': '下游市场'
+            };
+            return categoryMap[category] || category;
+        }
+
+        // 页面加载完成后初始化所有图表
+        window.addEventListener('load', function() {
+            console.log('Window loaded, initializing charts');
+            initIndustryMap();
+            initHealthGauge();
+            initOrderFlow();
+            initTrendChart();
+            initRadarChart();
+        });
+        
+        // 窗口大小变化时调整图表大小
+        window.addEventListener('resize', function() {
+            if (industryMapChart) industryMapChart.resize();
+            if (healthGaugeChart) healthGaugeChart.resize();
+            if (orderFlowChart) orderFlowChart.resize();
+            if (trendChart) trendChart.resize();
+            if (radarChart) radarChart.resize();
+        });
+    </script>
+</body>
+</html>

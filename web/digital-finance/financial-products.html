@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金融产品库 - 鄄城发制品产业大脑</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+                tailwind.config = {
+                    theme: {
+                        extend: {
+                            colors: {
+                                primary: '#1A6DFF',
+                                secondary: '#00C8D2',
+                                success: '#10B981',
+                                warning: '#ED8936',
+                                danger: '#EF4444',
+                                dark: '#0F172A',
+                                'dark-lighter': '#1E293B',
+                                'dark-lightest': '#334155',
+                            },
+                            fontFamily: {
+                                inter: ['Inter', 'sans-serif'],
+                                mono: ['Roboto Mono', 'monospace'],
+                            },
+                        },
+                    }
+                }
+            </script>
+            <script>
+                // 页面加载完成后添加交互事件
+                document.addEventListener('DOMContentLoaded', function() {
+                    // 为所有详情按钮添加点击事件
+                    const detailButtons = document.querySelectorAll('.detail-btn');
+                    detailButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            // 获取当前产品卡片
+                            const productCard = this.closest('.product-card');
+                            // 获取详情展开区域
+                            const detailContent = productCard.querySelector('.detail-content');
+                            // 切换详情展开/收起状态
+                            detailContent.classList.toggle('hidden');
+                            // 切换按钮文本和图标
+                            if (detailContent.classList.contains('hidden')) {
+                                this.innerHTML = '<i class="fa fa-eye mr-2"></i> 详情';
+                            } else {
+                                this.innerHTML = '<i class="fa fa-eye-slash mr-2"></i> 收起';
+                            }
+                        });
+                    });
+                    
+                    // 为所有申请按钮添加点击事件
+                    const applyButtons = document.querySelectorAll('.apply-btn');
+                    const applyModal = document.getElementById('applyModal');
+                    const closeModal = document.getElementById('closeModal');
+                    const cancelApply = document.getElementById('cancelApply');
+                    const applyForm = document.getElementById('applyForm');
+                    
+                    applyButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            // 获取当前产品卡片
+                            const productCard = this.closest('.product-card');
+                            // 获取产品名称
+                            const productName = productCard.querySelector('h3').textContent;
+                            // 显示模态框
+                            applyModal.classList.remove('hidden');
+                            // 可以在这里设置产品名称到模态框中
+                            document.querySelector('#applyModal h3').textContent = productName + ' - 贷款申请';
+                        });
+                    });
+                    
+                    // 关闭模态框
+                    closeModal.addEventListener('click', function() {
+                        applyModal.classList.add('hidden');
+                    });
+                    
+                    // 取消申请
+                    cancelApply.addEventListener('click', function() {
+                        applyModal.classList.add('hidden');
+                    });
+                    
+                    // 提交申请
+                    applyForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        // 获取表单数据
+                        const formData = new FormData(applyForm);
+                        // 显示提交成功提示
+                        alert('申请提交成功，我们将尽快与您联系！');
+                        // 关闭模态框
+                        applyModal.classList.add('hidden');
+                        // 重置表单
+                        applyForm.reset();
+                    });
+                    
+                    // 为筛选按钮添加点击事件
+                    const filterButtons = document.querySelectorAll('.filter-btn');
+                    filterButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            // 移除所有筛选按钮的active类
+                            filterButtons.forEach(btn => btn.classList.remove('active'));
+                            // 为当前点击的按钮添加active类
+                            this.classList.add('active');
+                            // 显示筛选提示
+                            const filterText = this.textContent.trim();
+                            alert(`已选择筛选条件：${filterText}`);
+                            // 这里可以添加实际的筛选逻辑
+                        });
+                    });
+                    
+                    // 为搜索按钮添加点击事件
+                    const searchButton = document.querySelector('button:has(.fa-search)');
+                    if (searchButton) {
+                        searchButton.addEventListener('click', function() {
+                            // 获取搜索框的值
+                            const searchInput = this.previousElementSibling;
+                            const searchValue = searchInput.value.trim();
+                            if (searchValue) {
+                                alert(`搜索产品：${searchValue}`);
+                                // 这里可以添加实际的搜索逻辑
+                            } else {
+                                alert('请输入搜索关键词');
+                            }
+                        });
+                    }
+                    
+                    // 贷款计算器功能
+                    const calculatorButton = document.getElementById('calculatorButton');
+                    const calculatorWindow = document.getElementById('calculatorWindow');
+                    const closeCalculator = document.getElementById('closeCalculator');
+                    const calculateLoanBtn = document.getElementById('calculateLoan');
+                    
+                    if (calculatorButton && calculatorWindow && closeCalculator) {
+                        // 打开/关闭计算器窗口
+                        calculatorButton.addEventListener('click', function() {
+                            if (calculatorWindow.classList.contains('hidden')) {
+                                calculatorWindow.classList.remove('hidden');
+                                // 添加延迟确保CSS过渡效果能正常显示
+                                setTimeout(() => {
+                                    calculatorWindow.classList.remove('scale-95', 'opacity-0');
+                                    calculatorWindow.classList.add('scale-100', 'opacity-100');
+                                }, 10);
+                            } else {
+                                calculatorWindow.classList.remove('scale-100', 'opacity-100');
+                                calculatorWindow.classList.add('scale-95', 'opacity-0');
+                                // 等待过渡效果完成后再隐藏
+                                setTimeout(() => {
+                                    calculatorWindow.classList.add('hidden');
+                                }, 300);
+                            }
+                        });
+                        
+                        // 关闭计算器窗口
+                        closeCalculator.addEventListener('click', function() {
+                            calculatorWindow.classList.remove('scale-100', 'opacity-100');
+                            calculatorWindow.classList.add('scale-95', 'opacity-0');
+                            // 等待过渡效果完成后再隐藏
+                            setTimeout(() => {
+                                calculatorWindow.classList.add('hidden');
+                            }, 300);
+                        });
+                    }
+                    
+                    if (calculateLoanBtn) {
+                        calculateLoanBtn.addEventListener('click', function() {
+                            const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+                            const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 0;
+                            const loanRate = parseFloat(document.getElementById('loanRate').value) || 0;
+                            
+                            if (loanAmount <= 0 || loanTerm <= 0 || loanRate <= 0) {
+                                alert('请输入有效的贷款信息');
+                                return;
+                            }
+                            
+                            // 计算每月还款额
+                            const monthlyRate = loanRate / 100 / 12;
+                            const totalPayments = loanTerm * 12;
+                            const monthlyPayment = loanAmount * 10000 * monthlyRate * Math.pow(1 + monthlyRate, totalPayments) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
+                            const totalPayment = monthlyPayment * totalPayments;
+                            const totalInterest = totalPayment - loanAmount * 10000;
+                            
+                            // 更新结果
+                            document.getElementById('monthlyPayment').textContent = '¥' + monthlyPayment.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            document.getElementById('totalPayment').textContent = '¥' + totalPayment.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            document.getElementById('totalInterest').textContent = '¥' + totalInterest.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        });
+                    }
+                    
+                    // 常见问题解答功能
+                    const faqQuestions = document.querySelectorAll('.faq-question');
+                    faqQuestions.forEach(question => {
+                        question.addEventListener('click', function() {
+                            const answer = this.nextElementSibling;
+                            const icon = this.querySelector('i');
+                            
+                            // 切换答案显示/隐藏
+                            answer.classList.toggle('hidden');
+                            // 切换图标
+                            icon.classList.toggle('fa-chevron-down');
+                            icon.classList.toggle('fa-chevron-up');
+                        });
+                    });
+                    
+                    // 悬浮智能客服功能
+                    const chatButton = document.getElementById('chatButton');
+                    const chatWindow = document.getElementById('chatWindow');
+                    const closeChat = document.getElementById('closeChat');
+                    
+                    if (chatButton && chatWindow && closeChat) {
+                        chatButton.addEventListener('click', function() {
+                            if (chatWindow.classList.contains('hidden')) {
+                                chatWindow.classList.remove('hidden');
+                                // 添加延迟确保CSS过渡效果能正常显示
+                                setTimeout(() => {
+                                    chatWindow.classList.remove('scale-95', 'opacity-0');
+                                    chatWindow.classList.add('scale-100', 'opacity-100');
+                                }, 10);
+                            } else {
+                                chatWindow.classList.remove('scale-100', 'opacity-100');
+                                chatWindow.classList.add('scale-95', 'opacity-0');
+                                // 等待过渡效果完成后再隐藏
+                                setTimeout(() => {
+                                    chatWindow.classList.add('hidden');
+                                }, 300);
+                            }
+                        });
+                        
+                        closeChat.addEventListener('click', function() {
+                            chatWindow.classList.remove('scale-100', 'opacity-100');
+                            chatWindow.classList.add('scale-95', 'opacity-0');
+                            // 等待过渡效果完成后再隐藏
+                            setTimeout(() => {
+                                chatWindow.classList.add('hidden');
+                            }, 300);
+                        });
+                    }
+                    
+                    // 发起需求按钮
+                    const requestButton = document.getElementById('requestButton');
+                    if (requestButton) {
+                        requestButton.addEventListener('click', function() {
+                            // 跳转到发起需求页面
+                            window.location.href = 'send-request.html';
+                        });
+                    }
+                    
+                    // 智能客服常见问题功能
+                    const faqChatButtons = document.querySelectorAll('.faq-chat-btn');
+                    const chatMessages = document.querySelector('#chatWindow .space-y-4');
+                    
+                    faqChatButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const question = this.textContent.trim();
+                            let answer = '';
+                            
+                            // 根据问题获取对应的回答
+                            switch(question) {
+                                case '如何选择适合自己的贷款产品？':
+                                    answer = '选择贷款产品时，应考虑以下因素：1. 贷款用途：根据资金用途选择合适的产品类型；2. 贷款额度：根据实际需求确定所需金额；3. 还款能力：选择与自身还款能力相匹配的期限和利率；4. 担保方式：根据自身条件选择信用、抵押或质押等担保方式；5. 审批速度：如急需资金，可选择审批速度较快的产品。';
+                                    break;
+                                case '申请贷款需要准备哪些材料？':
+                                    answer = '一般需要准备以下材料：1. 身份证明：身份证、户口本等；2. 收入证明：工资流水、经营流水等；3. 资产证明：房产证、车辆行驶证等；4. 经营证明：营业执照、税务登记证等；5. 贷款用途证明：购销合同、装修合同等。具体要求可能因产品类型和银行而异。';
+                                    break;
+                                case '贷款审批需要多长时间？':
+                                    answer = '贷款审批时间因产品类型和银行而异。一般来说，信用贷款审批较快，通常为1-3个工作日；抵押贷款和保证贷款审批时间较长，通常为3-10个工作日。具体时间可能会因申请材料的完整性、银行审批流程等因素而有所不同。';
+                                    break;
+                                case '贷款逾期会有什么后果？':
+                                    answer = '贷款逾期可能会产生以下后果：1. 产生罚息和违约金；2. 影响个人信用记录，对未来申请贷款、信用卡等产生不利影响；3. 银行可能会采取催收措施；4. 严重逾期可能会被起诉，甚至影响个人出行和消费。因此，建议借款人按时还款，如遇特殊情况应及时与银行沟通。';
+                                    break;
+                            }
+                            
+                            // 添加用户问题到聊天窗口
+                            if (chatMessages) {
+                                // 添加用户问题
+                                chatMessages.innerHTML += `
+                                    <div class="flex space-x-3 justify-end">
+                                        <div class="bg-primary/20 rounded-lg p-3 max-w-[80%]">
+                                            <p class="text-white text-sm">${question}</p>
+                                        </div>
+                                        <div class="w-8 h-8 rounded-full bg-dark-lightest flex items-center justify-center text-white">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                `;
+                                
+                                // 添加机器人回答
+                                chatMessages.innerHTML += `
+                                    <div class="flex space-x-3">
+                                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                                            <i class="fa fa-robot"></i>
+                                        </div>
+                                        <div class="bg-dark rounded-lg p-3 max-w-[80%]">
+                                            <p class="text-gray-300 text-sm">${answer}</p>
+                                        </div>
+                                    </div>
+                                `;
+                                
+                                // 滚动到底部
+                                const chatContainer = document.querySelector('#chatWindow .overflow-y-auto');
+                                if (chatContainer) {
+                                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* 背景网格纹理 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 109, 255, 0.2);
+            border-color: rgba(26, 109, 255, 0.3);
+        }
+        
+        /* 数据卡片 */
+        .data-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .data-card:hover {
+            border-color: rgba(26, 109, 255, 0.5);
+            box-shadow: 0 0 20px rgba(26, 109, 255, 0.1);
+        }
+        
+        /* 功能卡片 */
+        .feature-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 109, 255, 0.2);
+            border-color: rgba(26, 109, 255, 0.5);
+        }
+        
+        /* 产品卡片 */
+        .product-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 109, 255, 0.2);
+            border-color: rgba(26, 109, 255, 0.5);
+        }
+        
+        /* 滚动条隐藏 */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* 按钮样式 */
+        .btn-primary {
+            background: linear-gradient(90deg, #1A6DFF, #00C8D2);
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(26, 109, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(26, 109, 255, 0.5);
+        }
+        
+        /* 标签样式 */
+        .tag {
+            background: rgba(26, 109, 255, 0.2);
+            color: #00C8D2;
+            border-radius: 16px;
+            font-size: 12px;
+            padding: 2px 12px;
+        }
+        
+        /* 筛选器样式 */
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(90deg, #1A6DFF, #00C8D2);
+            border-color: transparent;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(26, 109, 255, 0.5);
+        }
+        
+        /* 微型趋势图 */
+        .sparkline {
+            width: 60px;
+            height: 20px;
+        }
+        
+        /* 流程步骤 */
+        .step-item {
+            position: relative;
+        }
+        
+        .step-item::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #1A6DFF, #00C8D2);
+            z-index: 0;
+        }
+        
+        .step-item:last-child::after {
+            display: none;
+        }
+        
+        /* 产品列表项 */
+        .product-list-item {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .product-list-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 109, 255, 0.2);
+            border-color: rgba(26, 109, 255, 0.5);
+        }
+        
+        /* 滚动消息动画 */
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        
+        .marquee-container:hover .animate-marquee {
+            animation-play-state: paused;
+        }
+        
+        /* 顶部导航样式 */
+        .stat-label {
+            @apply text-sm text-gray-400 mt-1;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform-origin: 50% 50%;
+        }
+        
+        /* 导航栏样式 */
+        .nav-bar {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(30, 41, 59, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .nav-item {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            color: #1A6DFF;
+        }
+        
+        .nav-item.active {
+            background-color: rgba(26, 109, 255, 0.2);
+            color: #1A6DFF;
+        }
+        
+        /* 银行滚动动画 */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        /* 浮动动画 */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 动画类 */
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .bank-scroll-container {
+            width: max-content;
+        }
+        
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+        
+        .bank-scroll-container:hover .animate-scroll {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="nav-bar fixed top-0 left-0 right-0 z-50 h-16 flex items-center">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <!-- 左侧 Logo 与平台名 -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                    <i class="fa fa-sitemap text-white text-xl"></i>
+                </div>
+                <h1 class="text-xl font-bold text-white">鄄城发制品产业大脑</h1>
+            </div>
+            
+            <!-- 中部主导航 -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="../index.html" class="nav-item text-gray-300 font-medium">首页</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">产业全景</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">产业透视</a>
+                <a href="#" class="nav-item text-white font-medium active">发业金额</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">发业智库</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">之策汇通</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">发品交易</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">资源枢纽</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">发品追溯</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">企诉必应</a>
+                <a href="#" class="nav-item text-gray-300 font-medium">安全防控</a>
+            </nav>
+            
+            <!-- 右侧全局操作 -->
+            <div class="flex items-center space-x-4">
+                <!-- 搜索框 -->
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="搜索产业政策、企业、供需信息..." class="bg-dark text-gray-300 border border-gray-600 px-4 py-2 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-48 md:w-64 transition-all duration-300">
+                    <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                    <!-- 搜索展开区域 -->
+                    <div id="searchExpanded" class="absolute top-full right-0 mt-2 w-[500px] bg-dark-lighter/95 backdrop-blur-sm border border-dark-lightest rounded-xl p-6 shadow-lg hidden z-50">
+                        <!-- 搜索标签选项 -->
+                        <div class="flex flex-wrap gap-0 mb-6">
+                            <button class="bg-dark-lighter text-gray-400 hover:bg-primary/20 hover:text-primary px-5 py-2.5 rounded-l-lg text-sm font-medium transition-colors duration-300">查企业</button>
+                            <button class="bg-primary text-white px-5 py-2.5 rounded-none text-sm font-medium">找政策</button>
+                            <button class="bg-dark-lighter text-gray-400 hover:bg-primary/20 hover:text-primary px-5 py-2.5 rounded-none text-sm font-medium transition-colors duration-300">搜资讯</button>
+                            <button class="bg-dark-lighter text-gray-400 hover:bg-primary/20 hover:text-primary px-5 py-2.5 rounded-r-lg text-sm font-medium transition-colors duration-300">找订单</button>
+                        </div>
+                        
+                        <!-- 搜索框 -->
+                        <div class="flex items-center gap-0 mb-6">
+                            <input type="text" placeholder="输入关键词，获取产业政策、企业、供需信息..." class="bg-dark text-gray-300 px-6 py-3 rounded-l-lg flex-1 focus:outline-none focus:ring-2 focus:ring-primary text-base">
+                            <button class="bg-primary text-white px-8 py-3 rounded-r-lg text-sm font-medium hover:bg-primary/90 transition-colors duration-300">
+                                <i class="fa fa-search mr-2"></i> 搜索
+                            </button>
+                        </div>
+                        
+                        <!-- 热门搜索 -->
+                        <div class="flex flex-wrap gap-3 mt-4 text-sm">
+                            <span class="text-gray-400">热门搜索：</span>
+                            <a href="#" class="bg-dark/50 text-gray-400 hover:bg-primary/10 hover:text-primary px-4 py-1.5 rounded-full transition-colors duration-300">假发出口退税</a>
+                            <a href="#" class="bg-dark/50 text-gray-400 hover:bg-primary/10 hover:text-primary px-4 py-1.5 rounded-full transition-colors duration-300">人发价格</a>
+                            <a href="#" class="bg-dark/50 text-gray-400 hover:bg-primary/10 hover:text-primary px-4 py-1.5 rounded-full transition-colors duration-300">跨境电商政策</a>
+                            <a href="#" class="bg-dark/50 text-gray-400 hover:bg-primary/10 hover:text-primary px-4 py-1.5 rounded-full transition-colors duration-300">专精特新</a>
+                            <a href="#" class="bg-dark/50 text-gray-400 hover:bg-primary/10 hover:text-primary px-4 py-1.5 rounded-full transition-colors duration-300">小巨人</a>
+                            <a href="#" class="bg-dark/50 text-gray-400 hover:bg-primary/10 hover:text-primary px-4 py-1.5 rounded-full transition-colors duration-300">出口退税</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 消息通知 -->
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300 relative">
+                    <i class="fa fa-bell text-lg"></i>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
+                </a>
+
+                <button class="border border-gray-400 text-gray-300 hover:border-primary hover:text-white px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300">登录/注册</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container mx-auto px-4 py-24">
+        <!-- 导航路径 -->
+        <div class="mb-8">
+            <div class="flex items-center space-x-2 text-sm">
+                <a href="financial-policy.html" class="text-gray-400 hover:text-primary transition-colors duration-300">发业金融</a>
+                <i class="fa fa-angle-right text-gray-500"></i>
+                <span class="text-primary font-medium">选择产品</span>
+            </div>
+        </div>
+
+        
+        <!-- 筛选条件 -->
+        <div class="bg-dark-lighter/50 border border-dark-lightest rounded-2xl p-6 mb-8">
+            <!-- 贷款类型 -->
+            <div class="mb-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="text-gray-400 text-sm font-medium whitespace-nowrap">贷款类型：</label>
+                    <div class="flex flex-wrap gap-3 flex-1">
+                        <button class="filter-btn active px-4 py-2 rounded-lg text-sm">全部类型</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">流动资金贷款</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">固定资产贷款</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">个人经营贷款</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">不限</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 贷款金额 -->
+            <div class="mb-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="text-gray-400 text-sm font-medium whitespace-nowrap">贷款金额：</label>
+                    <div class="flex flex-wrap gap-3 flex-1">
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">100万元以下</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">100万-500万元</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">500万-1000万元</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">1000万元以上</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 贷款期限 -->
+            <div class="mb-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="text-gray-400 text-sm font-medium whitespace-nowrap">贷款期限：</label>
+                    <div class="flex flex-wrap gap-3 flex-1">
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">12个月以下</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">12-36个月</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">36-60个月</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 担保方式 -->
+            <div class="mb-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="text-gray-400 text-sm font-medium whitespace-nowrap">担保方式：</label>
+                    <div class="flex flex-wrap gap-3 flex-1">
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">信用</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">保证</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">质押</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">抵押</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg text-sm">其他</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品数量和搜索 -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-4 border-t border-dark-lightest">
+                <div class="text-gray-400 text-sm">共59款金融产品</div>
+                <div class="flex space-x-2 w-full md:w-auto">
+                    <input type="text" placeholder="请输入产品名称" class="flex-1 bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button class="btn-primary px-4 py-2">
+                        <i class="fa fa-search mr-2"></i> 搜索
+                    </button>
+                    <a href="send-request.html" class="bg-green-500 hover:bg-green-500/90 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 inline-block text-center">
+                        发需求
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 产品列表 -->
+        <div class="grid grid-cols-1 gap-4 mb-8">
+            <!-- 产品1 -->
+            <div class="product-card p-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="tag">个人经营贷款</span>
+                    <span class="tag">抵押</span>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-3">抵押极速贷</h3>
+                <div class="flex flex-wrap items-center justify-between mb-0">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资金额</p>
+                            <p class="text-white font-medium">100万~500万元</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资期限</p>
+                            <p class="text-white font-medium">12~36个月</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">年总息围</p>
+                            <p class="text-white font-medium">4.35%~10%</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资类别</p>
+                            <p class="text-white font-medium">个人经营贷款</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3 ml-4">
+                        <button class="detail-btn bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-2 rounded-lg text-sm transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-eye mr-2"></i> 详情
+                        </button>
+                        <button class="apply-btn bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-file-text-o mr-2"></i> 申请
+                        </button>
+                    </div>
+                </div>
+                <!-- 详情展开区域 -->
+                <div class="detail-content mt-4 p-4 bg-dark-lighter/50 border border-dark-lightest rounded-lg hidden">
+                    <h4 class="text-md font-semibold text-white mb-3">产品详情</h4>
+                    <div class="space-y-4 text-sm">
+                        <!-- 产品基本信息 -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <span class="text-gray-400 font-medium">融资类型：</span>
+                                <span class="text-gray-300">个人经营贷款</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">担保方式：</span>
+                                <span class="text-gray-300">抵押</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">审批时间：</span>
+                                <span class="text-gray-300">3-5个工作日</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">还款方式：</span>
+                                <span class="text-gray-300">等额本息</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品介绍 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">产品介绍：</span>
+                            <span class="text-gray-300">金额0-500（含）万元，单笔最长10年，可3年还本。有房即可办理，手机申请最快10分钟出结果。</span>
+                        </div>
+                        
+                        <!-- 资金用途 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">资金用途：</span>
+                            <span class="text-gray-300">有房产的个体工商户、小微企业主、种养殖户。资信状况良好，年龄18—65周岁，经营1年以上，有固定的经营场所，有合法有效经营手续等。</span>
+                        </div>
+                        
+                        <!-- 申请条件 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">申请条件：</span>
+                            <span class="text-gray-300">年龄18-65周岁，有稳定经营场所，提供抵押物</span>
+                        </div>
+                        
+                        <!-- 所需材料 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">所需材料：</span>
+                            <span class="text-gray-300">身份证、户口本、结婚证、房产证、经营性单据、营业执照（如需）、特许经营许可（如需）。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品2 -->
+            <div class="product-card p-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="tag">企业贷款</span>
+                    <span class="tag">信用</span>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-3">企业信用贷</h3>
+                <div class="flex flex-wrap items-center justify-between mb-0">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资金额</p>
+                            <p class="text-white font-medium">50万~300万元</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资期限</p>
+                            <p class="text-white font-medium">6~24个月</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">年总息围</p>
+                            <p class="text-white font-medium">5.2%~12%</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资类别</p>
+                            <p class="text-white font-medium">企业贷款</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3 ml-4">
+                        <button class="detail-btn bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-2 rounded-lg text-sm transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-eye mr-2"></i> 详情
+                        </button>
+                        <button class="apply-btn bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-file-text-o mr-2"></i> 申请
+                        </button>
+                    </div>
+                </div>
+                <!-- 详情展开区域 -->
+                <div class="detail-content mt-4 p-4 bg-dark-lighter/50 border border-dark-lightest rounded-lg hidden">
+                    <h4 class="text-md font-semibold text-white mb-3">产品详情</h4>
+                    <div class="space-y-4 text-sm">
+                        <!-- 产品基本信息 -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <span class="text-gray-400 font-medium">融资类型：</span>
+                                <span class="text-gray-300">企业信用贷款</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">担保方式：</span>
+                                <span class="text-gray-300">信用</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">审批时间：</span>
+                                <span class="text-gray-300">5-7个工作日</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">还款方式：</span>
+                                <span class="text-gray-300">等额本息</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品介绍 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">产品介绍：</span>
+                            <span class="text-gray-300">金额50-300（含）万元，单笔最长2年，可循环使用。基于企业信用状况，无需抵押担保。</span>
+                        </div>
+                        
+                        <!-- 资金用途 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">资金用途：</span>
+                            <span class="text-gray-300">用于企业日常经营周转、采购原材料、扩大生产等合法经营活动。</span>
+                        </div>
+                        
+                        <!-- 申请条件 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">申请条件：</span>
+                            <span class="text-gray-300">企业成立满2年，有稳定经营收入，信用记录良好</span>
+                        </div>
+                        
+                        <!-- 所需材料 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">所需材料：</span>
+                            <span class="text-gray-300">企业营业执照、财务报表、经营流水、法人身份证</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品3 -->
+            <div class="product-card p-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="tag">个人经营贷款</span>
+                    <span class="tag">质押</span>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-3">质押快贷</h3>
+                <div class="flex flex-wrap items-center justify-between mb-0">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资金额</p>
+                            <p class="text-white font-medium">30万~200万元</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资期限</p>
+                            <p class="text-white font-medium">1~12个月</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">年总息围</p>
+                            <p class="text-white font-medium">3.8%~8%</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资类别</p>
+                            <p class="text-white font-medium">个人经营贷款</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3 ml-4">
+                        <button class="detail-btn bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-2 rounded-lg text-sm transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-eye mr-2"></i> 详情
+                        </button>
+                        <button class="apply-btn bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-file-text-o mr-2"></i> 申请
+                        </button>
+                    </div>
+                </div>
+                <!-- 详情展开区域 -->
+                <div class="detail-content mt-4 p-4 bg-dark-lighter/50 border border-dark-lightest rounded-lg hidden">
+                    <h4 class="text-md font-semibold text-white mb-3">产品详情</h4>
+                    <div class="space-y-4 text-sm">
+                        <!-- 产品基本信息 -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <span class="text-gray-400 font-medium">融资类型：</span>
+                                <span class="text-gray-300">个人经营贷款</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">担保方式：</span>
+                                <span class="text-gray-300">质押</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">审批时间：</span>
+                                <span class="text-gray-300">1-3个工作日</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">还款方式：</span>
+                                <span class="text-gray-300">等额本息</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品介绍 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">产品介绍：</span>
+                            <span class="text-gray-300">金额30-200（含）万元，单笔最长1年，质押率高，放款速度快。</span>
+                        </div>
+                        
+                        <!-- 资金用途 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">资金用途：</span>
+                            <span class="text-gray-300">用于个人经营周转、采购原材料、扩大经营等合法经营活动。</span>
+                        </div>
+                        
+                        <!-- 申请条件 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">申请条件：</span>
+                            <span class="text-gray-300">年龄18-65周岁，有稳定经营场所，提供质押物</span>
+                        </div>
+                        
+                        <!-- 所需材料 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">所需材料：</span>
+                            <span class="text-gray-300">身份证、营业执照、质押物证明、经营流水</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品4 -->
+            <div class="product-card p-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="tag">企业贷款</span>
+                    <span class="tag">保证</span>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-3">保证贷款</h3>
+                <div class="flex flex-wrap items-center justify-between mb-0">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资金额</p>
+                            <p class="text-white font-medium">80万~400万元</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资期限</p>
+                            <p class="text-white font-medium">12~48个月</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">年总息围</p>
+                            <p class="text-white font-medium">4.5%~11%</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-400 mb-1">融资类别</p>
+                            <p class="text-white font-medium">企业贷款</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3 ml-4">
+                        <button class="detail-btn bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-2 rounded-lg text-sm transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-eye mr-2"></i> 详情
+                        </button>
+                        <button class="apply-btn bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+                            <i class="fa fa-file-text-o mr-2"></i> 申请
+                        </button>
+                    </div>
+                </div>
+                <!-- 详情展开区域 -->
+                <div class="detail-content mt-4 p-4 bg-dark-lighter/50 border border-dark-lightest rounded-lg hidden">
+                    <h4 class="text-md font-semibold text-white mb-3">产品详情</h4>
+                    <div class="space-y-4 text-sm">
+                        <!-- 产品基本信息 -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <span class="text-gray-400 font-medium">融资类型：</span>
+                                <span class="text-gray-300">企业保证贷款</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">担保方式：</span>
+                                <span class="text-gray-300">保证</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">审批时间：</span>
+                                <span class="text-gray-300">5-10个工作日</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 font-medium">还款方式：</span>
+                                <span class="text-gray-300">等额本息</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品介绍 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">产品介绍：</span>
+                            <span class="text-gray-300">金额80-400（含）万元，单笔最长4年，由第三方提供担保，贷款额度高。</span>
+                        </div>
+                        
+                        <!-- 资金用途 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">资金用途：</span>
+                            <span class="text-gray-300">用于企业扩大生产、技术改造、购置设备等固定资产投资。</span>
+                        </div>
+                        
+                        <!-- 申请条件 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">申请条件：</span>
+                            <span class="text-gray-300">企业成立满1年，有稳定经营收入，提供担保人</span>
+                        </div>
+                        
+                        <!-- 所需材料 -->
+                        <div>
+                            <span class="text-gray-400 font-medium">所需材料：</span>
+                            <span class="text-gray-300">企业营业执照、财务报表、经营流水、担保人资料</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="flex justify-center mb-8">
+            <div class="flex space-x-2">
+                <button class="px-4 py-2 border border-gray-600 rounded-lg text-sm text-gray-400 hover:bg-dark-lighter hover:border-primary transition-colors duration-300">上一页</button>
+                <button class="px-4 py-2 border border-primary bg-primary text-white rounded-lg text-sm">1</button>
+                <button class="px-4 py-2 border border-gray-600 rounded-lg text-sm text-gray-400 hover:bg-dark-lighter hover:border-primary transition-colors duration-300">2</button>
+                <button class="px-4 py-2 border border-gray-600 rounded-lg text-sm text-gray-400 hover:bg-dark-lighter hover:border-primary transition-colors duration-300">3</button>
+                <button class="px-4 py-2 border border-gray-600 rounded-lg text-sm text-gray-400 hover:bg-dark-lighter hover:border-primary transition-colors duration-300">...</button>
+                <button class="px-4 py-2 border border-gray-600 rounded-lg text-sm text-gray-400 hover:bg-dark-lighter hover:border-primary transition-colors duration-300">24</button>
+                <button class="px-4 py-2 border border-gray-600 rounded-lg text-sm text-gray-400 hover:bg-dark-lighter hover:border-primary transition-colors duration-300">下一页</button>
+            </div>
+        </div>
+        
+
+        
+
+        
+
+        
+
+        
+        <!-- 悬浮工具 -->
+        <div id="floatingTools" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-6">
+            <!-- 智能客服 -->
+            <div id="smartChat" class="relative flex flex-col items-center animate-float group">
+                <div id="chatButton" class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white shadow-lg hover:bg-primary/90 transition-all duration-300 cursor-pointer hover:scale-110 hover:shadow-xl transform hover:-translate-y-1">
+                    <i class="fa fa-comments text-2xl transition-all duration-300 hover:rotate-12"></i>
+                </div>
+                <span class="text-xs text-white mt-2 opacity-100 transition-opacity duration-300">智能客服</span>
+                <div id="chatWindow" class="hidden absolute bottom-24 right-0 w-80 bg-dark-lighter border border-dark-lightest rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0 hover:scale-100 hover:opacity-100">
+                    <div class="bg-primary p-4 flex justify-between items-center">
+                        <h3 class="text-white font-semibold">智能客服</h3>
+                        <button id="closeChat" class="text-white hover:text-gray-200 transition-transform duration-300 hover:rotate-90">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 h-80 overflow-y-auto bg-dark-lighter/50">
+                        <div class="space-y-4">
+                            <div class="flex space-x-3 animate-fade-in">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                                    <i class="fa fa-robot"></i>
+                                </div>
+                                <div class="bg-dark rounded-lg p-3 max-w-[80%]">
+                                    <p class="text-gray-300 text-sm">您好！我是智能客服助手，有什么可以帮助您的吗？</p>
+                                </div>
+                            </div>
+                            <!-- 常见问题 -->
+                            <div class="mt-4 animate-fade-in" style="animation-delay: 0.2s;">
+                                <p class="text-gray-400 text-sm mb-2 font-medium">常见问题：</p>
+                                <div class="space-y-2">
+                                    <button class="faq-chat-btn w-full text-left text-sm text-primary hover:text-secondary transition-colors duration-300 py-1 transform hover:translate-x-1">如何选择适合自己的贷款产品？</button>
+                                    <button class="faq-chat-btn w-full text-left text-sm text-primary hover:text-secondary transition-colors duration-300 py-1 transform hover:translate-x-1">申请贷款需要准备哪些材料？</button>
+                                    <button class="faq-chat-btn w-full text-left text-sm text-primary hover:text-secondary transition-colors duration-300 py-1 transform hover:translate-x-1">贷款审批需要多长时间？</button>
+                                    <button class="faq-chat-btn w-full text-left text-sm text-primary hover:text-secondary transition-colors duration-300 py-1 transform hover:translate-x-1">贷款逾期会有什么后果？</button>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3 justify-end animate-fade-in" style="animation-delay: 0.4s;">
+                                <div class="bg-primary/20 rounded-lg p-3 max-w-[80%]">
+                                    <p class="text-white text-sm">如何申请贷款？</p>
+                                </div>
+                                <div class="w-8 h-8 rounded-full bg-dark-lightest flex items-center justify-center text-white">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3 animate-fade-in" style="animation-delay: 0.6s;">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                                    <i class="fa fa-robot"></i>
+                                </div>
+                                <div class="bg-dark rounded-lg p-3 max-w-[80%]">
+                                    <p class="text-gray-300 text-sm">您可以在我们的金融产品页面选择合适的产品，点击申请按钮，填写相关信息即可提交申请。我们的客服团队会在1-2个工作日内与您联系。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-dark-lightest">
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="请输入您的问题" class="flex-1 bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300 focus:border-primary">
+                            <button class="btn-primary px-4 py-2 transition-all duration-300 hover:scale-105 active:scale-95">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 贷款计算器 -->
+            <div id="loanCalculator" class="flex flex-col items-center animate-float group" style="animation-delay: 0.2s;">
+                <div id="calculatorButton" class="w-14 h-14 rounded-full bg-secondary flex items-center justify-center text-white shadow-lg hover:bg-secondary/90 transition-all duration-300 cursor-pointer hover:scale-110 hover:shadow-xl transform hover:-translate-y-1">
+                    <i class="fa fa-calculator text-2xl transition-all duration-300 hover:rotate-12"></i>
+                </div>
+                <span class="text-xs text-white mt-2 opacity-100 transition-opacity duration-300">贷款计算器</span>
+                <div id="calculatorWindow" class="hidden absolute bottom-24 right-0 w-80 bg-dark-lighter border border-dark-lightest rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0 hover:scale-100 hover:opacity-100">
+                    <div class="bg-secondary p-4 flex justify-between items-center">
+                        <h3 class="text-white font-semibold">贷款计算器</h3>
+                        <button id="closeCalculator" class="text-white hover:text-gray-200 transition-transform duration-300 hover:rotate-90">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm font-medium">贷款金额（万元）</label>
+                                <input type="number" id="loanAmount" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 focus:border-secondary">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm font-medium">贷款期限（年）</label>
+                                <input type="number" id="loanTerm" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 focus:border-secondary">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2 text-sm font-medium">年利率（%）</label>
+                                <input type="number" id="loanRate" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 focus:border-secondary">
+                            </div>
+                            <button id="calculateLoan" class="bg-secondary hover:bg-secondary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 w-full transform hover:translate-y-[-2px] active:translate-y-[0px] shadow-md hover:shadow-lg">
+                                <i class="fa fa-calculator mr-2"></i> 计算
+                            </button>
+                            <div class="bg-dark-lighter/50 border border-dark-lightest rounded-lg p-4 mt-4 animate-fade-in">
+                                <h4 class="text-md font-semibold text-white mb-3">计算结果</h4>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">每月还款</span>
+                                        <span id="monthlyPayment" class="text-white font-medium">¥3,076.88</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">总还款</span>
+                                        <span id="totalPayment" class="text-white font-medium">¥110,767.68</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">总利息</span>
+                                        <span id="totalInterest" class="text-white font-medium">¥10,767.68</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        
+        <!-- 申请表格模态框 -->
+        <div id="applyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+            <div class="bg-dark-lighter border border-dark-lightest rounded-2xl p-6 max-w-md w-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-white">贷款申请</h3>
+                    <button id="closeModal" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                <form id="applyForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">联系人</label>
+                        <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系人姓名">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">联系电话</label>
+                        <input type="tel" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系电话">
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-gray-400 mb-2 text-sm font-medium">省份</label>
+                            <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option>请选择省份</option>
+                                <option>山东省</option>
+                                <option>北京市</option>
+                                <option>上海市</option>
+                                <option>广东省</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-2 text-sm font-medium">城市</label>
+                            <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option>请选择城市</option>
+                                <option>菏泽市</option>
+                                <option>济南市</option>
+                                <option>青岛市</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-2 text-sm font-medium">区县</label>
+                            <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option>请选择区县</option>
+                                <option>鄄城县</option>
+                                <option>牡丹区</option>
+                                <option>定陶区</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">详细地址</label>
+                        <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入详细地址">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">融资金额</label>
+                        <input type="number" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入融资金额（万元）">
+                    </div>
+                    <div class="flex space-x-3">
+                        <button type="button" id="cancelApply" class="flex-1 bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-3 rounded-lg text-sm transition-colors duration-300">
+                            取消
+                        </button>
+                        <button type="submit" class="flex-1 bg-primary text-white px-4 py-3 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300">
+                            提交申请
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

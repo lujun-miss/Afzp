@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Cockpit</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: #0a1129;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 顶部标题栏 */
+        .top-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(16, 25, 48, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00f2fe;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        /* 地图容器 */
+        .map-container {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background: #0a1129;
+            border: 2px solid red;
+        }
+
+        #industryMap {
+            width: 100%;
+            height: 100%;
+            border: 2px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <header class="top-header">
+        <div class="company-info">
+            <h1 class="company-name">鄄城YYY发制品集团</h1>
+        </div>
+    </header>
+
+    <!-- 地图容器 -->
+    <div class="map-container">
+        <div id="industryMap"></div>
+    </div>
+
+    <script>
+        let industryMapChart;
+
+        // 初始化产业地图
+        function initIndustryMap() {
+            console.log('Starting map initialization...');
+            const mapElement = document.getElementById('industryMap');
+            console.log('Map element:', mapElement);
+            console.log('Map element dimensions:', mapElement.offsetWidth, 'x', mapElement.offsetHeight);
+            
+            if (!mapElement) {
+                console.error('Map element not found!');
+                return;
+            }
+            
+            if (mapElement.offsetWidth === 0 || mapElement.offsetHeight === 0) {
+                console.error('Map element has zero dimensions!');
+                return;
+            }
+            
+            industryMapChart = echarts.init(mapElement);
+            console.log('ECharts instance created:', industryMapChart);
+            
+            if (!industryMapChart) {
+                console.error('Failed to create ECharts instance!');
+                return;
+            }
+            
+            // 简单的产业地图实现
+            const option = {
+                backgroundColor: '#0a1129',
+                title: {
+                    text: '产业地图',
+                    left: 'center',
+                    textStyle: {
+                        color: '#00f2fe',
+                        fontSize: 16
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['A', 'B', 'C'],
+                    axisLabel: {
+                        color: '#ffffff'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        color: '#ffffff'
+                    }
+                },
+                series: [{
+                    data: [120, 200, 150],
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#00f2fe'
+                    }
+                }]
+            };
+            
+            industryMapChart.setOption(option);
+            console.log('Map option set successfully');
+        }
+
+        // 页面加载完成后初始化所有图表
+        window.addEventListener('load', function() {
+            console.log('Window loaded, initializing charts');
+            const mapContainer = document.querySelector('.map-container');
+            console.log('Map container:', mapContainer);
+            console.log('Map container dimensions:', mapContainer.offsetWidth, 'x', mapContainer.offsetHeight);
+            
+            initIndustryMap();
+        });
+
+        // 窗口大小变化时调整图表大小
+        window.addEventListener('resize', function() {
+            if (industryMapChart) industryMapChart.resize();
+        });
+    </script>
+</body>
+</html>

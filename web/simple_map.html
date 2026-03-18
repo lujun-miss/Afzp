@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Map</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a1129;
+            height: 100vh;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        const chart = echarts.init(document.getElementById('map'));
+        const option = {
+            backgroundColor: '#0a1129',
+            title: {
+                text: '产业地图',
+                left: 'center',
+                textStyle: {
+                    color: '#00f2fe',
+                    fontSize: 16
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['A', 'B', 'C'],
+                axisLabel: {
+                    color: '#ffffff'
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    color: '#ffffff'
+                }
+            },
+            series: [{
+                data: [120, 200, 150],
+                type: 'bar',
+                itemStyle: {
+                    color: '#00f2fe'
+                }
+            }]
+        };
+        chart.setOption(option);
+        console.log('Map initialized');
+    </script>
+</body>
+</html>

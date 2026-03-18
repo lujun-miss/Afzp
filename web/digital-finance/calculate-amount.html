@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线测额 - 鄄城发制品产业大脑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1A6DFF',
+                        secondary: '#00C8D2',
+                        success: '#00B42A',
+                        warning: '#FF7D00',
+                        danger: '#F53F3F',
+                        dark: '#0F172A',
+                        'dark-lighter': '#1E293B',
+                        'dark-lightest': '#334155'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F1F5F9;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .btn-primary {
+            background-color: #1A6DFF;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: rgba(26, 109, 255, 0.9);
+        }
+        
+        .nav-bar {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .form-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-label {
+            color: #94A3B8;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #F1F5F9;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #1A6DFF;
+            box-shadow: 0 0 0 3px rgba(26, 109, 255, 0.1);
+        }
+        
+        .back-btn {
+            background-color: rgba(51, 65, 85, 0.5);
+            color: #F1F5F9;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(51, 65, 85, 0.7);
+        }
+        
+        .submit-btn {
+            background-color: #00B42A;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: rgba(0, 180, 42, 0.9);
+        }
+        
+        .institution-card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .institution-card:hover {
+            box-shadow: 0 8px 20px rgba(26, 109, 255, 0.2);
+            border-color: rgba(26, 109, 255, 0.3);
+        }
+        
+        .institution-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 3D翻转卡片样式 */
+        .flip-card {
+            perspective: 1000px;
+            width: 100%;
+            min-height: 400px;
+            margin-bottom: 2rem;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            min-height: 400px;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .flip-card-front {
+            z-index: 2;
+        }
+        
+        .flip-card-back {
+            transform: rotateY(180deg);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="nav-bar fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center mr-3">
+                        <i class="fa fa-brain text-white text-xl"></i>
+                    </div>
+                    <span class="text-white font-bold text-xl">鄄城发制品产业大脑</span>
+                </a>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="../index.html" class="text-gray-300 hover:text-white transition-colors duration-300">首页</a>
+                <a href="financial-products.html" class="text-gray-300 hover:text-white transition-colors duration-300">金融产品</a>
+                <a href="financial-policy.html" class="text-primary font-medium">金融政策</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">关于我们</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-300 hover:text-white transition-colors duration-300">
+                    <i class="fa fa-search text-xl"></i>
+                </button>
+                <button class="md:hidden text-gray-300 hover:text-white transition-colors duration-300">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-6 pt-24 pb-16">
+        <!-- 面包屑导航 -->
+        <div class="mb-4">
+            <div class="flex items-center text-sm">
+                <a href="financial-policy.html" class="text-gray-400 hover:text-primary transition-colors duration-300">发业金融</a>
+                <i class="fa fa-angle-right text-gray-500 mx-2"></i>
+                <span class="text-white font-medium">在线测额</span>
+            </div>
+        </div>
+        
+
+        
+        <!-- 状态提示 -->
+        <div class="mb-8">
+            <div class="bg-primary/10 border border-primary/30 rounded-lg p-4 flex items-center">
+                <i class="fa fa-info-circle text-primary mr-3 text-xl"></i>
+                <div>
+                    <h3 class="text-white font-medium">在线测额</h3>
+                    <p class="text-gray-400 text-sm mt-1">选择下方金融机构，查看联系方式并了解融资额度</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 机构列表 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- 中国农业银行 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- 正面 -->
+                    <div class="flip-card-front institution-card p-6">
+                        <div class="institution-icon mb-4">
+                            <i class="fa fa-building text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">中国农业银行</h3>
+                        <p class="text-gray-400 text-sm mb-4">提供多种金融产品，满足企业和个人融资需求</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <i class="fa fa-phone text-secondary mr-2"></i>
+                                <span class="text-gray-300">400-819-5599</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-envelope text-secondary mr-2"></i>
+                                <span class="text-gray-300">service@abchina.com</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full py-2 rounded-lg flip-btn">
+                            点击测额
+                        </button>
+                    </div>
+                    <!-- 背面 -->
+                    <div class="flip-card-back institution-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">保存下方二维码，精准测额</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">企业测额</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">个人测额</span>
+                            </div>
+                        </div>
+                        <button class="back-btn w-full py-2 rounded-lg flip-back-btn">
+                            返回
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 恒丰银行 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- 正面 -->
+                    <div class="flip-card-front institution-card p-6">
+                        <div class="institution-icon mb-4">
+                            <i class="fa fa-building text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">恒丰银行</h3>
+                        <p class="text-gray-400 text-sm mb-4">专注于为中小企业提供金融服务</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <i class="fa fa-phone text-secondary mr-2"></i>
+                                <span class="text-gray-300">400-813-8888</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-envelope text-secondary mr-2"></i>
+                                <span class="text-gray-300">service@hfbank.com.cn</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full py-2 rounded-lg flip-btn">
+                            点击测额
+                        </button>
+                    </div>
+                    <!-- 背面 -->
+                    <div class="flip-card-back institution-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">保存下方二维码，精准测额</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">企业测额</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">个人测额</span>
+                            </div>
+                        </div>
+                        <button class="back-btn w-full py-2 rounded-lg flip-back-btn">
+                            返回
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 青岛银行 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- 正面 -->
+                    <div class="flip-card-front institution-card p-6">
+                        <div class="institution-icon mb-4">
+                            <i class="fa fa-building text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">青岛银行</h3>
+                        <p class="text-gray-400 text-sm mb-4">为地方经济发展提供金融支持</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <i class="fa fa-phone text-secondary mr-2"></i>
+                                <span class="text-gray-300">400-669-6588</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-envelope text-secondary mr-2"></i>
+                                <span class="text-gray-300">service@qdccb.com</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full py-2 rounded-lg flip-btn">
+                            点击测额
+                        </button>
+                    </div>
+                    <!-- 背面 -->
+                    <div class="flip-card-back institution-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">保存下方二维码，精准测额</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">企业测额</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">个人测额</span>
+                            </div>
+                        </div>
+                        <button class="back-btn w-full py-2 rounded-lg flip-back-btn">
+                            返回
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 威海银行 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- 正面 -->
+                    <div class="flip-card-front institution-card p-6">
+                        <div class="institution-icon mb-4">
+                            <i class="fa fa-building text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">威海银行</h3>
+                        <p class="text-gray-400 text-sm mb-4">为威海地区企业和个人提供金融服务</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <i class="fa fa-phone text-secondary mr-2"></i>
+                                <span class="text-gray-300">400-0631-999</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-envelope text-secondary mr-2"></i>
+                                <span class="text-gray-300">service@whccb.com</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full py-2 rounded-lg flip-btn">
+                            点击测额
+                        </button>
+                    </div>
+                    <!-- 背面 -->
+                    <div class="flip-card-back institution-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">保存下方二维码，精准测额</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">企业测额</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">个人测额</span>
+                            </div>
+                        </div>
+                        <button class="back-btn w-full py-2 rounded-lg flip-back-btn">
+                            返回
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 兴业银行 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- 正面 -->
+                    <div class="flip-card-front institution-card p-6">
+                        <div class="institution-icon mb-4">
+                            <i class="fa fa-building text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">兴业银行</h3>
+                        <p class="text-gray-400 text-sm mb-4">提供多元化的金融产品和服务</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <i class="fa fa-phone text-secondary mr-2"></i>
+                                <span class="text-gray-300">95561</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-envelope text-secondary mr-2"></i>
+                                <span class="text-gray-300">service@cib.com.cn</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full py-2 rounded-lg flip-btn">
+                            点击测额
+                        </button>
+                    </div>
+                    <!-- 背面 -->
+                    <div class="flip-card-back institution-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">保存下方二维码，精准测额</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">企业测额</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">个人测额</span>
+                            </div>
+                        </div>
+                        <button class="back-btn w-full py-2 rounded-lg flip-back-btn">
+                            返回
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中国建设银行 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- 正面 -->
+                    <div class="flip-card-front institution-card p-6">
+                        <div class="institution-icon mb-4">
+                            <i class="fa fa-building text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">中国建设银行</h3>
+                        <p class="text-gray-400 text-sm mb-4">为企业和个人提供全面的金融服务</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <i class="fa fa-phone text-secondary mr-2"></i>
+                                <span class="text-gray-300">95533</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-envelope text-secondary mr-2"></i>
+                                <span class="text-gray-300">service@ccb.com</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary w-full py-2 rounded-lg flip-btn">
+                            点击测额
+                        </button>
+                    </div>
+                    <!-- 背面 -->
+                    <div class="flip-card-back institution-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">保存下方二维码，精准测额</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">企业测额</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-32 h-32 bg-gray-700 rounded-lg flex items-center justify-center mb-2">
+                                    <div class="w-24 h-24 border-2 border-gray-500 transform rotate-45"></div>
+                                    <div class="w-24 h-24 border-2 border-gray-500 absolute transform -rotate-45"></div>
+                                </div>
+                                <span class="text-gray-300">个人测额</span>
+                            </div>
+                        </div>
+                        <button class="back-btn w-full py-2 rounded-lg flip-back-btn">
+                            返回
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </main>
+    
+    <!-- 悬浮工具 -->
+    <div id="floatingTools" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-6">
+        <!-- 智能客服 -->
+        <div id="chatButton" class="w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:bg-primary/90 transition-colors duration-300">
+            <i class="fa fa-comments text-white text-xl"></i>
+        </div>
+        
+        <!-- 返回顶部 -->
+        <div id="backToTop" class="w-14 h-14 bg-dark-lighter rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:bg-dark-lightest transition-colors duration-300">
+            <i class="fa fa-arrow-up text-white text-xl"></i>
+        </div>
+    </div>
+    
+    <!-- 智能客服窗口 -->
+    <div id="chatWindow" class="fixed bottom-24 right-6 z-50 w-80 bg-dark-lighter rounded-xl shadow-2xl hidden scale-95 opacity-0 transition-all duration-300">
+        <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+            <h3 class="text-white font-medium">智能客服</h3>
+            <button id="closeChat" class="text-gray-400 hover:text-white">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4 h-80 overflow-y-auto">
+            <div class="space-y-4">
+                <div class="flex space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                        <i class="fa fa-robot"></i>
+                    </div>
+                    <div class="bg-dark rounded-lg p-3 max-w-[80%]">
+                        <p class="text-gray-300 text-sm">您好！我是智能客服，有什么可以帮助您的吗？</p>
+                    </div>
+                </div>
+                
+                <!-- 常见问题 -->
+                <div class="mt-4">
+                    <p class="text-gray-400 text-xs mb-2">常见问题：</p>
+                    <div class="space-y-2">
+                        <button class="faq-chat-btn w-full text-left text-sm text-gray-300 hover:text-primary transition-colors duration-300">
+                            如何选择适合自己的贷款产品？
+                        </button>
+                        <button class="faq-chat-btn w-full text-left text-sm text-gray-300 hover:text-primary transition-colors duration-300">
+                            申请贷款需要准备哪些材料？
+                        </button>
+                        <button class="faq-chat-btn w-full text-left text-sm text-gray-300 hover:text-primary transition-colors duration-300">
+                            贷款审批需要多长时间？
+                        </button>
+                        <button class="faq-chat-btn w-full text-left text-sm text-gray-300 hover:text-primary transition-colors duration-300">
+                            贷款逾期会有什么后果？
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-700">
+            <div class="flex space-x-2">
+                <input type="text" placeholder="请输入您的问题" class="flex-1 bg-dark border border-gray-600 text-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                <button class="bg-primary text-white rounded-lg px-3 py-2">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 页面加载完成后添加交互事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 智能客服功能
+            const chatButton = document.getElementById('chatButton');
+            const chatWindow = document.getElementById('chatWindow');
+            const closeChat = document.getElementById('closeChat');
+            
+            if (chatButton && chatWindow && closeChat) {
+                chatButton.addEventListener('click', function() {
+                    if (chatWindow.classList.contains('hidden')) {
+                        chatWindow.classList.remove('hidden');
+                        // 添加延迟确保CSS过渡效果能正常显示
+                        setTimeout(() => {
+                            chatWindow.classList.remove('scale-95', 'opacity-0');
+                            chatWindow.classList.add('scale-100', 'opacity-100');
+                        }, 10);
+                    } else {
+                        chatWindow.classList.remove('scale-100', 'opacity-100');
+                        chatWindow.classList.add('scale-95', 'opacity-0');
+                        // 等待过渡效果完成后再隐藏
+                        setTimeout(() => {
+                            chatWindow.classList.add('hidden');
+                        }, 300);
+                    }
+                });
+                
+                closeChat.addEventListener('click', function() {
+                    chatWindow.classList.remove('scale-100', 'opacity-100');
+                    chatWindow.classList.add('scale-95', 'opacity-0');
+                    // 等待过渡效果完成后再隐藏
+                    setTimeout(() => {
+                        chatWindow.classList.add('hidden');
+                    }, 300);
+                });
+            }
+            
+            // 返回顶部功能
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // 智能客服常见问题功能
+            const faqChatButtons = document.querySelectorAll('.faq-chat-btn');
+            const chatMessages = document.querySelector('#chatWindow .space-y-4');
+            
+            faqChatButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.textContent.trim();
+                    let answer = '';
+                    
+                    // 根据问题获取对应的回答
+                    switch(question) {
+                        case '如何选择适合自己的贷款产品？':
+                            answer = '选择贷款产品时，应考虑以下因素：1. 贷款用途：根据资金用途选择合适的产品类型；2. 贷款额度：根据实际需求确定所需金额；3. 还款能力：选择与自身还款能力相匹配的期限和利率；4. 担保方式：根据自身条件选择信用、抵押或质押等担保方式；5. 审批速度：如急需资金，可选择审批速度较快的产品。';
+                            break;
+                        case '申请贷款需要准备哪些材料？':
+                            answer = '一般需要准备以下材料：1. 身份证明：身份证、户口本等；2. 收入证明：工资流水、经营流水等；3. 资产证明：房产证、车辆行驶证等；4. 经营证明：营业执照、税务登记证等；5. 贷款用途证明：购销合同、装修合同等。具体要求可能因产品类型和银行而异。';
+                            break;
+                        case '贷款审批需要多长时间？':
+                            answer = '贷款审批时间因产品类型和银行而异。一般来说，信用贷款审批较快，通常为1-3个工作日；抵押贷款和保证贷款审批时间较长，通常为3-10个工作日。具体时间可能会因申请材料的完整性、银行审批流程等因素而有所不同。';
+                            break;
+                        case '贷款逾期会有什么后果？':
+                            answer = '贷款逾期可能会产生以下后果：1. 产生罚息和违约金；2. 影响个人信用记录，对未来申请贷款、信用卡等产生不利影响；3. 银行可能会采取催收措施；4. 严重逾期可能会被起诉，甚至影响个人出行和消费。因此，建议借款人按时还款，如遇特殊情况应及时与银行沟通。';
+                            break;
+                    }
+                    
+                    // 添加用户问题到聊天窗口
+                    if (chatMessages) {
+                        // 添加用户问题
+                        chatMessages.innerHTML += `
+                            <div class="flex space-x-3 justify-end">
+                                <div class="bg-primary/20 rounded-lg p-3 max-w-[80%]">
+                                    <p class="text-white text-sm">${question}</p>
+                                </div>
+                                <div class="w-8 h-8 rounded-full bg-dark-lightest flex items-center justify-center text-white">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // 添加机器人回答
+                        chatMessages.innerHTML += `
+                            <div class="flex space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                                    <i class="fa fa-robot"></i>
+                                </div>
+                                <div class="bg-dark rounded-lg p-3 max-w-[80%]">
+                                    <p class="text-gray-300 text-sm">${answer}</p>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // 滚动到底部
+                        const chatContainer = document.querySelector('#chatWindow .overflow-y-auto');
+                        if (chatContainer) {
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }
+                    }
+                });
+            });
+            
+            // 3D翻转卡片功能
+            const flipButtons = document.querySelectorAll('.flip-btn');
+            const flipBackButtons = document.querySelectorAll('.flip-back-btn');
+            const flipCardBacks = document.querySelectorAll('.flip-card-back');
+            
+            flipButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const flipCard = this.closest('.flip-card');
+                    flipCard.classList.add('flipped');
+                });
+            });
+            
+            flipBackButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    const flipCard = this.closest('.flip-card');
+                    flipCard.classList.remove('flipped');
+                });
+            });
+            
+            // 点击空白处返回正面
+            flipCardBacks.forEach(back => {
+                back.addEventListener('click', function() {
+                    const flipCard = this.closest('.flip-card');
+                    flipCard.classList.remove('flipped');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
