@@ -7,68 +7,22 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
   <style>
-    .nav-link {
-      position: relative;
-      transition: all 0.3s ease;
-    }
-    .nav-link:hover {
-      color: #c9a227;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #1a5fb4, #c9a227);
-      transition: width 0.3s ease;
-    }
-    .nav-link:hover::after {
-      width: 100%;
-    }
-    .nav-link.active {
-      color: #c9a227;
-    }
-    .nav-link.active::after {
-      width: 100%;
-    }
-    .nav-scrolled {
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
-    }
-    .map-container {
-      background: var(--dark-bg);
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid var(--border);
-      min-height: 400px;
-    }
-    .node-card {
-      background: linear-gradient(135deg, rgba(26, 95, 180, 0.1) 0%, rgba(26, 95, 180, 0.05) 100%);
-      border: 1px solid rgba(26, 95, 180, 0.3);
-      border-radius: 12px;
-      padding: 16px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .node-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(26, 95, 180, 0.2);
-      border-color: rgba(26, 95, 180, 0.5);
-    }
-    .connection-line {
-      position: absolute;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--gold));
-      opacity: 0.6;
-    }
+    .nav-link { position: relative; transition: all 0.3s ease; }
+    .nav-link:hover { color: #c9a227; }
+    .nav-link::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #1a5fb4, #c9a227); transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active { color: #c9a227; }
+    .nav-link.active::after { width: 100%; }
+    .nav-scrolled { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2); }
+    .map-container { background: #1a1a2e; border-radius: 16px; padding: 20px; border: 1px solid #3a3a5e; min-height: 400px; }
+    .node-card { background: linear-gradient(135deg, rgba(26, 95, 180, 0.1) 0%, rgba(26, 95, 180, 0.05) 100%); border: 1px solid rgba(26, 95, 180, 0.3); border-radius: 12px; padding: 16px; transition: all 0.3s ease; cursor: pointer; }
+    .node-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(26, 95, 180, 0.2); border-color: rgba(26, 95, 180, 0.5); }
   </style>
 </head>
-<body style="overflow-y: auto;">
-  <!-- 顶部导航 -->
+<body style="overflow-y: auto; background: #0f172a;">
   <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
     <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
       <div class="flex items-center">
@@ -82,7 +36,6 @@
           </div>
         </a>
       </div>
-      
       <div class="hidden md:flex items-center gap-8">
         <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
         <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
@@ -98,339 +51,265 @@
         <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
         <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
       </div>
-      
       <div class="flex items-center gap-4">
         <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
-          <i class="fas fa-cog"></i>
-          <span>后台管理</span>
+          <i class="fas fa-cog"></i><span>后台管理</span>
         </a>
-        <a href="../index.html" class="btn btn-outline">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>退出系统</span>
-        </a>
+        <a href="../index.html" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i><span>退出系统</span></a>
       </div>
     </div>
   </nav>
 
   <div class="max-w-[1600px] mx-auto pt-24 px-8">
-    <!-- 页面标题 -->
     <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">发制品行业图谱</h1>
-        <p style="color: var(--text-secondary); font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #fff;">发制品行业图谱</h1>
+        <p style="color: #94a3b8; font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
       </div>
       <div class="flex gap-3">
-        <button class="btn btn-outline">
-          <i class="fas fa-expand"></i> 全屏查看
-        </button>
-        <button class="btn btn-primary">
-          <i class="fas fa-download"></i> 导出图谱
-        </button>
+        <button class="btn btn-outline"><i class="fas fa-expand"></i> 全屏查看</button>
+        <button class="btn btn-primary"><i class="fas fa-download"></i> 导出图谱</button>
       </div>
     </div>
 
-    <!-- 产业链图谱 -->
-    <div class="card mb-6">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-project-diagram"></i>
-          产业链图谱
-        </div>
+    <div class="card mb-6" style="background: #1e293b; border: 1px solid #334155;">
+      <div class="card-header" style="border-bottom: 1px solid #334155; padding: 16px 20px;">
+        <div class="card-title" style="color: #fff;"><i class="fas fa-project-diagram"></i> 产业链图谱</div>
         <div class="flex gap-2">
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">全景</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">上游</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">中游</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">下游</button>
+          <button class="btn btn-outline filter-btn" data-filter="all" style="padding: 6px 12px; font-size: 12px;">全景</button>
+          <button class="btn btn-outline filter-btn" data-filter="上游" style="padding: 6px 12px; font-size: 12px;">上游</button>
+          <button class="btn btn-outline filter-btn" data-filter="中游" style="padding: 6px 12px; font-size: 12px;">中游</button>
+          <button class="btn btn-outline filter-btn" data-filter="下游" style="padding: 6px 12px; font-size: 12px;">下游</button>
         </div>
       </div>
       <div class="map-container">
-        <div style="display: flex; align-items: center; justify-content: center; height: 400px; position: relative;">
-          <i class="fas fa-project-diagram text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
-          <div style="position: absolute; text-align: center;">
-            <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">发制品产业链全景图</div>
-            <div style="font-size: 14px; color: var(--text-secondary);">原料收购 → 档发加工 → 发套制作 → 外贸出口</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 产业节点 -->
-    <div class="grid grid-cols-4 gap-5 mb-6">
-      <div class="node-card">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-leaf text-xl"></i>
-          </div>
-          <div>
-            <div style="font-weight: 600; font-size: 16px;">原料收购</div>
-            <div style="font-size: 12px; color: var(--text-secondary);">产业链上游</div>
-          </div>
-        </div>
-        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-          人发、化纤原料收购，建立稳定的原料供应渠道
-        </div>
-        <div class="flex items-center justify-between">
-          <div style="font-size: 12px; color: var(--text-secondary);">
-            <i class="fas fa-building"></i> 28家企业
-          </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
-            查看详情
-          </button>
-        </div>
-      </div>
-      
-      <div class="node-card">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-cogs text-xl"></i>
-          </div>
-          <div>
-            <div style="font-weight: 600; font-size: 16px;">档发加工</div>
-            <div style="font-size: 12px; color: var(--text-secondary);">产业链中游</div>
-          </div>
-        </div>
-        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-          档发整理、分类、加工，为发套制作提供优质原料
-        </div>
-        <div class="flex items-center justify-between">
-          <div style="font-size: 12px; color: var(--text-secondary);">
-            <i class="fas fa-building"></i> 65家企业
-          </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
-            查看详情
-          </button>
-        </div>
-      </div>
-      
-      <div class="node-card">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-hair text-xl"></i>
-          </div>
-          <div>
-            <div style="font-weight: 600; font-size: 16px;">发套制作</div>
-            <div style="font-size: 12px; color: var(--text-secondary);">产业链中游</div>
-          </div>
-        </div>
-        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-          假发设计、制作、包装，生产各类发制品产品
-        </div>
-        <div class="flex items-center justify-between">
-          <div style="font-size: 12px; color: var(--text-secondary);">
-            <i class="fas fa-building"></i> 86家企业
-          </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
-            查看详情
-          </button>
-        </div>
-      </div>
-      
-      <div class="node-card">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--warning), #ea580c); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-globe text-xl"></i>
-          </div>
-          <div>
-            <div style="font-weight: 600; font-size: 16px;">外贸出口</div>
-            <div style="font-size: 12px; color: var(--text-secondary);">产业链下游</div>
-          </div>
-        </div>
-        <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-          国际市场开拓、跨境电商、海外销售渠道建设
-        </div>
-        <div class="flex items-center justify-between">
-          <div style="font-size: 12px; color: var(--text-secondary);">
-            <i class="fas fa-building"></i> 42家企业
-          </div>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
-            查看详情
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 企业关系网络 -->
-    <div class="card mb-6">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-network-wired"></i>
-          企业关系网络
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">供需关系</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">合作关系</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">竞争关系</button>
-        </div>
-      </div>
-      <div class="map-container">
-        <div style="display: flex; align-items: center; justify-content: center; height: 400px; position: relative;">
-          <i class="fas fa-network-wired text-6xl" style="color: var(--success); opacity: 0.5;"></i>
-          <div style="position: absolute; text-align: center;">
-            <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">企业关系网络图</div>
-            <div style="font-size: 14px; color: var(--text-secondary);">展示企业间的供需、合作、竞争关系</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 产业分布地图 -->
-    <div class="grid grid-cols-2 gap-6 mb-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-map-marked-alt"></i>
-            产业空间分布
-          </div>
-        </div>
-        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-          <i class="fas fa-map-marked-alt text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
-          <div style="position: absolute; text-align: center;">
-            <div style="font-size: 14px; color: var(--text-secondary);">产业空间分布地图</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">鄄城县产业园区分布</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-chart-pie"></i>
-            产业结构分析
-          </div>
-        </div>
-        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-          <i class="fas fa-chart-pie text-6xl" style="color: var(--gold); opacity: 0.5;"></i>
-          <div style="position: absolute; text-align: center;">
-            <div style="font-size: 14px; color: var(--text-secondary);">产业结构分析图表</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">各产业环节占比分布</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 重点企业 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-star"></i>
-          重点企业
-        </div>
-        <a href="#" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
-      </div>
-      <div class="grid grid-cols-4 gap-4">
-        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <i class="fas fa-building text-xl"></i>
-            </div>
-            <div>
-              <div style="font-weight: 600; font-size: 16px;">兴隆发制品有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">龙头企业</div>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">年产值</span>
-              <span style="font-size: 16px; font-weight: 600; color: var(--success);">¥2.8亿</span>
-            </div>
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
-              <span style="font-size: 16px; font-weight: 600;">1,280</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
-            主要产品：真人发假发、化纤假发
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--success)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <i class="fas fa-building text-xl"></i>
-            </div>
-            <div>
-              <div style="font-weight: 600; font-size: 16px;">华宇贸易有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">出口企业</div>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">年出口额</span>
-              <span style="font-size: 16px; font-weight: 600; color: var(--gold);">$1.5亿</span>
-            </div>
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
-              <span style="font-size: 16px; font-weight: 600;">856</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
-            主要市场：美国、欧洲、非洲
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <i class="fas fa-building text-xl"></i>
-            </div>
-            <div>
-              <div style="font-weight: 600; font-size: 16px;">恒达发制品有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">加工企业</div>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">年加工量</span>
-              <span style="font-size: 16px; font-weight: 600;">580吨</span>
-            </div>
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
-              <span style="font-size: 16px; font-weight: 600;">456</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
-            主要产品：档发、发束
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--warning)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--warning), #ea580c); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-              <i class="fas fa-building text-xl"></i>
-            </div>
-            <div>
-              <div style="font-weight: 600; font-size: 16px;">精工器械有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">配套企业</div>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">年销售额</span>
-              <span style="font-size: 16px; font-weight: 600; color: var(--success);">¥6,800万</span>
-            </div>
-            <div style="display: flex; flex-direction: column;">
-              <span style="font-size: 12px; color: var(--text-secondary);">员工数</span>
-              <span style="font-size: 16px; font-weight: 600;">128</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
-            主要产品：发制品工具、设备
-          </div>
-        </div>
+        <div id="industryChainChart" style="width: 100%; height: 600px;"></div>
       </div>
     </div>
   </div>
 
   <script>
-    // 导航栏滚动效果
     window.addEventListener('scroll', function() {
       const nav = document.getElementById('main-nav');
-      if (window.scrollY > 10) {
-        nav.classList.add('nav-scrolled');
-      } else {
-        nav.classList.remove('nav-scrolled');
-      }
+      if (window.scrollY > 10) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initIndustryChainChart();
+    });
+
+    function initIndustryChainChart() {
+      const chartDom = document.getElementById('industryChainChart');
+      const myChart = echarts.init(chartDom);
+
+      // 数据定义
+      const data = [
+        { name: '山东鄄城', value: 100, coord: [115.5, 35.57], category: '核心枢纽' },
+        { name: '印度', value: 40, coord: [78.96, 20.59], category: '上游原料' },
+        { name: '东南亚', value: 30, coord: [110.0, 13.0], category: '上游原料' },
+        { name: '河南许昌', value: 50, coord: [113.85, 34.04], category: '上游原料' },
+        { name: '江浙地区', value: 35, coord: [120.2, 30.3], category: '上游辅料' },
+        { name: '山东青岛', value: 45, coord: [120.38, 36.07], category: '中游生产' },
+        { name: '美国', value: 70, coord: [-95.71, 37.09], category: '下游市场' },
+        { name: '欧洲', value: 40, coord: [10.0, 50.0], category: '下游市场' },
+        { name: '非洲', value: 50, coord: [20.0, 5.0], category: '下游市场' },
+        { name: '日韩', value: 30, coord: [135.0, 35.0], category: '下游市场' }
+      ];
+
+      const flows = [
+        { from: '印度', to: '山东鄄城', value: 40 },
+        { from: '东南亚', to: '山东鄄城', value: 30 },
+        { from: '河南许昌', to: '山东鄄城', value: 50 },
+        { from: '江浙地区', to: '山东鄄城', value: 35 },
+        { from: '山东鄄城', to: '美国', value: 70 },
+        { from: '山东鄄城', to: '欧洲', value: 40 },
+        { from: '山东鄄城', to: '非洲', value: 50 },
+        { from: '山东鄄城', to: '日韩', value: 30 },
+        { from: '山东鄄城', to: '山东青岛', value: 20 },
+        { from: '山东青岛', to: '山东鄄城', value: 15 }
+      ];
+
+      // 颜色配置
+      const colors = {
+        '核心枢纽': '#FF0000',
+        '上游原料': '#9a60b4',
+        '上游辅料': '#5470c6',
+        '中游生产': '#91cc75',
+        '下游市场': '#ee6666'
+      };
+
+      // 构建节点数据
+      const nodesData = data.map(item => ({
+        name: item.name,
+        value: item.coord.concat(item.value),
+        category: item.category,
+        symbolSize: item.category === '核心枢纽' ? 50 : 20 + item.value * 0.3,
+        itemStyle: {
+          color: colors[item.category],
+          shadowBlur: item.category === '核心枢纽' ? 20 : 10,
+          shadowColor: colors[item.category]
+        },
+        label: {
+          show: true,
+          position: 'right',
+          formatter: '{b}',
+          color: '#fff',
+          fontSize: 12,
+          fontWeight: item.category === '核心枢纽' ? 'bold' : 'normal'
+        }
+      }));
+
+      // 构建飞线数据
+      const linesData = flows.map(flow => {
+        const fromNode = data.find(d => d.name === flow.from);
+        const toNode = data.find(d => d.name === flow.to);
+        const isUpstream = fromNode.category.includes('上游');
+        const isDownstream = toNode.category.includes('下游');
+        let color = '#91cc75';
+        if (isUpstream) color = '#9a60b4';
+        if (isDownstream) color = '#ee6666';
+        
+        return {
+          coords: [fromNode.coord, toNode.coord],
+          lineStyle: {
+            color: color,
+            width: 2 + flow.value / 20,
+            opacity: 0.8,
+            curveness: 0.2
+          }
+        };
+      });
+
+      // 类别配置
+      const categories = [
+        { name: '核心枢纽', itemStyle: { color: '#FF0000' } },
+        { name: '上游原料', itemStyle: { color: '#9a60b4' } },
+        { name: '上游辅料', itemStyle: { color: '#5470c6' } },
+        { name: '中游生产', itemStyle: { color: '#91cc75' } },
+        { name: '下游市场', itemStyle: { color: '#ee6666' } }
+      ];
+
+      const option = {
+        backgroundColor: '#1a1a2e',
+        title: {
+          text: '发制品全球产业链枢纽：山东鄄城',
+          left: 'center',
+          top: 10,
+          textStyle: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function(params) {
+            if (params.seriesType === 'effectScatter') {
+              return `<div style="font-weight:bold;color:#fff;">${params.name}</div><div style="color:#ccc;font-size:12px;">${params.data.category}</div>`;
+            } else if (params.seriesType === 'lines') {
+              return `<div style="font-weight:bold;color:#fff;">流量: ${params.data.value || 'N/A'}</div>`;
+            }
+          },
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          borderColor: '#3a3a5e',
+          borderWidth: 1,
+          textStyle: { color: '#fff' }
+        },
+        legend: {
+          orient: 'vertical',
+          left: 20,
+          top: 60,
+          data: categories.map(c => c.name),
+          textStyle: { color: '#fff' },
+          selectedMode: 'multiple'
+        },
+        geo: {
+          map: 'china',
+          roam: true,
+          zoom: 1.2,
+          center: [105, 35],
+          label: { show: true, color: '#fff', fontSize: 10 },
+          itemStyle: {
+            areaColor: '#1c1c3e',
+            borderColor: '#3a3a5e',
+            borderWidth: 1
+          },
+          emphasis: {
+            itemStyle: { areaColor: '#2a2a4e' },
+            label: { color: '#fff' }
+          }
+        },
+        series: [
+          {
+            name: '产业链节点',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: nodesData,
+            categories: categories,
+            symbolSize: function(val) { return val[2] / 2; },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke',
+              scale: 3,
+              period: 4
+            },
+            emphasis: {
+              scale: true,
+              itemStyle: {
+                shadowBlur: 20,
+                shadowColor: 'rgba(255,255,255,0.5)'
+              }
+            }
+          },
+          {
+            name: '产业链流向',
+            type: 'lines',
+            coordinateSystem: 'geo',
+            zlevel: 1,
+            effect: {
+              show: true,
+              period: 4,
+              trailLength: 0.4,
+              symbol: 'arrow',
+              symbolSize: 8,
+              color: '#fff'
+            },
+            lineStyle: {
+              curveness: 0.2
+            },
+            data: linesData,
+            emphasis: {
+              lineStyle: { width: 4, opacity: 1 }
+            }
+          }
+        ]
+      };
+
+      myChart.setOption(option);
+
+      // 筛选功能
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const filter = this.dataset.filter;
+          let selected = {};
+          
+          if (filter === 'all') {
+            categories.forEach(c => selected[c.name] = true);
+          } else if (filter === '上游') {
+            selected = { '核心枢纽': true, '上游原料': true, '上游辅料': true };
+          } else if (filter === '中游') {
+            selected = { '核心枢纽': true, '中游生产': true };
+          } else if (filter === '下游') {
+            selected = { '核心枢纽': true, '下游市场': true };
+          }
+          
+          myChart.setOption({ legend: { selected: selected } });
+          
+          filterBtns.forEach(b => b.classList.remove('btn-primary'));
+          this.classList.add('btn-primary');
+        });
+      });
+
+      window.addEventListener('resize', () => myChart.resize());
+    }
   </script>
 </body>
 </html>
