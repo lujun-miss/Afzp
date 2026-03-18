@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
   <style>
     .nav-link { position: relative; transition: all 0.3s ease; }
     .nav-link:hover { color: #c9a227; }
@@ -20,6 +21,8 @@
     .map-container { background: #1a1a2e; border-radius: 16px; padding: 20px; border: 1px solid #3a3a5e; }
     .filter-btn { transition: all 0.3s ease; }
     .filter-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+    
+    /* 企业信息面板样式 */
     #company-info-panel {
       margin-top: 20px;
       padding: 20px;
@@ -33,17 +36,407 @@
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .company-item {
-      padding: 10px 15px;
-      margin: 8px 0;
-      background: rgba(59, 130, 246, 0.1);
-      border-left: 3px solid #3b82f6;
-      border-radius: 0 8px 8px 0;
+    
+    /* 功能栏样式 */
+    .list-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #3a3a5e;
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .total-count {
+      color: #e2e8f0;
+      font-size: 16px;
+    }
+    .total-count strong {
+      color: #3b82f6;
+      font-size: 18px;
+    }
+    .filter-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .tag {
+      padding: 6px 12px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid #3b82f6;
+      border-radius: 16px;
+      font-size: 12px;
+      color: #93c5fd;
+    }
+    .clear-filters {
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 16px;
+      font-size: 12px;
+      color: #94a3b8;
+      cursor: pointer;
       transition: all 0.3s ease;
     }
-    .company-item:hover {
-      background: rgba(59, 130, 246, 0.2);
-      transform: translateX(5px);
+    .clear-filters:hover {
+      background: #334155;
+      border-color: #94a3b8;
+    }
+    
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .view-controls {
+      display: flex;
+      gap: 5px;
+    }
+    .view-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .view-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+    
+    .export-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .export-btn {
+      padding: 8px 16px;
+      background: #10b981;
+      border: 1px solid #10b981;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .export-btn:hover {
+      background: #059669;
+    }
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .pagination input {
+      width: 50px;
+      padding: 4px 8px;
+      background: #334155;
+      border: 1px solid #64748b;
+      border-radius: 4px;
+      color: #e2e8f0;
+      text-align: center;
+    }
+    .page-btn {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .page-btn:hover {
+      background: #334155;
+    }
+    
+    /* 企业卡片样式 */
+    .enterprise-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+    }
+    .enterprise-card {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .enterprise-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+      border-color: #3b82f6;
+    }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #334155;
+    }
+    .company-logo {
+      position: relative;
+    }
+    .company-logo img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      background: #334155;
+    }
+    .status-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .status-active {
+      background: #10b981;
+      color: #fff;
+    }
+    .company-info {
+      flex: 1;
+    }
+    .company-name {
+      margin: 0 0 8px 0;
+      color: #e2e8f0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .company-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .favorite-btn {
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .favorite-btn:hover {
+      background: #334155;
+    }
+    .favorite-btn[data-fav="true"] {
+      background: #f59e0b;
+      border-color: #f59e0b;
+      color: #fff;
+    }
+    
+    .card-body {
+      margin-bottom: 15px;
+    }
+    .info-section {
+      margin-bottom: 12px;
+    }
+    .info-section label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+    .info-section p {
+      margin: 0;
+      font-size: 14px;
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+    .business-scope {
+      position: relative;
+    }
+    .toggle-more {
+      color: #3b82f6;
+      font-size: 12px;
+      text-decoration: none;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    .full-scope {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag-upstream {
+      background: rgba(154, 96, 180, 0.2);
+      border-color: #9a60b4;
+      color: #c4b5fd;
+    }
+    .tag-midstream {
+      background: rgba(145, 204, 117, 0.2);
+      border-color: #91cc75;
+      color: #bbf7d0;
+    }
+    .tag-downstream {
+      background: rgba(238, 102, 102, 0.2);
+      border-color: #ee6666;
+      color: #fca5a5;
+    }
+    
+    .card-footer {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      flex: 1;
+      padding: 8px 16px;
+      background: #3b82f6;
+      border: 1px solid #3b82f6;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+    .btn-secondary {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background: #334155;
+    }
+    
+    /* 表格视图样式 */
+    .enterprise-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .enterprise-table th {
+      background: #334155;
+      padding: 12px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      border-bottom: 1px solid #475569;
+    }
+    .enterprise-table td {
+      padding: 12px;
+      font-size: 13px;
+      color: #e2e8f0;
+      border-bottom: 1px solid #334155;
+    }
+    .enterprise-table tr:hover {
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .table-company {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .table-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background: #475569;
+    }
+    .address, .scope {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .table-btn {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #94a3b8;
+      cursor: pointer;
+      margin-right: 5px;
+      transition: all 0.3s ease;
+    }
+    .table-btn:hover {
+      background: #334155;
+    }
+    .table-btn.view-detail {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+    .table-btn.view-detail:hover {
+      background: #2563eb;
+    }
+    
+    /* 地图分布样式 */
+    #enterprise-map {
+      width: 1000px;
+      height: 600px;
+      border-radius: 8px;
+      background: #1c1c3e;
+      position: relative;
+      margin: 0 auto;
+    }
+    .map-controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+    .map-control-btn {
+      padding: 8px 16px;
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid #3a3a5e;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .map-control-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
     }
   </style>
 </head>
@@ -92,8 +485,8 @@
         <p style="color: #94a3b8; font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
       </div>
       <div class="flex gap-3">
-        <button class="btn btn-outline"><i class="fas fa-expand"></i> 全屏查看</button>
-        <button class="btn btn-primary"><i class="fas fa-download"></i> 导出图谱</button>
+        <button class="btn btn-outline" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> 全屏查看</button>
+        <button class="btn btn-primary" onclick="exportChart()"><i class="fas fa-download"></i> 导出图谱</button>
       </div>
     </div>
 
@@ -114,12 +507,380 @@
 
     <!-- 企业信息展示面板 -->
     <div id="company-info-panel">
-      <h3 id="info-title" style="margin: 0 0 15px 0; color: #fff; font-size: 18px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
-        <i class="fas fa-info-circle" style="color: #3b82f6; margin-right: 8px;"></i>
-        点击地图上的流动线，查看具体企业信息
-      </h3>
-      <div id="flow-info" style="color: #94a3b8; margin-bottom: 15px; font-size: 14px;"></div>
-      <ul id="company-list" style="list-style: none; padding: 0; margin: 0;"></ul>
+      <!-- 功能栏 -->
+      <div class="list-header">
+        <div class="stats-bar">
+          <span class="total-count">共找到 <strong>2,104</strong> 家相关企业</span>
+          <div class="filter-tags">
+            <span class="tag">业务类型：高端发套与假发出口</span>
+            <span class="tag">贸易方向：山东鄄城→美国</span>
+            <span class="tag">筛选：注册资本>1000万</span>
+            <button class="clear-filters">清空筛选</button>
+          </div>
+        </div>
+        
+        <div class="actions-bar">
+          <div class="view-controls">
+            <button class="view-btn active" data-view="card">卡片视图</button>
+            <button class="view-btn" data-view="table">表格视图</button>
+            <button class="view-btn" data-view="map">地图分布</button>
+          </div>
+          
+          <div class="export-actions">
+            <button class="export-btn">
+              <i class="fas fa-download"></i> 导出列表
+            </button>
+            <div class="pagination">
+              第 <input type="number" value="1" min="1" max="105"> / 105 页
+              <button class="page-btn prev"><i class="fas fa-chevron-left"></i> 上一页</button>
+              <button class="page-btn next">下一页 <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 视图内容容器 -->
+      <div id="view-content" style="width: 100%;">
+        <!-- 卡片视图 -->
+        <div class="enterprise-cards view-content" data-view="card" style="display: block;">
+          <!-- 企业卡片 1 -->
+          <div class="enterprise-card" data-id="12345">
+            <div class="card-header">
+              <div class="company-logo">
+                <div style="width: 60px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px;">YYY</div>
+                <span class="status-badge status-active">存续</span>
+              </div>
+              <div class="company-info">
+                <h4 class="company-name">鄄城YYY发制品集团</h4>
+                <div class="company-meta">
+                  <span class="meta-item"><i class="fas fa-user"></i> 法人：张三</span>
+                  <span class="meta-item"><i class="fas fa-calendar"></i> 成立：2015-01-01</span>
+                  <span class="meta-item"><i class="fas fa-money-bill-wave"></i> 注册资本：1,000万元</span>
+                </div>
+              </div>
+              <button class="favorite-btn" data-fav="false"><i class="far fa-star"></i> 关注</button>
+            </div>
+            
+            <div class="card-body">
+              <div class="info-section">
+                <label>企业地址：</label>
+                <p>山东省菏泽市鄄城县XX镇发制品产业园88号</p>
+              </div>
+              <div class="info-section">
+                <label>经营范围：</label>
+                <p class="business-scope">发制品、假发、头套及相关配件的生产、销售；货物进出口、技术进出口；高端真人发套定制... <span class="toggle-more">展开更多</span></p>
+                <div class="full-scope" style="display:none;">
+                  完整经营范围：发制品、假发、头套及相关配件的生产、销售；货物进出口、技术进出口；高端真人发套定制、化纤发制品研发与制造；假发护理产品生产销售。（依法须经批准的项目，经相关部门批准后方可开展经营活动）
+                </div>
+              </div>
+              <div class="info-section">
+                <label>产业链定位：</label>
+                <div class="tags">
+                  <span class="tag tag-upstream">原料采购</span>
+                  <span class="tag tag-midstream">生产制造</span>
+                  <span class="tag tag-downstream">成品出口</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-footer">
+              <button class="btn-primary view-detail" onclick="openEnterpriseDashboard('12345')">
+                <i class="fas fa-chart-bar"></i> 查看企业档案
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-phone"></i> 联系企业
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-map-marker-alt"></i> 导航地址
+              </button>
+            </div>
+          </div>
+
+          <!-- 企业卡片 2 -->
+          <div class="enterprise-card" data-id="12346">
+            <div class="card-header">
+              <div class="company-logo">
+                <div style="width: 60px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px;">BBB</div>
+                <span class="status-badge status-active">存续</span>
+              </div>
+              <div class="company-info">
+                <h4 class="company-name">美国BBB品牌进口商</h4>
+                <div class="company-meta">
+                  <span class="meta-item"><i class="fas fa-user"></i> 法人：John Smith</span>
+                  <span class="meta-item"><i class="fas fa-calendar"></i> 成立：2010-05-15</span>
+                  <span class="meta-item"><i class="fas fa-money-bill-wave"></i> 注册资本：500万美元</span>
+                </div>
+              </div>
+              <button class="favorite-btn" data-fav="false"><i class="far fa-star"></i> 关注</button>
+            </div>
+            
+            <div class="card-body">
+              <div class="info-section">
+                <label>企业地址：</label>
+                <p>123 Main St, New York, NY 10001, USA</p>
+              </div>
+              <div class="info-section">
+                <label>经营范围：</label>
+                <p class="business-scope">发制品、假发、头套及相关配件的进口、销售；国际物流服务；品牌运营与推广... <span class="toggle-more">展开更多</span></p>
+                <div class="full-scope" style="display:none;">
+                  完整经营范围：发制品、假发、头套及相关配件的进口、销售；国际物流服务；品牌运营与推广；市场调研与分析；跨境电商平台运营；售后服务。（依法须经批准的项目，经相关部门批准后方可开展经营活动）
+                </div>
+              </div>
+              <div class="info-section">
+                <label>产业链定位：</label>
+                <div class="tags">
+                  <span class="tag tag-downstream">品牌运营</span>
+                  <span class="tag tag-downstream">市场销售</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-footer">
+              <button class="btn-primary view-detail" onclick="openEnterpriseDashboard('12346')">
+                <i class="fas fa-chart-bar"></i> 查看企业档案
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-phone"></i> 联系企业
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-map-marker-alt"></i> 导航地址
+              </button>
+            </div>
+          </div>
+
+          <!-- 企业卡片 3 -->
+          <div class="enterprise-card" data-id="12347">
+            <div class="card-header">
+              <div class="company-logo">
+                <div style="width: 60px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px;">LAT</div>
+                <span class="status-badge status-active">存续</span>
+              </div>
+              <div class="company-info">
+                <h4 class="company-name">洛杉矶发业贸易公司</h4>
+                <div class="company-meta">
+                  <span class="meta-item"><i class="fas fa-user"></i> 法人：Lisa Johnson</span>
+                  <span class="meta-item"><i class="fas fa-calendar"></i> 成立：2012-08-20</span>
+                  <span class="meta-item"><i class="fas fa-money-bill-wave"></i> 注册资本：300万美元</span>
+                </div>
+              </div>
+              <button class="favorite-btn" data-fav="false"><i class="far fa-star"></i> 关注</button>
+            </div>
+            
+            <div class="card-body">
+              <div class="info-section">
+                <label>企业地址：</label>
+                <p>456 Sunset Blvd, Los Angeles, CA 90028, USA</p>
+              </div>
+              <div class="info-section">
+                <label>经营范围：</label>
+                <p class="business-scope">发制品、假发、头套及相关配件的批发、零售；国际贸易；品牌代理... <span class="toggle-more">展开更多</span></p>
+                <div class="full-scope" style="display:none;">
+                  完整经营范围：发制品、假发、头套及相关配件的批发、零售；国际贸易；品牌代理；市场推广；仓储物流服务；电商平台运营。（依法须经批准的项目，经相关部门批准后方可开展经营活动）
+                </div>
+              </div>
+              <div class="info-section">
+                <label>产业链定位：</label>
+                <div class="tags">
+                  <span class="tag tag-downstream">批发零售</span>
+                  <span class="tag tag-downstream">品牌代理</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-footer">
+              <button class="btn-primary view-detail" onclick="openEnterpriseDashboard('12347')">
+                <i class="fas fa-chart-bar"></i> 查看企业档案
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-phone"></i> 联系企业
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-map-marker-alt"></i> 导航地址
+              </button>
+            </div>
+          </div>
+
+          <!-- 企业卡片 4 -->
+          <div class="enterprise-card" data-id="12348">
+            <div class="card-header">
+              <div class="company-logo">
+                <div style="width: 60px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #ec4899, #db2777); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px;">NYD</div>
+                <span class="status-badge status-active">存续</span>
+              </div>
+              <div class="company-info">
+                <h4 class="company-name">纽约假发分销商</h4>
+                <div class="company-meta">
+                  <span class="meta-item"><i class="fas fa-user"></i> 法人：David Lee</span>
+                  <span class="meta-item"><i class="fas fa-calendar"></i> 成立：2014-03-10</span>
+                  <span class="meta-item"><i class="fas fa-money-bill-wave"></i> 注册资本：200万美元</span>
+                </div>
+              </div>
+              <button class="favorite-btn" data-fav="false"><i class="far fa-star"></i> 关注</button>
+            </div>
+            
+            <div class="card-body">
+              <div class="info-section">
+                <label>企业地址：</label>
+                <p>789 Broadway, New York, NY 10003, USA</p>
+              </div>
+              <div class="info-section">
+                <label>经营范围：</label>
+                <p class="business-scope">发制品、假发、头套及相关配件的分销、零售；线上平台运营；客户服务... <span class="toggle-more">展开更多</span></p>
+                <div class="full-scope" style="display:none;">
+                  完整经营范围：发制品、假发、头套及相关配件的分销、零售；线上平台运营；客户服务；市场推广；品牌代理。（依法须经批准的项目，经相关部门批准后方可开展经营活动）
+                </div>
+              </div>
+              <div class="info-section">
+                <label>产业链定位：</label>
+                <div class="tags">
+                  <span class="tag tag-downstream">分销零售</span>
+                  <span class="tag tag-downstream">客户服务</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-footer">
+              <button class="btn-primary view-detail" onclick="openEnterpriseDashboard('12348')">
+                <i class="fas fa-chart-bar"></i> 查看企业档案
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-phone"></i> 联系企业
+              </button>
+              <button class="btn-secondary">
+                <i class="fas fa-map-marker-alt"></i> 导航地址
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 表格视图 -->
+        <div class="view-content" data-view="table" style="display: none;">
+          <table class="enterprise-table">
+            <thead>
+              <tr>
+                <th width="200">企业名称</th>
+                <th width="80">状态</th>
+                <th width="120">法人</th>
+                <th width="120">注册资本</th>
+                <th width="100">成立日期</th>
+                <th width="250">地址</th>
+                <th width="300">经营范围</th>
+                <th width="150">产业链环节</th>
+                <th width="150">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="table-company">
+                    <div style="width: 32px; height: 32px; border-radius: 4px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">YYY</div>
+                    鄄城YYY发制品集团
+                  </div>
+                </td>
+                <td><span class="status-badge status-active">存续</span></td>
+                <td>张三</td>
+                <td>1,000万元</td>
+                <td>2015-01-01</td>
+                <td class="address">山东省菏泽市鄄城县XX镇发制品产业园88号</td>
+                <td class="scope">发制品、假发、头套及相关配件的生产、销售...</td>
+                <td>
+                  <div class="tags">
+                    <span class="tag tag-upstream">原料采购</span>
+                    <span class="tag tag-midstream">生产制造</span>
+                    <span class="tag tag-downstream">成品出口</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="table-btn view-detail" onclick="openEnterpriseDashboard('12345')">查看档案</button>
+                  <button class="table-btn">关注</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="table-company">
+                    <div style="width: 32px; height: 32px; border-radius: 4px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">BBB</div>
+                    美国BBB品牌进口商
+                  </div>
+                </td>
+                <td><span class="status-badge status-active">存续</span></td>
+                <td>John Smith</td>
+                <td>500万美元</td>
+                <td>2010-05-15</td>
+                <td class="address">123 Main St, New York, NY 10001, USA</td>
+                <td class="scope">发制品、假发、头套及相关配件的进口、销售...</td>
+                <td>
+                  <div class="tags">
+                    <span class="tag tag-downstream">品牌运营</span>
+                    <span class="tag tag-downstream">市场销售</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="table-btn view-detail" onclick="openEnterpriseDashboard('12346')">查看档案</button>
+                  <button class="table-btn">关注</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="table-company">
+                    <div style="width: 32px; height: 32px; border-radius: 4px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">LAT</div>
+                    洛杉矶发业贸易公司
+                  </div>
+                </td>
+                <td><span class="status-badge status-active">存续</span></td>
+                <td>Lisa Johnson</td>
+                <td>300万美元</td>
+                <td>2012-08-20</td>
+                <td class="address">456 Sunset Blvd, Los Angeles, CA 90028, USA</td>
+                <td class="scope">发制品、假发、头套及相关配件的批发、零售...</td>
+                <td>
+                  <div class="tags">
+                    <span class="tag tag-downstream">批发零售</span>
+                    <span class="tag tag-downstream">品牌代理</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="table-btn view-detail" onclick="openEnterpriseDashboard('12347')">查看档案</button>
+                  <button class="table-btn">关注</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="table-company">
+                    <div style="width: 32px; height: 32px; border-radius: 4px; background: linear-gradient(135deg, #ec4899, #db2777); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">NYD</div>
+                    纽约假发分销商
+                  </div>
+                </td>
+                <td><span class="status-badge status-active">存续</span></td>
+                <td>David Lee</td>
+                <td>200万美元</td>
+                <td>2014-03-10</td>
+                <td class="address">789 Broadway, New York, NY 10003, USA</td>
+                <td class="scope">发制品、假发、头套及相关配件的分销、零售...</td>
+                <td>
+                  <div class="tags">
+                    <span class="tag tag-downstream">分销零售</span>
+                    <span class="tag tag-downstream">客户服务</span>
+                  </div>
+                </td>
+                <td>
+                  <button class="table-btn view-detail" onclick="openEnterpriseDashboard('12348')">查看档案</button>
+                  <button class="table-btn">关注</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 地图分布视图 -->
+        <div class="view-content" data-view="map" style="position: relative; width: 100%; min-width: 100%; display: none;">
+          <div class="map-controls">
+            <button class="map-control-btn active" data-map-mode="marker">标记点模式</button>
+            <button class="map-control-btn" data-map-mode="heatmap">热力图模式</button>
+            <button class="map-control-btn" data-map-mode="flow">流向图模式</button>
+          </div>
+          <div id="enterprise-map"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -130,8 +891,46 @@
       else nav.classList.remove('nav-scrolled');
     });
 
+    // 全屏查看函数 - 只针对产业链图谱
+    function toggleFullscreen() {
+      const element = document.querySelector('.card .map-container');
+      if (!document.fullscreenElement) {
+        element.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // 导出图谱函数
+    function exportChart() {
+      const chart = echarts.getInstanceByDom(document.getElementById('industryChainChart'));
+      if (chart) {
+        // 调用ECharts的导出功能
+        chart.exportToPNG({
+          pixelRatio: 2, // 提高分辨率
+          backgroundColor: '#1a1a2e' // 保持与图表一致的背景色
+        }).then(dataURL => {
+          // 创建下载链接
+          const link = document.createElement('a');
+          link.download = '发制品产业链图谱.png';
+          link.href = dataURL;
+          link.click();
+        }).catch(err => {
+          console.error('导出失败:', err);
+          alert('导出失败，请重试');
+        });
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       initIndustryChainChart();
+      initViewControls();
+      initCardInteractions();
+      initEnterpriseMap();
     });
 
     function initIndustryChainChart() {
@@ -244,38 +1043,48 @@
         'downstream': '#ee6666'
       };
 
-      // 构建节点数据
-      const nodesData = nodes.map(item => ({
-        name: item.name,
-        value: item.coord.concat(item.value),
-        category: item.category,
-        symbolSize: item.category === 'hub' ? 50 : 20 + item.value * 0.3,
-        itemStyle: {
-          color: colors[item.category],
-          shadowBlur: item.category === 'hub' ? 30 : 15,
-          shadowColor: colors[item.category]
-        },
-        label: {
-          show: true,
-          position: item.category === 'hub' ? 'top' : 'right',
-          formatter: item.category === 'hub' ? '{a|' + item.name + '}' : item.name,
-          color: '#fff',
-          fontSize: item.category === 'hub' ? 16 : 12,
-          fontWeight: item.category === 'hub' ? 'bold' : 'normal',
-          rich: {
-            a: {
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#FF0000',
-              padding: [8, 12],
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              borderRadius: 8,
-              borderColor: '#FF0000',
-              borderWidth: 2
+      // 构建节点数据 - 按类别分组
+      const nodesByCategory = {
+        'hub': [],
+        'upstream': [],
+        'midstream': [],
+        'downstream': []
+      };
+      
+      nodes.forEach(item => {
+        const node = {
+          name: item.name,
+          value: item.coord.concat(item.value),
+          category: item.category,
+          symbolSize: item.category === 'hub' ? 50 : 20 + item.value * 0.3,
+          itemStyle: {
+            color: colors[item.category],
+            shadowBlur: item.category === 'hub' ? 30 : 15,
+            shadowColor: colors[item.category]
+          },
+          label: {
+            show: true,
+            position: item.category === 'hub' ? 'top' : 'right',
+            formatter: item.category === 'hub' ? '{a|' + item.name + '}' : item.name,
+            color: '#fff',
+            fontSize: item.category === 'hub' ? 16 : 12,
+            fontWeight: item.category === 'hub' ? 'bold' : 'normal',
+            rich: {
+              a: {
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: '#FF0000',
+                padding: [8, 12],
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                borderRadius: 8,
+                borderColor: '#FF0000',
+                borderWidth: 2
+              }
             }
           }
-        }
-      }));
+        };
+        nodesByCategory[item.category].push(node);
+      });
 
       // 构建飞线数据
       const linesData = links.map(link => ({
@@ -314,6 +1123,19 @@
           borderColor: '#3a3a5e',
           borderWidth: 1,
           textStyle: { color: '#fff' }
+        },
+        legend: {
+          top: 50,
+          left: 'center',
+          textStyle: { color: '#fff', fontSize: 12 },
+          itemWidth: 15,
+          itemHeight: 15,
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          borderColor: '#3a3a5e',
+          borderWidth: 1,
+          padding: [10, 20],
+          data: ['核心枢纽', '上游原料', '中游生产', '下游市场'],
+          show: true
         },
         geo: {
           map: 'china',
@@ -355,15 +1177,75 @@
             }
           },
           {
-            name: '产业链节点',
+            name: '核心枢纽',
             type: 'effectScatter',
             coordinateSystem: 'geo',
-            data: nodesData,
+            data: nodesByCategory['hub'],
             symbolSize: function(val) { return val[2] / 2; },
             showEffectOn: 'render',
             rippleEffect: {
               brushType: 'stroke',
-              scale: item => item.category === 'hub' ? 5 : 3,
+              scale: 5,
+              period: 4
+            },
+            emphasis: {
+              scale: true,
+              itemStyle: {
+                shadowBlur: 30,
+                shadowColor: 'rgba(255,255,255,0.8)'
+              }
+            }
+          },
+          {
+            name: '上游原料',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: nodesByCategory['upstream'],
+            symbolSize: function(val) { return val[2] / 2; },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke',
+              scale: 3,
+              period: 4
+            },
+            emphasis: {
+              scale: true,
+              itemStyle: {
+                shadowBlur: 30,
+                shadowColor: 'rgba(255,255,255,0.8)'
+              }
+            }
+          },
+          {
+            name: '中游生产',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: nodesByCategory['midstream'],
+            symbolSize: function(val) { return val[2] / 2; },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke',
+              scale: 3,
+              period: 4
+            },
+            emphasis: {
+              scale: true,
+              itemStyle: {
+                shadowBlur: 30,
+                shadowColor: 'rgba(255,255,255,0.8)'
+              }
+            }
+          },
+          {
+            name: '下游市场',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: nodesByCategory['downstream'],
+            symbolSize: function(val) { return val[2] / 2; },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke',
+              scale: 3,
               period: 4
             },
             emphasis: {
@@ -396,23 +1278,30 @@
           this.classList.add('active');
           
           // 筛选数据
-          let newLineData, newNodeData;
+          let newLineData, newSeries;
           if (filter === 'all') {
             newLineData = linesData;
-            newNodeData = nodesData;
+            newSeries = [
+              { data: newLineData },
+              { data: nodesByCategory['hub'] },
+              { data: nodesByCategory['upstream'] },
+              { data: nodesByCategory['midstream'] },
+              { data: nodesByCategory['downstream'] }
+            ];
           } else {
             newLineData = linesData.filter(link => link.category === filter);
             // 节点：保留筛选类别的节点 + 核心枢纽
-            newNodeData = nodesData.filter(node => 
-              node.category === filter || node.category === 'hub'
-            );
+            newSeries = [
+              { data: newLineData },
+              { data: nodesByCategory['hub'] },
+              { data: filter === 'upstream' ? nodesByCategory['upstream'] : [] },
+              { data: filter === 'midstream' ? nodesByCategory['midstream'] : [] },
+              { data: filter === 'downstream' ? nodesByCategory['downstream'] : [] }
+            ];
           }
           
           myChart.setOption({
-            series: [
-              { data: newLineData },
-              { data: newNodeData }
-            ]
+            series: newSeries
           });
           
           // 隐藏信息面板
@@ -425,29 +1314,7 @@
         if (params.seriesType === 'lines' && params.data && params.data.info) {
           const info = params.data.info;
           const panel = document.getElementById('company-info-panel');
-          const titleEl = document.getElementById('info-title');
-          const flowInfoEl = document.getElementById('flow-info');
-          const listEl = document.getElementById('company-list');
-
-          // 更新标题
-          titleEl.innerHTML = `<i class="fas fa-route" style="color: #3b82f6; margin-right: 8px;"></i>${info.title}`;
           
-          // 更新流向信息
-          flowInfoEl.innerHTML = `<i class="fas fa-exchange-alt" style="margin-right: 5px;"></i>业务类型：${info.flowType}`;
-
-          // 生成企业列表
-          listEl.innerHTML = '';
-          info.companies.forEach((company, index) => {
-            const li = document.createElement('li');
-            li.className = 'company-item';
-            li.innerHTML = `
-              <i class="fas fa-building" style="color: #3b82f6; margin-right: 10px;"></i>
-              <span style="color: #e2e8f0;">${company}</span>
-            `;
-            li.style.animationDelay = `${index * 0.1}s`;
-            listEl.appendChild(li);
-          });
-
           // 显示面板
           panel.classList.add('show');
 
@@ -469,6 +1336,502 @@
       });
 
       window.addEventListener('resize', () => myChart.resize());
+    }
+
+    // 企业数据
+    const enterprises = [
+      {
+        id: 1,
+        name: "鄄城YYY发制品集团",
+        type: "生产商",
+        businessScope: "高端发套与假发出口",
+        registeredCapital: 5000,
+        address: "山东省菏泽市鄄城县发制品产业园88号",
+        coordinates: [115.5, 35.57],
+        tradeDirection: ["美国", "欧洲"],
+        scale: "大型"
+      },
+      {
+        id: 2,
+        name: "青岛海发进出口有限公司",
+        type: "贸易商",
+        businessScope: "化纤发制品出口",
+        registeredCapital: 1200,
+        address: "山东省青岛市黄岛区保税区",
+        coordinates: [120.38, 36.07],
+        tradeDirection: ["美国", "日韩"],
+        scale: "中型"
+      },
+      {
+        id: 3,
+        name: "许昌瑞贝卡发制品公司",
+        type: "生产商",
+        businessScope: "档发加工与销售",
+        registeredCapital: 3000,
+        address: "河南省许昌市魏都区发制品产业园",
+        coordinates: [113.85, 34.04],
+        tradeDirection: ["鄄城"],
+        scale: "大型"
+      },
+      {
+        id: 4,
+        name: "浙江网帽制品公司",
+        type: "辅料商",
+        businessScope: "假发网帽生产",
+        registeredCapital: 800,
+        address: "浙江省杭州市余杭区",
+        coordinates: [120.2, 30.3],
+        tradeDirection: ["鄄城", "青岛"],
+        scale: "中型"
+      },
+      {
+        id: 5,
+        name: "美国BBB品牌进口商",
+        type: "品牌商",
+        businessScope: "高端假发品牌运营",
+        registeredCapital: 500,
+        address: "123 Main St, New York, NY",
+        coordinates: [-74.006, 40.7128],
+        tradeDirection: ["鄄城"],
+        scale: "大型"
+      },
+      {
+        id: 6,
+        name: "洛杉矶发业贸易公司",
+        type: "贸易商",
+        businessScope: "假发批发与分销",
+        registeredCapital: 300,
+        address: "456 Sunset Blvd, Los Angeles, CA",
+        coordinates: [-118.2437, 34.0522],
+        tradeDirection: ["鄄城"],
+        scale: "中型"
+      },
+      {
+        id: 7,
+        name: "纽约假发分销商",
+        type: "贸易商",
+        businessScope: "假发零售与分销",
+        registeredCapital: 200,
+        address: "789 Broadway, New York, NY",
+        coordinates: [-73.9905, 40.7282],
+        tradeDirection: ["鄄城"],
+        scale: "小型"
+      },
+      {
+        id: 8,
+        name: "德国假发分销公司",
+        type: "品牌商",
+        businessScope: "医疗假发品牌运营",
+        registeredCapital: 400,
+        address: "Berlin, Germany",
+        coordinates: [13.405, 52.52],
+        tradeDirection: ["鄄城"],
+        scale: "中型"
+      },
+      {
+        id: 9,
+        name: "尼日利亚发业进口商",
+        type: "贸易商",
+        businessScope: "发制品进口与分销",
+        registeredCapital: 150,
+        address: "Lagos, Nigeria",
+        coordinates: [3.3792, 6.5244],
+        tradeDirection: ["鄄城"],
+        scale: "小型"
+      },
+      {
+        id: 10,
+        name: "日本东京发业进口商",
+        type: "品牌商",
+        businessScope: "时尚假发品牌运营",
+        registeredCapital: 350,
+        address: "Tokyo, Japan",
+        coordinates: [139.6917, 35.6895],
+        tradeDirection: ["鄄城"],
+        scale: "中型"
+      }
+    ];
+
+    // 初始化企业分布地图
+    function initEnterpriseMap() {
+      const mapDom = document.getElementById('enterprise-map');
+      const mapChart = echarts.init(mapDom);
+      
+      let currentMode = 'marker';
+      
+      // 初始化地图
+      updateMap('marker');
+      
+      // 强制调整地图大小
+      setTimeout(() => {
+        mapChart.resize();
+      }, 100);
+      
+      // 地图模式切换
+      document.querySelectorAll('.map-control-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const mode = this.dataset.mapMode;
+          currentMode = mode;
+          
+          // 更新按钮状态
+          document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 更新地图
+          updateMap(mode);
+        });
+      });
+      
+      function updateMap(mode) {
+        let series = [];
+        
+        switch(mode) {
+          case 'marker':
+            series = createMarkerSeries();
+            break;
+          case 'heatmap':
+            series = createHeatmapSeries();
+            break;
+          case 'flow':
+            series = createFlowSeries();
+            break;
+        }
+        
+        const option = {
+          backgroundColor: '#1c1c3e',
+          title: {
+            text: '企业地理分布',
+            left: 'center',
+            top: 10,
+            textStyle: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: function(params) {
+              if (params.seriesType === 'scatter' || params.seriesType === 'effectScatter') {
+                const data = params.data;
+                return `
+                  <div style="font-weight:bold;color:#fff;">${data.name}</div>
+                  <div style="color:#ccc;font-size:12px;">类型: ${data.type}</div>
+                  <div style="color:#ccc;font-size:12px;">注册资本: ${data.registeredCapital}万元</div>
+                  <div style="color:#ccc;font-size:12px;">地址: ${data.address}</div>
+                `;
+              }
+            },
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            borderColor: '#3a3a5e',
+            borderWidth: 1,
+            textStyle: { color: '#fff' },
+            show: true
+          },
+          legend: {
+            top: 50,
+            left: 'center',
+            textStyle: { color: '#fff', fontSize: 12 },
+            itemWidth: 15,
+            itemHeight: 15,
+            backgroundColor: 'rgba(0,0,0,0.6)',
+            borderColor: '#3a3a5e',
+            borderWidth: 1,
+            padding: [10, 20],
+            data: ['生产商', '贸易商', '品牌商', '辅料商'],
+            show: true
+          },
+          geo: {
+            map: 'china',
+            roam: true,
+            zoom: 1.2,
+            center: [105, 35],
+            label: { show: true, color: '#fff', fontSize: 10 },
+            itemStyle: {
+              areaColor: '#1c1c3e',
+              borderColor: '#3a3a5e',
+              borderWidth: 1
+            },
+            emphasis: {
+              itemStyle: { areaColor: '#2a2a4e' },
+              label: { color: '#fff' }
+            }
+          },
+          series: series
+        };
+        
+        mapChart.setOption(option);
+        window.addEventListener('resize', () => mapChart.resize());
+      }
+      
+      function createMarkerSeries() {
+        // 根据企业类型设置颜色和形状
+        const typeConfig = {
+          '生产商': { color: '#3b82f6', symbol: 'circle' },
+          '贸易商': { color: '#10b981', symbol: 'rect' },
+          '品牌商': { color: '#f59e0b', symbol: 'diamond' },
+          '辅料商': { color: '#8b5cf6', symbol: 'triangle' }
+        };
+        
+        // 根据注册资本确定大小
+        const getSymbolSize = (capital) => {
+          if (capital > 3000) return 25;
+          if (capital > 1000) return 20;
+          return 15;
+        };
+        
+        // 为每种企业类型创建一个系列
+        const series = [];
+        
+        Object.keys(typeConfig).forEach(type => {
+          const typeEnterprises = enterprises.filter(e => e.type === type);
+          if (typeEnterprises.length > 0) {
+            series.push({
+              name: type,
+              type: 'scatter',
+              coordinateSystem: 'geo',
+              data: typeEnterprises.map(enterprise => ({
+                name: enterprise.name,
+                value: enterprise.coordinates.concat(enterprise.registeredCapital),
+                type: enterprise.type,
+                registeredCapital: enterprise.registeredCapital,
+                address: enterprise.address
+              })),
+              symbol: typeConfig[type].symbol,
+              symbolSize: function(val) {
+                return getSymbolSize(val[2]);
+              },
+              itemStyle: {
+                color: typeConfig[type].color
+              },
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 20,
+                  shadowColor: 'rgba(255,255,255,0.8)'
+                }
+              }
+            });
+          }
+        });
+        
+        return series;
+      }
+      
+      function createHeatmapSeries() {
+        return [{
+          name: '企业密度',
+          type: 'heatmap',
+          coordinateSystem: 'geo',
+          data: enterprises.map(enterprise => [
+            enterprise.coordinates[0],
+            enterprise.coordinates[1],
+            enterprise.registeredCapital / 1000 // 用注册资本作为权重
+          ]),
+          blurSize: 20,
+          pointSize: 5,
+          max: 10,
+          label: { show: false },
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(59, 130, 246, 0.8)' },
+              { offset: 1, color: 'rgba(16, 185, 129, 0.2)' }
+            ])
+          }
+        }];
+      }
+      
+      function createFlowSeries() {
+        // 筛选出贸易方向为"美国"的企业
+        const usaEnterprises = enterprises.filter(e => 
+          e.tradeDirection && e.tradeDirection.includes('美国')
+        );
+        
+        // 鄄城坐标
+        const juanchengCoord = [115.5, 35.57];
+        
+        return [
+          // 流向线
+          {
+            name: '贸易流向',
+            type: 'lines',
+            coordinateSystem: 'geo',
+            zlevel: 1,
+            data: usaEnterprises.map(enterprise => ({
+              coords: [juanchengCoord, enterprise.coordinates],
+              value: enterprise.registeredCapital / 1000,
+              lineStyle: {
+                color: '#3b82f6',
+                width: 2,
+                opacity: 0.6,
+                curveness: 0.2
+              },
+              effect: {
+                show: true,
+                period: 4,
+                trailLength: 0.4,
+                symbol: 'arrow',
+                symbolSize: 8,
+                color: '#fff'
+              }
+            })),
+            emphasis: {
+              lineStyle: { width: 4, opacity: 1 }
+            }
+          },
+          // 起点标记
+          {
+            name: '起点',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: [{
+              name: '山东鄄城',
+              value: juanchengCoord.concat(10),
+              symbolSize: 25,
+              itemStyle: {
+                color: '#FF0000',
+                shadowBlur: 20,
+                shadowColor: '#FF0000'
+              },
+              label: {
+                show: true,
+                color: '#fff',
+                fontSize: 12,
+                fontWeight: 'bold'
+              }
+            }],
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke',
+              scale: 3,
+              period: 4
+            }
+          },
+          // 终点标记
+          {
+            name: '终点',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: usaEnterprises.map(enterprise => ({
+              name: enterprise.name,
+              value: enterprise.coordinates.concat(enterprise.registeredCapital / 1000),
+              symbolSize: 15,
+              itemStyle: {
+                color: '#3b82f6',
+                shadowBlur: 10,
+                shadowColor: '#3b82f6'
+              }
+            })),
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke',
+              scale: 2,
+              period: 4
+            }
+          }
+        ];
+      }
+      
+      // 点击事件：跳转到企业详情
+      mapChart.on('click', function(params) {
+        if (params.seriesType === 'effectScatter' && params.data) {
+          const enterpriseId = enterprises.find(e => e.name === params.data.name)?.id;
+          if (enterpriseId) {
+            // 调用企业档案函数
+            openEnterpriseDashboard(enterpriseId);
+            
+            // 滚动到企业列表区域
+            const listHeader = document.querySelector('.list-header');
+            if (listHeader) {
+              listHeader.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }
+      });
+      
+      // 矩形选择功能
+      mapChart.on('brushEnd', function(params) {
+        const selectedItems = params.batch[0].selected.dataIndex;
+        if (selectedItems && selectedItems.length > 0) {
+          // 筛选出选中的企业
+          const selectedEnterprises = selectedItems.map(index => enterprises[index]);
+          // 这里可以更新企业列表
+          console.log('Selected enterprises:', selectedEnterprises);
+        }
+      });
+    }
+    
+    function initViewControls() {
+      const viewBtns = document.querySelectorAll('.view-btn');
+      const viewContents = document.querySelectorAll('.view-content');
+      
+      viewBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const view = this.dataset.view;
+          
+          // 更新按钮状态
+          viewBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 显示对应视图
+          viewContents.forEach(content => {
+            content.style.display = content.dataset.view === view ? 'block' : 'none';
+          });
+          
+          // 如果切换到地图视图，重新初始化地图
+          if (view === 'map') {
+            setTimeout(() => {
+              const mapDom = document.getElementById('enterprise-map');
+              if (mapDom) {
+                const mapChart = echarts.getInstanceByDom(mapDom);
+                if (mapChart) {
+                  mapChart.resize();
+                }
+              }
+            }, 100);
+          }
+        });
+      });
+    }
+    
+    function initCardInteractions() {
+      // 展开/收起经营范围
+      document.querySelectorAll('.toggle-more').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const fullScope = this.nextElementSibling;
+          if (fullScope.style.display === 'none' || fullScope.style.display === '') {
+            fullScope.style.display = 'block';
+            this.textContent = '收起';
+          } else {
+            fullScope.style.display = 'none';
+            this.textContent = '展开更多';
+          }
+        });
+      });
+      
+      // 关注按钮
+      document.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const isFav = this.dataset.fav === 'true';
+          this.dataset.fav = !isFav;
+          const icon = this.querySelector('i');
+          if (!isFav) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+            this.style.background = '#f59e0b';
+            this.style.borderColor = '#f59e0b';
+            this.style.color = '#fff';
+          } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            this.style.background = 'transparent';
+            this.style.borderColor = '#64748b';
+            this.style.color = '#94a3b8';
+          }
+        });
+      });
+    }
+    
+    function openEnterpriseDashboard(enterpriseId) {
+      // 模拟打开企业档案
+      console.log('Opening enterprise dashboard for:', enterpriseId);
+      // 这里可以实现跳转到企业详情页的逻辑
+      alert('打开企业档案：' + enterpriseId);
     }
   </script>
 </body>
