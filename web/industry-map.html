@@ -909,20 +909,23 @@
     function exportChart() {
       const chart = echarts.getInstanceByDom(document.getElementById('industryChainChart'));
       if (chart) {
-        // 调用ECharts的导出功能
-        chart.exportToPNG({
-          pixelRatio: 2, // 提高分辨率
-          backgroundColor: '#1a1a2e' // 保持与图表一致的背景色
-        }).then(dataURL => {
+        try {
+          // 使用ECharts的getDataURL方法
+          const dataURL = chart.getDataURL({
+            pixelRatio: 2, // 提高分辨率
+            backgroundColor: '#1a1a2e', // 保持与图表一致的背景色
+            type: 'png'
+          });
+          
           // 创建下载链接
           const link = document.createElement('a');
           link.download = '发制品产业链图谱.png';
           link.href = dataURL;
           link.click();
-        }).catch(err => {
+        } catch (err) {
           console.error('导出失败:', err);
           alert('导出失败，请重试');
-        });
+        }
       }
     }
 
