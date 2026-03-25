@@ -1012,5 +1012,127 @@
             </div>
         </div>
     </div>
+    
+    <!-- 申请表格模态框 -->
+    <div id="applyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-dark-lighter border border-dark-lightest rounded-2xl p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">贷款申请</h3>
+                <button id="closeModal" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="applyForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">联系人</label>
+                    <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系人姓名">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">联系电话</label>
+                    <input type="tel" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系电话">
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">省份</label>
+                        <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>请选择省份</option>
+                            <option>山东省</option>
+                            <option>北京市</option>
+                            <option>上海市</option>
+                            <option>广东省</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">城市</label>
+                        <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>请选择城市</option>
+                            <option>菏泽市</option>
+                            <option>济南市</option>
+                            <option>青岛市</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">区县</label>
+                        <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>请选择区县</option>
+                            <option>鄄城县</option>
+                            <option>牡丹区</option>
+                            <option>定陶区</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">详细地址</label>
+                    <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入详细地址">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">融资金额</label>
+                    <input type="number" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入融资金额（万元）">
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" id="cancelApply" class="flex-1 bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-3 rounded-lg text-sm transition-colors duration-300">
+                        取消
+                    </button>
+                    <button type="submit" class="flex-1 bg-primary text-white px-4 py-3 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300">
+                        提交申请
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 确保DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有带有btn-primary类的按钮添加点击事件
+            const btnPrimaryButtons = document.querySelectorAll('.btn-primary');
+            const applyModal = document.getElementById('applyModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelApply = document.getElementById('cancelApply');
+            const applyForm = document.getElementById('applyForm');
+            
+            if (btnPrimaryButtons.length > 0 && applyModal) {
+                btnPrimaryButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        // 阻止默认行为（如果是表单提交）
+                        e.preventDefault();
+                        
+                        // 显示模态框
+                        applyModal.classList.remove('hidden');
+                        
+                        // 设置默认标题
+                        document.querySelector('#applyModal h3').textContent = '贷款 - 贷款申请';
+                    });
+                });
+            }
+            
+            // 关闭模态框
+            if (closeModal) {
+                closeModal.addEventListener('click', function() {
+                    applyModal.classList.add('hidden');
+                });
+            }
+            
+            // 取消申请
+            if (cancelApply) {
+                cancelApply.addEventListener('click', function() {
+                    applyModal.classList.add('hidden');
+                });
+            }
+            
+            // 提交申请
+            if (applyForm) {
+                applyForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // 显示提交成功提示
+                    alert('申请提交成功，我们将尽快与您联系！');
+                    // 关闭模态框
+                    applyModal.classList.add('hidden');
+                    // 重置表单
+                    applyForm.reset();
+                });
+            }
+        });
+    </script>
 </body>
 </html>

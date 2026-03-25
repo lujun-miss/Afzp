@@ -45,31 +45,43 @@
             background-color: rgba(26, 109, 255, 0.9);
         }
         
-        .nav-bar {
-            background-color: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(30, 41, 59, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        
-        .nav-item {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            font-weight: 500;
+        .nav-link {
+            position: relative;
             transition: all 0.3s ease;
+            font-size: 14px;
         }
         
-        .nav-item:hover {
-            color: #1A6DFF;
+        .nav-link:hover {
+            color: #c9a227;
         }
         
-        .nav-item.active {
-            background-color: rgba(26, 109, 255, 0.2);
-            color: #1A6DFF;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a5fb4, #c9a227);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #c9a227;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
         }
         
         .form-input {
@@ -124,42 +136,49 @@
     </style>
 </head>
 <body>
-    <!-- 顶部导航栏 -->
-    <header class="nav-bar fixed top-0 left-0 right-0 z-50 h-16 flex items-center">
-        <div class="container mx-auto px-6 flex items-center justify-between">
-            <!-- 左侧 Logo 与平台名 -->
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                    <i class="fa fa-sitemap text-white text-xl"></i>
-                </div>
-                <h1 class="text-xl font-bold text-white">鄄城发制品产业大脑</h1>
-            </div>
-            
-            <!-- 中部主导航 -->
-            <nav class="hidden md:flex items-center space-x-6">
-                <a href="../index.html" class="nav-item text-gray-300 font-medium">首页</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">产业全景</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">产业透视</a>
-                <a href="financial-products.html" class="nav-item text-white font-medium active">发业金额</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">发业智库</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">之策汇通</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">发品交易</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">资源枢纽</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">发品追溯</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">企诉必应</a>
-                <a href="#" class="nav-item text-gray-300 font-medium">安全防控</a>
-            </nav>
-            
-            <!-- 右侧全局操作 -->
-            <div class="flex items-center space-x-4">
-                <!-- 搜索框 -->
-                <div class="relative">
-                    <input type="text" id="searchInput" placeholder="搜索产业政策、企业、供需信息..." class="bg-dark text-gray-300 border border-gray-600 px-4 py-2 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-48 md:w-64 transition-all duration-300">
-                    <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
-                </div>
-            </div>
-        </div>
-    </header>
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="../cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="../industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="../monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="../enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="../supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="../shop.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+        <a href="financial-products.html" class="nav-link active text-white">金融服务</a>
+        <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
     
     <!-- 主内容区 -->
     <main class="container mx-auto px-6 pt-24 pb-16">
@@ -497,25 +516,87 @@
         </div>
     </div>
     
+    <!-- 申请表格模态框 -->
+    <div id="applyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-dark-lighter border border-dark-lightest rounded-2xl p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">贷款申请</h3>
+                <button id="closeModal" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="applyForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">联系人</label>
+                    <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系人姓名">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">联系电话</label>
+                    <input type="tel" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系电话">
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">省份</label>
+                        <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>请选择省份</option>
+                            <option>山东省</option>
+                            <option>北京市</option>
+                            <option>上海市</option>
+                            <option>广东省</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">城市</label>
+                        <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>请选择城市</option>
+                            <option>菏泽市</option>
+                            <option>济南市</option>
+                            <option>青岛市</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2 text-sm font-medium">区县</label>
+                        <select class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option>请选择区县</option>
+                            <option>鄄城县</option>
+                            <option>牡丹区</option>
+                            <option>定陶区</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">详细地址</label>
+                    <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入详细地址">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-2 text-sm font-medium">融资金额</label>
+                    <input type="number" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入融资金额（万元）">
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" id="cancelApply" class="flex-1 bg-dark-lighter/50 border border-dark-lightest text-gray-300 hover:bg-primary/20 hover:text-primary px-4 py-3 rounded-lg text-sm transition-colors duration-300">
+                        取消
+                    </button>
+                    <button type="submit" class="flex-1 bg-primary text-white px-4 py-3 rounded-lg text-sm hover:bg-primary/90 transition-colors duration-300">
+                        提交申请
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+        
         // 页面加载完成后添加交互事件
         document.addEventListener('DOMContentLoaded', function() {
-            // 搜索功能
-            const searchButton = document.querySelector('button:has(.fa-search)');
-            if (searchButton) {
-                searchButton.addEventListener('click', function() {
-                    // 获取搜索框的值
-                    const searchInput = this.previousElementSibling;
-                    const searchValue = searchInput.value.trim();
-                    if (searchValue) {
-                        alert(`搜索：${searchValue}`);
-                        // 这里可以添加实际的搜索逻辑
-                    } else {
-                        alert('请输入搜索关键词');
-                    }
-                });
-            }
-            
             // 表单提交
             const requestForm = document.getElementById('requestForm');
             if (requestForm) {
@@ -525,16 +606,11 @@
                     // 获取表单数据
                     const contactName = document.getElementById('contactName').value;
                     const contactPhone = document.getElementById('contactPhone').value;
-                    const province = document.getElementById('province').value;
-                    const city = document.getElementById('city').value;
-                    const district = document.getElementById('district').value;
-                    const address = document.getElementById('address').value;
-                    const loanAmount = document.getElementById('loanAmount').value;
-                    const requestType = document.querySelector('input[name="requestType"]:checked').value;
-                    const description = document.getElementById('description').value;
+                    const financingAmount = document.getElementById('financingAmount').value;
+                    const intendedAmount = document.getElementById('intendedAmount').value;
                     
                     // 模拟提交
-                    alert(`需求提交成功！\n联系人：${contactName}\n电话：${contactPhone}\n金额：${loanAmount}万元`);
+                    alert(`需求提交成功！\n联系人：${contactName}\n电话：${contactPhone}\n金额：${intendedAmount}万元`);
                     
                     // 重置表单
                     requestForm.reset();
@@ -612,6 +688,44 @@
                     }
                 });
             }
+            
+            // 申请弹窗功能
+            const submitButton = document.querySelector('.submit-btn');
+            const applyModal = document.getElementById('applyModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelApply = document.getElementById('cancelApply');
+            const applyForm = document.getElementById('applyForm');
+            
+            if (submitButton) {
+                submitButton.addEventListener('click', function(e) {
+                    e.preventDefault(); // 阻止表单默认提交行为
+                    // 显示模态框
+                    applyModal.classList.remove('hidden');
+                });
+            }
+            
+            // 关闭模态框
+            closeModal.addEventListener('click', function() {
+                applyModal.classList.add('hidden');
+            });
+            
+            // 取消申请
+            cancelApply.addEventListener('click', function() {
+                applyModal.classList.add('hidden');
+            });
+            
+            // 提交申请
+            applyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // 获取表单数据
+                const formData = new FormData(applyForm);
+                // 显示提交成功提示
+                alert('申请提交成功，我们将尽快与您联系！');
+                // 关闭模态框
+                applyModal.classList.add('hidden');
+                // 重置表单
+                applyForm.reset();
+            });
         });
     </script>
 </body>

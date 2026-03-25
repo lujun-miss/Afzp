@@ -1,4 +1,27 @@
 <!DOCTYPE html>
+<!--
+    ============================================================================
+    企业全景驾驶舱 - 政府领导视角
+    ============================================================================
+    设计理念：
+    本驾驶舱采用"政府领导视角"设计理念，旨在为政府决策者提供一站式、全景式的
+    企业监测与分析平台。通过整合企业核心档案、供应链网络、产业热力、风险预警、
+    服务设施等多维度数据，帮助政府精准把握企业发展态势，优化产业扶持政策。
+    
+    核心功能：
+    1. 企业核心画像 - 展示企业基本信息、经营状况、信用记录
+    2. 供应链视图 - 可视化全球供应链网络，追踪上下游贸易链路
+    3. 产业热力视图 - 分析区域产业集聚度，识别产业链关键节点
+    4. 风险地图视图 - 评估国际贸易风险，提供风险预警与应对建议
+    5. 服务设施视图 - 展示政府配套服务资源，促进政企对接
+    
+    数据来源：
+    - 政府产业数据库（企业注册信息、经营数据）
+    - 海关进出口数据（贸易流向、货运量）
+    - 商务局报告（市场分析、风险预警）
+    - 税务、市场监管等部门公开数据（信用评级、资质认证）
+    ============================================================================
+-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +31,11 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+    <script>
+        // 预加载地图数据
+        console.log('ECharts加载状态:', typeof echarts);
+        console.log('地图数据加载中...');
+    </script>
     <style>
         * {
             margin: 0;
@@ -43,6 +71,128 @@
             height: 100%;
         }
 
+        /* 地图图层切换器 */
+        .map-layer-switcher {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            background: rgba(16, 25, 48, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .map-layer-switcher .layer-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 6px;
+            background: rgba(0, 242, 254, 0.05);
+            color: #94a3b8;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .map-layer-switcher .layer-btn:hover {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: rgba(0, 242, 254, 0.4);
+            color: #00f2fe;
+        }
+
+        .map-layer-switcher .layer-btn.active {
+            background: rgba(0, 242, 254, 0.2);
+            border-color: #00f2fe;
+            color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        .map-layer-switcher .layer-btn i {
+            font-size: 14px;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* 右侧面板详情内容样式 */
+        .detail-content {
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .detail-section {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .detail-section h4 {
+            font-size: 13px;
+            color: #00f2fe;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+        }
+
+        .detail-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .detail-value.highlight {
+            color: #00f2fe;
+        }
+
+        .detail-value.warning {
+            color: #ffc107;
+        }
+
+        .detail-value.danger {
+            color: #ff2d75;
+        }
+
+        .back-btn {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 6px;
+            color: #00f2fe;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 242, 254, 0.2);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
         /* 面板通用样式 */
         .panel {
             position: absolute;
@@ -55,167 +205,23 @@
             z-index: 10;
         }
 
-        /* 左上角面板 - 企业核心状态 */
+        /* 左上角面板 - 企业核心画像 */
         .core-status {
             top: 20px;
             left: 20px;
             width: 300px;
-            height: 180px;
+            height: auto;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .core-status h3 {
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 15px;
             color: #ffffff;
         }
 
-        .tags {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .tag.red {
-            background: linear-gradient(135deg, #ff2d75 0%, #ff6b6b 100%);
-            color: #ffffff;
-        }
-
-        .tag.blue {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #0f1a2f;
-        }
-
-        .tag.green {
-            background: linear-gradient(135deg, #52c41a 0%, #95de64 100%);
-            color: #0f1a2f;
-        }
-
-        .metrics {
-            display: flex;
-            gap: 20px;
-        }
-
-        .metric {
-            flex: 1;
-        }
-
-        .metric .label {
-            display: block;
-            font-size: 12px;
-            color: #ccc;
-            margin-bottom: 5px;
-        }
-
-        .metric .value {
-            display: block;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'DIN Alternate', sans-serif;
-            color: #ffffff;
-        }
-
-        .metric .value.pulse {
-            animation: pulse 2s infinite;
-            color: #00f2fe;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        /* 顶部中央面板 - 关键指标 */
-        .key-indicators {
-            top: 20px;
-            left: 340px;
-            right: 340px;
-            height: 180px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .indicator-card {
-            text-align: center;
-            flex: 1;
-        }
-
-        .indicator-card .label {
-            font-size: 14px;
-            color: #ccc;
-            margin-bottom: 10px;
-        }
-
-        .indicator-card .value {
-            font-size: 32px;
-            font-weight: bold;
-            font-family: 'DIN Alternate', sans-serif;
-            color: #00f2fe;
-            margin-bottom: 5px;
-        }
-
-        .indicator-card .trend {
-            font-size: 12px;
-            color: #52c41a;
-        }
-
-        /* 右上角面板 - 时间与操作 */
-        .time-ops {
-            top: 20px;
-            right: 20px;
-            width: 300px;
-            height: 180px;
-        }
-
-        .datetime {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .time {
-            font-size: 28px;
-            font-weight: bold;
-            font-family: 'DIN Alternate', sans-serif;
-            color: #00f2fe;
-            margin-bottom: 5px;
-        }
-
-        .date {
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn {
-            background: rgba(0, 242, 254, 0.1);
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            border-radius: 8px;
-            color: #00f2fe;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background: rgba(0, 242, 254, 0.2);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
-        }
-
-        /* 左侧面板 - 产业链网络 */
+        /* 左侧面板 - 经营健康度 */
         .industry-network {
             top: 220px;
             left: 20px;
@@ -229,12 +235,7 @@
             color: #ffffff;
         }
 
-        #networkChart {
-            width: 100%;
-            height: calc(100% - 40px);
-        }
-
-        /* 右侧面板 - 贸易风险预警 */
+        /* 右侧面板 - 税务信用评级 */
         .risk-warning {
             top: 220px;
             right: 20px;
@@ -248,30 +249,14 @@
             color: #ffffff;
         }
 
-        .risk-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .risk-item.high {
-            background: rgba(255, 77, 79, 0.2);
-            border: 1px solid rgba(255, 77, 79, 0.3);
-        }
-
-        .risk-item.medium {
-            background: rgba(250, 173, 20, 0.2);
-            border: 1px solid rgba(250, 173, 20, 0.3);
-        }
-
-        /* 左下角面板 - 经营趋势 */
+        /* 左下角面板 - 股东与出资 */
         .business-trend {
             bottom: 20px;
             left: 20px;
             width: 300px;
-            height: 180px;
+            height: auto;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .business-trend h3 {
@@ -280,45 +265,30 @@
             color: #ffffff;
         }
 
-        #trendChart {
-            width: 100%;
-            height: calc(100% - 40px);
+        /* 右上角面板 - 联系与资质 */
+        .time-ops {
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            height: auto;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
-        /* 底部中央面板 - 实时订单 */
-        .realtime-orders {
-            bottom: 20px;
-            left: 340px;
-            right: 340px;
-            height: 180px;
-        }
-
-        .realtime-orders h3 {
+        .time-ops h3 {
             font-size: 16px;
             margin-bottom: 15px;
             color: #ffffff;
         }
 
-        .order-scroll {
-            height: calc(100% - 40px);
-            overflow-y: auto;
-        }
-
-        .order-item {
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* 右下角面板 - 企业档案快捷 */
+        /* 右下角面板 - 经营范围 */
         .quick-profile {
             bottom: 20px;
             right: 20px;
             width: 300px;
-            height: 180px;
+            height: auto;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .quick-profile h3 {
@@ -327,33 +297,54 @@
             color: #ffffff;
         }
 
-        .info-line {
+        /* 信息项样式 */
+        .info-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .info-line span:first-child {
-            color: #ccc;
+        .info-item:last-child {
+            border-bottom: none;
         }
 
-        .btn-full {
-            width: 100%;
-            margin-top: 15px;
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            border: none;
-            border-radius: 8px;
-            color: #0f1a2f;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .info-label {
+            font-size: 12px;
+            color: #94a3b8;
         }
 
-        .btn-full:hover {
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+        .info-value {
+            font-size: 13px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .info-value.highlight {
+            color: #00f2fe;
+        }
+
+        .info-value.warning {
+            color: #ffc107;
+        }
+
+        .info-value.danger {
+            color: #ff2d75;
+        }
+
+        /* 经营范围滚动容器 */
+        .scope-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .scope-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 242, 254, 0.3);
+            border-radius: 2px;
+        }
+
+        .scope-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 242, 254, 0.5);
         }
 
         /* 滚动条样式 */
@@ -378,129 +369,339 @@
 </head>
 <body>
     <!-- 简化后的结构 -->
-    <div id="fullscreen-map" style="position: fixed; top:0; left:0; width:100vw; height:100vh; z-index: 1;"></div>
+    <div id="fullscreen-map" style="position: fixed; top:0; left:0; width:100vw; height:100vh; z-index: 1;">
+        <!-- 地图容器 -->
+        <div id="industryMap" style="width: 100%; height: 100%; position: relative;"></div>
+        <!-- 地图图层切换器 -->
+        <div class="map-layer-switcher">
+            <div class="layer-btn active" data-layer="supply" onclick="switchMapView('supply')">
+                <i class="fas fa-network-wired"></i>
+                <span>供应链视图</span>
+            </div>
+            <div class="layer-btn" data-layer="heatmap" onclick="switchMapView('heatmap')">
+                <i class="fas fa-fire"></i>
+                <span>产业热力视图</span>
+            </div>
+            <div class="layer-btn" data-layer="risk" onclick="switchMapView('risk')">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>风险地图视图</span>
+            </div>
+            <div class="layer-btn" data-layer="facility" onclick="switchMapView('facility')">
+                <i class="fas fa-building"></i>
+                <span>服务设施视图</span>
+            </div>
+        </div>
+    </div>
 
-    <!-- 左上角面板 - 企业核心状态 -->
+    <!-- 左上角面板 - 企业核心画像 -->
     <div class="panel core-status">
-        <h3>🏢 鄄城YYY集团</h3>
-        <div class="tags">
-            <span class="tag red">龙头企业</span>
-            <span class="tag blue">AEO认证</span>
-            <span class="tag green">高新企业</span>
+        <div style="position: relative;">
+            <h3>🏢 企业核心画像</h3>
+            <div style="position: absolute; top: 0; right: 0; width: 28px; height: 28px; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #00f2fe; font-size: 12px;" title="上传营业执照">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
         </div>
-        <div class="metrics">
-            <div class="metric">
-                <span class="label">实时负荷</span>
-                <span class="value pulse">85%</span>
-            </div>
-            <div class="metric">
-                <span class="label">设备在线</span>
-                <span class="value">32/35</span>
-            </div>
+        <div class="info-item">
+            <span class="info-label">企业名称</span>
+            <span class="info-value highlight">鄄城YYY发制品集团</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">统一社会信用代码</span>
+            <span class="info-value">91371721MA3UHH850Y</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">法定代表人</span>
+            <span class="info-value highlight">祁灵霞</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">企业类型</span>
+            <span class="info-value">民营企业</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">注册资金</span>
+            <span class="info-value highlight">500万人民币</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">成立时间</span>
+            <span class="info-value">2020年12月04日</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">登记状态</span>
+            <span class="info-value" style="color: #52c41a;">存续</span>
         </div>
     </div>
 
-    <!-- 顶部中央面板 - 关键指标 -->
-    <div class="panel key-indicators">
-        <div class="indicator-card">
-            <div class="label">本月营收</div>
-            <div class="value">¥1,280万</div>
-            <div class="trend">↑ 12.5%</div>
-        </div>
-        <div class="indicator-card">
-            <div class="label">订单数量</div>
-            <div class="value">1,568</div>
-            <div class="trend">↑ 8.3%</div>
-        </div>
-        <div class="indicator-card">
-            <div class="label">利润率</div>
-            <div class="value">23.5%</div>
-            <div class="trend">↑ 2.1%</div>
-        </div>
-        <div class="indicator-card">
-            <div class="label">客户满意度</div>
-            <div class="value">96.8%</div>
-            <div class="trend">↑ 1.2%</div>
-        </div>
-    </div>
 
-    <!-- 右上角面板 - 时间与操作 -->
+
+    <!-- 右上角面板 - 联系与资质 -->
     <div class="panel time-ops">
-        <div class="datetime">
-            <div class="time" id="currentTime">14:28:45</div>
-            <div class="date" id="currentDate">2025年3月18日 周二</div>
+        <h3>📞 联系与资质</h3>
+        <div class="info-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="info-label" style="font-size: 12px; color: #94a3b8;"><i class="fas fa-phone" style="margin-right: 6px; color: #00f2fe;"></i>联系电话</span>
+            <span class="info-value highlight" style="font-size: 13px; color: #fff; font-weight: 500;">15553091331</span>
         </div>
-        <div class="buttons">
-            <button class="btn" onclick="refreshDashboard()">📊 刷新</button>
-            <button class="btn" onclick="exportData()">📥 导出</button>
-            <button class="btn" onclick="openSettings()">⚙️ 设置</button>
+        <div class="info-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="info-label" style="font-size: 12px; color: #94a3b8;"><i class="fas fa-envelope" style="margin-right: 6px; color: #00f2fe;"></i>企业邮箱</span>
+            <span class="info-value" style="font-size: 13px; color: #fff; font-weight: 500;">15553091331@qq.com</span>
+        </div>
+        <div class="info-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="info-label" style="font-size: 12px; color: #94a3b8;"><i class="fas fa-map-marker-alt" style="margin-right: 6px; color: #00f2fe;"></i>注册地址</span>
+            <span class="info-value" style="font-size: 11px; color: #fff; font-weight: 500;">山东省菏泽市鄄城县</span>
+        </div>
+        <div class="info-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="info-label" style="font-size: 12px; color: #94a3b8;"><i class="fas fa-certificate" style="margin-right: 6px; color: #00f2fe;"></i>企业资质</span>
+            <span class="info-value" style="font-size: 13px; color: #ff2d75; font-weight: 500;">无</span>
+        </div>
+        <div class="info-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="info-label" style="font-size: 12px; color: #94a3b8;"><i class="fas fa-award" style="margin-right: 6px; color: #00f2fe;"></i>行业认证</span>
+            <span class="info-value" style="font-size: 13px; color: #64748b; font-weight: 500;">暂未获取</span>
+        </div>
+        <div class="info-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+            <span class="info-label" style="font-size: 12px; color: #94a3b8;"><i class="fas fa-star" style="margin-right: 6px; color: #00f2fe;"></i>荣誉奖项</span>
+            <span class="info-value" style="font-size: 13px; color: #64748b; font-weight: 500;">暂无</span>
         </div>
     </div>
 
-    <!-- 左侧面板 - 产业链网络 -->
+    <!-- 左侧面板 - 经营健康度 -->
     <div class="panel industry-network">
-        <h3>🔗 产业链网络</h3>
-        <div id="networkChart"></div>
+        <h3>❤️ 经营健康度</h3>
+        <div class="risk-radar" style="display: flex; align-items: center; gap: 16px; padding: 12px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; margin-bottom: 12px; cursor: pointer;" onclick="showRiskDetail()">
+            <div class="risk-number" style="width: 48px; height: 48px; background: linear-gradient(135deg, #ffc107, #ff9800); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #000; animation: pulse 2s infinite;">3</div>
+            <div class="risk-text" style="flex: 1;">
+                <div class="risk-title" style="font-size: 13px; color: #ffc107; font-weight: 600;">预警提醒</div>
+                <div class="risk-desc" style="font-size: 11px; color: #94a3b8; margin-top: 2px;">点击查看详细风险事件</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color: #ffc107;"></i>
+        </div>
+        
+        <div class="metric-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px; text-align: center;">
+                <div class="metric-value" style="font-size: 18px; font-weight: 700; color: #ff2d75;">0</div>
+                <div class="metric-label" style="font-size: 11px; color: #94a3b8; margin-top: 4px;">参保人数</div>
+            </div>
+            <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px; text-align: center;">
+                <div class="metric-value" style="font-size: 18px; font-weight: 700; color: #ff2d75;">0</div>
+                <div class="metric-label" style="font-size: 11px; color: #94a3b8; margin-top: 4px;">专利数量</div>
+            </div>
+            <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px; text-align: center;">
+                <div class="metric-value" style="font-size: 18px; font-weight: 700; color: #ff2d75;">0</div>
+                <div class="metric-label" style="font-size: 11px; color: #94a3b8; margin-top: 4px;">商标数量</div>
+            </div>
+            <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px; text-align: center;">
+                <div class="metric-value" style="font-size: 18px; font-weight: 700; color: #ff2d75;">0</div>
+                <div class="metric-label" style="font-size: 11px; color: #94a3b8; margin-top: 4px;">软件著作权</div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px; padding: 8px; background: rgba(255, 193, 7, 0.1); border-radius: 6px; font-size: 11px; color: #ffc107;">
+            <i class="fas fa-exclamation-triangle"></i> 关键短板：社保与知识产权均为0，建议关注
+        </div>
     </div>
 
-    <!-- 右侧面板 - 贸易风险预警 -->
+    <!-- 右侧面板 - 税务信用评级 -->
     <div class="panel risk-warning">
-        <h3>⚠️ 贸易风险</h3>
-        <div class="risk-item high">
-            <span>美国市场</span>
-            <span>关税风险 (高)</span>
+        <h3>📊 税务信用评级</h3>
+        <div style="overflow-x: auto;">
+            <table class="data-table" style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="background: rgba(0, 242, 254, 0.1); color: #00f2fe; padding: 8px 6px; text-align: left; font-weight: 500;">评价年度</th>
+                        <th style="background: rgba(0, 242, 254, 0.1); color: #00f2fe; padding: 8px 6px; text-align: left; font-weight: 500;">信用级别</th>
+                        <th style="background: rgba(0, 242, 254, 0.1); color: #00f2fe; padding: 8px 6px; text-align: left; font-weight: 500;">类型</th>
+                        <th style="background: rgba(0, 242, 254, 0.1); color: #00f2fe; padding: 8px 6px; text-align: left; font-weight: 500;">评价单位</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">2024</td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;"><span style="color: #64748b;">-</span></td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">增值税</td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">国家税务总局</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">2023</td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;"><span style="color: #64748b;">-</span></td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">增值税</td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">国家税务总局</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">2022</td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;"><span style="color: #64748b;">-</span></td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">增值税</td>
+                        <td style="padding: 8px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0;">国家税务总局</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="risk-item medium">
-            <span>欧洲市场</span>
-            <span>绿色壁垒 (中)</span>
-        </div>
-        <div class="risk-item medium">
-            <span>印度市场</span>
-            <span>汇率波动 (中)</span>
+        <div class="empty-data" style="text-align: center; padding: 20px; color: #64748b; font-size: 12px;">
+            <i class="fas fa-info-circle" style="font-size: 24px; margin-bottom: 8px; display: block;"></i>
+            暂无税务评级数据公示
         </div>
     </div>
 
-    <!-- 左下角面板 - 经营趋势 -->
+    <!-- 左下角面板 - 股东与出资 -->
     <div class="panel business-trend">
-        <h3>📈 经营趋势</h3>
-        <div id="trendChart"></div>
-    </div>
-
-    <!-- 底部中央面板 - 实时订单 -->
-    <div class="panel realtime-orders">
-        <h3>📦 实时订单 (156)</h3>
-        <div class="order-scroll">
-            <div class="order-item">#100283 美国 · $42,800</div>
-            <div class="order-item">#100284 欧洲 · €28,500</div>
-            <div class="order-item">#100285 印度 · ₹1,850,000</div>
-            <div class="order-item">#100286 美国 · $35,200</div>
-            <div class="order-item">#100287 欧洲 · €19,800</div>
+        <h3>� 股东与出资</h3>
+        <div class="shareholder-item" style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; margin-bottom: 8px;">
+            <div class="shareholder-avatar" style="width: 40px; height: 40px; background: linear-gradient(135deg, #00f2fe, #1a5fb4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600;">祁</div>
+            <div class="shareholder-info" style="flex: 1;">
+                <div class="shareholder-name" style="font-size: 14px; font-weight: 600; color: #fff;">祁灵霞</div>
+                <div class="shareholder-detail" style="font-size: 11px; color: #94a3b8; margin-top: 2px;">认缴出资 500万元</div>
+            </div>
+            <div class="shareholder-percent" style="font-size: 20px; font-weight: 700; color: #00f2fe;">100%</div>
+        </div>
+        
+        <div style="margin-top: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 10px;">
+                <div style="display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(255, 45, 117, 0.2)); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 8px; font-weight: 600;">
+                    鄄城YYY发制品集团
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                <div style="text-align: center;">
+                    <div style="width: 2px; height: 20px; background: rgba(0, 242, 254, 0.3); margin: 0 auto;"></div>
+                    <div style="padding: 6px 12px; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; font-size: 12px;">
+                        祁灵霞 100%
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px; font-size: 11px; color: #64748b; text-align: center;">
+            <i class="fas fa-info-circle"></i> 自然人独资企业
         </div>
     </div>
 
-    <!-- 右下角面板 - 企业档案快捷 -->
+
+    <!-- 右下角面板 - 经营范围 -->
     <div class="panel quick-profile">
-        <h3>📋 企业档案</h3>
-        <div class="info-line">
-            <span>统一代码:</span>
-            <span>91371726XXXXXX</span>
+        <h3>📋 经营范围</h3>
+        <div class="scope-container" style="max-height: 140px; overflow-y: auto; padding: 10px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; font-size: 12px; line-height: 1.6; color: #cbd5e1;">
+            <span class="highlight-text" style="color: #00f2fe; font-weight: 500;">发制品、假发、头套及相关配件的生产、销售；</span>
+            货物进出口、技术进出口；
+            <span class="highlight-text" style="color: #00f2fe; font-weight: 500;">高端真人发套定制；</span>
+            化纤发条、假发配件加工销售；
+            美发用品、化妆品销售；
+            <span class="highlight-text" style="color: #00f2fe; font-weight: 500;">互联网销售（除销售需要许可的商品）；</span>
+            电子商务技术服务；
+            普通货物仓储服务；
+            国内货物运输代理；
+            <span class="highlight-text" style="color: #00f2fe; font-weight: 500;">家具制造；</span>
+            日用百货销售；
+            工艺美术品及礼仪用品销售；
+            技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广。
         </div>
-        <div class="info-line">
-            <span>注册资金:</span>
-            <span>1000万元</span>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px;">
+            <span class="tag" style="padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3);">发制品生产</span>
+            <span class="tag" style="padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3);">进出口贸易</span>
+            <span class="tag" style="padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3);">互联网销售</span>
+            <span class="tag" style="padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; background: rgba(255, 193, 7, 0.15); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.3);">家具制造</span>
+            <span class="tag" style="padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3);">技术服务</span>
         </div>
-        <div class="info-line">
-            <span>成立时间:</span>
-            <span>2010-05-18</span>
-        </div>
-        <button class="btn-full">查看完整档案 →</button>
     </div>
 
     <script>
         // 全局变量
         let fullMap;
-        let networkChart;
-        let trendChart;
+        let currentView = 'supply'; // 当前视图：supply, heatmap, risk, facility
+        
+        // 模拟数据 - 供应链数据
+        const supplyChainData = {
+            // 企业节点数据
+            enterprise: {
+                name: '鄄城YYY集团',
+                position: [115.5, 35.57],
+                annualOutput: '2.8亿元',
+                importExport: '1.2亿美元',
+                employees: 850
+            },
+            // 上游供应商
+            upstream: [
+                { name: '河南许昌原料基地', position: [113.85, 34.04], type: '原料', product: '真人发丝', annualVolume: '500吨', price: '¥85万/吨' },
+                { name: '山东青岛化工基地', position: [120.38, 36.07], type: '原料', product: '化纤原料', annualVolume: '800吨', price: '¥32万/吨' },
+                { name: '浙江义乌配件基地', position: [120.07, 29.30], type: '配件', product: '发网、夹子', annualVolume: '200万套', price: '¥15/套' }
+            ],
+            // 下游客户
+            downstream: [
+                { name: '美国纽约客户', position: [-74.01, 40.71], type: '成品出口', product: '高端假发套', annualVolume: '$4500万', trend: '↑12%' },
+                { name: '德国汉堡客户', position: [9.99, 53.55], type: '成品出口', product: '化纤发条', annualVolume: '$2800万', trend: '↑8%' },
+                { name: '尼日利亚拉各斯客户', position: [3.38, 6.52], type: '成品出口', product: '中低端假发', annualVolume: '$3200万', trend: '↑25%' },
+                { name: '日本东京客户', position: [139.69, 35.69], type: '成品出口', product: '定制发套', annualVolume: '$1500万', trend: '↑5%' }
+            ]
+        };
+        
+        // 模拟数据 - 产业热力数据
+        const heatmapData = {
+            // 发制品企业分布热力数据
+            heatPoints: [
+                { name: '菏泽市', value: [115.48, 35.23, 95], enterprises: 1250, output: '156亿', employees: 85000 },
+                { name: '鄄城县', value: [115.5, 35.57, 100], enterprises: 380, output: '68亿', employees: 32000 },
+                { name: '许昌市', value: [113.85, 34.04, 88], enterprises: 890, output: '112亿', employees: 65000 },
+                { name: '青岛市', value: [120.38, 36.07, 72], enterprises: 420, output: '78亿', employees: 28000 },
+                { name: '义乌市', value: [120.07, 29.30, 65], enterprises: 350, output: '45亿', employees: 18000 },
+                { name: '广州市', value: [113.26, 23.13, 58], enterprises: 280, output: '38亿', employees: 15000 },
+                { name: '郑州市', value: [113.63, 34.75, 45], enterprises: 180, output: '22亿', employees: 9500 }
+            ],
+            // 头部企业
+            topEnterprises: [
+                { name: '鄄城YYY集团', position: [115.5, 35.57], output: '2.8亿', type: '龙头', size: 30 },
+                { name: '菏泽AAA发制品', position: [115.42, 35.31], output: '1.5亿', type: '龙头', size: 25 },
+                { name: '鄄城BBB假发', position: [115.58, 35.62], output: '0.8亿', type: '规上', size: 20 },
+                { name: '菏泽CCC发艺', position: [115.35, 35.15], output: '0.5亿', type: '规上', size: 18 },
+                { name: '鄄城DDD发业', position: [115.62, 35.48], output: '0.3亿', type: '小微', size: 15 }
+            ]
+        };
+        
+        // 模拟数据 - 风险地图数据
+        const riskData = {
+            // 国家风险等级
+            countries: [
+                { name: 'Germany', level: 'low', risk: '低风险', color: '#52c41a', label: '贸易稳定' },
+                { name: 'Japan', level: 'low', risk: '低风险', color: '#52c41a', label: '贸易稳定' },
+                { name: 'France', level: 'low', risk: '低风险', color: '#52c41a', label: '贸易稳定' },
+                { name: 'United Kingdom', level: 'low', risk: '低风险', color: '#52c41a', label: '贸易稳定' },
+                { name: 'United States', level: 'medium', risk: '中等风险', color: '#faad14', label: '关税壁垒', impact: '关税增加15-25%', suggestion: '开拓东南亚市场，分散风险' },
+                { name: 'India', level: 'medium', risk: '中等风险', color: '#faad14', label: '政策不确定', impact: '进口限制趋严', suggestion: '建立本地仓储，提前备货' },
+                { name: 'Brazil', level: 'high', risk: '高风险', color: '#ff4d4f', label: '汇率波动', impact: '雷亚尔贬值30%', suggestion: '采用美元结算，缩短账期' },
+                { name: 'Russia', level: 'high', risk: '高风险', color: '#ff4d4f', label: '制裁影响', impact: '支付渠道受限', suggestion: '暂停新业务，回收账款' },
+                { name: 'Nigeria', level: 'high', risk: '高风险', color: '#ff4d4f', label: '汇兑限制', impact: '外汇管制严格', suggestion: '要求预付款，降低风险' }
+            ]
+        };
+        
+        // 模拟数据 - 服务设施数据
+        const facilityData = {
+            // 政府服务设施
+            facilities: [
+                { name: '鄄城保税物流中心', position: [115.52, 35.55], type: '保税仓库', distance: '3.5km', driveTime: '8分钟', function: '进出口货物保税存储、分拨配送', policy: '享受保税政策，降低资金占用', contact: '0530-XXXXXXX' },
+                { name: '菏泽发制品职业培训中心', position: [115.45, 35.28], type: '职业培训', distance: '12km', driveTime: '20分钟', function: '发制品加工技能培训、认证', policy: '政府补贴培训费用80%', contact: '0530-XXXXXXX' },
+                { name: '山东省发制品研究院', position: [117.02, 36.67], type: '技术研究院', distance: '180km', driveTime: '2.5小时', function: '新材料研发、工艺创新', policy: '产学研合作补贴、专利奖励', contact: '0531-XXXXXXX' },
+                { name: '鄄城高速入口', position: [115.48, 35.52], type: '交通枢纽', distance: '5km', driveTime: '10分钟', function: 'G35济广高速入口', policy: 'ETC优惠、绿通政策', contact: '高速服务热线：95022' },
+                { name: '菏泽火车站货运站', position: [115.43, 35.25], type: '铁路货运', distance: '15km', driveTime: '25分钟', function: '中欧班列、国内货运', policy: '中欧班列运费补贴30%', contact: '0530-XXXXXXX' },
+                { name: '鄄城跨境电商产业园', position: [115.55, 35.60], type: '产业园区', distance: '2km', driveTime: '5分钟', function: '电商孵化、海外仓服务', policy: '租金减免、税收优惠', contact: '0530-XXXXXXX' }
+            ]
+        };
+        
+        // 模拟数据 - 鄄城企业关系数据
+        const juanchengData = {
+            // 企业节点数据
+            companies: [
+                { id: 1, name: "鄄城A发制品厂", type: "生产商", lat: 35.58, lon: 115.52, output: "2.8亿", employees: 850 },
+                { id: 2, name: "鄄城B辅料公司", type: "辅料商", lat: 35.56, lon: 115.50, output: "1.2亿", employees: 320 },
+                { id: 3, name: "鄄城C贸易公司", type: "贸易商", lat: 35.57, lon: 115.55, output: "3.5亿", employees: 150 },
+                { id: 4, name: "鄄城D包装厂", type: "包装商", lat: 35.59, lon: 115.53, output: "0.8亿", employees: 200 },
+                { id: 5, name: "鄄城E运输公司", type: "物流商", lat: 35.55, lon: 115.54, output: "0.5亿", employees: 180 },
+                { id: 6, name: "鄄城F原料厂", type: "原料商", lat: 35.60, lon: 115.49, output: "1.5亿", employees: 420 }
+            ],
+            // 企业间关系数据 (定义上下游)
+            relationships: [
+                { source: 2, target: 1, value: 50, type: "supply", product: "发网、夹子" }, // B向A供应，价值强度50
+                { source: 6, target: 1, value: 70, type: "supply", product: "真人发丝" }, // F向A供应，价值强度70
+                { source: 1, target: 3, value: 80, type: "sell", product: "成品假发" },    // A向C销售，价值强度80
+                { source: 1, target: 4, value: 30, type: "sell", product: "包装材料" },    // A向D销售，价值强度30
+                { source: 4, target: 3, value: 40, type: "supply", product: "包装服务" }, // D向C供应，价值强度40
+                { source: 3, target: 5, value: 20, type: "sell", product: "物流服务" }     // C向E销售，价值强度20
+            ]
+        };
 
         // 更新时间
         function updateDateTime() {
@@ -523,396 +724,28 @@
 
         // 初始化地图
         function initIndustryMap() {
+            console.log('开始初始化地图...');
             // 初始化全屏地图
-            const mapElement = document.getElementById('fullscreen-map');
+            const mapElement = document.getElementById('industryMap');
+            console.log('地图元素:', mapElement);
             fullMap = echarts.init(mapElement);
-
-
-
-            // 地图配置
-            const mapOption = {
-                backgroundColor: 'transparent',
-                geo: {
-                    map: 'world', // 关键修改：使用世界地图
-                    roam: true, // 保持为true，以启用基础的交互功能，我们将通过代码限制其范围
-                    center: [105, 35], // 世界地图经纬度，此坐标将中国置于视图中心
-                    zoom: 3.5, // 调整缩放级别，使中国区域占据主要视野，并显示部分亚洲及全球轮廓
-                    label: {
-                        show: true,
-                        color: 'rgba(255,255,255,0.7)',
-                        fontSize: 10,
-                        // 可选择性显示主要国家名称
-                        formatter: function(params) {
-                            // 只显示大国名，避免杂乱
-                            const bigCountries = ['China', 'United States', 'India', 'Russia', 'Brazil', 'Australia', 'Canada'];
-                            return bigCountries.includes(params.name) ? params.name : '';
-                        }
-                    },
-                    itemStyle: {
-                        // 保持您定义的景深渐变样式
-                        areaColor: {
-                            type: 'radial',
-                            x: 0.5,
-                            y: 0.5,
-                            r: 0.7,
-                            colorStops: [
-                                { offset: 0, color: 'rgba(70, 130, 180, 0.6)' },
-                                { offset: 0.7, color: 'rgba(30, 60, 100, 0.3)' },
-                                { offset: 1, color: 'rgba(10, 20, 40, 0.8)' }
-                            ]
-                        },
-                        borderColor: 'rgba(100, 160, 220, 0.5)',
-                        borderWidth: 0.5
-                    },
-                    // 高亮中国区域，作为视觉焦点
-                    regions: [{
-                        name: 'China',
-                        itemStyle: {
-                            areaColor: 'rgba(90, 170, 240, 0.8)', // 让中国区域更亮
-                            borderColor: 'rgba(150, 200, 255, 1)',
-                            borderWidth: 1,
-                        }
-                    }],
-                    emphasis: {
-                        itemStyle: {
-                            areaColor: 'rgba(90, 170, 240, 0.8)',
-                            borderColor: 'rgba(150, 200, 255, 1)',
-                        },
-                        label: {
-                            show: true,
-                            color: '#fff',
-                            fontSize: 12,
-                        }
-                    },
-                    // 限制缩放范围
-                    scaleLimit: {
-                        min: 1,
-                        max: 10
-                    }
-                },
-                series: [
-                    {
-                        type: 'effectScatter', // 使用特效散点图
-                        coordinateSystem: 'geo',
-                        data: [
-                            {name: '鄄城总部', value: [115.5, 35.57, 150]},
-                            {name: '美国客户', value: [-95.71, 37.09, 80]},
-                            {name: '印度供应商', value: [78.96, 20.59, 80]},
-                            {name: '欧洲分销', value: [10.0, 50.0, 80]}
-                        ],
-                        symbolSize: function(val) {
-                            return val[2] / 5; // 根据数据第三项决定大小
-                        },
-                        showEffectOn: 'render',
-                        rippleEffect: {
-                            brushType: 'stroke', // 涟漪效果
-                            scale: 4
-                        },
-                        itemStyle: {
-                            color: '#ff2d75',
-                            shadowBlur: 10,
-                            shadowColor: '#ff2d75'
-                        },
-                        label: {
-                            show: true,
-                            formatter: '{b}',
-                            position: 'right',
-                            color: '#ffffff'
-                        },
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 20,
-                                shadowColor: 'rgba(255, 45, 117, 0.8)'
-                            }
-                        }
-                    },
-                    {
-                        type: 'lines',
-                        coordinateSystem: 'geo',
-                        // 只显示本企业主要链路
-                        data: [
-                            {coords: [[115.5, 35.57], [-95.71, 37.09]], lineStyle: {color: '#00f2fe'}},
-                            {coords: [[115.5, 35.57], [78.96, 20.59]], lineStyle: {color: '#91cc75'}},
-                            {coords: [[115.5, 35.57], [10.0, 50.0]], lineStyle: {color: '#fac858'}}
-                        ],
-                        effect: {
-                            show: true,
-                            period: 4,
-                            trailLength: 0.3,
-                            symbol: 'arrow',
-                            symbolSize: 6
-                        },
-                        lineStyle: {
-                            curveness: 0.2,
-                            width: 2,
-                            opacity: 0.8
-                        },
-                        emphasis: {
-                            lineStyle: {
-                                width: 4,
-                                opacity: 1
-                            }
-                        }
-                    },
-                    // --- 新增系列：中国省份图层 ---
-                    {
-                        type: 'map', // 核心：使用map类型
-                        map: 'china', // 核心：使用已注册的‘china’地图
-                        coordinateSystem: 'geo', // 关键：使其与主世界地图使用同一坐标系
-                        geoIndex: 0, // 关键：指定关联到第一个geo组件（世界地图）
-                        roam: false, // 此图层本身不可交互
-                        zlevel: 1, // 确保绘制在飞线等元素之上，但在交互层之下
-                        silent: true, // 此图层不触发任何鼠标事件
-                        // 样式：只显示边界和文字，区域透明
-                        itemStyle: {
-                            areaColor: 'rgba(0, 0, 0, 0)', // 省份区域完全透明
-                            borderColor: 'rgba(100, 160, 220, 0.8)', // 省份边界线颜色（建议用亮色）
-                            borderWidth: 0.6, // 边界线宽度
-                            shadowBlur: 5,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)' // 可添加微弱阴影增强立体感
-                        },
-                        label: {
-                            show: true, // 核心：显示省份名称标签
-                            color: '#FFF', // 白色标签
-                            fontSize: 10,
-                            // 可选择性显示，避免拥挤
-                            formatter: function(params) {
-                                // 只显示主要省份名称，如山东、河南、江苏、广东等
-                                const showProvinces = ['山东', '河南', '江苏', '广东', '浙江', '四川', '河北', '湖南', '湖北', '安徽'];
-                                return showProvinces.includes(params.name) ? params.name : '';
-                            }
-                        },
-                        emphasis: { // 鼠标悬停到世界地图时的效果
-                            itemStyle: {
-                                areaColor: 'rgba(90, 170, 240, 0.3)' // 悬停时省份区域浅色高亮
-                            }
-                        },
-                        data: [] // 数据为空，仅用于显示地理信息
-                    }
-                    // --- 新增系列结束 ---
-                ]
-            };
-
-            fullMap.setOption(mapOption);
-
-            // 地图点击事件
-            fullMap.on('click', function(params) {
-                if (params.seriesType === 'effectScatter') {
-                    highlightRelatedData(params.name);
-                }
+            console.log('ECharts实例创建成功:', fullMap);
+            
+            // 设置默认视图（供应链视图）
+            switchMapView('supply');
+            console.log('默认视图设置完成');
+            
+            // 窗口大小变化时重新调整图表
+            window.addEventListener('resize', function() {
+                fullMap.resize();
+                console.log('地图大小调整');
             });
-
-            // 实现"仅中心区域可交互"功能
-            const container = fullMap.getDom();
-
-            // 1. 定义可交互区域（中心区域，例如60%宽，60%高）
-            function getInteractiveZone() {
-                const { width, height } = container.getBoundingClientRect();
-                const zoneWidth = width * 0.6;
-                const zoneHeight = height * 0.6;
-                return {
-                    left: (width - zoneWidth) / 2,
-                    top: (height - zoneHeight) / 2,
-                    width: zoneWidth,
-                    height: zoneHeight
-                };
-            }
-
-            // 2. 判断鼠标位置是否在可交互区域内
-            function isInInteractiveZone(clientX, clientY) {
-                const rect = container.getBoundingClientRect();
-                const zone = getInteractiveZone();
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                return (x >= zone.left && x <= zone.left + zone.width &&
-                        y >= zone.top && y <= zone.top + zone.height);
-            }
-
-            // 3. 状态变量与鼠标事件监听
-            let isDragging = false;
-            let lastMousePos = { x: 0, y: 0 };
-
-            container.addEventListener('mousedown', function(event) {
-                if (!isInInteractiveZone(event.clientX, event.clientY)) {
-                    return; // 在非交互区域按下，不触发拖动
-                }
-                isDragging = true;
-                lastMousePos = { x: event.clientX, y: event.clientY };
-                container.style.cursor = 'grabbing';
-                event.preventDefault();
-            });
-
-            container.addEventListener('mousemove', function(event) {
-                // 更新光标样式
-                container.style.cursor = isInInteractiveZone(event.clientX, event.clientY) ? 'grab' : 'default';
-                
-                // 处理拖动
-                if (!isDragging) return;
-                
-                const deltaX = event.clientX - lastMousePos.x;
-                const deltaY = event.clientY - lastMousePos.y;
-                lastMousePos = { x: event.clientX, y: event.clientY };
-                
-                // 计算新的地图中心点
-                const currentOption = fullMap.getOption();
-                const currentCenter = currentOption.geo[0].center;
-                const currentCenterPixel = fullMap.convertToPixel('geo', currentCenter);
-                
-                if (currentCenterPixel) {
-                    const newCenterPixel = [currentCenterPixel[0] - deltaX, currentCenterPixel[1] - deltaY];
-                    const newCenterGeo = fullMap.convertFromPixel('geo', newCenterPixel);
-                    
-                    if (newCenterGeo) {
-                        fullMap.setOption({
-                            geo: { center: newCenterGeo }
-                        });
-                    }
-                }
-            });
-
-            document.addEventListener('mouseup', function() {
-                isDragging = false;
-                container.style.cursor = 'default';
-            });
-
-            // 4. 限制滚轮缩放只在中心区域生效
-            container.addEventListener('wheel', function(event) {
-                if (!isInInteractiveZone(event.clientX, event.clientY)) {
-                    return; // 在非交互区域滚动，不触发缩放
-                }
-                event.preventDefault(); // 阻止页面滚动
-                
-                const zoomFactor = event.deltaY > 0 ? 0.9 : 1.1; // 向下滚缩小，向上滚放大
-                const currentOption = fullMap.getOption();
-                const currentZoom = currentOption.geo[0].zoom || 1;
-                const newZoom = Math.max(1, Math.min(5, currentZoom * zoomFactor)); // 限制缩放范围
-                
-                fullMap.setOption({
-                    geo: { zoom: newZoom }
-                });
-            }, { passive: false }); // 必须设置 passive: false 才能 preventDefault
+            console.log('地图初始化完成');
         }
 
-        // 初始化产业链网络图
-        function initNetworkChart() {
-            const networkElement = document.getElementById('networkChart');
-            networkChart = echarts.init(networkElement);
-
-            const option = {
-                backgroundColor: 'transparent',
-                series: [{
-                    type: 'graph',
-                    layout: 'force',
-                    data: [
-                        {name: '鄄城YYY集团', symbolSize: 50, itemStyle: {color: '#ff2d75'}},
-                        {name: '美国客户', symbolSize: 30, itemStyle: {color: '#00f2fe'}},
-                        {name: '印度供应商', symbolSize: 30, itemStyle: {color: '#91cc75'}},
-                        {name: '欧洲分销', symbolSize: 30, itemStyle: {color: '#fac858'}}
-                    ],
-                    links: [
-                        {source: '鄄城YYY集团', target: '美国客户'},
-                        {source: '鄄城YYY集团', target: '印度供应商'},
-                        {source: '鄄城YYY集团', target: '欧洲分销'}
-                    ],
-                    lineStyle: {
-                        color: 'source',
-                        curveness: 0.3
-                    },
-                    emphasis: {
-                        lineStyle: {
-                            width: 4
-                        }
-                    },
-                    force: {
-                        repulsion: 1000,
-                        edgeLength: [80, 120]
-                    }
-                }]
-            };
-
-            networkChart.setOption(option);
-
-            // 网络图点击事件
-            networkChart.on('click', function(params) {
-                if (params.dataType === 'node') {
-                    focusOnMapNode(params.name);
-                }
-            });
-        }
-
-        // 初始化经营趋势图
-        function initTrendChart() {
-            const trendElement = document.getElementById('trendChart');
-            trendChart = echarts.init(trendElement);
-
-            const option = {
-                backgroundColor: 'transparent',
-                tooltip: {
-                    trigger: 'axis'
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['1日', '5日', '10日', '15日', '20日', '25日', '30日'],
-                    axisLine: {
-                        lineStyle: {
-                            color: '#ccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: '#ccc'
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLine: {
-                        lineStyle: {
-                            color: '#ccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: '#ccc'
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
-                    }
-                },
-                series: [{
-                    data: [1200, 1900, 1500, 2100, 1800, 2500, 2200],
-                    type: 'line',
-                    smooth: true,
-                    lineStyle: {
-                        color: '#00f2fe',
-                        width: 3
-                    },
-                    areaStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {offset: 0, color: 'rgba(0, 242, 254, 0.3)'},
-                            {offset: 1, color: 'rgba(0, 242, 254, 0.05)'}
-                        ])
-                    },
-                    itemStyle: {
-                        color: '#00f2fe'
-                    }
-                }]
-            };
-
-            trendChart.setOption(option);
-        }
-
-        // 地图节点点击联动
-        function highlightRelatedData(nodeName) {
-            console.log('Highlighting data for:', nodeName);
-            // 这里可以添加具体的联动逻辑
-            // 例如高亮对应面板的数据
-        }
-
-        // 网络图节点点击联动
-        function focusOnMapNode(nodeName) {
-            console.log('Focusing on map node:', nodeName);
-            // 这里可以添加具体的联动逻辑
-            // 例如地图聚焦到对应节点
+        // 显示风险详情
+        function showRiskDetail() {
+            alert('风险详情：\n1. 参保人数为0，存在用工风险\n2. 知识产权为0，创新能力不足\n3. 企业负债率85%，财务风险较高');
         }
 
         // 刷新仪表板
@@ -932,29 +765,1351 @@
             console.log('Opening settings...');
             // 这里可以添加设置逻辑
         }
+        
+        // ============================================
+        // 地图图层切换功能
+        // ============================================
+        
+        // 切换地图视图
+        function switchMapView(viewName) {
+            console.log('切换到视图:', viewName);
+            currentView = viewName;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.map-layer-switcher .layer-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.layer === viewName) {
+                    btn.classList.add('active');
+                }
+            });
+            console.log('按钮状态更新完成');
+            
+            // 根据视图类型加载对应配置
+            switch(viewName) {
+                case 'supply':
+                    console.log('加载供应链视图');
+                    loadSupplyChainView();
+                    break;
+                case 'heatmap':
+                    console.log('加载产业热力视图');
+                    loadHeatmapView();
+                    break;
+                case 'risk':
+                    console.log('加载风险地图视图');
+                    loadRiskView();
+                    break;
+                case 'facility':
+                    console.log('加载服务设施视图');
+                    loadFacilityView();
+                    break;
+            }
+        }
+        
+        // A. 供应链视图 - 展示企业全球供应链网络
+        function loadSupplyChainView() {
+            const option = {
+                backgroundColor: 'transparent',
+                geo: {
+                    map: 'world',
+                    roam: true,
+                    center: [60, 35],
+                    zoom: 1.2,
+                    label: {
+                        show: true,
+                        color: 'rgba(255,255,255,0.6)',
+                        fontSize: 10
+                    },
+                    itemStyle: {
+                        areaColor: {
+                            type: 'radial',
+                            x: 0.5, y: 0.5, r: 0.7,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(70, 130, 180, 0.4)' },
+                                { offset: 0.7, color: 'rgba(30, 60, 100, 0.2)' },
+                                { offset: 1, color: 'rgba(10, 20, 40, 0.6)' }
+                            ]
+                        },
+                        borderColor: 'rgba(100, 160, 220, 0.3)',
+                        borderWidth: 0.5
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            areaColor: 'rgba(90, 170, 240, 0.6)'
+                        }
+                    }
+                },
+                series: [
+                    // 企业节点 - 大号脉冲光点
+                    {
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: [{
+                            name: supplyChainData.enterprise.name,
+                            value: [...supplyChainData.enterprise.position, 200],
+                            itemStyle: { color: '#ff2d75' }
+                        }],
+                        symbolSize: 25,
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke',
+                            scale: 4,
+                            period: 3
+                        },
+                        itemStyle: {
+                            shadowBlur: 20,
+                            shadowColor: '#ff2d75'
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}\n年产值:' + supplyChainData.enterprise.annualOutput + '\n进出口:' + supplyChainData.enterprise.importExport,
+                            position: 'right',
+                            color: '#fff',
+                            fontSize: 11,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [5, 10],
+                            borderRadius: 4
+                        },
+                        zlevel: 2
+                    },
+                    // 上游供应商节点
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: supplyChainData.upstream.map(item => ({
+                            name: item.name,
+                            value: [...item.position, 80],
+                            itemData: item
+                        })),
+                        symbolSize: 15,
+                        itemStyle: {
+                            color: '#00f2fe',
+                            shadowBlur: 10,
+                            shadowColor: '#00f2fe'
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'top',
+                            color: '#00f2fe',
+                            fontSize: 10
+                        },
+                        zlevel: 2
+                    },
+                    // 下游客户节点
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: supplyChainData.downstream.map(item => ({
+                            name: item.name,
+                            value: [...item.position, 80],
+                            itemData: item
+                        })),
+                        symbolSize: 15,
+                        itemStyle: {
+                            color: '#faad14',
+                            shadowBlur: 10,
+                            shadowColor: '#faad14'
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'top',
+                            color: '#faad14',
+                            fontSize: 10
+                        },
+                        zlevel: 2
+                    },
+                    // 上游供应线 - 蓝色虚线
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'geo',
+                        data: supplyChainData.upstream.map(item => ({
+                            coords: [item.position, supplyChainData.enterprise.position],
+                            lineStyle: { color: '#00f2fe', type: 'dashed' },
+                            itemData: item
+                        })),
+                        effect: {
+                            show: true,
+                            period: 5,
+                            trailLength: 0.3,
+                            symbol: 'arrow',
+                            symbolSize: 6,
+                            color: '#00f2fe'
+                        },
+                        lineStyle: {
+                            curveness: 0.2,
+                            width: 2,
+                            opacity: 0.8
+                        },
+                        label: {
+                            show: true,
+                            formatter: '原料',
+                            position: 'middle',
+                            color: '#00f2fe',
+                            fontSize: 10,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [2, 6],
+                            borderRadius: 3
+                        },
+                        zlevel: 1
+                    },
+                    // 下游贸易线 - 橙色实线
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'geo',
+                        data: supplyChainData.downstream.map(item => ({
+                            coords: [supplyChainData.enterprise.position, item.position],
+                            lineStyle: { color: '#faad14' },
+                            itemData: item
+                        })),
+                        effect: {
+                            show: true,
+                            period: 4,
+                            trailLength: 0.3,
+                            symbol: 'arrow',
+                            symbolSize: 6,
+                            color: '#faad14'
+                        },
+                        lineStyle: {
+                            curveness: 0.2,
+                            width: 2,
+                            opacity: 0.8
+                        },
+                        label: {
+                            show: true,
+                            formatter: function(params) {
+                                return '出口 ' + params.data.itemData.annualVolume;
+                            },
+                            position: 'middle',
+                            color: '#faad14',
+                            fontSize: 10,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [2, 6],
+                            borderRadius: 3
+                        },
+                        zlevel: 1
+                    }
+                ]
+            };
+            
+            fullMap.setOption(option, true);
+            
+            // 绑定点击事件
+            fullMap.off('click');
+            fullMap.on('click', function(params) {
+                if (params.componentType === 'series') {
+                    if (params.seriesType === 'lines') {
+                        // 点击连线显示链路详情
+                        showLinkDetail(params.data.itemData);
+                    } else if (params.seriesType === 'scatter' || params.seriesType === 'effectScatter') {
+                        // 点击节点显示节点详情
+                        if (params.data.name === supplyChainData.enterprise.name) {
+                            showEnterpriseDetail();
+                        } else if (params.data.itemData) {
+                            showNodeDetail(params.data.itemData);
+                        }
+                    }
+                }
+            });
+        }
+        
+        // B. 产业热力视图 - 展示企业在本地区的产业集聚与贡献度
+        function loadHeatmapView() {
+            const option = {
+                backgroundColor: 'transparent',
+                geo: {
+                    map: 'china',
+                    roam: true,
+                    center: [115, 35],
+                    zoom: 5,
+                    label: {
+                        show: true,
+                        color: 'rgba(255,255,255,0.8)',
+                        fontSize: 11
+                    },
+                    itemStyle: {
+                        areaColor: 'rgba(30, 60, 100, 0.3)',
+                        borderColor: 'rgba(100, 160, 220, 0.5)',
+                        borderWidth: 1
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            areaColor: 'rgba(90, 170, 240, 0.5)'
+                        }
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    inRange: {
+                        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                    },
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    left: 'left',
+                    bottom: '10%'
+                },
+                series: [
+                    // 热力图
+                    {
+                        type: 'heatmap',
+                        coordinateSystem: 'geo',
+                        data: heatmapData.heatPoints.map(item => ({
+                            name: item.name,
+                            value: item.value,
+                            itemData: item
+                        })),
+                        pointSize: 30,
+                        blurSize: 20,
+                        zlevel: 1
+                    },
+                    // 头部企业圆环
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: heatmapData.topEnterprises.map(item => ({
+                            name: item.name,
+                            value: [...item.position, item.size],
+                            itemStyle: {
+                                color: item.type === '龙头' ? '#ff2d75' : (item.type === '规上' ? '#00f2fe' : '#91cc75'),
+                                borderColor: '#fff',
+                                borderWidth: 2,
+                                shadowBlur: 15,
+                                shadowColor: item.type === '龙头' ? '#ff2d75' : (item.type === '规上' ? '#00f2fe' : '#91cc75')
+                            },
+                            itemData: item
+                        })),
+                        symbolSize: function(val) {
+                            return val[2];
+                        },
+                        label: {
+                            show: true,
+                            formatter: function(params) {
+                                return params.data.name + '\n' + params.data.itemData.output;
+                            },
+                            position: 'right',
+                            color: '#fff',
+                            fontSize: 10,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [4, 8],
+                            borderRadius: 4
+                        },
+                        zlevel: 2
+                    }
+                ]
+            };
+            
+            fullMap.setOption(option, true);
+            
+            // 绑定点击事件
+            fullMap.off('click');
+            fullMap.on('click', function(params) {
+                if (params.componentType === 'series' && params.data && params.data.itemData) {
+                    if (params.data.name === '鄄城县') {
+                        // 点击鄄城，进入产业关系网络视图
+                        loadJuanchengNetworkView();
+                    } else {
+                        showHeatmapDetail(params.data.itemData);
+                    }
+                }
+            });
+        }
+        
+        // C. 风险地图视图 - 展示企业贸易网络中的风险分布
+        function loadRiskView() {
+            // 构建国家区域样式
+            const regions = riskData.countries.map(country => ({
+                name: country.name,
+                itemStyle: {
+                    areaColor: country.color,
+                    opacity: 0.6
+                },
+                emphasis: {
+                    itemStyle: {
+                        areaColor: country.color,
+                        opacity: 0.8
+                    }
+                },
+                countryData: country
+            }));
+            
+            const option = {
+                backgroundColor: 'transparent',
+                geo: {
+                    map: 'world',
+                    roam: true,
+                    center: [20, 20],
+                    zoom: 1.3,
+                    label: {
+                        show: false
+                    },
+                    itemStyle: {
+                        areaColor: 'rgba(30, 60, 100, 0.3)',
+                        borderColor: 'rgba(100, 160, 220, 0.3)',
+                        borderWidth: 0.5
+                    },
+                    regions: regions,
+                    emphasis: {
+                        label: {
+                            show: true,
+                            color: '#fff'
+                        }
+                    }
+                },
+                visualMap: {
+                    type: 'piecewise',
+                    pieces: [
+                        { value: 'low', label: '低风险', color: '#52c41a' },
+                        { value: 'medium', label: '中等风险', color: '#faad14' },
+                        { value: 'high', label: '高风险', color: '#ff4d4f' }
+                    ],
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    left: 'left',
+                    bottom: '10%'
+                },
+                series: [
+                    // 风险标签标记
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: riskData.countries
+                            .filter(c => c.level !== 'low')
+                            .map(country => {
+                                // 获取国家中心坐标（简化处理）
+                                const coord = getCountryCoord(country.name);
+                                return {
+                                    name: country.name,
+                                    value: [...coord, country.level === 'high' ? 100 : 50],
+                                    itemData: country
+                                };
+                            }),
+                        symbol: 'pin',
+                        symbolSize: 40,
+                        itemStyle: {
+                            color: function(params) {
+                                return params.data.itemData.color;
+                            }
+                        },
+                        label: {
+                            show: true,
+                            formatter: function(params) {
+                                return params.data.itemData.label;
+                            },
+                            position: 'top',
+                            color: '#fff',
+                            fontSize: 10,
+                            backgroundColor: 'rgba(0,0,0,0.6)',
+                            padding: [3, 6],
+                            borderRadius: 3
+                        },
+                        zlevel: 2
+                    }
+                ]
+            };
+            
+            fullMap.setOption(option, true);
+            
+            // 绑定点击事件
+            fullMap.off('click');
+            fullMap.on('click', function(params) {
+                if (params.data && params.data.countryData) {
+                    showRiskDetailPanel(params.data.countryData);
+                } else if (params.data && params.data.itemData) {
+                    showRiskDetailPanel(params.data.itemData);
+                }
+            });
+        }
+        
+        // D. 服务设施视图 - 展示政府可提供的配套服务资源
+        function loadFacilityView() {
+            const option = {
+                backgroundColor: 'transparent',
+                geo: {
+                    map: 'china',
+                    roam: true,
+                    center: [115.5, 35.5],
+                    zoom: 9,
+                    label: {
+                        show: true,
+                        color: 'rgba(255,255,255,0.8)',
+                        fontSize: 12
+                    },
+                    itemStyle: {
+                        areaColor: 'rgba(30, 60, 100, 0.3)',
+                        borderColor: 'rgba(100, 160, 220, 0.5)',
+                        borderWidth: 1
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            areaColor: 'rgba(90, 170, 240, 0.5)'
+                        }
+                    }
+                },
+                series: [
+                    // 企业位置
+                    {
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: [{
+                            name: supplyChainData.enterprise.name,
+                            value: [...supplyChainData.enterprise.position, 150]
+                        }],
+                        symbolSize: 20,
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke',
+                            scale: 3
+                        },
+                        itemStyle: {
+                            color: '#ff2d75',
+                            shadowBlur: 15,
+                            shadowColor: '#ff2d75'
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'right',
+                            color: '#ff2d75',
+                            fontSize: 12,
+                            fontWeight: 'bold'
+                        },
+                        zlevel: 3
+                    },
+                    // 服务设施
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: facilityData.facilities.map(facility => ({
+                            name: facility.name,
+                            value: [...facility.position, 80],
+                            itemStyle: {
+                                color: getFacilityColor(facility.type)
+                            },
+                            itemData: facility
+                        })),
+                        symbol: function(value, params) {
+                            return getFacilityIcon(params.data.itemData.type);
+                        },
+                        symbolSize: 25,
+                        label: {
+                            show: true,
+                            formatter: function(params) {
+                                return params.data.name + '\n' + params.data.itemData.distance;
+                            },
+                            position: 'top',
+                            color: '#fff',
+                            fontSize: 10,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [3, 6],
+                            borderRadius: 3
+                        },
+                        zlevel: 2
+                    },
+                    // 指引线
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'geo',
+                        data: facilityData.facilities.map(facility => ({
+                            coords: [supplyChainData.enterprise.position, facility.position],
+                            lineStyle: {
+                                color: 'rgba(200, 200, 200, 0.5)',
+                                type: 'dashed',
+                                width: 1
+                            },
+                            itemData: facility
+                        })),
+                        lineStyle: {
+                            curveness: 0.1,
+                            opacity: 0.6
+                        },
+                        label: {
+                            show: true,
+                            formatter: function(params) {
+                                return params.data.itemData.driveTime;
+                            },
+                            position: 'middle',
+                            color: '#ccc',
+                            fontSize: 9
+                        },
+                        zlevel: 1
+                    }
+                ]
+            };
+            
+            fullMap.setOption(option, true);
+            
+            // 绑定点击事件
+            fullMap.off('click');
+            fullMap.on('click', function(params) {
+                if (params.componentType === 'series' && params.data && params.data.itemData) {
+                    showFacilityDetail(params.data.itemData);
+                }
+            });
+        }
+        
+        // ============================================
+        // 辅助函数
+        // ============================================
+        
+        // 获取国家坐标（简化版）
+        function getCountryCoord(countryName) {
+            const coords = {
+                'Germany': [10, 51],
+                'Japan': [138, 36],
+                'France': [2, 46],
+                'United Kingdom': [-2, 54],
+                'United States': [-95, 37],
+                'India': [78, 20],
+                'Brazil': [-55, -10],
+                'Russia': [105, 61],
+                'Nigeria': [8, 10]
+            };
+            return coords[countryName] || [0, 0];
+        }
+        
+        // 获取设施颜色
+        function getFacilityColor(type) {
+            const colors = {
+                '保税仓库': '#00f2fe',
+                '职业培训': '#52c41a',
+                '技术研究院': '#722ed1',
+                '交通枢纽': '#faad14',
+                '铁路货运': '#fa8c16',
+                '产业园区': '#eb2f96'
+            };
+            return colors[type] || '#00f2fe';
+        }
+        
+        // 获取设施图标
+        function getFacilityIcon(type) {
+            // 使用不同形状表示不同类型
+            const icons = {
+                '保税仓库': 'rect',
+                '职业培训': 'triangle',
+                '技术研究院': 'diamond',
+                '交通枢纽': 'circle',
+                '铁路货运': 'roundRect',
+                '产业园区': 'pin'
+            };
+            return icons[type] || 'circle';
+        }
+        
+        // ============================================
+        // 右侧面板联动功能
+        // ============================================
+        
+        // 显示链路详情
+        function showLinkDetail(linkData) {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3><i class="fas fa-link"></i> 链路详情分析</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-info-circle"></i> 基本信息</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">链路名称</span>
+                            <span class="detail-value highlight">${linkData.name}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">业务类型</span>
+                            <span class="detail-value">${linkData.type}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">主要产品</span>
+                            <span class="detail-value highlight">${linkData.product}</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-chart-bar"></i> 贸易数据</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">年贸易额/量</span>
+                            <span class="detail-value highlight">${linkData.annualVolume}</span>
+                        </div>
+                        ${linkData.price ? `
+                        <div class="detail-row">
+                            <span class="detail-label">平均单价</span>
+                            <span class="detail-value">${linkData.price}</span>
+                        </div>
+                        ` : ''}
+                        ${linkData.trend ? `
+                        <div class="detail-row">
+                            <span class="detail-label">增长趋势</span>
+                            <span class="detail-value" style="color: #52c41a;">${linkData.trend}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-shipping-fast"></i> 运价趋势</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">近期运价</span>
+                            <span class="detail-value">保持稳定</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">预测趋势</span>
+                            <span class="detail-value warning">季节性波动</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 显示节点详情
+        function showNodeDetail(nodeData) {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3><i class="fas fa-building"></i> ${nodeData.name}</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-handshake"></i> 合作关系</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">业务类型</span>
+                            <span class="detail-value">${nodeData.type}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">主要产品</span>
+                            <span class="detail-value highlight">${nodeData.product}</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-chart-line"></i> 交易数据</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">年交易量</span>
+                            <span class="detail-value highlight">${nodeData.annualVolume}</span>
+                        </div>
+                        ${nodeData.price ? `
+                        <div class="detail-row">
+                            <span class="detail-label">单价</span>
+                            <span class="detail-value">${nodeData.price}</span>
+                        </div>
+                        ` : ''}
+                        ${nodeData.trend ? `
+                        <div class="detail-row">
+                            <span class="detail-label">增长趋势</span>
+                            <span class="detail-value" style="color: #52c41a;">${nodeData.trend}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 显示企业详情
+        function showEnterpriseDetail() {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3><i class="fas fa-industry"></i> 鄄城YYY集团详情</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-chart-pie"></i> 经营概况</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">年产值</span>
+                            <span class="detail-value highlight">${supplyChainData.enterprise.annualOutput}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">进出口额</span>
+                            <span class="detail-value highlight">${supplyChainData.enterprise.importExport}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">员工人数</span>
+                            <span class="detail-value">${supplyChainData.enterprise.employees}人</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-globe"></i> 贸易网络</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">上游供应商</span>
+                            <span class="detail-value">${supplyChainData.upstream.length}家</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">下游客户</span>
+                            <span class="detail-value">${supplyChainData.downstream.length}家</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">覆盖市场</span>
+                            <span class="detail-value">全球4大洲</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 显示热力图详情
+        function showHeatmapDetail(data) {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3><i class="fas fa-map-marker-alt"></i> ${data.name}产业分析</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-fire"></i> 产业集聚度</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">热力指数</span>
+                            <span class="detail-value highlight">${data.value[2]}/100</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">企业总数</span>
+                            <span class="detail-value">${data.enterprises}家</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">产业产值</span>
+                            <span class="detail-value highlight">${data.output}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">就业人数</span>
+                            <span class="detail-value">${data.employees}人</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-chart-line"></i> 产业地位</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">区域排名</span>
+                            <span class="detail-value">第${data.value[2] > 90 ? '1' : (data.value[2] > 80 ? '2' : '3')}位</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">发展趋势</span>
+                            <span class="detail-value" style="color: #52c41a;">稳步增长</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 显示风险详情面板
+        function showRiskDetailPanel(countryData) {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3><i class="fas fa-exclamation-triangle"></i> ${countryData.name}风险分析</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-shield-alt"></i> 风险等级</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">风险级别</span>
+                            <span class="detail-value ${countryData.level === 'high' ? 'danger' : (countryData.level === 'medium' ? 'warning' : 'highlight')}">${countryData.risk}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">风险类型</span>
+                            <span class="detail-value">${countryData.label}</span>
+                        </div>
+                    </div>
+                    ${countryData.impact ? `
+                    <div class="detail-section">
+                        <h4><i class="fas fa-bolt"></i> 影响分析</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">影响程度</span>
+                            <span class="detail-value warning">${countryData.impact}</span>
+                        </div>
+                    </div>
+                    ` : ''}
+                    ${countryData.suggestion ? `
+                    <div class="detail-section">
+                        <h4><i class="fas fa-lightbulb"></i> 应对建议</h4>
+                        <div style="color: #00f2fe; padding: 8px; background: rgba(0,242,254,0.1); border-radius: 4px;">
+                            ${countryData.suggestion}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 显示设施详情
+        function showFacilityDetail(facilityData) {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3><i class="fas fa-building"></i> ${facilityData.name}</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-info-circle"></i> 基本信息</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">设施类型</span>
+                            <span class="detail-value highlight">${facilityData.type}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">距离</span>
+                            <span class="detail-value">${facilityData.distance}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">车程</span>
+                            <span class="detail-value">${facilityData.driveTime}</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-cogs"></i> 主要功能</h4>
+                        <div style="color: #cbd5e1; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                            ${facilityData.function}
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-gift"></i> 优惠政策</h4>
+                        <div style="color: #52c41a; padding: 8px; background: rgba(82,196,26,0.1); border-radius: 4px;">
+                            ${facilityData.policy}
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-phone"></i> 联系方式</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">联系电话</span>
+                            <span class="detail-value highlight">${facilityData.contact}</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 恢复默认面板（税务信用评级）
+        function restoreDefaultPanel() {
+            const panel = document.querySelector('.risk-warning');
+            panel.innerHTML = `
+                <h3>📊 税务信用评级</h3>
+                <table class="credit-table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(0, 242, 254, 0.2);">
+                            <th style="text-align: left; padding: 8px; color: #94a3b8; font-weight: 500;">评价年度</th>
+                            <th style="text-align: center; padding: 8px; color: #94a3b8; font-weight: 500;">信用级别</th>
+                            <th style="text-align: center; padding: 8px; color: #94a3b8; font-weight: 500;">类型</th>
+                            <th style="text-align: center; padding: 8px; color: #94a3b8; font-weight: 500;">评价单位</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <td style="padding: 10px 8px; color: #fff;">2024</td>
+                            <td style="padding: 10px 8px; text-align: center;"><span style="color: #52c41a; font-weight: 600;">暂无数据公示</span></td>
+                            <td style="padding: 10px 8px; text-align: center; color: #94a3b8;">-</td>
+                            <td style="padding: 10px 8px; text-align: center; color: #94a3b8;">国家税务总局</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <td style="padding: 10px 8px; color: #fff;">2023</td>
+                            <td style="padding: 10px 8px; text-align: center;"><span style="color: #52c41a; font-weight: 600;">暂无数据公示</span></td>
+                            <td style="padding: 10px 8px; text-align: center; color: #94a3b8;">-</td>
+                            <td style="padding: 10px 8px; text-align: center; color: #94a3b8;">国家税务总局</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <td style="padding: 10px 8px; color: #fff;">2022</td>
+                            <td style="padding: 10px 8px; text-align: center;"><span style="color: #52c41a; font-weight: 600;">暂无数据公示</span></td>
+                            <td style="padding: 10px 8px; text-align: center; color: #94a3b8;">-</td>
+                            <td style="padding: 10px 8px; text-align: center; color: #94a3b8;">国家税务总局</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 12px; background: rgba(0, 242, 254, 0.05); border-radius: 8px; border-left: 3px solid #00f2fe;">
+                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 5px;">
+                        <i class="fas fa-info-circle" style="color: #00f2fe; margin-right: 5px;"></i>税务评级说明
+                    </div>
+                    <div style="font-size: 11px; color: #cbd5e1; line-height: 1.5;">
+                        纳税信用级别设A、B、M、C、D五级。A级纳税信用为年度评价指标得分90分以上的；B级为得分70分以上不满90分的；M级为新设立企业或评价年度内无生产经营业务收入且年度评价指标得分70分以上的；C级为得分40分以上不满70分的；D级为得分不满40分或者直接判级确定的。
+                    </div>
+                </div>
+            `;
+        }
 
+        // 全局变量
+        let currentJuanchengMode = 'geo'; // geo: 地理模式, force: 网络模式
+        
+        // 加载鄄城产业关系网络视图
+        function loadJuanchengNetworkView() {
+            console.log('加载鄄城产业关系网络视图');
+            
+            // 添加模式切换按钮
+            const switcherHTML = `
+                <div class="mode-switcher" style="position: absolute; top: 60px; right: 10px; z-index: 100; background: rgba(16, 25, 48, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 8px; padding: 8px; display: flex; gap: 6px;">
+                    <div class="mode-btn active" data-mode="geo" onclick="switchJuanchengMode('geo')" style="padding: 6px 12px; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; background: rgba(0, 242, 254, 0.2); color: #00f2fe; font-size: 12px; cursor: pointer; transition: all 0.3s ease;">
+                        地理模式
+                    </div>
+                    <div class="mode-btn" data-mode="force" onclick="switchJuanchengMode('force')" style="padding: 6px 12px; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; background: rgba(0, 242, 254, 0.05); color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.3s ease;">
+                        网络模式
+                    </div>
+                    <div class="back-btn" onclick="switchMapView('heatmap')" style="padding: 6px 12px; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; background: rgba(0, 242, 254, 0.05); color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-arrow-left"></i> 返回
+                    </div>
+                </div>
+            `;
+            
+            // 移除现有的模式切换器
+            const existingSwitcher = document.querySelector('.mode-switcher');
+            if (existingSwitcher) {
+                existingSwitcher.remove();
+            }
+            
+            // 添加新模式切换器
+            const mapContainer = document.getElementById('fullscreen-map');
+            mapContainer.insertAdjacentHTML('beforeend', switcherHTML);
+            
+            // 加载地理模式
+            loadJuanchengGeoMode();
+        }
+        
+        // 切换鄄城模式
+        function switchJuanchengMode(mode) {
+            currentJuanchengMode = mode;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.mode-switcher .mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'rgba(0, 242, 254, 0.05)';
+                btn.style.color = '#94a3b8';
+                if (btn.dataset.mode === mode) {
+                    btn.classList.add('active');
+                    btn.style.background = 'rgba(0, 242, 254, 0.2)';
+                    btn.style.color = '#00f2fe';
+                }
+            });
+            
+            // 加载对应模式
+            if (mode === 'geo') {
+                loadJuanchengGeoMode();
+            } else {
+                loadJuanchengForceMode();
+            }
+        }
+        
+        // 加载地理模式
+        function loadJuanchengGeoMode() {
+            const option = {
+                backgroundColor: 'transparent',
+                geo: {
+                    map: 'china',
+                    roam: true,
+                    center: [115.5, 35.57],
+                    zoom: 12,
+                    label: {
+                        show: true,
+                        color: 'rgba(255,255,255,0.8)',
+                        fontSize: 12
+                    },
+                    itemStyle: {
+                        areaColor: 'rgba(30, 60, 100, 0.3)',
+                        borderColor: 'rgba(100, 160, 220, 0.5)',
+                        borderWidth: 1
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            areaColor: 'rgba(90, 170, 240, 0.5)'
+                        }
+                    }
+                },
+                series: [
+                    // 企业节点
+                    {
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: juanchengData.companies.map(company => ({
+                            id: company.id,
+                            name: company.name,
+                            value: [company.lon, company.lat, company.employees],
+                            itemStyle: {
+                                color: getCompanyColor(company.type)
+                            },
+                            companyData: company
+                        })),
+                        symbolSize: function(val) {
+                            return Math.sqrt(val[2]) * 0.8 + 10;
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'top',
+                            color: '#fff',
+                            fontSize: 10,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [2, 6],
+                            borderRadius: 3
+                        },
+                        zlevel: 2
+                    },
+                    // 企业间关系连线
+                    {
+                        type: 'lines',
+                        coordinateSystem: 'geo',
+                        data: juanchengData.relationships.map(rel => {
+                            const sourceCompany = juanchengData.companies.find(c => c.id === rel.source);
+                            const targetCompany = juanchengData.companies.find(c => c.id === rel.target);
+                            return {
+                                coords: [[sourceCompany.lon, sourceCompany.lat], [targetCompany.lon, targetCompany.lat]],
+                                value: rel.value,
+                                itemStyle: {
+                                    color: rel.type === 'supply' ? '#00f2fe' : '#faad14'
+                                },
+                                relationshipData: rel
+                            };
+                        }),
+                        effect: {
+                            show: true,
+                            period: 4,
+                            trailLength: 0.3,
+                            symbol: 'arrow',
+                            symbolSize: 6
+                        },
+                        lineStyle: {
+                            curveness: 0.2,
+                            width: function(params) {
+                                return params.data.value / 20;
+                            },
+                            opacity: 0.8,
+                            type: 'solid'
+                        },
+                        label: {
+                            show: true,
+                            formatter: function(params) {
+                                return params.data.relationshipData.product;
+                            },
+                            position: 'middle',
+                            color: '#fff',
+                            fontSize: 9,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: [2, 6],
+                            borderRadius: 3
+                        },
+                        zlevel: 1
+                    }
+                ]
+            };
+            
+            fullMap.setOption(option, true);
+            
+            // 绑定点击事件
+            fullMap.off('click');
+            fullMap.on('click', function(params) {
+                if (params.componentType === 'series' && params.data && params.data.companyData) {
+                    highlightCompanyNetwork(params.data.companyData.id);
+                }
+            });
+        }
+        
+        // 加载网络模式（力导向图）
+        function loadJuanchengForceMode() {
+            // 准备节点数据
+            const nodes = juanchengData.companies.map(company => ({
+                id: company.id,
+                name: company.name,
+                value: company.employees,
+                category: getCompanyCategory(company.type),
+                companyData: company
+            }));
+            
+            // 准备边数据
+            const links = juanchengData.relationships.map(rel => ({
+                source: rel.source,
+                target: rel.target,
+                value: rel.value,
+                type: rel.type,
+                relationshipData: rel
+            }));
+            
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    data: ['生产商', '辅料商', '贸易商', '包装商', '物流商', '原料商'],
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    top: 10,
+                    left: 'center'
+                },
+                series: [{
+                    type: 'graph',
+                    layout: 'force',
+                    data: nodes,
+                    links: links,
+                    categories: [
+                        { name: '生产商', itemStyle: { color: '#ff2d75' } },
+                        { name: '辅料商', itemStyle: { color: '#00f2fe' } },
+                        { name: '贸易商', itemStyle: { color: '#faad14' } },
+                        { name: '包装商', itemStyle: { color: '#52c41a' } },
+                        { name: '物流商', itemStyle: { color: '#722ed1' } },
+                        { name: '原料商', itemStyle: { color: '#fa8c16' } }
+                    ],
+                    roam: true,
+                    label: {
+                        show: true,
+                        position: 'right',
+                        color: '#fff',
+                        fontSize: 12
+                    },
+                    force: {
+                        repulsion: 1000,
+                        edgeLength: [80, 120]
+                    },
+                    lineStyle: {
+                        color: function(params) {
+                            return params.data.type === 'supply' ? '#00f2fe' : '#faad14';
+                        },
+                        width: function(params) {
+                            return params.data.value / 10;
+                        },
+                        curveness: 0.2
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 4
+                        }
+                    }
+                }]
+            };
+            
+            fullMap.setOption(option, true);
+            
+            // 绑定点击事件
+            fullMap.off('click');
+            fullMap.on('click', function(params) {
+                if (params.data && params.data.companyData) {
+                    highlightCompanyNetwork(params.data.companyData.id);
+                }
+            });
+        }
+        
+        // 高亮企业供应链网络
+        function highlightCompanyNetwork(companyId) {
+            console.log('高亮企业网络:', companyId);
+            
+            // 查找相关的企业和关系
+            const relatedCompanies = new Set();
+            const relatedRelationships = [];
+            
+            // 添加当前企业
+            relatedCompanies.add(companyId);
+            
+            // 查找直接关联的企业
+            juanchengData.relationships.forEach(rel => {
+                if (rel.source === companyId || rel.target === companyId) {
+                    relatedCompanies.add(rel.source);
+                    relatedCompanies.add(rel.target);
+                    relatedRelationships.push(rel);
+                }
+            });
+            
+            // 显示企业详情和合作方列表
+            showCompanyNetworkDetail(companyId, Array.from(relatedCompanies), relatedRelationships);
+        }
+        
+        // 显示企业网络详情
+        function showCompanyNetworkDetail(companyId, relatedCompanies, relationships) {
+            const company = juanchengData.companies.find(c => c.id === companyId);
+            if (!company) return;
+            
+            const panel = document.querySelector('.risk-warning');
+            
+            // 构建合作方列表
+            const partnersHTML = relatedCompanies
+                .filter(id => id !== companyId)
+                .map(id => {
+                    const partner = juanchengData.companies.find(c => c.id === id);
+                    const relationship = relationships.find(r => 
+                        (r.source === companyId && r.target === id) || 
+                        (r.source === id && r.target === companyId)
+                    );
+                    const relationshipType = relationship ? 
+                        (relationship.source === companyId ? '销售给' : '从采购') : '';
+                    const product = relationship ? relationship.product : '';
+                    
+                    return `
+                        <div class="detail-row">
+                            <span class="detail-label">${partner.name} (${partner.type})</span>
+                            <span class="detail-value ${relationshipType.includes('销售') ? 'highlight' : 'warning'}">
+                                ${relationshipType} ${product}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+            
+            panel.innerHTML = `
+                <h3><i class="fas fa-network-wired"></i> ${company.name} - 供应链网络</h3>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-info-circle"></i> 企业信息</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">企业类型</span>
+                            <span class="detail-value highlight">${company.type}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">年产值</span>
+                            <span class="detail-value">${company.output}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">员工人数</span>
+                            <span class="detail-value">${company.employees}人</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4><i class="fas fa-handshake"></i> 合作方列表</h4>
+                        ${partnersHTML || '<div style="color: #64748b; text-align: center; padding: 10px;">暂无合作方</div>'}
+                    </div>
+                </div>
+                <button class="back-btn" onclick="restoreDefaultPanel()">
+                    <i class="fas fa-arrow-left"></i> 返回默认视图
+                </button>
+            `;
+        }
+        
+        // 获取企业颜色
+        function getCompanyColor(type) {
+            const colors = {
+                '生产商': '#ff2d75',
+                '辅料商': '#00f2fe',
+                '贸易商': '#faad14',
+                '包装商': '#52c41a',
+                '物流商': '#722ed1',
+                '原料商': '#fa8c16'
+            };
+            return colors[type] || '#00f2fe';
+        }
+        
+        // 获取企业分类
+        function getCompanyCategory(type) {
+            const categories = {
+                '生产商': 0,
+                '辅料商': 1,
+                '贸易商': 2,
+                '包装商': 3,
+                '物流商': 4,
+                '原料商': 5
+            };
+            return categories[type] || 0;
+        }
+        
         // 页面加载完成后初始化所有图表
         window.addEventListener('load', function() {
-            // 更新时间
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-
-            // 初始化地图
-            initIndustryMap();
-
-            // 初始化产业链网络图
-            initNetworkChart();
-
-            // 初始化经营趋势图
-            initTrendChart();
-
-            // 窗口大小变化时重新调整图表
-            window.addEventListener('resize', function() {
-                fullMap.resize();
-                networkChart.resize();
-                trendChart.resize();
-            });
+            console.log('页面加载完成，开始初始化');
+            try {
+                // 初始化地图
+                initIndustryMap();
+                console.log('初始化完成');
+            } catch (error) {
+                console.error('初始化出错:', error);
+            }
         });
+        
+        // 确保DOM加载完成
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOM加载完成');
+            });
+        } else {
+            console.log('DOM已经加载完成');
+        }
     </script>
 </body>
 </html>

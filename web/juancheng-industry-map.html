@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鄄城县发制品产业地理分布图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        #map-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-align: center;
+        }
+        
+        .map-title h1 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .map-title p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .legend {
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .legend h3 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .legend-pin {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .filter-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .filter-panel h3 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .filter-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .data-source {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 11px;
+            color: #999;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px 10px;
+            border-radius: 3px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="map-container">
+        <div class="map-title">
+            <h1>鄄城县发制品产业地理分布图</h1>
+            <p>本图基于真实地理信息，展示了鄄城县发制品产业链各环节企业的空间分布。绿色：原料/辅料；蓝色：生产制造；橙色：贸易销售；紫色：配套服务。</p>
+        </div>
+        
+        <div class="legend">
+            <h3>图例</h3>
+            <div class="legend-item">
+                <div class="legend-pin" style="background-color: #34c759;"></div>
+                <span>上游 - 原料与辅料企业</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-pin" style="background-color: #007aff;"></div>
+                <span>中游 - 生产制造企业</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-pin" style="background-color: #ff9500;"></div>
+                <span>下游 - 贸易与销售企业</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-pin" style="background-color: #af52de;"></div>
+                <span>配套 - 服务与设备企业</span>
+            </div>
+        </div>
+        
+        <div class="filter-panel">
+            <h3>企业类型筛选</h3>
+            <div class="filter-item">
+                <input type="checkbox" id="filter-upstream" checked>
+                <label for="filter-upstream">上游 - 原料与辅料企业</label>
+            </div>
+            <div class="filter-item">
+                <input type="checkbox" id="filter-midstream" checked>
+                <label for="filter-midstream">中游 - 生产制造企业</label>
+            </div>
+            <div class="filter-item">
+                <input type="checkbox" id="filter-downstream" checked>
+                <label for="filter-downstream">下游 - 贸易与销售企业</label>
+            </div>
+            <div class="filter-item">
+                <input type="checkbox" id="filter-supporting" checked>
+                <label for="filter-supporting">配套 - 服务与设备企业</label>
+            </div>
+        </div>
+        
+        <div class="data-source">
+            企业位置与信息为模拟数据，用于示意
+        </div>
+        
+        <div id="map"></div>
+    </div>
+    
+    <script>
+        // 异步加载百度地图API
+        function loadBaiduMapAPI() {
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://api.map.baidu.com/api?v=3.0&ak=76df3ec900fa3fad7b3b7dd1c60abed1&callback=initMap';
+            script.async = true;
+            document.head.appendChild(script);
+        }
+        
+        // 页面加载完成后加载百度地图API
+        window.onload = function() {
+            console.log('页面加载完成，准备加载百度地图API');
+            loadBaiduMapAPI();
+        };
+    </script>
+    <script>
+        // 企业数据
+        const enterprises = [
+            // 上游 - 原料与辅料企业 (绿色)
+            {
+                name: "鄄城XX毛发回收公司",
+                type: "upstream",
+                category: "上游 - 原料与辅料企业",
+                business: "真人发回收与初加工",
+                address: "鄄城县阎什镇工业园区",
+                output: "8000万元",
+                location: [115.85, 35.58]
+            },
+            {
+                name: "鄄城YY化纤丝厂",
+                type: "upstream",
+                category: "上游 - 原料与辅料企业",
+                business: "化纤丝生产",
+                address: "鄄城县旧城镇开发区",
+                output: "6000万元",
+                location: [115.68, 35.62]
+            },
+            {
+                name: "AAA发网制造有限公司",
+                type: "upstream",
+                category: "上游 - 原料与辅料企业",
+                business: "发网、发夹等辅料生产",
+                address: "鄄城县阎什镇经济开发区",
+                output: "4500万元",
+                location: [115.83, 35.57]
+            },
+            {
+                name: "鄄城润发原料厂",
+                type: "upstream",
+                category: "上游 - 原料与辅料企业",
+                business: "档发、发帘生产",
+                address: "鄄城县旧城镇工业园",
+                output: "5200万元",
+                location: [115.67, 35.61]
+            },
+            {
+                name: "鄄城长发原料有限公司",
+                type: "upstream",
+                category: "上游 - 原料与辅料企业",
+                business: "真人发丝加工",
+                address: "鄄城县旧城镇开发区",
+                output: "7800万元",
+                location: [115.70, 35.60]
+            },
+            
+            // 中游 - 生产制造企业 (蓝色)
+            {
+                name: "华艺发制品股份有限公司",
+                type: "midstream",
+                category: "中游 - 生产制造企业",
+                business: "高端假发、发套生产",
+                address: "鄄城县发制品产业园",
+                output: "2亿元",
+                location: [115.73, 35.58]
+            },
+            {
+                name: "鲁发工艺品有限公司",
+                type: "midstream",
+                category: "中游 - 生产制造企业",
+                business: "化纤发套、时尚发饰生产",
+                address: "鄄城县红船镇工业区",
+                output: "1.2亿元",
+                location: [115.78, 35.55]
+            },
+            {
+                name: "ZZZ高端发套加工厂",
+                type: "midstream",
+                category: "中游 - 生产制造企业",
+                business: "高端定制发套生产",
+                address: "鄄城县陈王街道工业园",
+                output: "9500万元",
+                location: [115.75, 35.56]
+            },
+            {
+                name: "鄄城美丝发制品厂",
+                type: "midstream",
+                category: "中游 - 生产制造企业",
+                business: "化纤假发、发片生产",
+                address: "鄄城县红船镇开发区",
+                output: "8000万元",
+                location: [115.79, 35.54]
+            },
+            {
+                name: "鄄城瑞丽发制品有限公司",
+                type: "midstream",
+                category: "中游 - 生产制造企业",
+                business: "医疗假发、真人发产品生产",
+                address: "鄄城县发制品产业园",
+                output: "1.8亿元",
+                location: [115.74, 35.59]
+            },
+            {
+                name: "鄄城金发来制品厂",
+                type: "midstream",
+                category: "中游 - 生产制造企业",
+                business: "发片、发束、发帘生产",
+                address: "鄄城县陈王街道东区",
+                output: "6500万元",
+                location: [115.76, 35.57]
+            },
+            
+            // 下游 - 贸易与销售企业 (橙色)
+            {
+                name: "环球发制品外贸公司",
+                type: "downstream",
+                category: "下游 - 贸易与销售企业",
+                business: "进出口贸易、海外市场拓展",
+                address: "鄄城县黄河西路商务中心",
+                output: "1.5亿元",
+                location: [115.72, 35.55]
+            },
+            {
+                name: "跨境电商运营中心",
+                type: "downstream",
+                category: "下游 - 贸易与销售企业",
+                business: "跨境电商、海外仓服务",
+                address: "鄄城县汽车站附近",
+                output: "1.2亿元",
+                location: [115.71, 35.54]
+            },
+            {
+                name: "华北地区批发总仓",
+                type: "downstream",
+                category: "下游 - 贸易与销售企业",
+                business: "国内批发、分销",
+                address: "鄄城县德上高速出入口附近",
+                output: "9000万元",
+                location: [115.76, 35.53]
+            },
+            {
+                name: "鄄城国际贸易有限公司",
+                type: "downstream",
+                category: "下游 - 贸易与销售企业",
+                business: "进出口贸易",
+                address: "鄄城县城区外贸大厦",
+                output: "1.8亿元",
+                location: [115.74, 35.55]
+            },
+            
+            // 配套 - 服务与设备企业 (紫色)
+            {
+                name: "鄄城机械（钩织机维修）",
+                type: "supporting",
+                category: "配套 - 服务与设备企业",
+                business: "钩织机维修、设备维护",
+                address: "鄄城县红船镇工业区附近",
+                output: "3000万元",
+                location: [115.77, 35.55]
+            },
+            {
+                name: "物流供应链公司",
+                type: "supporting",
+                category: "配套 - 服务与设备企业",
+                business: "货物运输、仓储服务",
+                address: "鄄城县富春镇物流园",
+                output: "4500万元",
+                location: [115.70, 35.52]
+            },
+            {
+                name: "专业包装印刷厂",
+                type: "supporting",
+                category: "配套 - 服务与设备企业",
+                business: "包装材料、印刷服务",
+                address: "鄄城县红船镇工业区",
+                output: "3500万元",
+                location: [115.78, 35.56]
+            },
+            {
+                name: "鄄城科技研发中心",
+                type: "supporting",
+                category: "配套 - 服务与设备企业",
+                business: "技术研发、产品设计",
+                address: "鄄城县开发区科技园区",
+                output: "2500万元",
+                location: [115.75, 35.57]
+            },
+            {
+                name: "鄄城人才培训中心",
+                type: "supporting",
+                category: "配套 - 服务与设备企业",
+                business: "技能培训、人才招聘",
+                address: "鄄城县开发区教育园区",
+                output: "1500万元",
+                location: [115.76, 35.58]
+            }
+        ];
+        
+        // 初始化地图
+        function initMap() {
+            console.log('开始初始化地图');
+            
+            // 检查百度地图API是否加载成功
+            if (typeof BMap === 'undefined') {
+                console.error('百度地图API加载失败');
+                // 显示错误信息
+                document.getElementById('map').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">百度地图API加载失败，请检查网络连接或API密钥是否正确</div>';
+                return;
+            }
+            
+            console.log('百度地图API加载成功');
+            
+            try {
+                // 创建地图实例
+                const map = new BMap.Map("map");
+                console.log('地图实例创建成功');
+                
+                // 设置地图中心点和缩放级别
+                const point = new BMap.Point(115.75, 35.55);
+                map.centerAndZoom(point, 12);
+                console.log('地图中心点和缩放级别设置成功');
+                
+                // 添加控件
+                map.addControl(new BMap.NavigationControl());
+                map.addControl(new BMap.ScaleControl());
+                map.addControl(new BMap.OverviewMapControl());
+                map.addControl(new BMap.MapTypeControl());
+                console.log('地图控件添加成功');
+                
+                // 启用滚轮缩放
+                map.enableScrollWheelZoom(true);
+                console.log('滚轮缩放启用成功');
+                
+                // 存储所有标记
+                const markers = [];
+                
+                // 添加企业标记
+                console.log('开始添加企业标记，共' + enterprises.length + '家企业');
+                enterprises.forEach((enterprise, index) => {
+                    try {
+                        const point = new BMap.Point(enterprise.location[0], enterprise.location[1]);
+                        
+                        // 根据企业类型设置标记颜色
+                        let iconColor, iconUrl;
+                        switch (enterprise.type) {
+                            case "upstream":
+                                iconColor = "green";
+                                iconUrl = "https://api.map.baidu.com/lbsapi/createmap/icons/poi/green-dot.png";
+                                break;
+                            case "midstream":
+                                iconColor = "blue";
+                                iconUrl = "https://api.map.baidu.com/lbsapi/createmap/icons/poi/blue-dot.png";
+                                break;
+                            case "downstream":
+                                iconColor = "orange";
+                                iconUrl = "https://api.map.baidu.com/lbsapi/createmap/icons/poi/orange-dot.png";
+                                break;
+                            case "supporting":
+                                iconColor = "purple";
+                                iconUrl = "https://api.map.baidu.com/lbsapi/createmap/icons/poi/purple-dot.png";
+                                break;
+                            default:
+                                iconColor = "red";
+                                iconUrl = "https://api.map.baidu.com/lbsapi/createmap/icons/poi/red-dot.png";
+                        }
+                        
+                        // 创建自定义图标
+                        const icon = new BMap.Icon(
+                            iconUrl,
+                            new BMap.Size(20, 25),
+                            {
+                                anchor: new BMap.Size(10, 25),
+                                imageSize: new BMap.Size(20, 25)
+                            }
+                        );
+                        
+                        // 创建标记
+                        const marker = new BMap.Marker(point, { icon: icon });
+                        marker.enterpriseData = enterprise;
+                        markers.push(marker);
+                        
+                        // 添加点击事件
+                        marker.addEventListener("click", function() {
+                            const data = this.enterpriseData;
+                            const infoWindow = new BMap.InfoWindow(`
+                                <div style="font-size: 14px; line-height: 1.5;">
+                                    <h3 style="margin-bottom: 10px; color: #333;">${data.name}</h3>
+                                    <p><strong>企业类型：</strong>${data.category}</p>
+                                    <p><strong>主营范围：</strong>${data.business}</p>
+                                    <p><strong>地址：</strong>${data.address}</p>
+                                    <p><strong>年产值：</strong>${data.output}</p>
+                                </div>
+                            `);
+                            this.openInfoWindow(infoWindow);
+                        });
+                        
+                        // 添加到地图
+                        map.addOverlay(marker);
+                        console.log('企业标记' + (index + 1) + '添加成功: ' + enterprise.name);
+                    } catch (error) {
+                        console.error('添加企业标记失败: ' + enterprise.name, error);
+                    }
+                });
+                
+                // 筛选功能
+                const filterUpstream = document.getElementById("filter-upstream");
+                const filterMidstream = document.getElementById("filter-midstream");
+                const filterDownstream = document.getElementById("filter-downstream");
+                const filterSupporting = document.getElementById("filter-supporting");
+                
+                function updateMarkers() {
+                    markers.forEach(marker => {
+                        const type = marker.enterpriseData.type;
+                        let show = false;
+                        
+                        switch (type) {
+                            case "upstream":
+                                show = filterUpstream.checked;
+                                break;
+                            case "midstream":
+                                show = filterMidstream.checked;
+                                break;
+                            case "downstream":
+                                show = filterDownstream.checked;
+                                break;
+                            case "supporting":
+                                show = filterSupporting.checked;
+                                break;
+                        }
+                        
+                        if (show) {
+                            map.addOverlay(marker);
+                        } else {
+                            map.removeOverlay(marker);
+                        }
+                    });
+                }
+                
+                // 绑定筛选事件
+                filterUpstream.addEventListener("change", updateMarkers);
+                filterMidstream.addEventListener("change", updateMarkers);
+                filterDownstream.addEventListener("change", updateMarkers);
+                filterSupporting.addEventListener("change", updateMarkers);
+                
+                console.log('地图初始化完成');
+            } catch (error) {
+                console.error('地图初始化过程中发生错误:', error);
+                document.getElementById('map').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">地图初始化失败: ' + error.message + '</div>';
+            }
+        }
+        
+        // initMap函数将作为百度地图API的回调函数被调用
+    </script>
+</body>
+</html>

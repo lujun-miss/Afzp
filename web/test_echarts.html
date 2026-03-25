@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECharts测试</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+</head>
+<body>
+    <div id="testMap" style="width: 800px; height: 600px;"></div>
+    <script>
+        console.log('ECharts测试开始');
+        console.log('ECharts加载状态:', typeof echarts);
+        
+        // 初始化地图
+        const mapElement = document.getElementById('testMap');
+        console.log('地图元素:', mapElement);
+        
+        const myChart = echarts.init(mapElement);
+        console.log('ECharts实例:', myChart);
+        
+        // 测试配置
+        const option = {
+            backgroundColor: '#0a1129',
+            geo: {
+                map: 'world',
+                roam: true,
+                center: [60, 35],
+                zoom: 1.2,
+                label: {
+                    show: true,
+                    color: 'rgba(255,255,255,0.6)',
+                    fontSize: 10
+                },
+                itemStyle: {
+                    areaColor: 'rgba(70, 130, 180, 0.4)',
+                    borderColor: 'rgba(100, 160, 220, 0.3)',
+                    borderWidth: 0.5
+                }
+            },
+            series: [
+                {
+                    type: 'effectScatter',
+                    coordinateSystem: 'geo',
+                    data: [{
+                        name: '测试点',
+                        value: [115.5, 35.57, 100],
+                        itemStyle: { color: '#ff2d75' }
+                    }],
+                    symbolSize: 20,
+                    showEffectOn: 'render',
+                    rippleEffect: {
+                        brushType: 'stroke',
+                        scale: 4,
+                        period: 3
+                    }
+                }
+            ]
+        };
+        
+        myChart.setOption(option);
+        console.log('地图配置设置完成');
+        
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+        
+        console.log('ECharts测试完成');
+    </script>
+</body>
+</html>
