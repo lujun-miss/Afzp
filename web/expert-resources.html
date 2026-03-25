@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>专家资源 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 导航栏 -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2">
+          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-industry text-white text-xl"></i>
+          </div>
+          <span class="text-xl font-bold text-white">发制品产业大脑</span>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="supply.html" class="nav-link active">资源枢纽</a>
+        <a href="market.html" class="nav-link">市场分析</a>
+        <a href="enterprise.html" class="nav-link">企业服务</a>
+        <a href="traceability.html" class="nav-link">溯源管理</a>
+        <a href="government.html" class="nav-link">政策服务</a>
+        <a href="thinktank.html" class="nav-link">行业智库</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">登录</button>
+        <button class="btn btn-primary" onclick="window.location.href='register.html'">注册</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">专家资源</h1>
+        <p class="text-gray-400 max-w-3xl mx-auto">行业专家在线咨询、技术指导，为企业提供专业的技术支持和解决方案</p>
+      </div>
+
+      <!-- 专家分类 -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <button class="btn btn-primary" onclick="filterExperts('all')">全部专家</button>
+        <button class="btn btn-outline" onclick="filterExperts('technology')">技术专家</button>
+        <button class="btn btn-outline" onclick="filterExperts('quality')">质量专家</button>
+        <button class="btn btn-outline" onclick="filterExperts('market')">市场专家</button>
+      </div>
+
+      <!-- 专家列表 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card expert-card" data-category="technology" style="border-radius: 16px;">
+          <div class="p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user-md text-white text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-lg">王教授</h3>
+                <p class="text-sm text-gray-400">技术专家 | 发制品工艺</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">
+              20年发制品行业经验，曾任多家知名企业技术总监，擅长高端假发工艺研发和生产流程优化。
+            </p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">工艺研发</span>
+              <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">生产优化</span>
+              <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">技术咨询</span>
+            </div>
+            <button class="btn btn-primary w-full">立即咨询</button>
+          </div>
+        </div>
+        
+        <div class="card expert-card" data-category="quality" style="border-radius: 16px;">
+          <div class="p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user-md text-white text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-lg">李工程师</h3>
+                <p class="text-sm text-gray-400">质量专家 | 检测认证</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">
+              15年质量检测经验，熟悉国内外质量标准，擅长产品质量控制和认证体系建设。
+            </p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-green-900 text-green-300 text-xs px-2 py-1 rounded">质量检测</span>
+              <span class="bg-green-900 text-green-300 text-xs px-2 py-1 rounded">认证咨询</span>
+              <span class="bg-green-900 text-green-300 text-xs px-2 py-1 rounded">标准制定</span>
+            </div>
+            <button class="btn btn-primary w-full">立即咨询</button>
+          </div>
+        </div>
+        
+        <div class="card expert-card" data-category="market" style="border-radius: 16px;">
+          <div class="p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user-md text-white text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-lg">张顾问</h3>
+                <p class="text-sm text-gray-400">市场专家 | 品牌营销</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">
+              18年市场营销经验，帮助多家企业建立品牌形象，擅长市场定位和营销策略制定。
+            </p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bg-amber-900 text-amber-300 text-xs px-2 py-1 rounded">品牌建设</span>
+              <span class="bg-amber-900 text-amber-300 text-xs px-2 py-1 rounded">营销策略</span>
+              <span class="bg-amber-900 text-amber-300 text-xs px-2 py-1 rounded">市场分析</span>
+            </div>
+            <button class="btn btn-primary w-full">立即咨询</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 py-8">
+    <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+      <p>© 2024 鄄城县发制品产业大脑 版权所有</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <a href="#" class="hover:text-white transition-colors">关于我们</a>
+        <a href="#" class="hover:text-white transition-colors">联系我们</a>
+        <a href="#" class="hover:text-white transition-colors">隐私政策</a>
+        <a href="#" class="hover:text-white transition-colors">使用条款</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 专家筛选功能
+    function filterExperts(category) {
+      const experts = document.querySelectorAll('.expert-card');
+      experts.forEach(expert => {
+        if (category === 'all' || expert.dataset.category === category) {
+          expert.style.display = 'block';
+        } else {
+          expert.style.display = 'none';
+        }
+      });
+      
+      // 更新按钮状态
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      });
+      event.target.classList.remove('btn-outline');
+      event.target.classList.add('btn-primary');
+    }
+  </script>
+</body>
+</html>

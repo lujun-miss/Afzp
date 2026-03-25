@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>金融服务 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 导航栏 -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2">
+          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-industry text-white text-xl"></i>
+          </div>
+          <span class="text-xl font-bold text-white">发制品产业大脑</span>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="supply.html" class="nav-link active">资源枢纽</a>
+        <a href="market.html" class="nav-link">市场分析</a>
+        <a href="enterprise.html" class="nav-link">企业服务</a>
+        <a href="traceability.html" class="nav-link">溯源管理</a>
+        <a href="government.html" class="nav-link">政策服务</a>
+        <a href="thinktank.html" class="nav-link">行业智库</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">登录</button>
+        <button class="btn btn-primary" onclick="window.location.href='register.html'">注册</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">金融服务</h1>
+        <p class="text-gray-400 max-w-3xl mx-auto">融资贷款、保险服务、财务咨询，为发制品企业提供全方位的金融支持</p>
+      </div>
+
+      <!-- 金融产品 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-university text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">企业贷款</h3>
+          <p class="text-gray-400 mb-4">提供流动资金贷款、固定资产贷款、项目贷款等多种融资产品</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">低利率，最高可贷1000万</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">灵活还款方式</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">审批速度快</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-full">立即申请</button>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-shield-alt text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">保险服务</h3>
+          <p class="text-gray-400 mb-4">提供财产险、责任险、员工福利险等全方位保险保障</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">定制化保险方案</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">专业理赔服务</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">优惠费率</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-full">了解详情</button>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-chart-line text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">财务咨询</h3>
+          <p class="text-gray-400 mb-4">提供财务管理、税务筹划、财务分析等专业咨询服务</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">专业团队服务</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">个性化解决方案</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">定期财务报告</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-full">咨询专家</button>
+        </div>
+      </div>
+
+      <!-- 政策支持 -->
+      <div class="card" style="border-radius: 16px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">政策支持</h3>
+        </div>
+        <div class="p-6">
+          <div class="space-y-4">
+            <div class="border border-gray-700 rounded-lg p-4">
+              <h4 class="font-semibold mb-2">中小企业贷款贴息政策</h4>
+              <p class="text-sm text-gray-400 mb-3">对符合条件的中小企业贷款给予利息补贴，最高补贴50%，期限3年</p>
+              <a href="#" class="text-primary hover:underline">查看详情 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            
+            <div class="border border-gray-700 rounded-lg p-4">
+              <h4 class="font-semibold mb-2">科技型企业融资支持</h4>
+              <p class="text-sm text-gray-400 mb-3">对高新技术企业提供风险投资、科技担保等融资支持</p>
+              <a href="#" class="text-primary hover:underline">查看详情 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 py-8">
+    <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+      <p>© 2024 鄄城县发制品产业大脑 版权所有</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <a href="#" class="hover:text-white transition-colors">关于我们</a>
+        <a href="#" class="hover:text-white transition-colors">联系我们</a>
+        <a href="#" class="hover:text-white transition-colors">隐私政策</a>
+        <a href="#" class="hover:text-white transition-colors">使用条款</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

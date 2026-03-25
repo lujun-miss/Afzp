@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人力资源 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 导航栏 -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2">
+          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-industry text-white text-xl"></i>
+          </div>
+          <span class="text-xl font-bold text-white">发制品产业大脑</span>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="supply.html" class="nav-link active">资源枢纽</a>
+        <a href="market.html" class="nav-link">市场分析</a>
+        <a href="enterprise.html" class="nav-link">企业服务</a>
+        <a href="traceability.html" class="nav-link">溯源管理</a>
+        <a href="government.html" class="nav-link">政策服务</a>
+        <a href="thinktank.html" class="nav-link">行业智库</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">登录</button>
+        <button class="btn btn-primary" onclick="window.location.href='register.html'">注册</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">人力资源</h1>
+        <p class="text-gray-400 max-w-3xl mx-auto">招聘专业人才、技能培训认证，为发制品企业提供全方位的人力资源解决方案</p>
+      </div>
+
+      <!-- 服务模块 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- 招聘服务 -->
+        <div class="card" style="border-radius: 16px;">
+          <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+            <h3 class="text-xl font-semibold">招聘服务</h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold">高级工艺师</h4>
+                  <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">急聘</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-3">要求：5年以上发制品工艺经验，精通编织技术</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-primary font-semibold">¥8,000-12,000 / 月</span>
+                  <button class="btn btn-outline btn-sm">立即应聘</button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold">外贸业务员</h4>
+                  <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded">全职</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-3">要求：英语四级以上，有外贸经验优先</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-primary font-semibold">¥6,000-10,000 / 月</span>
+                  <button class="btn btn-outline btn-sm">立即应聘</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 培训认证 -->
+        <div class="card" style="border-radius: 16px;">
+          <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+            <h3 class="text-xl font-semibold">技能培训</h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold">发制品编织技术培训</h4>
+                  <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded">证书课程</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-3">内容：基础编织、高级造型、质量控制，周期：15天</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-primary font-semibold">¥3,000 / 人</span>
+                  <button class="btn btn-outline btn-sm">立即报名</button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold">质量检测认证培训</h4>
+                  <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded">证书课程</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-3">内容：质量标准、检测方法、认证流程，周期：10天</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-primary font-semibold">¥2,500 / 人</span>
+                  <button class="btn btn-outline btn-sm">立即报名</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人才库 -->
+      <div class="card" style="border-radius: 16px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">人才库</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="border border-gray-700 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-user text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold">张工艺师</h4>
+                  <p class="text-xs text-gray-400">高级编织师 | 8年经验</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-400">擅长：高端假发编织、造型设计、质量控制</p>
+            </div>
+            
+            <div class="border border-gray-700 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-user text-white"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold">李设计师</h4>
+                  <p class="text-xs text-gray-400">产品设计师 | 5年经验</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-400">擅长：时尚发型设计、新产品开发、市场趋势分析</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 py-8">
+    <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+      <p>© 2024 鄄城县发制品产业大脑 版权所有</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <a href="#" class="hover:text-white transition-colors">关于我们</a>
+        <a href="#" class="hover:text-white transition-colors">联系我们</a>
+        <a href="#" class="hover:text-white transition-colors">隐私政策</a>
+        <a href="#" class="hover:text-white transition-colors">使用条款</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
