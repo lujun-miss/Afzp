@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>真人发发束 - 商品详情</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1A6DFF',
+                        secondary: '#00C8D2',
+                        success: '#00B42A',
+                        warning: '#FF7D00',
+                        danger: '#F53F3F',
+                        dark: '#0F172A',
+                        'dark-lighter': '#1E293B',
+                        'dark-lightest': '#334155'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body {
+            background-color: #0F172A;
+            color: #F1F5F9;
+            font-family: 'Inter', system-ui, sans-serif;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .btn-primary {
+            background-color: #1A6DFF;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: rgba(26, 109, 255, 0.9);
+        }
+        
+        .nav-bar {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover {
+            color: #c9a227;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a5fb4, #c9a227);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #c9a227;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card {
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(26, 109, 255, 0.2);
+            border-color: rgba(26, 109, 255, 0.3);
+        }
+        
+        .product-image {
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .thumbnail {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .thumbnail:hover {
+            border-color: #1A6DFF;
+        }
+        
+        .thumbnail.active {
+            border-color: #1A6DFF;
+        }
+        
+        .modal {
+            transition: all 0.3s ease;
+        }
+        
+        .modal-content {
+            transition: all 0.3s ease;
+        }
+    </style>
+    
+    <!-- 导航栏滚动效果 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md transition-all duration-300 py-4" id="main-nav">
+        <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+                        <div class="text-xs text-gray-400">Industry Brain Platform</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4">
+                <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+                <a href="../cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+                <a href="../industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+                <a href="../monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+                <a href="../enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+                <a href="../supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+                <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+                <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+                <a href="hair-mall.html" class="nav-link active text-white">发品交易</a>
+                <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+                <a href="../digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+                <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+                <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+                    <i class="fas fa-cog"></i>
+                    <span>后台管理</span>
+                </a>
+                <a href="../index.html" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-6 pt-24 pb-16">
+        <!-- 面包屑导航 -->
+        <div class="mb-6">
+            <div class="flex items-center text-base">
+                <a href="hair-mall.html?tab=supply" class="text-gray-400 hover:text-white font-medium transition-colors duration-300">找资源</a>
+                <i class="fa fa-angle-right text-gray-500 mx-2"></i>
+                <span class="text-white font-bold">商品详情</span>
+            </div>
+        </div>
+        
+        <!-- 商品详情 -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+            <!-- 左侧商品图片/视频展示 -->
+            <div class="lg:col-span-8">
+                <div class="mb-6">
+                    <img id="mainImage" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20extensions%20bundle%2C%20high%20quality%2C%20professional%20photography&image_size=square" alt="真人发发束" class="w-full h-96 object-cover rounded-lg shadow-lg">
+                </div>
+                <div class="grid grid-cols-5 gap-4 mb-6">
+                    <div class="thumbnail active border-2 border-primary rounded-lg overflow-hidden">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20extensions%20bundle%2C%20high%20quality%2C%20professional%20photography&image_size=square" alt="真人发发束" class="w-full h-20 object-cover">
+                    </div>
+                    <div class="thumbnail border-2 border-transparent rounded-lg overflow-hidden">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20extensions%20bundle%20close%20up%2C%20high%20quality&image_size=square" alt="真人发发束细节" class="w-full h-20 object-cover">
+                    </div>
+                    <div class="thumbnail border-2 border-transparent rounded-lg overflow-hidden">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hair%20factory%20production%20line%2C%20workers%20processing%20hair%20extensions&image_size=square" alt="生产过程" class="w-full h-20 object-cover">
+                    </div>
+                    <div class="thumbnail border-2 border-transparent rounded-lg overflow-hidden">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hair%20extensions%20root%20and%20tip%20details%2C%20high%20quality&image_size=square" alt="发根细节" class="w-full h-20 object-cover">
+                    </div>
+                    <div class="thumbnail border-2 border-transparent rounded-lg overflow-hidden flex items-center justify-center bg-dark-lighter">
+                        <div class="text-center">
+                            <i class="fa fa-play-circle text-primary text-3xl mb-1"></i>
+                            <p class="text-xs text-gray-400">生产流程视频</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧商品信息 -->
+            <div class="lg:col-span-4">
+                <h1 class="text-3xl font-bold text-white mb-4 flex items-center">
+                    真人发发束
+                    <button class="ml-4 bg-dark text-white flex items-center justify-center w-10 h-10 rounded-full border border-gray-600 hover:bg-dark-lightest transition-colors duration-300">
+                        <i class="fa fa-heart text-xl"></i>
+                    </button>
+                </h1>
+
+                
+                <!-- 核心交易信息区 -->
+                <div class="mb-4 bg-dark-lighter rounded-lg p-4 border border-gray-700">
+                    <div class="flex items-baseline mb-3">
+                        <span class="text-primary font-bold text-3xl mr-3">¥200</span>
+                        <span class="text-gray-500 line-through">¥250</span>
+                        <span class="ml-2 bg-primary/20 text-primary px-2 py-1 rounded-full text-xs">可混批</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div class="flex flex-col">
+                            <span class="text-gray-400 text-sm mb-1">起订量</span>
+                            <span class="text-white font-medium">50 束</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-gray-400 text-sm mb-1">发货周期</span>
+                            <span class="text-white font-medium">7天发货</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-gray-400 text-sm mb-1">发货地</span>
+                            <span class="text-white font-medium">山东菏泽</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-gray-400 text-sm mb-1">预估总价</span>
+                            <span class="text-white font-medium">¥10,000</span>
+                        </div>
+                    </div>
+                    <div class="text-gray-400 text-xs">
+                        预估总价基于50束起订量计算
+                    </div>
+                </div>
+                
+                <!-- 企业信任区 -->
+                <div class="card p-4 mb-6">
+                    <h3 class="text-xl font-bold text-white mb-3">企业名片</h3>
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                            <i class="fa fa-building text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-1">
+                                <h4 class="text-white font-bold text-lg mr-2">鄄城假发厂</h4>
+                                <span class="bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">工厂认证</span>
+                                <span class="bg-warning/20 text-warning px-2 py-0.5 rounded-full text-xs ml-2">金牌供应商</span>
+                            </div>
+                            <div class="flex flex-wrap gap-3 text-sm text-gray-400">
+                                <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 成立10年</span>
+                                <span class="flex items-center"><i class="fa fa-industry mr-1"></i> 厂房面积5000㎡</span>
+                                <span class="flex items-center"><i class="fa fa-globe mr-1"></i> 出口欧美</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3 mb-4">
+                        <a href="enterprise-store.html" class="btn-primary flex-1 py-2 rounded-lg font-bold text-center">
+                            进入店铺
+                        </a>
+                        <a href="#" class="bg-primary text-white flex-1 py-2 rounded-lg font-bold text-center hover:bg-primary/90 transition-colors duration-300">
+                            联系卖家
+                        </a>
+                    </div>
+                    <button id="inquiryBtn" class="w-full bg-success text-white py-3 rounded-lg font-bold text-center hover:bg-success/90 transition-colors duration-300">
+                        <i class="fa fa-file-text-o mr-2"></i> 立即询价
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- 规格参数表 -->
+        <h3 class="text-xl font-bold text-white mb-4">规格参数</h3>
+        <div class="mb-12 bg-dark-lighter rounded-lg border border-gray-700 p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">材质</span>
+                        <span class="text-white text-lg">100%真人发</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">颜色</span>
+                        <span class="text-white text-lg">自然色</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">重量</span>
+                        <span class="text-white text-lg">100g/束</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">来源地</span>
+                        <span class="text-white text-lg">中国发</span>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">长度</span>
+                        <span class="text-white text-lg">10英寸</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">工艺</span>
+                        <span class="text-white text-lg">手织</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">发质</span>
+                        <span class="text-white text-lg">顺发</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400 text-lg">是否染色</span>
+                        <span class="text-white text-lg">原色</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        
+        <!-- 企业实力展示模块 -->
+        <div class="card p-8 mb-12">
+            <!-- Tab导航 -->
+            <div class="flex border-b border-gray-700 mb-6">
+                <button class="tab-btn active px-6 py-3 font-medium text-white border-b-2 border-primary">商品详情</button>
+                <button class="tab-btn px-6 py-3 font-medium text-gray-400 hover:text-white transition-colors duration-300">企业实力</button>
+            </div>
+            
+            <!-- Tab内容 -->
+            <div class="tab-content">
+                <!-- 商品详情Tab -->
+                <div class="tab-pane active">
+                    <div class="space-y-6 text-gray-300">
+                        <p>我们的真人发发束采用100%优质真人发制作，经过精心挑选和处理，确保每一束头发都具有自然的光泽和柔软的质感。</p>
+                        <p>产品特点：</p>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li>100%真人发，自然逼真</li>
+                            <li>手工编织，工艺精湛</li>
+                            <li>多种长度和颜色可选</li>
+                            <li>易于护理和造型</li>
+                            <li>使用寿命长</li>
+                        </ul>
+                        <p>适用场景：</p>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li> salon专业造型</li>
+                            <li>个人日常佩戴</li>
+                            <li>舞台表演</li>
+                            <li>影视拍摄</li>
+                        </ul>
+                        <p>护理说明：</p>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li>使用温和的洗发水和护发素</li>
+                            <li>避免频繁热处理</li>
+                            <li>定期梳理，避免打结</li>
+                            <li>存放时使用专用发网</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 企业实力Tab -->
+                <div class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-white mb-6">企业实力</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-dark-lighter rounded-lg p-4">
+                            <h4 class="text-lg font-medium text-white mb-3">工厂规模</h4>
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hair%20factory%20exterior%2C%20modern%20building%2C%20professional%20facility&image_size=square" alt="工厂外观" class="w-full h-48 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300 text-sm">占地面积5000平方米，现代化生产车间，年产能超过100万束</p>
+                        </div>
+                        <div class="bg-dark-lighter rounded-lg p-4">
+                            <h4 class="text-lg font-medium text-white mb-3">生产设备</h4>
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hair%20processing%20equipment%2C%20modern%20machinery%2C%20clean%20workshop&image_size=square" alt="生产设备" class="w-full h-48 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300 text-sm">引进德国先进生产设备，自动化程度高，确保产品质量稳定</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-dark-lighter rounded-lg p-4">
+                            <h4 class="text-lg font-medium text-white mb-3">团队实力</h4>
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hair%20factory%20workers%2C%20professional%20team%2C%20working%20together&image_size=square" alt="团队实力" class="w-full h-48 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300 text-sm">拥有100+专业技术人员，平均从业经验5年以上</p>
+                        </div>
+                        <div class="bg-dark-lighter rounded-lg p-4">
+                            <h4 class="text-lg font-medium text-white mb-3">资质证书</h4>
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ISO%20certificate%20and%20other%20quality%20certifications%2C%20professional%20documents&image_size=square" alt="资质证书" class="w-full h-48 object-cover rounded-lg mb-3">
+                            <p class="text-gray-300 text-sm">ISO9001质量体系认证，多项行业权威证书</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 客户评价Tab -->
+                <div class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-white mb-6">客户评价</h3>
+                    <div class="space-y-6">
+                        <div class="bg-dark-lighter rounded-lg p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">张女士</h4>
+                                    <p class="text-gray-400 text-sm">上海某美发沙龙</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="flex text-warning">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300">产品质量非常好，发丝柔顺有光泽，客户反馈都很满意。供货及时，服务态度也很好，会一直合作下去。</p>
+                            <p class="text-gray-400 text-sm mt-4">2026-03-15</p>
+                        </div>
+                        <div class="bg-dark-lighter rounded-lg p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">李先生</h4>
+                                    <p class="text-gray-400 text-sm">广州某贸易公司</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="flex text-warning">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300">第一次合作，产品质量超出预期，价格也很合理。定制服务很专业，能够根据我们的需求进行调整，非常满意。</p>
+                            <p class="text-gray-400 text-sm mt-4">2026-02-20</p>
+                        </div>
+                        <div class="bg-dark-lighter rounded-lg p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">王女士</h4>
+                                    <p class="text-gray-400 text-sm">北京某影视公司</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="flex text-warning">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300">用于影视拍摄，效果非常好，演员们都很满意。发型师说发质很好，容易造型，持久度高。会继续采购。</p>
+                            <p class="text-gray-400 text-sm mt-4">2026-01-10</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 关联推荐模块 -->
+        <div class="mb-12">
+            <h3 class="text-xl font-bold text-white mb-6">关联推荐</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- 推荐商品1 -->
+                <div class="card p-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20weave%20extensions%2C%20high%20quality%2C%20professional%20photography&image_size=square" alt="真人发发片" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg font-bold text-white mb-2">真人发发片</h4>
+                    <div class="flex items-center text-primary font-bold text-xl mb-2">¥180</div>
+                    <div class="flex items-center text-gray-400 text-sm">
+                        <i class="fa fa-building mr-1"></i>
+                        <span>鄄城假发厂</span>
+                    </div>
+                </div>
+                
+                <!-- 推荐商品2 -->
+                <div class="card p-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20closure%20piece%2C%20high%20quality&image_size=square" alt="发块" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg font-bold text-white mb-2">真人发发块</h4>
+                    <div class="flex items-center text-primary font-bold text-xl mb-2">¥220</div>
+                    <div class="flex items-center text-gray-400 text-sm">
+                        <i class="fa fa-building mr-1"></i>
+                        <span>鄄城假发厂</span>
+                    </div>
+                </div>
+                
+                <!-- 推荐商品3 -->
+                <div class="card p-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20lace%20front%20wig%2C%20high%20quality&image_size=square" alt="蕾丝假发" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg font-bold text-white mb-2">蕾丝假发</h4>
+                    <div class="flex items-center text-primary font-bold text-xl mb-2">¥350</div>
+                    <div class="flex items-center text-gray-400 text-sm">
+                        <i class="fa fa-building mr-1"></i>
+                        <span>鄄城假发厂</span>
+                    </div>
+                </div>
+                
+                <!-- 推荐商品4 -->
+                <div class="card p-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20tape%20extensions%2C%20high%20quality&image_size=square" alt="接发片" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h4 class="text-lg font-bold text-white mb-2">接发片</h4>
+                    <div class="flex items-center text-primary font-bold text-xl mb-2">¥150</div>
+                    <div class="flex items-center text-gray-400 text-sm">
+                        <i class="fa fa-building mr-1"></i>
+                        <span>鄄城假发厂</span>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+        
+
+        
+
+    </main>
+    
+    <!-- 发送询价单弹窗 -->
+    <div id="inquiryModal" class="modal fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+        <div class="modal-content bg-dark-lighter rounded-xl p-8 w-full max-w-2xl scale-95 opacity-0">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-white">发送询价单</h3>
+                <button id="closeModal" class="text-gray-400 hover:text-white text-xl">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <form>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-300 mb-2">联系人</label>
+                            <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2">联系电话</label>
+                            <input type="tel" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">公司名称</label>
+                        <input type="text" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">需求数量</label>
+                        <input type="number" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入采购数量">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">期望交付日期</label>
+                        <input type="date" class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">备注</label>
+                        <textarea class="w-full bg-dark border border-gray-600 text-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary" rows="4" placeholder="请输入其他需求或说明"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-2">上传资质文件（可选）</label>
+                        <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+                            <i class="fa fa-cloud-upload text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-400 mb-2">点击或拖拽文件到此处上传</p>
+                            <p class="text-gray-500 text-sm">支持 PDF、Word、Excel 格式，最大 10MB</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelInquiry" class="bg-dark text-gray-300 px-6 py-3 rounded-lg border border-gray-600">
+                            取消
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-3 rounded-lg font-bold">
+                            提交询价
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 页面加载完成后添加交互事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 图片切换功能
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const mainImage = document.getElementById('mainImage');
+            
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    // 移除所有缩略图的active类
+                    thumbnails.forEach(thumb => thumb.classList.remove('active', 'border-primary'));
+                    thumbnails.forEach(thumb => thumb.classList.add('border-transparent'));
+                    
+                    // 添加当前缩略图的active类
+                    this.classList.add('active', 'border-primary');
+                    this.classList.remove('border-transparent');
+                    
+                    // 更新主图片
+                    if (this.querySelector('img')) {
+                        mainImage.src = this.querySelector('img').src;
+                    }
+                });
+            });
+            
+            // Tab页切换功能
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    // 移除所有tab按钮的active类
+                    tabBtns.forEach(b => b.classList.remove('active', 'text-white', 'border-primary'));
+                    tabBtns.forEach(b => b.classList.add('text-gray-400'));
+                    
+                    // 为当前点击的tab按钮添加active类
+                    this.classList.add('active', 'text-white', 'border-primary');
+                    this.classList.remove('text-gray-400');
+                    
+                    // 隐藏所有tab内容
+                    tabPanes.forEach(pane => pane.classList.add('hidden'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    // 显示当前点击的tab内容
+                    if (index < tabPanes.length) {
+                        tabPanes[index].classList.remove('hidden');
+                        tabPanes[index].classList.add('active');
+                    }
+                });
+            });
+            
+            // 发送询价单弹窗
+            const inquiryBtn = document.getElementById('inquiryBtn');
+            const inquiryModal = document.getElementById('inquiryModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelInquiry = document.getElementById('cancelInquiry');
+            
+            if (inquiryBtn && inquiryModal) {
+                inquiryBtn.addEventListener('click', function() {
+                    inquiryModal.classList.remove('hidden');
+                    // 添加延迟确保CSS过渡效果能正常显示
+                    setTimeout(() => {
+                        const modalContent = inquiryModal.querySelector('.modal-content');
+                        if (modalContent) {
+                            modalContent.classList.remove('scale-95', 'opacity-0');
+                            modalContent.classList.add('scale-100', 'opacity-100');
+                        }
+                    }, 10);
+                });
+                
+                function closeModalFunc() {
+                    const modalContent = inquiryModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('scale-100', 'opacity-100');
+                        modalContent.classList.add('scale-95', 'opacity-0');
+                        // 等待过渡效果完成后再隐藏
+                        setTimeout(() => {
+                            inquiryModal.classList.add('hidden');
+                        }, 300);
+                    }
+                }
+                
+                if (closeModal) {
+                    closeModal.addEventListener('click', closeModalFunc);
+                }
+                
+                if (cancelInquiry) {
+                    cancelInquiry.addEventListener('click', closeModalFunc);
+                }
+                
+                // 点击弹窗外部关闭
+                inquiryModal.addEventListener('click', function(e) {
+                    if (e.target === inquiryModal) {
+                        closeModalFunc();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

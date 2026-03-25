@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-panel {
+            background: rgba(15, 20, 41, 0.8);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            color: #e2e8f0;
+            max-width: 280px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            padding: 6px;
+            border-radius: 4px;
+            background: rgba(0, 242, 254, 0.05);
+        }
+        .info-label { color: #94a3b8; font-size: 0.85em; }
+        .info-value { color: #00f2fe; font-weight: 600; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <h1>右侧面板测试</h1>
+    <div class="test-panel">
+        <h3>动态指标</h3>
+        <div class="info-item">
+            <span class="info-label">活跃路径:</span>
+            <span class="info-value">2</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">可见节点:</span>
+            <span class="info-value">16</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">连接数量:</span>
+            <span class="info-value">28</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">总市场份额:</span>
+            <span class="info-value" style="cursor: pointer; text-decoration: underline; color: #00f2fe;">100%</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">平均增长率:</span>
+            <span class="info-value">8.5%</span>
+        </div>
+    </div>
+    <script>
+        console.log('页面加载完成');
+        console.log('动态指标面板元素:', document.querySelector('.test-panel'));
+    </script>
+</body>
+</html>

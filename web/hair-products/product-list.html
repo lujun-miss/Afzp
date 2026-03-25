@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>找货源 - 发制品产业互联网平台</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        'primary-light': '#3B82F6',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'text-primary': '#E5E7EB',
+                        'text-secondary': '#9CA3AF',
+                        'text-tertiary': '#6B7280',
+                        'border-gray': '#374151',
+                        'bg-gray': '#1F2937',
+                        'shadow-card': '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
+                        'shadow-card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2)'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover {
+            color: #c9a227;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a5fb4, #c9a227);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #c9a227;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-tabs {
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .filter-tab {
+            transition: all 0.2s ease;
+        }
+        .filter-tab:hover {
+            color: #3B82F6;
+        }
+        .filter-tab.active {
+            color: #3B82F6;
+            font-weight: 500;
+            border-bottom: 2px solid #3B82F6;
+        }
+        .filter-panel {
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .filter-section {
+            border-bottom: 1px solid #374151;
+            padding: 1rem;
+        }
+        .filter-section:last-child {
+            border-bottom: none;
+        }
+        .filter-header {
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: #E5E7EB;
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .filter-option {
+            padding: 0.25rem 0.75rem;
+            border: 1px solid #374151;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #9CA3AF;
+        }
+        .filter-option:hover {
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+        .filter-option.active {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+        .selected-filter {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3B82F6;
+            border-radius: 1rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #9CA3AF;
+        }
+        .selected-filter .remove {
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .price-range input {
+            width: 80px;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            background-color: #111827;
+            color: #E5E7EB;
+        }
+        
+        /* 水平标签式筛选样式 */
+        .filter-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-label {
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+        .filter-options {
+            flex: 1;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .filter-options::-webkit-scrollbar {
+            display: none;
+        }
+        .filter-action {
+            flex-shrink: 0;
+        }
+        
+        /* 文本截断样式 */
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* 三级树形导航样式 */
+        .category-tree-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .category-item {
+            list-style: none;
+        }
+        
+        .category-header {
+            user-select: none;
+        }
+        
+        .category-children {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .category-item.level-3.active .category-header {
+            font-weight: 500;
+        }
+        
+        .category-item.level-1 .category-header {
+            font-weight: 500;
+        }
+        
+        /* 关联筛选选项样式 */
+        .filter-option.associated {
+            color: #666;
+            background-color: #f5f5f5;
+            cursor: default;
+            position: relative;
+        }
+        
+        .filter-option.associated::after {
+            content: '已关联';
+            position: absolute;
+            right: 8px;
+            font-size: 10px;
+            color: #999;
+        }
+        
+        /* 分类导航样式 */
+        .category-dropdown {
+            z-index: 100;
+        }
+        
+        .secondary-category-group.active {
+            background-color: #f5f5f5;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        /* 二级分类选中效果 */
+        .secondary-category-group.active {
+            background-color: #f5f5f5;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        /* 三级分类可点击效果 */
+        .tertiary-category {
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .tertiary-category:hover {
+            background-color: #f3f4f6;
+            border-color: #1E40AF;
+            color: #1E40AF;
+        }
+        
+        .tertiary-category:active {
+            background-color: #e5e7eb;
+        }
+        
+        /* 分类选中效果 */
+        .secondary-category-group.selected {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3B82F6;
+        }
+        
+        .tertiary-category.selected {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+    </style>
+    
+    <!-- 导航栏滚动效果 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+    </script>
+</head>
+<body style="overflow-y: auto;">
+    <!-- 顶部导航 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+        <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+                        <div class="text-xs text-gray-400">Industry Brain Platform</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4">
+                <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+                <a href="../cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+                <a href="../industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+                <a href="../monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+                <a href="../enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+                <a href="../supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+                <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+                <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+                <a href="hair-mall.html" class="nav-link active text-white">发品交易</a>
+                <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+                <a href="../digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+                <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+                <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+                    <i class="fas fa-cog"></i>
+                    <span>后台管理</span>
+                </a>
+                <a href="../index.html" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-6 pt-24">
+        <!-- 顶部操作区 -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-card">
+            <!-- 面包屑导航 -->
+            <div class="flex items-center mb-6 text-base">
+                <a href="hair-mall.html?tab=supply" class="text-gray-400 hover:text-white font-medium transition-colors duration-300">找资源</a>
+                <i class="fa fa-chevron-right mx-2 text-gray-500"></i>
+                <span class="text-white font-bold">商品列表</span>
+            </div>
+            
+            <!-- 搜索和发起集采 -->
+            <div class="flex flex-col md:flex-row gap-3 mb-6 items-center">
+                <div class="flex flex-1">
+                    <select id="searchType" class="border border-border-gray bg-gray-700 rounded-l-lg px-4 py-3 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="supply">找资源</option>
+                        <option value="purchase">找采购</option>
+                    </select>
+                    <input type="text" id="globalSearch" placeholder="搜索商品、品牌、供应商..." class="search-input flex-1 px-4 py-3 pl-10 border-t border-b border-border-gray text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button class="bg-gray-700 hover:bg-gray-600 transition-colors duration-300 px-4 py-3 border border-l-0 border-border-gray rounded-r-lg font-medium flex items-center text-text-primary">
+                        <i class="fa fa-search text-text-tertiary mr-1"></i>
+                        查询
+                    </button>
+                </div>
+            </div>
+            
+            <script>
+                // 搜索类型切换功能
+                document.getElementById('searchType').addEventListener('change', function() {
+                    const selectedValue = this.value;
+                    if (selectedValue === 'purchase') {
+                        window.location.href = 'purchase-list.html';
+                    }
+                });
+            </script>
+            
+            <!-- 热门搜索词 -->
+            <div class="flex flex-wrap gap-3">
+                <span class="text-text-secondary font-medium mr-2">热门搜索：</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">假发套</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">假发片</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">接发</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">真人发绺</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">发饰</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">发网</span>
+                <span class="tag bg-light-gray text-text-secondary px-4 py-2 rounded-full text-sm cursor-pointer">发胶</span>
+            </div>
+        </div>
+        
+        <!-- 主体内容区域 -->
+        <div class="flex gap-3">
+            <!-- 左侧垂直分类导航 -->
+            <div class="category-sidebar w-64 bg-primary text-white rounded-lg max-h-[350px]">
+                <div class="p-3 border-b border-primary-dark">
+                    <h3 class="text-base font-medium text-text-primary">商品分类</h3>
+                </div>
+                <ul class="category-list overflow-y-auto">
+                    <!-- 一级分类：假发头套/发套 -->
+                    <li class="category-item level-1 relative">
+                        <div class="category-link py-2 px-4 flex justify-between items-center hover:bg-blue-700 transition-colors duration-300 cursor-pointer">
+                            <span>假发头套/发套</span>
+                            <i class="fa fa-chevron-right text-xs"></i>
+                        </div>
+                        <!-- 右侧悬浮详情层 -->
+                        <div class="category-dropdown absolute left-full top-0 w-[800px] h-[400px] bg-gray-800 shadow-lg rounded-lg p-6 border border-border-gray z-50 hidden">
+                            <!-- 分类导航区 -->
+                            <div class="category-nav-area">
+                                <!-- 二级分类标签 -->
+                                <div class="secondary-categories space-y-4">
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">蕾丝假发套</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">前蕾丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">全网蕾丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">360度蕾丝</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">机制假发套</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">普通机制</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">半机制</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">男士发套</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">短发</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">中发</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">配件/基底</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">发网</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">发夹</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 一级分类：发帘/发块 -->
+                    <li class="category-item level-1 relative">
+                        <div class="category-link py-2 px-4 flex justify-between items-center hover:bg-blue-700 transition-colors duration-300 cursor-pointer">
+                            <span>发帘/发块</span>
+                            <i class="fa fa-chevron-right text-xs"></i>
+                        </div>
+                        <!-- 右侧悬浮详情层 -->
+                        <div class="category-dropdown absolute left-full top-0 w-[800px] h-[400px] bg-gray-800 shadow-lg rounded-lg p-6 border border-border-gray z-50 hidden">
+                            <!-- 分类导航区 -->
+                            <div class="category-nav-area">
+                                <!-- 二级分类标签 -->
+                                <div class="secondary-categories space-y-4">
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">发帘（发片）</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">胶片发帘</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">夹子发帘</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">编织发帘</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">发块（补发片）</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">蕾丝发块</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">网底发块</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">发条/发束</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">真人发条</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">化纤发条</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 一级分类：发绺/发条 -->
+                    <li class="category-item level-1 relative">
+                        <div class="category-link py-2 px-4 flex justify-between items-center hover:bg-blue-700 transition-colors duration-300 cursor-pointer">
+                            <span>发绺/发条</span>
+                            <i class="fa fa-chevron-right text-xs"></i>
+                        </div>
+                        <!-- 右侧悬浮详情层 -->
+                        <div class="category-dropdown absolute left-full top-0 w-[800px] h-[400px] bg-gray-800 shadow-lg rounded-lg p-6 border border-border-gray z-50 hidden">
+                            <!-- 分类导航区 -->
+                            <div class="category-nav-area">
+                                <!-- 二级分类标签 -->
+                                <div class="secondary-categories space-y-4">
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">真人发绺</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">顺发</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">削发</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">泡发</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">化纤发条</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">高温丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">低温丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">蛋白丝</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 一级分类：原料 -->
+                    <li class="category-item level-1 relative">
+                        <div class="category-link py-2 px-4 flex justify-between items-center hover:bg-blue-700 transition-colors duration-300 cursor-pointer">
+                            <span>原料</span>
+                            <i class="fa fa-chevron-right text-xs"></i>
+                        </div>
+                        <!-- 右侧悬浮详情层 -->
+                        <div class="category-dropdown absolute left-full top-0 w-[800px] h-[400px] bg-gray-800 shadow-lg rounded-lg p-6 border border-border-gray z-50 hidden">
+                            <!-- 分类导航区 -->
+                            <div class="category-nav-area">
+                                <!-- 二级分类标签 -->
+                                <div class="secondary-categories space-y-4">
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">真人发原料</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">辫发</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">顺泡发</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">削发</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">化纤丝</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">高温丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">低温丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">蛋白丝</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">阻燃纤维</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 一级分类：辅料 -->
+                    <li class="category-item level-1 relative">
+                        <div class="category-link py-2 px-4 flex justify-between items-center hover:bg-blue-700 transition-colors duration-300 cursor-pointer">
+                            <span>辅料</span>
+                            <i class="fa fa-chevron-right text-xs"></i>
+                        </div>
+                        <!-- 右侧悬浮详情层 -->
+                        <div class="category-dropdown absolute left-full top-0 w-[800px] h-[400px] bg-gray-800 shadow-lg rounded-lg p-6 border border-border-gray z-50 hidden">
+                            <!-- 分类导航区 -->
+                            <div class="category-nav-area">
+                                <!-- 二级分类标签 -->
+                                <div class="secondary-categories space-y-4">
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">头套辅料</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">发网</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">发夹</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">胶带</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">胶水</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">接发辅料</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">接发环</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">接发钳</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">接发片</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 一级分类：工具 -->
+                    <li class="category-item level-1 relative">
+                        <div class="category-link py-2 px-4 flex justify-between items-center hover:bg-blue-700 transition-colors duration-300 cursor-pointer">
+                            <span>工具</span>
+                            <i class="fa fa-chevron-right text-xs"></i>
+                        </div>
+                        <!-- 右侧悬浮详情层 -->
+                        <div class="category-dropdown absolute left-full top-0 w-[800px] h-[400px] bg-gray-800 shadow-lg rounded-lg p-6 border border-border-gray z-50 hidden">
+                            <!-- 分类导航区 -->
+                            <div class="category-nav-area">
+                                <!-- 二级分类标签 -->
+                                <div class="secondary-categories space-y-4">
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">制作工具</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">头模</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">钩针</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">三联机</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">裁剪工具</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="secondary-category-group">
+                                        <div class="flex items-center gap-4">
+                                            <h4 class="font-medium text-text-primary">护理工具</h4>
+                                            <i class="fa fa-angle-right text-gray-400"></i>
+                                            <div class="tertiary-categories flex flex-wrap gap-2">
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">假发梳</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">护理液</div>
+                                                <div class="tertiary-category px-2 py-1 text-sm text-text-primary hover:bg-gray-700 cursor-pointer transition-colors duration-300 whitespace-nowrap">定型喷雾</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- 属性筛选面板 -->
+            <div class="filter-panel bg-gray-800 rounded-lg border border-border-gray p-4 h-[350px] overflow-y-auto flex-1">
+                    <!-- 品牌 -->
+                    <div class="filter-row mb-4">
+                        <div class="filter-label font-medium text-text-primary mr-4">品牌</div>
+                        <div class="filter-options flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <div class="filter-option active">全部</div>
+                            <div class="filter-option">SOMSOM</div>
+                            <div class="filter-option">i.t</div>
+                            <div class="filter-option">Bershka</div>
+                            <div class="filter-option">PULL&BEAR</div>
+                            <div class="filter-option">INXX</div>
+                            <div class="filter-option">更多 <i class="fa fa-chevron-down ml-1 text-xs"></i></div>
+                        </div>
+                        <div class="filter-action ml-auto">
+                            <button class="text-primary text-sm">更多 <i class="fa fa-chevron-right ml-1 text-xs"></i></button>
+                        </div>
+                    </div>
+                    
+
+                    
+                    <!-- 材质 -->
+                    <div class="filter-row mb-4">
+                        <div class="filter-label font-medium text-text-primary mr-4">材质</div>
+                        <div class="filter-options flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <div class="filter-option active">全部</div>
+                            <div class="filter-option">真人发</div>
+                            <div class="filter-option">高温丝</div>
+                            <div class="filter-option">低温丝</div>
+                            <div class="filter-option">蛋白丝/仿人发</div>
+                            <div class="filter-option">阻燃纤维</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 工艺 -->
+                    <div class="filter-row mb-4">
+                        <div class="filter-label font-medium text-text-primary mr-4">工艺</div>
+                        <div class="filter-options flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <div class="filter-option active">全部</div>
+                            <div class="filter-option">蕾丝</div>
+                            <div class="filter-option">全手织</div>
+                            <div class="filter-option">机制</div>
+                            <div class="filter-option">半手织</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 长度 -->
+                    <div class="filter-row mb-4">
+                        <div class="filter-label font-medium text-text-primary mr-4">长度</div>
+                        <div class="filter-options flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <div class="filter-option active">全部</div>
+                            <div class="filter-option">10寸及以下</div>
+                            <div class="filter-option">12寸</div>
+                            <div class="filter-option">14寸</div>
+                            <div class="filter-option">16寸</div>
+                            <div class="filter-option">18寸</div>
+                            <div class="filter-option">20寸及以上</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 颜色 -->
+                    <div class="filter-row mb-4">
+                        <div class="filter-label font-medium text-text-primary mr-4">颜色</div>
+                        <div class="filter-options flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <div class="filter-option active">全部</div>
+                            <div class="filter-option">自然色系</div>
+                            <div class="filter-option">时尚色系</div>
+                            <div class="filter-option">漂浅色系</div>
+                            <div class="filter-option">渐变色</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 佩戴/固定方式 -->
+                    <div class="filter-row mb-4">
+                        <div class="filter-label font-medium text-text-primary mr-4">佩戴/固定方式</div>
+                        <div class="filter-options flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                            <div class="filter-option active">全部</div>
+                            <div class="filter-option">编织款</div>
+                            <div class="filter-option">卡子款</div>
+                            <div class="filter-option">粘胶款</div>
+                            <div class="filter-option">其他</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 更多选项 -->
+                    <div class="filter-row mb-2">
+                        <div class="filter-label font-medium text-text-primary mr-4">更多选项</div>
+                        <div class="filter-options flex flex-wrap gap-3 py-1">
+                            <!-- 发货地 -->
+                            <div class="flex items-center gap-2">
+                                <span>发货地：</span>
+                                <select class="border border-border-gray bg-gray-700 rounded-lg px-2 py-0.5 text-xs text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <option>全部</option>
+                                    <option>鄄城</option>
+                                    <option>许昌</option>
+                                    <option>广州</option>
+                                    <option>青岛</option>
+                                </select>
+                            </div>
+                            <!-- 价格区间 -->
+                            <div class="flex items-center gap-2">
+                                <span>价格：</span>
+                                <input type="number" placeholder="最低" class="border border-border-gray rounded-lg px-2 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary w-20">
+                                <span>-</span>
+                                <input type="number" placeholder="最高" class="border border-border-gray rounded-lg px-2 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary w-20">
+                            </div>
+                            <!-- 起订量 -->
+                            <div class="flex items-center gap-2">
+                                <span>起订量：</span>
+                                <input type="number" placeholder="最小" class="border border-border-gray rounded-lg px-2 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary w-20">
+                            </div>
+                            <!-- 发货地 -->
+                            <div class="flex items-center gap-2">
+                                <span>发货地：</span>
+                                <select class="border border-border-gray bg-gray-700 rounded-lg px-2 py-0.5 text-xs text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <option>全部</option>
+                                    <option>鄄城</option>
+                                    <option>许昌</option>
+                                    <option>广州</option>
+                                    <option>青岛</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 收起按钮 -->
+                    <div class="filter-row flex justify-center">
+                        <button id="toggleFilter" class="text-primary text-sm flex items-center">
+                            点击收起 <i class="fa fa-chevron-up ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+        </div>
+        
+        <!-- 已选条件和排序 -->
+        <div class="bg-gray-800 rounded-xl shadow-card p-4 mb-6">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-text-secondary font-medium">已选条件：</span>
+                <div class="selected-filter">
+                    假发头套 <span class="remove">×</span>
+                </div>
+                <div class="selected-filter">
+                    真人发 <span class="remove">×</span>
+                </div>
+                <a href="#" class="text-primary hover:text-primary-light transition-colors duration-300 text-sm">
+                    清空所有
+                </a>
+                <div class="flex items-center space-x-2 ml-auto">
+                    <span class="text-text-secondary font-medium">排序：</span>
+                    <select class="bg-gray-700 border border-border-gray text-text-primary rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300">
+                        <option>综合排序</option>
+                        <option>最新上架</option>
+                        <option>价格从低到高</option>
+                        <option>价格从高到低</option>
+                        <option>销量优先</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 商品卡片列表 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+            <!-- 商品1 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20human%20hair%20extensions%20product%20photo%20on%20white%20background&image_size=square" alt="真人发发绺" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【菏泽美发】真人发发绺</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：染色 | 长度：10英寸
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥199.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：50束</span>
+                </div>
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">菏泽美发用品有限公司</p>
+                        <p class="text-text-tertiary text-xs">山东菏泽</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品2 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20fashion%20wig%20product%20photo%20on%20white%20background&image_size=square" alt="时尚假发套" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【鄄城时尚】时尚假发套</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：高温丝 | 颜色：深棕色 | 长度：16英寸
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥120.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：50个</span>
+                </div>
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">鄄城时尚艺发有限公司</p>
+                        <p class="text-text-tertiary text-xs">山东鄄城</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品3 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20hair%20weft%20product%20photo%20on%20white%20background&image_size=square" alt="发片" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【山东发业】发片</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：真人发 | 颜色：自然色 | 长度：12英寸
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥60.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：100片</span>
+                </div>
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">山东发业集团有限公司</p>
+                        <p class="text-text-tertiary text-xs">河南许昌</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品4 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20hair%20extensions%20product%20photo%20on%20white%20background&image_size=square" alt="接发" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【青岛美丝】接发</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：真人发 | 产地：印度发 | 长度：20英寸
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥100.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：50束</span>
+                </div>
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">青岛美丝发制品有限公司</p>
+                        <p class="text-text-tertiary text-xs">山东青岛</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品5 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20synthetic%20hair%20weft%20product%20photo%20on%20white%20background&image_size=square" alt="高温丝发帘" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【菏泽美发】高温丝发帘</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：高温丝 | 颜色：金色 | 长度：18英寸
+                    </div>
+                </div>
+                
+
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">菏泽美发用品有限公司</p>
+                        <p class="text-text-tertiary text-xs">山东鄄城</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥70.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：50条</span>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品6 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20lace%20wig%20product%20photo%20on%20white%20background&image_size=square" alt="蕾丝头套" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【山东发业】蕾丝头套</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：真人发 | 颜色：自然黑 | 长度：14英寸
+                    </div>
+                </div>
+                
+
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">山东发业集团有限公司</p>
+                        <p class="text-text-tertiary text-xs">河南许昌</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥180.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：30个</span>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品7 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20men%27s%20wig%20product%20photo%20on%20white%20background&image_size=square" alt="男士发套" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【鄄城时尚】男士发套</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        材质：真人发 | 颜色：自然黑 | 长度：10英寸
+                    </div>
+                </div>
+                
+
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">鄄城时尚艺发有限公司</p>
+                        <p class="text-text-tertiary text-xs">山东鄄城</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥150.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：50个</span>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 商品8 -->
+            <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                <div class="mb-4">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20hair%20spray%20product%20photo%20on%20white%20background&image_size=square" alt="发胶" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-white mb-3">【青岛美丝】发胶</h3>
+                    <div class="text-text-secondary text-sm mb-4">
+                        规格：500ml | 功能：强力定型
+                    </div>
+                </div>
+                
+
+                
+                <div class="flex items-center mb-6 cursor-pointer" onclick="window.location.href='enterprise-store.html'">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-text-secondary mr-3">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-text-primary font-medium text-sm">青岛美丝发制品有限公司</p>
+                        <p class="text-text-tertiary text-xs">山东青岛</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xl font-bold text-danger">¥30.00</span>
+                    <span class="text-text-secondary text-sm">最小起订量：100瓶</span>
+                </div>
+                
+                <div class="flex gap-2" onclick="event.stopPropagation()">
+                    <button class="flex-1 border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='enterprise-store.html'">
+                        进入店铺
+                    </button>
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center" onclick="window.location.href='product-detail.html'">
+                        立即询价
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分页器 -->
+        <div class="flex justify-center items-center gap-2 mb-8">
+            <button class="w-10 h-10 flex items-center justify-center border border-border-gray rounded-lg hover:bg-gray-50 transition-colors duration-300 text-text-secondary">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center border border-primary bg-primary text-white rounded-lg">
+                1
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center border border-border-gray rounded-lg hover:bg-gray-50 transition-colors duration-300 text-text-secondary">
+                2
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center border border-border-gray rounded-lg hover:bg-gray-50 transition-colors duration-300 text-text-secondary">
+                3
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center border border-border-gray rounded-lg hover:bg-gray-50 transition-colors duration-300 text-text-secondary">
+                ...
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center border border-border-gray rounded-lg hover:bg-gray-50 transition-colors duration-300 text-text-secondary">
+                10
+            </button>
+            <button class="w-10 h-10 flex items-center justify-center border border-border-gray rounded-lg hover:bg-gray-50 transition-colors duration-300 text-text-secondary">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </div>
+        
+
+    </main>
+
+
+
+    <script>
+        // 标签切换功能
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有标签的active类
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                // 添加当前标签的active类
+                this.classList.add('active');
+                
+                // 这里可以根据标签ID显示不同的筛选面板
+                const tabId = this.getAttribute('data-tab');
+                console.log('Selected tab:', tabId);
+                
+                // 示例：只显示wigPanel
+                document.getElementById('wigPanel').style.display = 'block';
+            });
+        });
+        
+        // 筛选选项点击功能
+        document.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // 如果点击的是"全部"选项
+                if (this.textContent === '全部') {
+                    // 移除同组其他选项的active类
+                    const siblings = this.parentElement.querySelectorAll('.filter-option');
+                    siblings.forEach(sibling => sibling.classList.remove('active'));
+                    // 添加当前选项的active类
+                    this.classList.add('active');
+                } else {
+                    // 如果点击的不是"全部"选项，移除"全部"选项的active类
+                    const allOption = this.parentElement.querySelector('.filter-option:first-child');
+                    if (allOption.textContent === '全部') {
+                        allOption.classList.remove('active');
+                    }
+                    // 切换当前选项的active类
+                    this.classList.toggle('active');
+                }
+            });
+        });
+        
+        // 已选条件移除功能
+        document.querySelectorAll('.selected-filter .remove').forEach(remove => {
+            remove.addEventListener('click', function() {
+                this.parentElement.remove();
+            });
+        });
+        
+        // 清空所有已选条件
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+            if (link.textContent.includes('清空所有')) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.selected-filter').forEach(filter => filter.remove());
+                });
+            }
+        });
+        
+        // 分类树交互功能（左右结构）
+        const level1Categories = document.querySelectorAll('.category-level-1');
+        const level2Container = document.querySelector('.category-level-2-container');
+        
+        // 分类数据
+        const categoryData = {
+            '假发头套/发套': [
+                {
+                    name: '蕾丝假发套', 
+                    tertiary: [
+                        {name: '前蕾丝', scene: '高端造型、逼真发际线'},
+                        {name: '全网蕾丝', scene: '高端造型、全头覆盖'},
+                        {name: '360度蕾丝', scene: '高端造型、全方位逼真'}
+                    ], 
+                    scene: '高端造型、逼真发际线'
+                },
+                {
+                    name: '机制假发套', 
+                    tertiary: [
+                        {name: '普通机制', scene: '日常佩戴、经济实惠'},
+                        {name: '双层网帽', scene: '日常佩戴、更舒适'}
+                    ], 
+                    scene: '日常佩戴、高性价比'
+                },
+                {
+                    name: '男士发套', 
+                    tertiary: [
+                        {name: '蕾丝男士', scene: '男士脱发、自然逼真'},
+                        {name: '机制男士', scene: '男士脱发、经济实惠'}
+                    ], 
+                    scene: '男士脱发、造型'
+                },
+                {
+                    name: '配件/基底', 
+                    tertiary: [
+                        {name: '发套网底', scene: '生产与维修、基础配件'},
+                        {name: '调节带', scene: '生产与维修、佩戴调节'}
+                    ], 
+                    scene: '生产与维修'
+                }
+            ],
+            '发帘/发块': [
+                {
+                    name: '发帘（发片）', 
+                    tertiary: [
+                        {name: '胶片发帘', scene: '局部增发、方便佩戴'},
+                        {name: '夹子发帘', scene: '局部增发、易于更换'},
+                        {name: '编织发帘', scene: '局部增发、持久固定'}
+                    ], 
+                    scene: '局部增发、刘海'
+                },
+                {
+                    name: '发块（补发片）', 
+                    tertiary: [
+                        {name: '蕾丝发块', scene: '局部遮盖、自然逼真'},
+                        {name: '机制发块', scene: '局部遮盖、经济实惠'}
+                    ], 
+                    scene: '局部遮盖、发缝填充'
+                },
+                {
+                    name: '发条/发束', 
+                    tertiary: [
+                        {name: '三根发条', scene: '接发、编织、自然过渡'},
+                        {name: '五根发束', scene: '接发、编织、更饱满'}
+                    ], 
+                    scene: '接发、编织'
+                }
+            ],
+            '发绺/发条': [
+                {
+                    name: '真人发绺', 
+                    tertiary: [
+                        {name: '顺发', scene: '接发原料、高端编织、自然顺滑'},
+                        {name: '削发', scene: '接发原料、经济实惠'},
+                        {name: '泡发', scene: '接发原料、蓬松效果'}
+                    ], 
+                    scene: '接发原料、高端编织'
+                },
+                {
+                    name: '化纤发条', 
+                    tertiary: [
+                        {name: '高温丝发条', scene: '造型用品、耐高温、可烫染'},
+                        {name: '蛋白丝发条', scene: '造型用品、更接近真人发'}
+                    ], 
+                    scene: '造型用品、一次性接发'
+                }
+            ],
+            '原料': [
+                {
+                    name: '真人发原料', 
+                    tertiary: [
+                        {name: '辫发', scene: '深加工、再处理、高质量原料'},
+                        {name: '顺泡发', scene: '深加工、再处理、自然蓬松'},
+                        {name: '削发', scene: '深加工、再处理、经济实惠'}
+                    ], 
+                    scene: '深加工、再处理'
+                },
+                {
+                    name: '化纤丝', 
+                    tertiary: [
+                        {name: '高温丝', scene: '假发生产、耐高温、可烫染'},
+                        {name: '低温丝', scene: '假发生产、经济实惠'},
+                        {name: '蛋白丝', scene: '假发生产、更接近真人发'}
+                    ], 
+                    scene: '假发生产'
+                }
+            ],
+            '辅料': [
+                {
+                    name: '头套辅料', 
+                    tertiary: [
+                        {name: '发网', scene: '佩戴固定、基础配件'},
+                        {name: '发夹', scene: '佩戴固定、辅助固定'},
+                        {name: '胶带', scene: '佩戴固定、临时固定'}
+                    ], 
+                    scene: '佩戴固定'
+                },
+                {
+                    name: '接发辅料', 
+                    tertiary: [
+                        {name: '接发胶', scene: '接发专用、持久固定'},
+                        {name: '接发线', scene: '接发专用、编织固定'},
+                        {name: '接发环', scene: '接发专用、快速固定'}
+                    ], 
+                    scene: '接发专用'
+                }
+            ],
+            '工具': [
+                {
+                    name: '制作工具', 
+                    tertiary: [
+                        {name: '头模', scene: '生产与手织、造型参考'},
+                        {name: '钩针', scene: '生产与手织、编织工具'},
+                        {name: '三联机', scene: '生产与手织、批量生产'}
+                    ], 
+                    scene: '生产与手织'
+                },
+                {
+                    name: '护理工具', 
+                    tertiary: [
+                        {name: '专用梳', scene: '保养与存放、梳理工具'},
+                        {name: '支架', scene: '保养与存放、展示存放'},
+                        {name: '烘干机', scene: '保养与存放、快速干燥'}
+                    ], 
+                    scene: '保养与存放'
+                }
+            ]
+        };
+        
+        // 一级分类点击事件
+        level1Categories.forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有一级分类的选中状态
+                level1Categories.forEach(cat => {
+                    cat.classList.remove('bg-green-600', 'text-white');
+                    cat.classList.add('hover:bg-green-200');
+                });
+                
+                // 添加当前一级分类的选中状态
+                this.classList.add('bg-green-600', 'text-white');
+                this.classList.remove('hover:bg-green-200');
+                
+                // 获取分类名称
+                const categoryName = this.querySelector('span').textContent;
+                console.log('Selected category:', categoryName);
+                
+                // 更新右侧二级分类
+                updateLevel2Categories(categoryName);
+            });
+        });
+        
+        // 更新二级和三级分类
+        function updateLevel2Categories(categoryName) {
+            const level2Items = categoryData[categoryName] || [];
+            
+            // 更新右侧分类内容
+            const flexContainer = level2Container.querySelector('.flex');
+            flexContainer.innerHTML = '';
+            
+            level2Items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'category-item';
+                
+                // 构建分类链接文本
+                let categoryText = item.name;
+                if (item.tertiary && item.tertiary.length > 0) {
+                    categoryText += ' / ' + item.tertiary.map(t => t.name).join(' / ');
+                }
+                
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'text-green-600 hover:text-green-800 transition-colors duration-300';
+                a.textContent = categoryText;
+                
+                // 添加点击事件
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Selected category:', categoryText);
+                    
+                    // 模拟刷新商品列表
+                    alert('正在加载' + categoryText + '的商品...');
+                    
+                    // 动态更新属性筛选器
+                    updateFiltersByCategory(item.name);
+                });
+                
+                div.appendChild(a);
+                flexContainer.appendChild(div);
+            });
+        }
+        
+        // 二级分类点击事件（初始化时绑定）
+        document.querySelectorAll('.category-level-2').forEach(item => {
+            item.addEventListener('click', function() {
+                const subCategoryName = this.textContent.trim();
+                console.log('Selected sub category:', subCategoryName);
+                
+                // 模拟刷新商品列表
+                alert('正在加载' + subCategoryName + '的商品...');
+                
+                // 动态更新属性筛选器
+                updateFiltersByCategory(subCategoryName);
+            });
+        });
+        
+        // 根据分类更新筛选器
+        function updateFiltersByCategory(category) {
+            // 示例：根据分类名称更新工艺筛选器
+            if (category.includes('蕾丝')) {
+                // 自动选中工艺中的蕾丝选项
+                const craftOptions = document.querySelectorAll('.filter-section:nth-child(3) .filter-option');
+                craftOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.textContent.includes('蕾丝')) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+            
+            // 可以根据不同分类添加更多逻辑
+        }
+        
+        // 分类下拉菜单交互
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const categoryDropdowns = document.querySelectorAll('.category-dropdown');
+        
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const tabId = this.getAttribute('data-tab');
+                
+                // 隐藏所有下拉菜单
+                categoryDropdowns.forEach(dropdown => {
+                    dropdown.classList.add('hidden');
+                });
+                
+                // 显示对应的下拉菜单
+                const targetDropdown = document.querySelector(`[data-dropdown="${tabId}"]`);
+                if (targetDropdown) {
+                    targetDropdown.classList.remove('hidden');
+                }
+            });
+        });
+        
+        // 点击页面其他地方关闭下拉菜单
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.category-tab') && !e.target.closest('.category-dropdown')) {
+                categoryDropdowns.forEach(dropdown => {
+                    dropdown.classList.add('hidden');
+                });
+            }
+        });
+        
+        // 下拉菜单分类点击
+        document.querySelectorAll('.category-group a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const categoryName = this.textContent.trim();
+                console.log('Selected category from dropdown:', categoryName);
+                
+                // 隐藏所有下拉菜单
+                categoryDropdowns.forEach(dropdown => {
+                    dropdown.classList.add('hidden');
+                });
+                
+                // 模拟刷新商品列表
+                alert('正在加载' + categoryName + '的商品...');
+                
+                // 动态更新属性筛选器
+                updateFiltersByCategory(categoryName);
+            });
+        });
+        
+        // 三级树形导航交互
+        document.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                // 检查是否有子分类
+                const categoryItem = this.closest('.category-item');
+                const childrenList = categoryItem.querySelector('.category-children');
+                
+                if (childrenList) {
+                    // 切换子分类显示状态
+                    childrenList.classList.toggle('hidden');
+                    
+                    // 切换箭头图标
+                    const arrowIcon = this.querySelector('i');
+                    if (arrowIcon) {
+                        if (childrenList.classList.contains('hidden')) {
+                            arrowIcon.classList.remove('fa-chevron-down');
+                            arrowIcon.classList.add('fa-chevron-right');
+                        } else {
+                            arrowIcon.classList.remove('fa-chevron-right');
+                            arrowIcon.classList.add('fa-chevron-down');
+                        }
+                    }
+                }
+                
+                // 处理三级分类点击
+                if (categoryItem.classList.contains('level-3')) {
+                    // 移除所有三级分类的选中状态
+                    document.querySelectorAll('.category-item.level-3').forEach(item => {
+                        item.classList.remove('active');
+                        item.querySelector('.category-header').classList.remove('bg-blue-50', 'border-l-4', 'border-primary');
+                        item.querySelector('.category-header').classList.add('hover:bg-gray-50');
+                    });
+                    
+                    // 添加当前三级分类的选中状态
+                    categoryItem.classList.add('active');
+                    this.classList.add('bg-blue-50', 'border-l-4', 'border-primary');
+                    this.classList.remove('hover:bg-gray-50');
+                    
+                    // 获取分类名称
+                    const categoryName = this.querySelector('span').textContent;
+                    console.log('Selected tertiary category:', categoryName);
+                    
+                    // 更新右侧筛选面板标题
+                    const filterPanelTitle = document.querySelector('.filter-panel-container h3');
+                    if (filterPanelTitle) {
+                        filterPanelTitle.textContent = `筛选条件 · ${categoryName}`;
+                    }
+                    
+                    // 模拟刷新商品列表
+                    alert('正在加载' + categoryName + '的商品...');
+                    
+                    // 动态更新属性筛选器
+                    updateFiltersByCategory(categoryName);
+                }
+            });
+        });
+        
+        // 初始化三级树形导航
+        function initCategoryTree() {
+            // 隐藏所有子分类
+            document.querySelectorAll('.category-children').forEach(children => {
+                children.classList.add('hidden');
+            });
+            
+            // 显示默认展开的分类
+            const defaultExpanded = document.querySelector('.category-item.level-1');
+            if (defaultExpanded) {
+                const childrenList = defaultExpanded.querySelector('.category-children');
+                if (childrenList) {
+                    childrenList.classList.remove('hidden');
+                    const arrowIcon = defaultExpanded.querySelector('.category-header i');
+                    if (arrowIcon) {
+                        arrowIcon.classList.remove('fa-chevron-right');
+                        arrowIcon.classList.add('fa-chevron-down');
+                    }
+                }
+                
+                // 展开蕾丝假发套
+                const laceWigCategory = defaultExpanded.querySelector('.category-item.level-2');
+                if (laceWigCategory) {
+                    const childrenList = laceWigCategory.querySelector('.category-children');
+                    if (childrenList) {
+                        childrenList.classList.remove('hidden');
+                        const arrowIcon = laceWigCategory.querySelector('.category-header i');
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('fa-chevron-right');
+                            arrowIcon.classList.add('fa-chevron-down');
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 初始化分类树
+        initCategoryTree();
+        
+        // 鼠标悬停触发的多级分类导航
+            document.querySelectorAll('.category-item.level-1').forEach(item => {
+                const categoryLink = item.querySelector('.category-link');
+                const categoryDropdown = item.querySelector('.category-dropdown');
+                
+                if (categoryLink && categoryDropdown) {
+                    // 鼠标悬停在分类链接上时显示悬浮层
+                    categoryLink.addEventListener('mouseenter', function() {
+                        categoryDropdown.classList.remove('hidden');
+                    });
+                    
+                    // 鼠标离开分类项时隐藏悬浮层
+                    item.addEventListener('mouseleave', function() {
+                        categoryDropdown.classList.add('hidden');
+                    });
+                    
+                    // 鼠标悬停在悬浮层上时保持显示
+                    categoryDropdown.addEventListener('mouseenter', function() {
+                        categoryDropdown.classList.remove('hidden');
+                    });
+                    
+                    // 鼠标离开悬浮层时隐藏
+                    categoryDropdown.addEventListener('mouseleave', function() {
+                        categoryDropdown.classList.add('hidden');
+                    });
+                }
+            });
+            
+
+        
+        // 二级分类标签切换
+        document.querySelectorAll('.secondary-category-group').forEach(group => {
+            const groupHeader = group.querySelector('h4');
+            if (groupHeader) {
+                groupHeader.addEventListener('mouseenter', function() {
+                    // 移除所有二级分类组的活跃状态
+                    const parentGroups = this.closest('.secondary-categories').querySelectorAll('.secondary-category-group');
+                    parentGroups.forEach(g => {
+                        g.classList.remove('active');
+                    });
+                    
+                    // 添加当前二级分类组的活跃状态
+                    this.closest('.secondary-category-group').classList.add('active');
+                });
+                
+                // 二级分类点击事件
+                group.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // 移除所有其他二级分类的selected类
+                    const parentGroups = this.closest('.secondary-categories').querySelectorAll('.secondary-category-group');
+                    parentGroups.forEach(g => {
+                        g.classList.remove('selected');
+                    });
+                    // 添加当前二级分类的selected类
+                    this.classList.add('selected');
+                    
+                    // 获取分类名称
+                    const categoryName = groupHeader.textContent;
+                    // 添加到已选条件
+                    addSelectedFilter(categoryName);
+                    // 隐藏下拉菜单
+                    const dropdown = this.closest('.category-dropdown');
+                    if (dropdown) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+        
+        // 三级分类点击事件
+        document.querySelectorAll('.tertiary-category').forEach(category => {
+            category.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // 移除所有其他三级分类的selected类
+                document.querySelectorAll('.tertiary-category').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                // 添加当前三级分类的selected类
+                this.classList.add('selected');
+                
+                // 获取分类名称
+                const categoryName = this.textContent;
+                // 添加到已选条件
+                addSelectedFilter(categoryName);
+                // 隐藏下拉菜单
+                const dropdown = this.closest('.category-dropdown');
+                if (dropdown) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        });
+        
+        // 添加选中的筛选条件
+        function addSelectedFilter(filterText) {
+            // 检查是否已经存在相同的筛选条件
+            const existingFilters = document.querySelectorAll('.selected-filter');
+            let exists = false;
+            existingFilters.forEach(filter => {
+                if (filter.textContent.trim().includes(filterText)) {
+                    exists = true;
+                }
+            });
+            
+            if (!exists) {
+                const selectedFiltersContainer = document.querySelector('.bg-gray-800.rounded-xl.shadow-card.p-4.mb-6 .flex');
+                if (selectedFiltersContainer) {
+                    const filterElement = document.createElement('div');
+                    filterElement.className = 'selected-filter';
+                    filterElement.innerHTML = `${filterText} <span class="remove">×</span>`;
+                    
+                    // 插入到清空所有链接之前
+                    const clearAllLink = selectedFiltersContainer.querySelector('a');
+                    if (clearAllLink) {
+                        selectedFiltersContainer.insertBefore(filterElement, clearAllLink);
+                    } else {
+                        selectedFiltersContainer.appendChild(filterElement);
+                    }
+                    
+                    // 添加移除事件
+                    const removeButton = filterElement.querySelector('.remove');
+                    removeButton.addEventListener('click', function() {
+                        filterElement.remove();
+                    });
+                }
+            }
+        }
+        
+        // 筛选条件展开/收起功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFilterBtn = document.getElementById('toggleFilter');
+            let moreOptionsRow = null;
+            
+            // 查找更多选项行
+            const filterRows = document.querySelectorAll('.filter-row');
+            filterRows.forEach(row => {
+                const label = row.querySelector('.filter-label');
+                if (label && label.textContent.includes('更多选项')) {
+                    moreOptionsRow = row;
+                }
+            });
+            
+            let isExpanded = false;
+            
+            // 初始状态：只隐藏更多选项
+            if (moreOptionsRow) {
+                moreOptionsRow.style.display = 'none';
+                // 更新按钮文本和图标为初始状态
+                toggleFilterBtn.innerHTML = '点击展开 <i class="fa fa-chevron-down ml-1"></i>';
+            }
+            
+            toggleFilterBtn.addEventListener('click', function() {
+                isExpanded = !isExpanded;
+                
+                if (isExpanded) {
+                    // 展开更多选项
+                    if (moreOptionsRow) {
+                        moreOptionsRow.style.display = 'flex';
+                    }
+                    // 更新按钮文本和图标
+                    toggleFilterBtn.innerHTML = '点击收起 <i class="fa fa-chevron-up ml-1"></i>';
+                } else {
+                    // 收起更多选项
+                    if (moreOptionsRow) {
+                        moreOptionsRow.style.display = 'none';
+                    }
+                    // 更新按钮文本和图标
+                    toggleFilterBtn.innerHTML = '点击展开 <i class="fa fa-chevron-down ml-1"></i>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

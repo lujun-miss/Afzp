@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发制品全产业链 - 现代UI交互版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-bg: #0a0e27;
+            --secondary-bg: #1a1f3a;
+            --accent-color: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.5);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(15, 20, 41, 0.8);
+            --card-border: rgba(0, 242, 254, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, #0f1429 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, var(--accent-color), #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px var(--accent-glow);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2em;
+        }
+        
+        .control-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: rgba(10, 14, 39, 0.9);
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-tab {
+            padding: 10px 20px;
+            background: rgba(10, 14, 39, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: 25px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .filter-tab:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .filter-tab.active {
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            padding: 8px 16px;
+            background: rgba(10, 14, 39, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 12px;
+        }
+        
+        .category-tab:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--accent-color);
+        }
+        
+        .category-tab.active {
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            border-color: var(--accent-color);
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), #667eea);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(0, 242, 254, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 2px solid var(--accent-color);
+        }
+        
+        .card-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .card-category {
+            font-size: 0.8em;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-content {
+            margin-bottom: 20px;
+        }
+        
+        .card-description {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tag {
+            padding: 4px 12px;
+            background: rgba(10, 14, 39, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        
+        .tag:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+        
+        .card-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stat-icon {
+            font-size: 12px;
+        }
+        
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .empty-description {
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(0, 242, 254, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 242, 254, 0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .control-panel {
+                padding: 20px;
+            }
+            
+            .filter-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>发制品全产业链</h1>
+            <p>现代UI交互版 - 动态可视化</p>
+        </div>
+        
+        <div class="control-panel">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索产业链要素...">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-filter="all">全部</div>
+                <div class="filter-tab" data-filter="upstream">上游材料</div>
+                <div class="filter-tab" data-filter="midstream">中游制造</div>
+                <div class="filter-tab" data-filter="downstream">下游应用</div>
+            </div>
+            
+            <div class="category-tabs">
+                <div class="category-tab" data-category="raw">原材料</div>
+                <div class="category-tab" data-category="accessories">核心辅料</div>
+                <div class="category-tab" data-category="materials">处理材料</div>
+                <div class="category-tab" data-category="packaging">包装工具</div>
+                <div class="category-tab" data-category="semi">半成品</div>
+                <div class="category-tab" data-category="process">工艺流程</div>
+                <div class="category-tab" data-category="equipment">生产设备</div>
+                <div class="category-tab" data-category="fashion">时尚消费</div>
+                <div class="category-tab" data-category="medical">医疗康复</div>
+                <div class="category-tab" data-category="entertainment">演艺特效</div>
+                <div class="category-tab" data-category="protection">职业防护</div>
+                <div class="category-tab" data-category="education">发教礼品</div>
+            </div>
+        </div>
+        
+        <div class="grid-container" id="gridContainer">
+            <!-- 卡片将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <script>
+        // 数据模型
+        const industryData = [
+            // 上游材料 - 原材料
+            {
+                id: 'raw1',
+                name: '真人发原料',
+                category: 'raw',
+                level: 'upstream',
+                description: '包括原辫发、泡发、色发等天然人发资源',
+                tags: ['原辫发', '泡发', '色发'],
+                icon: '👱‍♀️',
+                importance: '高',
+                growth: '稳定'
+            },
+            {
+                id: 'raw2',
+                name: '化纤丝原料',
+                category: 'raw',
+                level: 'upstream',
+                description: '高温丝、低温丝、蛋白丝等合成纤维材料',
+                tags: ['高温丝', '低温丝', '蛋白丝', '功能丝'],
+                icon: '🧵',
+                importance: '高',
+                growth: '快速'
+            },
+            
+            // 上游材料 - 核心辅料
+            {
+                id: 'accessory1',
+                name: '基底材料',
+                category: 'accessories',
+                level: 'upstream',
+                description: '瑞士网、法国网、单层网等假发基底材料',
+                tags: ['瑞士网', '法国网', '单层网'],
+                icon: '🧵',
+                importance: '高',
+                growth: '稳定'
+            },
+            {
+                id: 'accessory2',
+                name: '连接配件',
+                category: 'accessories',
+                level: 'upstream',
+                description: '发夹、调节扣、魔术贴等固定配件',
+                tags: ['发夹', '调节扣', '魔术贴'],
+                icon: '🔩',
+                importance: '中',
+                growth: '稳定'
+            },
+            {
+                id: 'accessory3',
+                name: '粘合材料',
+                category: 'accessories',
+                level: 'upstream',
+                description: '医用双面胶带、专用胶水等粘合产品',
+                tags: ['双面胶带', '专用胶水', '头发粘合剂'],
+                icon: '粘',
+                importance: '中',
+                growth: '稳定'
+            },
+            
+            // 上游材料 - 处理与造型材料
+            {
+                id: 'material1',
+                name: '染色材料',
+                category: 'materials',
+                level: 'upstream',
+                description: '人发专用酸性染料、化纤专用阳离子染料',
+                tags: ['酸性染料', '阳离子染料', '漂发剂'],
+                icon: '🎨',
+                importance: '高',
+                growth: '稳定'
+            },
+            {
+                id: 'material2',
+                name: '造型材料',
+                category: 'materials',
+                level: 'upstream',
+                description: '烫发药水、定型护理液、发油、发蜡等',
+                tags: ['烫发药水', '定型护理液', '发油', '发蜡'],
+                icon: '💇',
+                importance: '中',
+                growth: '稳定'
+            },
+            
+            // 上游材料 - 包装与工具材料
+            {
+                id: 'packaging1',
+                name: '包装材料',
+                category: 'packaging',
+                level: 'upstream',
+                description: '头模、吸塑壳、opp袋、礼品盒等包装用品',
+                tags: ['头模', '吸塑壳', 'opp袋', '礼品盒'],
+                icon: '📦',
+                importance: '中',
+                growth: '稳定'
+            },
+            {
+                id: 'packaging2',
+                name: '工具材料',
+                category: 'packaging',
+                level: 'upstream',
+                description: '钩针、V型针、三联机针、缝纫针等生产工具',
+                tags: ['钩针', 'V型针', '三联机针', '缝纫针'],
+                icon: '🔧',
+                importance: '中',
+                growth: '稳定'
+            },
+            
+            // 中游制造 - 半成品/组件
+            {
+                id: 'semi1',
+                name: '发帘',
+                category: 'semi',
+                level: 'midstream',
+                description: '前顶发帘、全蕾丝发帘等半成品组件',
+                tags: ['前顶发帘', '全蕾丝发帘', '发帘接发'],
+                icon: '👱‍♀️',
+                importance: '高',
+                growth: '快速'
+            },
+            {
+                id: 'semi2',
+                name: '发套',
+                category: 'semi',
+                level: 'midstream',
+                description: '机制发套、手织发套、蕾丝假发等成品',
+                tags: ['机制发套', '手织发套', '蕾丝假发'],
+                icon: '👒',
+                importance: '高',
+                growth: '快速'
+            },
+            {
+                id: 'semi3',
+                name: '接发产品',
+                category: 'semi',
+                level: 'midstream',
+                description: '发条、发束、发片等接发产品',
+                tags: ['发条', '发束', '发片'],
+                icon: '💇‍♀️',
+                importance: '中',
+                growth: '快速'
+            },
+            
+            // 中游制造 - 核心工艺流程
+            {
+                id: 'process1',
+                name: '前处理',
+                category: 'process',
+                level: 'midstream',
+                description: '清洗、脱脂、消毒、分级、梳发等前期处理',
+                tags: ['清洗', '脱脂', '消毒', '分级', '梳发'],
+                icon: '🚿',
+                importance: '高',
+                growth: '稳定'
+            },
+            {
+                id: 'process2',
+                name: '编织工艺',
+                category: 'process',
+                level: 'midstream',
+                description: '手织、机织、蕾丝工艺等编织技术',
+                tags: ['手织', '机织', '蕾丝工艺'],
+                icon: '🧵',
+                importance: '高',
+                growth: '稳定'
+            },
+            {
+                id: 'process3',
+                name: '后处理',
+                category: 'process',
+                level: 'midstream',
+                description: '染色、烫发、造型、修剪、护理等后期处理',
+                tags: ['染色', '烫发', '造型', '修剪', '护理'],
+                icon: '💇',
+                importance: '高',
+                growth: '稳定'
+            },
+            
+            // 中游制造 - 关键生产设备
+            {
+                id: 'equipment1',
+                name: '前处理设备',
+                category: 'equipment',
+                level: 'midstream',
+                description: '清洗机、脱水机、消毒柜、梳发机等设备',
+                tags: ['清洗机', '脱水机', '消毒柜', '梳发机'],
+                icon: '🏭',
+                importance: '中',
+                growth: '稳定'
+            },
+            {
+                id: 'equipment2',
+                name: '编织设备',
+                category: 'equipment',
+                level: 'midstream',
+                description: '三联机、四联机、全自动编织机等设备',
+                tags: ['三联机', '四联机', '全自动编织机'],
+                icon: '🪡',
+                importance: '高',
+                growth: '稳定'
+            },
+            {
+                id: 'equipment3',
+                name: '后处理设备',
+                category: 'equipment',
+                level: 'midstream',
+                description: '染色缸、蒸汽定型机、烘干机等设备',
+                tags: ['染色缸', '蒸汽定型机', '烘干机'],
+                icon: '🔧',
+                importance: '中',
+                growth: '稳定'
+            },
+            
+            // 下游应用 - 时尚消费领域
+            {
+                id: 'fashion1',
+                name: '日常美妆',
+                category: 'fashion',
+                level: 'downstream',
+                description: '日常美容美发、造型变换等时尚消费',
+                tags: ['美容美发', '造型变换', '时尚潮流'],
+                icon: '💄',
+                importance: '高',
+                growth: '快速'
+            },
+            {
+                id: 'fashion2',
+                name: '接发增密',
+                category: 'fashion',
+                level: 'downstream',
+                description: '接发、增发、密发等美容服务',
+                tags: ['接发', '增发', '密发'],
+                icon: '💇‍♀️',
+                importance: '中',
+                growth: '快速'
+            },
+            
+            // 下游应用 - 医疗康复领域
+            {
+                id: 'medical1',
+                name: '医疗假发',
+                category: 'medical',
+                level: 'downstream',
+                description: '癌症患者、脱发症、烧伤患者专用假发',
+                tags: ['癌症患者', '脱发症', '烧伤患者'],
+                icon: '🏥',
+                importance: '高',
+                growth: '稳定'
+            },
+            
+            // 下游应用 - 演艺特效领域
+            {
+                id: 'entertainment1',
+                name: '影视戏剧',
+                category: 'entertainment',
+                level: 'downstream',
+                description: '电影、电视剧、戏剧等影视制作假发',
+                tags: ['电影', '电视剧', '戏剧'],
+                icon: '🎬',
+                importance: '中',
+                growth: '稳定'
+            },
+            {
+                id: 'entertainment2',
+                name: '舞台表演',
+                category: 'entertainment',
+                level: 'downstream',
+                description: 'COSPLAY、舞台演出、时尚秀场等表演假发',
+                tags: ['COSPLAY', '舞台演出', '时尚秀场'],
+                icon: '🎭',
+                importance: '中',
+                growth: '快速'
+            },
+            
+            // 下游应用 - 职业防护领域
+            {
+                id: 'protection1',
+                name: '职业防护',
+                category: 'protection',
+                level: 'downstream',
+                description: '食品加工、无尘车间、医疗手术等防护假发',
+                tags: ['食品加工', '无尘车间', '医疗手术'],
+                icon: '🛡️',
+                importance: '中',
+                growth: '稳定'
+            },
+            
+            // 下游应用 - 发教与礼品领域
+            {
+                id: 'education1',
+                name: '美发教学',
+                category: 'education',
+                level: 'downstream',
+                description: '美发教学头模、培训教具等教育产品',
+                tags: ['教学头模', '培训教具'],
+                icon: '🎓',
+                importance: '低',
+                growth: '稳定'
+            },
+            {
+                id: 'education2',
+                name: '礼品玩具',
+                category: 'education',
+                level: 'downstream',
+                description: '玩具娃娃发、假发配件、创意礼品等',
+                tags: ['玩具娃娃发', '假发配件', '创意礼品'],
+                icon: '🎁',
+                importance: '低',
+                growth: '稳定'
+            }
+        ];
+        
+        // 全局变量
+        let filteredData = [...industryData];
+        let activeFilter = 'all';
+        let activeCategory = null;
+        let searchQuery = '';
+        
+        // 初始化
+        function init() {
+            renderCards();
+            setupEventListeners();
+        }
+        
+        // 渲染卡片
+        function renderCards() {
+            const container = document.getElementById('gridContainer');
+            
+            // 应用筛选
+            let data = [...industryData];
+            
+            // 搜索筛选
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
+                data = data.filter(item => 
+                    item.name.toLowerCase().includes(query) ||
+                    item.description.toLowerCase().includes(query) ||
+                    item.tags.some(tag => tag.toLowerCase().includes(query))
+                );
+            }
+            
+            // 层级筛选
+            if (activeFilter !== 'all') {
+                data = data.filter(item => item.level === activeFilter);
+            }
+            
+            // 类别筛选
+            if (activeCategory) {
+                data = data.filter(item => item.category === activeCategory);
+            }
+            
+            filteredData = data;
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-title">未找到匹配项</div>
+                        <div class="empty-description">
+                            ${searchQuery ? '没有找到包含"' + searchQuery + '"的要素' : '请尝试调整筛选条件'}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = data.map(item => `
+                <div class="card" data-id="${item.id}">
+                    <div class="card-header">
+                        <div class="card-icon">${item.icon}</div>
+                        <div>
+                            <div class="card-title">${item.name}</div>
+                            <div class="card-category">${getCategoryName(item.category)}</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">${item.description}</div>
+                        <div class="card-tags">
+                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-stats">
+                            <div class="stat">
+                                <span class="stat-icon">⭐</span>
+                                <span>${item.importance}</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-icon">📈</span>
+                                <span>${item.growth}</span>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-icon">📍</span>
+                            <span>${getLevelName(item.level)}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 获取类别名称
+        function getCategoryName(category) {
+            const names = {
+                'raw': '原材料',
+                'accessories': '核心辅料',
+                'materials': '处理材料',
+                'packaging': '包装工具',
+                'semi': '半成品',
+                'process': '工艺流程',
+                'equipment': '生产设备',
+                'fashion': '时尚消费',
+                'medical': '医疗康复',
+                'entertainment': '演艺特效',
+                'protection': '职业防护',
+                'education': '发教礼品'
+            };
+            return names[category] || category;
+        }
+        
+        // 获取层级名称
+        function getLevelName(level) {
+            const names = {
+                'upstream': '上游',
+                'midstream': '中游',
+                'downstream': '下游'
+            };
+            return names[level] || level;
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderCards();
+            });
+            
+            // 筛选标签
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    activeFilter = tab.dataset.filter;
+                    renderCards();
+                });
+            });
+            
+            // 类别标签
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+                    if (tab.classList.contains('active')) {
+                        tab.classList.remove('active');
+                        activeCategory = null;
+                    } else {
+                        categoryTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        activeCategory = category;
+                    }
+                    renderCards();
+                });
+            });
+            
+            // 卡片点击事件（可以扩展为显示详情）
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.card')) {
+                    const card = e.target.closest('.card');
+                    card.classList.toggle('pulse');
+                    setTimeout(() => card.classList.remove('pulse'), 2000);
+                }
+            });
+        }
+        
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

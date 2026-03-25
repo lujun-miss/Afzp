@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发制品产业链 - 产业价值流动图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            color: #00f2fe;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #94a3b8;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 1000px;
+            margin: 0 auto;
+        }
+        
+        .chart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* 同心圆样式 */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 242, 254, 0.3);
+            background: rgba(0, 242, 254, 0.05);
+        }
+        
+        .circle-outer {
+            width: 900px;
+            height: 900px;
+            left: -450px;
+            top: -450px;
+        }
+        
+        .circle-middle {
+            width: 700px;
+            height: 700px;
+            left: -350px;
+            top: -350px;
+        }
+        
+        .circle-inner {
+            width: 500px;
+            height: 500px;
+            left: -250px;
+            top: -250px;
+        }
+        
+        .circle-center {
+            width: 300px;
+            height: 300px;
+            left: -150px;
+            top: -150px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 3px solid #00f2fe;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 圆心内容 */
+        .center-content {
+            text-align: center;
+        }
+        
+        .center-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .center-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00f2fe;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+        }
+        
+        /* 圆环区块 */
+        .section {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        
+        .section:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+        }
+        
+        .section-content {
+            text-align: center;
+            padding: 20px;
+            min-width: 120px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+        
+        .section-desc {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.3;
+        }
+        
+        /* 上游区块样式 */
+        .section-upstream {
+            background: rgba(165, 105, 189, 0.2);
+            border: 2px solid #a569bd;
+            color: #d2b4de;
+        }
+        
+        /* 中游区块样式 */
+        .section-midstream {
+            background: rgba(46, 204, 113, 0.2);
+            border: 2px solid #2ecc71;
+            color: #abe3c2;
+        }
+        
+        /* 下游区块样式 */
+        .section-downstream {
+            background: rgba(52, 152, 219, 0.2);
+            border: 2px solid #3498db;
+            color: #b5d8f5;
+        }
+        
+        /* 连接线样式 */
+        .connector {
+            position: absolute;
+            z-index: 10;
+        }
+        
+        .connector-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
+        
+        .connector-line {
+            position: absolute;
+            height: 2px;
+            background: #00f2fe;
+        }
+        
+        .connector-line-dashed {
+            position: absolute;
+            height: 2px;
+            background: #94a3b8;
+            border-style: dashed;
+        }
+        
+        /* 图例 */
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(20, 30, 48, 0.8);
+            border: 1px solid #00f2fe;
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 100;
+        }
+        
+        .legend h3 {
+            font-size: 14px;
+            color: #00f2fe;
+            margin-bottom: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 2px;
+            margin-right: 10px;
+        }
+        
+        .legend-color-solid {
+            background: #00f2fe;
+        }
+        
+        .legend-color-dashed {
+            background: #94a3b8;
+            border-style: dashed;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            border: 1px solid #00f2fe;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 242, 254, 0.2);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .chart-container {
+                height: 800px;
+            }
+            
+            .circle-outer {
+                width: 700px;
+                height: 700px;
+                left: -350px;
+                top: -350px;
+            }
+            
+            .circle-middle {
+                width: 550px;
+                height: 550px;
+                left: -275px;
+                top: -275px;
+            }
+            
+            .circle-inner {
+                width: 400px;
+                height: 400px;
+                left: -200px;
+                top: -200px;
+            }
+            
+            .circle-center {
+                width: 250px;
+                height: 250px;
+                left: -125px;
+                top: -125px;
+            }
+            
+            .center-icon {
+                font-size: 60px;
+            }
+            
+            .center-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← 返回首页</a>
+        
+        <div class="header">
+            <h1>发制品产业链</h1>
+            <p>产业价值流动图 - 从原料到终端的完整价值链</p>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart">
+                <!-- 同心圆结构 -->
+                <div class="circle circle-outer"></div>
+                <div class="circle circle-middle"></div>
+                <div class="circle circle-inner"></div>
+                
+                <!-- 圆心 -->
+                <div class="circle circle-center">
+                    <div class="center-content">
+                        <div class="center-icon">🏭👱‍♀️</div>
+                        <div class="center-title">发制品制造</div>
+                    </div>
+                </div>
+                
+                <!-- 上游供应层（内环） -->
+                <div class="section section-upstream" style="width: 120px; height: 120px; left: 190px; top: 190px;">
+                    <div class="section-content">
+                        <div class="section-icon">👱‍♀️</div>
+                        <div class="section-title">真人发原料</div>
+                        <div class="section-desc">原辫发、泡发、色发</div>
+                    </div>
+                </div>
+                
+                <div class="section section-upstream" style="width: 120px; height: 120px; left: 190px; top: -210px;">
+                    <div class="section-content">
+                        <div class="section-icon">🧵</div>
+                        <div class="section-title">化纤丝原料</div>
+                        <div class="section-desc">高温丝、低温丝、蛋白丝、功能丝</div>
+                    </div>
+                </div>
+                
+                <div class="section section-upstream" style="width: 120px; height: 120px; left: -210px; top: -210px;">
+                    <div class="section-content">
+                        <div class="section-icon">🔩</div>
+                        <div class="section-title">核心辅料</div>
+                        <div class="section-desc">瑞士网、发夹、胶水、弹力网</div>
+                    </div>
+                </div>
+                
+                <div class="section section-upstream" style="width: 120px; height: 120px; left: -210px; top: 190px;">
+                    <div class="section-content">
+                        <div class="section-icon">🎨</div>
+                        <div class="section-title">处理材料</div>
+                        <div class="section-desc">染料、漂发剂、烫发药水</div>
+                    </div>
+                </div>
+                
+                <!-- 中游制造层（中环） -->
+                <div class="section section-midstream" style="width: 140px; height: 140px; left: 320px; top: 180px;">
+                    <div class="section-content">
+                        <div class="section-icon">🚰</div>
+                        <div class="section-title">前处理</div>
+                        <div class="section-desc">清洗、脱脂、消毒、分级</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 140px; height: 140px; left: 320px; top: -220px;">
+                    <div class="section-content">
+                        <div class="section-icon">🧵</div>
+                        <div class="section-title">编织工艺</div>
+                        <div class="section-desc">手织、机织、蕾丝工艺</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 140px; height: 140px; left: 180px; top: -360px;">
+                    <div class="section-content">
+                        <div class="section-icon">💇</div>
+                        <div class="section-title">后处理</div>
+                        <div class="section-desc">染色、烫发、造型、修剪</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 140px; height: 140px; left: -220px; top: -360px;">
+                    <div class="section-content">
+                        <div class="section-icon">🧩</div>
+                        <div class="section-title">半成品组件</div>
+                        <div class="section-desc">发帘、发块、发套基础</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 140px; height: 140px; left: -360px; top: -220px;">
+                    <div class="section-content">
+                        <div class="section-icon">🏭</div>
+                        <div class="section-title">生产设备</div>
+                        <div class="section-desc">三联机、染色缸、定型机</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 140px; height: 140px; left: -360px; top: 180px;">
+                    <div class="section-content">
+                        <div class="section-icon">📦</div>
+                        <div class="section-title">检测包装</div>
+                        <div class="section-desc">质检、包装、贴标</div>
+                    </div>
+                </div>
+                
+                <!-- 下游应用层（外环） -->
+                <div class="section section-downstream" style="width: 160px; height: 160px; left: 480px; top: 170px;">
+                    <div class="section-content">
+                        <div class="section-icon">🏷️</div>
+                        <div class="section-title">时尚消费</div>
+                        <div class="section-desc">日常美妆、接发、造型变换</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 160px; height: 160px; left: 480px; top: -230px;">
+                    <div class="section-content">
+                        <div class="section-icon">🏥</div>
+                        <div class="section-title">医疗康复</div>
+                        <div class="section-desc">癌症患者、脱发症、烧伤患者</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 160px; height: 160px; left: 170px; top: -540px;">
+                    <div class="section-content">
+                        <div class="section-icon">🎬</div>
+                        <div class="section-title">演艺特效</div>
+                        <div class="section-desc">影视、戏剧、COSPLAY、舞台</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 160px; height: 160px; left: -230px; top: -540px;">
+                    <div class="section-content">
+                        <div class="section-icon">🔧</div>
+                        <div class="section-title">职业防护</div>
+                        <div class="section-desc">食品加工、无尘车间、医疗手术</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 160px; height: 160px; left: -540px; top: -230px;">
+                    <div class="section-content">
+                        <div class="section-icon">🎁</div>
+                        <div class="section-title">发教与礼品</div>
+                        <div class="section-desc">教学头模、玩具娃娃、创意礼品</div>
+                    </div>
+                </div>
+                
+                <!-- 连接线将在JavaScript中动态生成 -->
+            </div>
+            
+            <!-- 图例 -->
+            <div class="legend">
+                <h3>图例说明</h3>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-solid"></div>
+                    <span>物料/工作流（实线）</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-dashed"></div>
+                    <span>资金/价值流（虚线）</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 动态生成连接线
+        function createConnector(x1, y1, x2, y2, isDashed = false) {
+            const connector = document.createElement('div');
+            connector.className = 'connector';
+            
+            // 计算角度和距离
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            
+            // 创建线
+            const line = document.createElement('div');
+            line.className = isDashed ? 'connector-line-dashed' : 'connector-line';
+            line.style.width = (length - 20) + 'px';
+            line.style.left = x1 + 'px';
+            line.style.top = y1 + 'px';
+            line.style.transform = `rotate(${angle}deg)`;
+            
+            // 创建箭头
+            const arrow = document.createElement('div');
+            arrow.className = 'connector-arrow';
+            arrow.style.left = x2 - 10 + 'px';
+            arrow.style.top = y2 - 10 + 'px';
+            arrow.style.transform = `rotate(${angle + 90}deg)`;
+            arrow.style.borderBottom = isDashed ? '10px solid #94a3b8' : '10px solid #00f2fe';
+            
+            connector.appendChild(line);
+            connector.appendChild(arrow);
+            
+            return connector;
+        }
+        
+        // 添加连接线
+        function addConnections() {
+            const chart = document.querySelector('.chart');
+            
+            // 从真人发原料到手织工艺
+            chart.appendChild(createConnector(200, -200, 250, -250));
+            
+            // 从化纤丝原料到机织工艺
+            chart.appendChild(createConnector(-200, -200, -250, -250));
+            
+            // 从核心辅料到发帘/发块组件
+            chart.appendChild(createConnector(-200, 200, -250, 250));
+            
+            // 从处理材料到后处理
+            chart.appendChild(createConnector(200, 200, 250, 250));
+            
+            // 从中游到下游的连接
+            chart.appendChild(createConnector(300, -300, 350, -350));
+            chart.appendChild(createConnector(-300, -300, -350, -350));
+            chart.appendChild(createConnector(0, -300, 0, -350));
+            chart.appendChild(createConnector(0, 300, 0, 350));
+            
+            // 资金回流（虚线）
+            chart.appendChild(createConnector(350, -350, 300, -300, true));
+            chart.appendChild(createConnector(350, 350, 300, 300, true));
+        }
+        
+        // 页面加载完成后添加连接线
+        window.addEventListener('load', addConnections);
+    </script>
+</body>
+</html>

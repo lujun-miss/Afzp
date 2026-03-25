@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业店铺 - 发制商城</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 全局样式 -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1677ff',
+                        'primary-light': '#4096ff',
+                        'primary-dark': '#096dd9',
+                        secondary: '#6C757D',
+                        success: '#52c41a',
+                        warning: '#fa8c16',
+                        danger: '#f5222d',
+                        light: '#1F2937',
+                        'light-gray': '#111827',
+                        'border-gray': '#374151',
+                        'text-primary': '#E5E7EB',
+                        'text-secondary': '#9CA3AF',
+                        'text-tertiary': '#6B7280',
+                        'text-quaternary': '#4B5563',
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'PingFang SC', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style>
+        /* 全局样式 */
+        body {
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        /* 导航栏样式 */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover {
+            color: #c9a227;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a5fb4, #c9a227);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #c9a227;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        /* 按钮样式 */
+        .btn-primary {
+            background-color: #1677ff;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #4096ff;
+        }
+        
+        .btn-outline {
+            border: 1px solid #1677ff;
+            color: #1677ff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(22, 119, 255, 0.1);
+        }
+        
+        /* 标签样式 */
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* 进度条样式 */
+        .progress-bar {
+            width: 100%;
+            background-color: #374151;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+        
+        /* 悬停效果 */
+        .hover-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+    
+    <!-- 导航栏滚动效果 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+    </script>
+</head>
+<body style="overflow-y: auto;">
+    <!-- 顶部导航 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+        <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+                        <div class="text-xs text-gray-400">Industry Brain Platform</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4">
+                <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+                <a href="../cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+                <a href="../industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+                <a href="../monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+                <a href="../enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+                <a href="../supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+                <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+                <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+                <a href="hair-mall.html" class="nav-link active text-white">发品交易</a>
+                <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+                <a href="../digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+                <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+                <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+                    <i class="fas fa-cog"></i>
+                    <span>后台管理</span>
+                </a>
+                <a href="../index.html" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 店铺头部 Banner -->
+    <section class="bg-gray-800 mb-6">
+        <div class="container mx-auto px-4 pt-24">
+            <!-- 面包屑导航 -->
+            <div class="flex items-center mb-6 text-base">
+                <a href="hair-mall.html?tab=supply" class="text-gray-400 hover:text-white font-medium transition-colors duration-300">找资源</a>
+                <i class="fa fa-chevron-right mx-2 text-gray-500"></i>
+                <a href="product-detail.html" class="text-gray-400 hover:text-white font-medium transition-colors duration-300">商品详情</a>
+                <i class="fa fa-chevron-right mx-2 text-gray-500"></i>
+                <span class="text-white font-bold">店铺详情</span>
+            </div>
+            
+            <!-- 店铺 Banner -->
+            <div class="relative h-64 md:h-80 mb-6">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hair%20factory%20exterior%2C%20modern%20building%2C%20professional%20facility&image_size=landscape_16_9" alt="企业工厂展示" class="w-full h-full object-cover rounded-lg">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 rounded-b-lg">
+                    <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">菏泽美发用品有限公司</h1>
+                    <p class="text-white text-sm mb-3">专业发制品制造商 · 20年行业经验</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">工厂认证</span>
+                        <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">专利产品</span>
+                        <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">源头工厂</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 店铺操作按钮 -->
+            <div class="flex items-center justify-end space-x-2 mb-6">
+                <button class="btn-primary px-5 py-2 rounded-lg font-medium flex items-center text-sm">
+                    <i class="fa fa-comments mr-2"></i>
+                    联系卖家
+                </button>
+                <button class="btn-outline px-5 py-2 rounded-lg font-medium flex items-center text-sm">
+                    <i class="fa fa-bookmark mr-2"></i>
+                    收藏
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 店铺内容区 -->
+    <main class="container mx-auto px-4 mb-8">
+
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧商品分类 -->
+            <div class="lg:w-1/4">
+                <div class="card p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">商品分类</h3>
+                    <ul class="space-y-3">
+                        <li class="relative group">
+                            <a href="#" class="flex items-center justify-between text-text-secondary hover:text-primary py-3 px-4 rounded-lg hover:bg-primary/5 transition-colors duration-300">
+                                <span>真人发绺</span>
+                                <i class="fa fa-chevron-right text-xs text-text-tertiary"></i>
+                            </a>
+                            <!-- 二级分类浮窗 -->
+                            <div class="absolute left-full top-0 ml-2 w-48 bg-white shadow-lg rounded-lg border border-border-gray py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">自然色发绺</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">染色发绺</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">顺发发绺</a>
+                            </div>
+                        </li>
+                        <li class="relative group">
+                            <a href="#" class="flex items-center justify-between text-text-secondary hover:text-primary py-3 px-4 rounded-lg hover:bg-primary/5 transition-colors duration-300">
+                                <span>假发套</span>
+                                <i class="fa fa-chevron-right text-xs text-text-tertiary"></i>
+                            </a>
+                            <!-- 二级分类浮窗 -->
+                            <div class="absolute left-full top-0 ml-2 w-48 bg-white shadow-lg rounded-lg border border-border-gray py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">真人发假发套</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">高温丝假发套</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">化纤假发套</a>
+                            </div>
+                        </li>
+                        <li class="relative group">
+                            <a href="#" class="flex items-center justify-between text-text-secondary hover:text-primary py-3 px-4 rounded-lg hover:bg-primary/5 transition-colors duration-300">
+                                <span>发片</span>
+                                <i class="fa fa-chevron-right text-xs text-text-tertiary"></i>
+                            </a>
+                            <!-- 二级分类浮窗 -->
+                            <div class="absolute left-full top-0 ml-2 w-48 bg-white shadow-lg rounded-lg border border-border-gray py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">真人发发片</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">高温丝发片</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">卡子发发片</a>
+                            </div>
+                        </li>
+                        <li class="relative group">
+                            <a href="#" class="flex items-center justify-between text-text-secondary hover:text-primary py-3 px-4 rounded-lg hover:bg-primary/5 transition-colors duration-300">
+                                <span>接发</span>
+                                <i class="fa fa-chevron-right text-xs text-text-tertiary"></i>
+                            </a>
+                            <!-- 二级分类浮窗 -->
+                            <div class="absolute left-full top-0 ml-2 w-48 bg-white shadow-lg rounded-lg border border-border-gray py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">胶接发</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">辫接发</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">卡接发</a>
+                            </div>
+                        </li>
+                        <li class="relative group">
+                            <a href="#" class="flex items-center justify-between text-text-secondary hover:text-primary py-3 px-4 rounded-lg hover:bg-primary/5 transition-colors duration-300">
+                                <span>发饰配件</span>
+                                <i class="fa fa-chevron-right text-xs text-text-tertiary"></i>
+                            </a>
+                            <!-- 二级分类浮窗 -->
+                            <div class="absolute left-full top-0 ml-2 w-48 bg-white shadow-lg rounded-lg border border-border-gray py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">发网</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">发夹</a>
+                                <a href="#" class="block px-4 py-2 text-text-secondary hover:bg-primary/5 hover:text-primary text-sm">发带</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 企业信息 -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">企业信息</h3>
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <span class="text-text-tertiary text-sm mb-1">企业名称</span>
+                            <span class="text-text-secondary">菏泽美发用品有限公司</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-tertiary text-sm mb-1">成立时间</span>
+                            <span class="text-text-secondary">2004年</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-tertiary text-sm mb-1">注册资本</span>
+                            <span class="text-text-secondary">1000万元</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-tertiary text-sm mb-1">经营范围</span>
+                            <span class="text-text-secondary">发制品生产、销售</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-tertiary text-sm mb-1">联系电话</span>
+                            <span class="text-primary">138-0013-8000</span>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+            
+            <!-- 右侧商品和内容区 -->
+            <div class="lg:w-3/4">
+                <!-- 推荐商品 -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-semibold text-text-primary mb-6">推荐商品</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <!-- 商品1 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20human%20hair%20extensions%20product%20photo%20on%20white%20background&image_size=square" alt="真人发发绺" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【菏泽美发】真人发发绺</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：染色 | 长度：10英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥199.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：50束</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品2 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20fashion%20wig%20product%20photo%20on%20white%20background&image_size=square" alt="时尚假发套" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【鄄城时尚】时尚假发套</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：高温丝 | 颜色：深棕色 | 长度：16英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥120.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：50个</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品3 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20hair%20weft%20product%20photo%20on%20white%20background&image_size=square" alt="发片" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【山东发业】发片</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：真人发 | 颜色：自然色 | 长度：12英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥60.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：100片</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品4 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20hair%20extensions%20product%20photo%20on%20white%20background&image_size=square" alt="接发" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【青岛美丝】接发</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：真人发 | 产地：印度发 | 长度：20英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥100.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：50束</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品5 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=high%20quality%20human%20hair%20wig%20product%20photo%20on%20white%20background&image_size=square" alt="真人发假发套" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【许昌发业】真人发假发套</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：真人发 | 颜色：自然色 | 长度：18英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥299.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：10个</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品6 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=clip%20in%20human%20hair%20extensions%2C%20natural%20color%2C%2016%20inch%2C%20high%20quality%20product%20photo%20on%20white%20background&image_size=square" alt="卡子发" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【济南美丝】卡子发</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：真人发 | 颜色：自然色 | 长度：16英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥88.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：50个</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品7 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=synthetic%20wig%20with%20high%20temperature%20fiber%2C%20dark%20brown%2C%2020%20inch%2C%20high%20quality%20product%20photo%20on%20white%20background&image_size=square" alt="高温丝假发" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【潍坊时尚】高温丝假发</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：高温丝 | 颜色：深棕色 | 长度：20英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥79.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：100个</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 商品8 -->
+                        <div class="card p-4 hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="window.location.href='product-detail.html'">
+                            <div class="mb-4">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=human%20hair%20closure%2C%204x4%20inch%2C%20natural%20color%2C%20high%20quality%20product%20photo%20on%20white%20background&image_size=square" alt="发块" class="w-full h-64 object-cover rounded-lg mb-4">
+                                <h3 class="text-lg font-bold text-text-primary mb-3">【临沂发业】真人发发块</h3>
+                                <div class="text-text-secondary text-sm mb-4">
+                                    材质：真人发 | 颜色：自然色 | 尺寸：4x4英寸
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-xl font-bold text-danger">¥150.00</span>
+                                <span class="text-text-secondary text-sm">最小起订量：30个</span>
+                            </div>
+                            
+                            <div class="flex gap-2" onclick="event.stopPropagation()">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-3 py-3 rounded-lg font-medium text-center">
+                                    联系卖家
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                
+
+            </div>
+        </div>
+    </main>
+    
+    <!-- 联系卖家弹窗 -->
+    <div id="contactModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-text-primary">联系卖家</h3>
+                <button id="closeModal" class="text-text-tertiary hover:text-text-primary">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="contactForm" class="space-y-4">
+                <div>
+                    <label class="block text-text-secondary mb-2">
+                        <span class="text-danger">*</span> 企业名称
+                    </label>
+                    <input type="text" class="w-full border border-danger rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-danger" placeholder="请输入企业名称" required>
+                </div>
+                <div>
+                    <label class="block text-text-secondary mb-2">
+                        <span class="text-danger">*</span> 联系人
+                    </label>
+                    <input type="text" class="w-full border border-border-gray rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系人" required>
+                </div>
+                <div>
+                    <label class="block text-text-secondary mb-2">
+                        <span class="text-danger">*</span> 联系方式
+                    </label>
+                    <input type="text" class="w-full border border-border-gray rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入联系方式" required>
+                </div>
+                <div>
+                    <label class="block text-text-secondary mb-2">
+                        <span class="text-danger">*</span> 采购数量
+                    </label>
+                    <input type="text" class="w-full border border-border-gray rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入采购数量" required>
+                </div>
+                <div>
+                    <label class="block text-text-secondary mb-2">
+                        <span class="text-danger">*</span> 地址
+                    </label>
+                    <input type="text" class="w-full border border-border-gray rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入地址" required>
+                </div>
+                <div>
+                    <label class="block text-text-secondary mb-2">
+                        <span class="text-danger">*</span> 备注
+                    </label>
+                    <textarea class="w-full border border-border-gray rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary" rows="3" placeholder="请输入备注" required></textarea>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" id="cancelForm" class="flex-1 border border-border-gray text-text-secondary hover:bg-light-gray transition-colors duration-300 px-4 py-3 rounded-lg font-medium">
+                        取消
+                    </button>
+                    <button type="submit" class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium">
+                        提交
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 标签切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有标签的活动状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前标签的活动状态
+                    this.classList.add('active');
+                    
+                    // 隐藏所有内容
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    // 显示对应内容
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).classList.remove('hidden');
+                });
+            });
+            
+            // 视图切换功能
+            const kanbanViewBtn = document.getElementById('kanbanViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const kanbanView = document.getElementById('kanbanView');
+            const listView = document.getElementById('listView');
+            
+            if (kanbanViewBtn && listViewBtn) {
+                kanbanViewBtn.addEventListener('click', function() {
+                    kanbanView.classList.remove('hidden');
+                    listView.classList.add('hidden');
+                    kanbanViewBtn.classList.add('bg-primary', 'text-white');
+                    kanbanViewBtn.classList.remove('bg-white', 'text-text-secondary', 'border', 'border-border-gray');
+                    listViewBtn.classList.remove('bg-primary', 'text-white');
+                    listViewBtn.classList.add('bg-white', 'text-text-secondary', 'border', 'border-border-gray');
+                });
+                
+                listViewBtn.addEventListener('click', function() {
+                    listView.classList.remove('hidden');
+                    kanbanView.classList.add('hidden');
+                    listViewBtn.classList.add('bg-primary', 'text-white');
+                    listViewBtn.classList.remove('bg-white', 'text-text-secondary', 'border', 'border-border-gray');
+                    kanbanViewBtn.classList.remove('bg-primary', 'text-white');
+                    kanbanViewBtn.classList.add('bg-white', 'text-text-secondary', 'border', 'border-border-gray');
+                });
+            }
+            
+            // 联系卖家弹窗功能
+            const contactModal = document.getElementById('contactModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelForm = document.getElementById('cancelForm');
+            const contactForm = document.getElementById('contactForm');
+            
+            // 显示弹窗
+            document.querySelectorAll('button').forEach(button => {
+                if (button.textContent.trim() === '联系卖家') {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (contactModal) {
+                            contactModal.classList.remove('hidden');
+                        }
+                    });
+                }
+            });
+            
+            // 关闭弹窗
+            if (closeModal) {
+                closeModal.addEventListener('click', function() {
+                    contactModal.classList.add('hidden');
+                });
+            }
+            
+            // 取消按钮
+            if (cancelForm) {
+                cancelForm.addEventListener('click', function() {
+                    contactModal.classList.add('hidden');
+                });
+            }
+            
+            // 点击弹窗外部关闭
+            if (contactModal) {
+                contactModal.addEventListener('click', function(e) {
+                    if (e.target === contactModal) {
+                        contactModal.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // 表单提交
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // 这里可以添加表单提交逻辑
+                    alert('提交成功！我们会尽快与您联系。');
+                    if (contactModal) {
+                        contactModal.classList.add('hidden');
+                    }
+                    contactForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

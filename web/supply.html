@@ -40,6 +40,68 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
     }
+
+    /* 服务卡片样式 */
+    .service-card {
+      border: 1px solid rgba(0, 242, 254, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(26, 95, 180, 0.15);
+    }
+
+    .service-card.active {
+      border-color: var(--primary);
+      background: rgba(26, 95, 180, 0.05);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    /* 卡片内容样式 */
+    .card {
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 按钮样式增强 */
+    .btn-primary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(26, 95, 180, 0.3);
+    }
+
+    /* 标签样式 */
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
   </style>
 </head>
 <body style="overflow-y: auto;">
@@ -67,7 +129,7 @@
         <a href="supply.html" class="nav-link active text-white">资源枢纽</a>
         <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
         <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
-        <a href="shop.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
         <a href="hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
         <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
         <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
@@ -89,265 +151,1349 @@
 
   <div class="max-w-[1600px] mx-auto pt-24 px-8">
     <!-- 页面标题 -->
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">供应链协同</h1>
-        <p style="color: var(--text-secondary); font-size: 14px;">原材料供需对接、产能共享、物流协同</p>
+        <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #1a5fb4, #c9a227); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">产业资源枢纽</h1>
+        <p style="color: var(--text-secondary); font-size: 16px;">发制品行业供需匹配、资源共享、金融服务、专家支持一站式服务平台</p>
       </div>
       <div class="flex gap-3">
-        <button class="btn btn-outline">
-          <i class="fas fa-filter"></i> 筛选
+        <button class="btn btn-outline" style="padding: 10px 20px;">
+          <i class="fas fa-search"></i> 资源搜索
+        </button>
+        <button class="btn btn-primary" style="padding: 10px 24px;">
+          <i class="fas fa-plus"></i> 发布需求
         </button>
       </div>
     </div>
 
-    <!-- 供需概览 -->
-    <div class="grid grid-cols-4 gap-5 mb-6">
-      <div class="card">
-        <div class="flex items-center justify-between mb-3">
-          <span style="color: var(--text-secondary); font-size: 14px;">今日供需发布</span>
-          <i class="fas fa-clipboard-list" style="color: var(--primary);"></i>
+    <!-- 数据概览卡片 -->
+    <div class="grid grid-cols-4 gap-6 mb-10">
+      <div class="card" style="padding: 24px; border-radius: 16px; background: rgba(26,95,180,0.05); border: 1px solid rgba(26,95,180,0.1);">
+        <div class="flex items-start justify-between">
+          <div>
+            <div style="color: var(--text-secondary); font-size: 14px; font-weight: 500; margin-bottom: 8px;">供需撮合</div>
+            <div style="font-size: 32px; font-weight: 700; color: var(--primary);">28</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">供应 18 / 需求 10</div>
+          </div>
+          <div style="width: 48px; height: 48px; background: rgba(26,95,180,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-exchange-alt" style="color: var(--primary); font-size: 20px;"></i>
+          </div>
         </div>
-        <div style="font-size: 32px; font-weight: 700;">28</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">供应 18 / 需求 10</div>
       </div>
       
-      <div class="card">
-        <div class="flex items-center justify-between mb-3">
-          <span style="color: var(--text-secondary); font-size: 14px;">撮合成功订单</span>
-          <i class="fas fa-check-circle" style="color: var(--success);"></i>
+      <div class="card" style="padding: 24px; border-radius: 16px; background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.1);">
+        <div class="flex items-start justify-between">
+          <div>
+            <div style="color: var(--text-secondary); font-size: 14px; font-weight: 500; margin-bottom: 8px;">成交订单</div>
+            <div style="font-size: 32px; font-weight: 700; color: var(--success);">156</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">本月成交 ¥2,860万</div>
+          </div>
+          <div style="width: 48px; height: 48px; background: rgba(34,197,94,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-handshake" style="color: var(--success); font-size: 20px;"></i>
+          </div>
         </div>
-        <div style="font-size: 32px; font-weight: 700;">156</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">本月累计 金额 ¥2,860万</div>
       </div>
       
-      <div class="card">
-        <div class="flex items-center justify-between mb-3">
-          <span style="color: var(--text-secondary); font-size: 14px;">闲置产能共享</span>
-          <i class="fas fa-share-alt" style="color: var(--gold);"></i>
+      <div class="card" style="padding: 24px; border-radius: 16px; background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.1);">
+        <div class="flex items-start justify-between">
+          <div>
+            <div style="color: var(--text-secondary); font-size: 14px; font-weight: 500; margin-bottom: 8px;">资源利用率</div>
+            <div style="font-size: 32px; font-weight: 700; color: var(--gold);">32%</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">12家企业参与共享</div>
+          </div>
+          <div style="width: 48px; height: 48px; background: rgba(201,162,39,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-recycle" style="color: var(--gold); font-size: 20px;"></i>
+          </div>
         </div>
-        <div style="font-size: 32px; font-weight: 700;">32%</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">12家企业发布闲置产能</div>
       </div>
       
-      <div class="card">
-        <div class="flex items-center justify-between mb-3">
-          <span style="color: var(--text-secondary); font-size: 14px;">在途物流</span>
-          <i class="fas fa-truck" style="color: var(--warning);"></i>
+      <div class="card" style="padding: 24px; border-radius: 16px; background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.1);">
+        <div class="flex items-start justify-between">
+          <div>
+            <div style="color: var(--text-secondary); font-size: 14px; font-weight: 500; margin-bottom: 8px;">专家服务</div>
+            <div style="font-size: 32px; font-weight: 700; color: var(--warning);">42</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">在线专家提供咨询</div>
+          </div>
+          <div style="width: 48px; height: 48px; background: rgba(245,158,11,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-user-tie" style="color: var(--warning); font-size: 20px;"></i>
+          </div>
         </div>
-        <div style="font-size: 32px; font-weight: 700;">127辆</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">货物总值 ¥1,250万</div>
       </div>
     </div>
 
-    <!-- 原材料价格监测 -->
-    <div class="card mb-6">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-chart-line"></i>
-          原材料价格走势
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">人发</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">化纤</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">辅料</button>
+    <!-- 服务导航 -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+      <div class="card service-card active" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('supply-demand')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), #3b82f6); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-exchange-alt" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">供需匹配</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">原材料供需对接、产能协作</p>
         </div>
       </div>
-      <div style="height: 200px; display: flex; align-items: flex-end; gap: 8px; padding: 20px 0;">
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 120px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-            <span style="font-size: 12px; font-weight: 600;">¥380</span>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('resource-sharing')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gold), #fbbf24); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-recycle" style="color: white; font-size: 24px;"></i>
           </div>
-          <span style="font-size: 12px; color: var(--text-secondary);">3/10</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 140px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-            <span style="font-size: 12px; font-weight: 600;">¥420</span>
-          </div>
-          <span style="font-size: 12px; color: var(--text-secondary);">3/11</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 130px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-            <span style="font-size: 12px; font-weight: 600;">¥395</span>
-          </div>
-          <span style="font-size: 12px; color: var(--text-secondary);">3/12</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 150px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-            <span style="font-size: 12px; font-weight: 600;">¥450</span>
-          </div>
-          <span style="font-size: 12px; color: var(--text-secondary);">3/13</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 145px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-            <span style="font-size: 12px; font-weight: 600;">¥435</span>
-          </div>
-          <span style="font-size: 12px; color: var(--text-secondary);">3/14</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 160px; background: linear-gradient(180deg, var(--primary) 0%, rgba(26,95,180,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;">
-            <span style="font-size: 12px; font-weight: 600;">¥468</span>
-          </div>
-          <span style="font-size: 12px; color: var(--text-secondary);">3/15</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-          <div style="width: 100%; height: 155px; background: linear-gradient(180deg, var(--gold) 0%, rgba(201,162,39,0.3) 100%); border-radius: 6px 6px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-shadow: 0 0 20px rgba(201,162,39,0.3);">
-            <span style="font-size: 12px; font-weight: 600;">¥458</span>
-          </div>
-          <span style="font-size: 12px; color: var(--gold); font-weight: 600;">今日</span>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">资源共享</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">设备租赁、场地共享、技术转让</p>
         </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(26,95,180,0.1); border-radius: 10px; margin-top: 16px;">
-        <i class="fas fa-info-circle" style="color: var(--primary); font-size: 20px;"></i>
-        <div style="flex: 1;">
-          <div style="font-weight: 600; margin-bottom: 4px;">价格预警</div>
-          <div style="font-size: 14px; color: var(--text-secondary);">人发原材料价格近7天上涨 20.5%，建议关注库存情况，适时调整采购策略。</div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('hr-services')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-users" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">人力资源</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">招聘专业人才、技能培训认证</p>
         </div>
-        <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">查看详情</button>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('expert-resources')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--success), #22c55e); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-user-tie" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">专家资源</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">工艺咨询、设计指导、市场分析</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('financial-services')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-money-bill-wave" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">金融服务</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">融资贷款、保险保障、信用评估</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('logistics-services')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-truck" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">物流服务</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">专业物流服务商、国际物流方案</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('quality-testing')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-vial" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">质量检测</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">原材料检测、成品质量检验、第三方认证</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('certification')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-award" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">认证服务</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">ISO认证、产品安全认证、环保认证</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('intellectual-property')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-copyright" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">知识产权</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">专利申请、商标注册、版权保护</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('marketing')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-bullhorn" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">市场营销</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">品牌策划、电商运营、展会服务</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('tech-innovation')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-lightbulb" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">技术创新</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">新技术、新工艺、研发合作</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('info-services')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-newspaper" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">信息资讯</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">行业新闻、市场趋势、政策解读</p>
+        </div>
+      </div>
+      
+      <div class="card service-card" style="cursor: pointer; transition: all 0.3s ease; border-radius: 16px; padding: 24px;" onclick="showService('more-resources')">
+        <div class="flex flex-col items-center text-center">
+          <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #64748b, #475569); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <i class="fas fa-ellipsis-h" style="color: white; font-size: 24px;"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">更多资源</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">探索更多发制品行业相关资源</p>
+        </div>
       </div>
     </div>
 
-    <!-- 供需信息 -->
-    <div class="grid grid-cols-2 gap-5">
-      <!-- 供应信息 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-boxes"></i>
-            最新供应信息
-          </div>
-          <a href="#" style="font-size: 14px; color: var(--primary);">查看更多 <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div>
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
-            <div class="flex items-center justify-between mb-3">
-              <span class="tag tag-success">供应</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">2小时前</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px;">优质人发原材料 50公斤</h4>
-            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
-              <span><i class="fas fa-weight-hanging"></i> 50kg</span>
-              <span><i class="fas fa-tag"></i> ¥420/kg</span>
-              <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">鑫</div>
-                <span style="font-size: 14px;">鑫源原料贸易</span>
+    <!-- 服务内容区域 -->
+    <div id="service-content">
+      <!-- 供需匹配 -->
+      <div id="supply-demand" class="service-section">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 供应信息 -->
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(34,197,94,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-boxes" style="color: var(--success); font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">最新供应信息</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">优质原材料供应</p>
+                </div>
               </div>
-              <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">立即联系</button>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看更多 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(34,197,94,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <div class="flex items-center gap-3 mb-4">
+                      <span class="tag" style="background: rgba(34,197,94,0.15); color: var(--success); font-weight: 500;">供应</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">2小时前</span>
+                    </div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">优质人发原材料 50公斤</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-weight-hanging" style="width: 16px; color: var(--success);"></i>
+                        <span>数量: 50kg</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-tag" style="width: 16px; color: var(--success);"></i>
+                        <span>价格: ¥420/kg</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-map-marker-alt" style="width: 16px; color: var(--success);"></i>
+                        <span>地点: 鄄城县</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--success), #16a34a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: white;">鑫</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span style="font-size: 14px; font-weight: 500; color: white;">鑫源原料贸易</span>
+                  <button class="btn btn-primary" style="padding: 8px 20px; font-size: 14px; font-weight: 500;">立即联系</button>
+                </div>
+              </div>
+              
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(201,162,39,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <div class="flex items-center gap-3 mb-4">
+                      <span class="tag" style="background: rgba(34,197,94,0.15); color: var(--success); font-weight: 500;">供应</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">5小时前</span>
+                    </div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">高温丝化纤发 200公斤</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-weight-hanging" style="width: 16px; color: var(--gold);"></i>
+                        <span>数量: 200kg</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-tag" style="width: 16px; color: var(--gold);"></i>
+                        <span>价格: ¥85/kg</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-map-marker-alt" style="width: 16px; color: var(--gold);"></i>
+                        <span>地点: 菏泽市</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: white;">化</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span style="font-size: 14px; font-weight: 500; color: white;">华东化纤原料</span>
+                  <button class="btn btn-primary" style="padding: 8px 20px; font-size: 14px; font-weight: 500;">立即联系</button>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
-            <div class="flex items-center justify-between mb-3">
-              <span class="tag tag-success">供应</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">5小时前</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px;">高温丝化纤发 200公斤</h4>
-            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
-              <span><i class="fas fa-weight-hanging"></i> 200kg</span>
-              <span><i class="fas fa-tag"></i> ¥85/kg</span>
-              <span><i class="fas fa-map-marker-alt"></i> 菏泽市</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">化</div>
-                <span style="font-size: 14px;">华东化纤原料</span>
+
+          <!-- 需求信息 -->
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(26,95,180,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-shopping-cart" style="color: var(--primary); font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">最新需求信息</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">采购需求发布</p>
+                </div>
               </div>
-              <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">立即联系</button>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看更多 <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
-          </div>
-          
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px;">
-            <div class="flex items-center justify-between mb-3">
-              <span class="tag" style="background: rgba(245,158,11,0.15); color: var(--warning);">产能</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">8小时前</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px;">闲置档发加工产能 5000件/月</h4>
-            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
-              <span><i class="fas fa-cogs"></i> 档发加工</span>
-              <span><i class="fas fa-clock"></i> 3个月</span>
-              <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">美</div>
-                <span style="font-size: 14px;">美达发制品</span>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(26,95,180,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <div class="flex items-center gap-3 mb-4">
+                      <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary); font-weight: 500;">求购</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">1小时前</span>
+                    </div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">采购人发原材料 100公斤</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-weight-hanging" style="width: 16px; color: var(--primary);"></i>
+                        <span>数量: 100kg</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: var(--primary);"></i>
+                        <span>预算: ¥400-450/kg</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: var(--primary);"></i>
+                        <span>期限: 7天内</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), #1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: white;">瑞</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span style="font-size: 14px; font-weight: 500; color: white;">瑞发制品</span>
+                  <button class="btn btn-outline" style="padding: 8px 20px; font-size: 14px; font-weight: 500;">我要供货</button>
+                </div>
               </div>
-              <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">立即联系</button>
+              
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(201,162,39,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <div class="flex items-center gap-3 mb-4">
+                      <span class="tag" style="background: rgba(201,162,39,0.15); color: var(--gold); font-weight: 500;">外协</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">6小时前</span>
+                    </div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发套缝制外协加工 3000件</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-tshirt" style="width: 16px; color: var(--gold);"></i>
+                        <span>类型: 女式长卷发</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: var(--gold);"></i>
+                        <span>价格: ¥15-20/件</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: var(--gold);"></i>
+                        <span>交付: 15天</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--warning), #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: white;">金</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span style="font-size: 14px; font-weight: 500; color: white;">金发丝制品</span>
+                  <button class="btn btn-outline" style="padding: 8px 20px; font-size: 14px; font-weight: 500;">我要接单</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 需求信息 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-shopping-cart"></i>
-            最新需求信息
+      <!-- 资源共享 -->
+      <div id="resource-sharing" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 设备共享 -->
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(201,162,39,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-cogs" style="color: var(--gold); font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">设备共享</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">专业设备租赁服务</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看更多 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(201,162,39,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">编织机设备租赁</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-industry" style="width: 16px; color: var(--gold);"></i>
+                        <span>设备: 三联机 5台</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-clock" style="width: 16px; color: var(--gold);"></i>
+                        <span>月租: ¥8,000/台</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-map-marker-alt" style="width: 16px; color: var(--gold);"></i>
+                        <span>地点: 鄄城县</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-cogs" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即租赁</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <a href="#" style="font-size: 14px; color: var(--primary);">查看更多 <i class="fas fa-arrow-right"></i></a>
+          
+          <!-- 场地共享 -->
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(245,158,11,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-building" style="color: var(--warning); font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">场地共享</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">生产场地出租</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看更多 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(245,158,11,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">生产车间出租</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-ruler-combined" style="width: 16px; color: var(--warning);"></i>
+                        <span>面积: 500㎡</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: var(--warning);"></i>
+                        <span>租金: ¥15/㎡/月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: var(--warning);"></i>
+                        <span>租期: 可租1年</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--warning), #f59e0b); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-building" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">联系业主</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
-            <div class="flex items-center justify-between mb-3">
-              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">求购</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">1小时前</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px;">采购人发原材料 100公斤</h4>
-            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
-              <span><i class="fas fa-weight-hanging"></i> 100kg</span>
-              <span><i class="fas fa-yen-sign"></i> 预算 ¥400-450/kg</span>
-              <span><i class="fas fa-calendar"></i> 7天内</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">瑞</div>
-                <span style="font-size: 14px;">瑞发制品</span>
+      </div>
+
+      <!-- 金融服务 -->
+      <div id="financial-services" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(26,95,180,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-hand-holding-usd" style="color: var(--primary); font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">融资服务</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">供应链金融解决方案</p>
+                </div>
               </div>
-              <button class="btn btn-outline" style="padding: 6px 16px; font-size: 12px;">我要供货</button>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 28px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(26,95,180,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 20px; margin-bottom: 12px;">供应链融资</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">基于订单和库存的融资解决方案，最高可贷订单金额的80%，助力企业快速周转资金</p>
+                  </div>
+                  <div style="width: 72px; height: 72px; background: linear-gradient(135deg, var(--primary), #1d4ed8); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-money-bill-wave" style="color: white; font-size: 32px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 12px 28px; font-size: 14px; font-weight: 500;">立即申请</button>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px;">
-            <div class="flex items-center justify-between mb-3">
-              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">求购</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">3小时前</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px;">采购发网、发夹等辅料</h4>
-            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
-              <span><i class="fas fa-box"></i> 大量</span>
-              <span><i class="fas fa-yen-sign"></i> 面议</span>
-              <span><i class="fas fa-calendar"></i> 长期合作</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">华</div>
-                <span style="font-size: 14px;">华鑫发制品</span>
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(34,197,94,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-shield-alt" style="color: var(--success); font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">保险服务</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">风险保障服务</p>
+                </div>
               </div>
-              <button class="btn btn-outline" style="padding: 6px 16px; font-size: 12px;">我要供货</button>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 28px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(34,197,94,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 20px; margin-bottom: 12px;">信用保险</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">外贸应收账款信用保险，保障收汇安全，降低国际贸易风险</p>
+                  </div>
+                  <div style="width: 72px; height: 72px; background: linear-gradient(135deg, var(--success), #16a34a); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-shield-alt" style="color: white; font-size: 32px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 12px 28px; font-size: 14px; font-weight: 500;">了解更多</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 专家资源 -->
+      <div id="expert-resources" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div style="padding: 32px; text-align: center;">
+              <div style="width: 96px; height: 96px; background: linear-gradient(135deg, var(--primary), #1d4ed8); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i class="fas fa-user-md" style="color: white; font-size: 40px;"></i>
+              </div>
+              <h4 style="font-weight: 600; font-size: 20px; margin-bottom: 12px;">工艺专家</h4>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;">编织工艺、染色技术咨询，解决生产难题</p>
+              <button class="btn btn-primary" style="padding: 10px 28px; font-size: 14px; font-weight: 500;">在线咨询</button>
             </div>
           </div>
           
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px;">
-            <div class="flex items-center justify-between mb-3">
-              <span class="tag" style="background: rgba(201,162,39,0.15); color: var(--gold);">外协</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">6小时前</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px;">发套缝制外协加工 3000件</h4>
-            <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">
-              <span><i class="fas fa-tshirt"></i> 女式长卷发</span>
-              <span><i class="fas fa-yen-sign"></i> ¥15-20/件</span>
-              <span><i class="fas fa-calendar"></i> 15天交付</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">金</div>
-                <span style="font-size: 14px;">金发丝制品</span>
+          <div class="card" style="border-radius: 16px;">
+            <div style="padding: 32px; text-align: center;">
+              <div style="width: 96px; height: 96px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i class="fas fa-paint-brush" style="color: white; font-size: 40px;"></i>
               </div>
-              <button class="btn btn-outline" style="padding: 6px 16px; font-size: 12px;">我要接单</button>
+              <h4 style="font-weight: 600; font-size: 20px; margin-bottom: 12px;">设计专家</h4>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;">时尚发型设计、产品研发指导，提升产品竞争力</p>
+              <button class="btn btn-primary" style="padding: 10px 28px; font-size: 14px; font-weight: 500;">在线咨询</button>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div style="padding: 32px; text-align: center;">
+              <div style="width: 96px; height: 96px; background: linear-gradient(135deg, var(--success), #16a34a); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i class="fas fa-chart-line" style="color: white; font-size: 40px;"></i>
+              </div>
+              <h4 style="font-weight: 600; font-size: 20px; margin-bottom: 12px;">市场专家</h4>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;">国际市场趋势、消费偏好分析，把握市场脉搏</p>
+              <button class="btn btn-primary" style="padding: 10px 28px; font-size: 14px; font-weight: 500;">在线咨询</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人力资源服务 -->
+      <div id="hr-services" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(139,92,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-user-plus" style="color: #8b5cf6; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">人才招聘</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">专业技能人才招聘服务</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">发布职位 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(139,92,246,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">编织工艺师</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-briefcase" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>月薪: ¥8,000-12,000</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-map-marker-alt" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>地点: 鄄城县</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-graduation-cap" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>经验: 3年以上</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-user" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即应聘</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(139,92,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-graduation-cap" style="color: #8b5cf6; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">技能培训</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">行业技能认证培训</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看课程 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(139,92,246,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发制品编织工艺培训</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-clock" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>时长: 15天</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-users" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>人数: 20人</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>时间: 每月1日开班</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-book" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即报名</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 物流服务资源 -->
+      <div id="logistics-services" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(236,72,153,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-truck" style="color: #ec4899; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">国际物流</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">专业国际物流解决方案</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">咨询报价 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(236,72,153,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">海运物流服务</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-ship" style="width: 16px; color: #ec4899;"></i>
+                        <span>航线: 中国-美国/欧洲</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-box" style="width: 16px; color: #ec4899;"></i>
+                        <span>时效: 25-35天</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #ec4899;"></i>
+                        <span>费用: ¥1,200/立方米</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-ship" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即咨询</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(236,72,153,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-warehouse" style="color: #ec4899; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">仓储服务</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">专业仓储管理服务</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看详情 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(236,72,153,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">智能仓储服务</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-ruler-combined" style="width: 16px; color: #ec4899;"></i>
+                        <span>面积: 5000㎡</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-shield-alt" style="width: 16px; color: #ec4899;"></i>
+                        <span>安全: 24小时监控</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #ec4899;"></i>
+                        <span>费用: ¥30/㎡/月</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-warehouse" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即咨询</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 质量检测服务 -->
+      <div id="quality-testing" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(245,158,11,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-flask" style="color: #f59e0b; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">原材料检测</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">人发、化纤原料质量检测</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">申请检测 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(245,158,11,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">人发原料质量检测</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-vial" style="width: 16px; color: #f59e0b;"></i>
+                        <span>项目: 发质、长度、颜色、弹性</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-clock" style="width: 16px; color: #f59e0b;"></i>
+                        <span>周期: 3-5个工作日</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #f59e0b;"></i>
+                        <span>费用: ¥200/批次</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-flask" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即申请</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(245,158,11,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-certificate" style="color: #f59e0b; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">成品检验</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">发制品成品质量检验</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看标准 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(245,158,11,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发套成品质量检验</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-check-circle" style="width: 16px; color: #f59e0b;"></i>
+                        <span>标准: GB/T 23170-2008</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #f59e0b;"></i>
+                        <span>周期: 5-7个工作日</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #f59e0b;"></i>
+                        <span>费用: ¥300/批次</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-certificate" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即申请</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 认证服务 -->
+      <div id="certification" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(139,92,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-certificate" style="color: #8b5cf6; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">ISO认证</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">质量管理体系认证</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">申请认证 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(139,92,246,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">ISO 9001质量管理体系认证</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-check-square" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>标准: ISO 9001:2015</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>周期: 3-6个月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>费用: ¥15,000-25,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-certificate" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即申请</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(139,92,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-shield-alt" style="color: #8b5cf6; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">产品认证</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">安全认证、环保认证</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看详情 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(139,92,246,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">CE安全认证</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-shield-alt" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>适用: 欧盟市场准入</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>周期: 2-3个月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #8b5cf6;"></i>
+                        <span>费用: ¥10,000-18,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-shield-alt" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即申请</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 知识产权服务 -->
+      <div id="intellectual-property" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(236,72,153,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-lightbulb" style="color: #ec4899; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">专利申请</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">发明专利、实用新型专利</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">申请专利 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(236,72,153,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发制品工艺发明专利</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-lightbulb" style="width: 16px; color: #ec4899;"></i>
+                        <span>类型: 发明专利</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #ec4899;"></i>
+                        <span>周期: 12-18个月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #ec4899;"></i>
+                        <span>费用: ¥8,000-15,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-lightbulb" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即申请</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(236,72,153,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-trademark" style="color: #ec4899; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">商标注册</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">商标申请、商标转让</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">注册商标 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(236,72,153,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发制品品牌商标注册</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-trademark" style="width: 16px; color: #ec4899;"></i>
+                        <span>类别: 第3类、第25类</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #ec4899;"></i>
+                        <span>周期: 9-12个月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #ec4899;"></i>
+                        <span>费用: ¥2,000-3,000/类</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-trademark" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即注册</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 市场营销服务 -->
+      <div id="marketing" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(244,63,94,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-bullhorn" style="color: #f43f5e; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">品牌策划</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">品牌定位、视觉设计、营销策划</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">咨询策划 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(244,63,94,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发制品品牌全案策划</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-palette" style="width: 16px; color: #f43f5e;"></i>
+                        <span>内容: 品牌定位、LOGO设计、包装设计</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #f43f5e;"></i>
+                        <span>周期: 1-2个月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #f43f5e;"></i>
+                        <span>费用: ¥30,000-50,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-palette" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即咨询</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(244,63,94,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-shopping-cart" style="color: #f43f5e; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">电商运营</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">网店运营、直播带货、跨境电商</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">咨询服务 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(244,63,94,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">亚马逊店铺代运营</h4>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-globe" style="width: 16px; color: #f43f5e;"></i>
+                        <span>平台: Amazon、eBay、AliExpress</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #f43f5e;"></i>
+                        <span>周期: 3-6个月</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-yen-sign" style="width: 16px; color: #f43f5e;"></i>
+                        <span>费用: ¥5,000-10,000/月</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-shopping-cart" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">立即咨询</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 技术创新资源 -->
+      <div id="tech-innovation" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(244,63,94,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-microchip" style="color: #f43f5e; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">新技术发布</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">行业新技术、新工艺发布</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">发布技术 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(244,63,94,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">智能编织工艺</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">采用先进的计算机控制技术，实现发制品编织的自动化和智能化，提高生产效率30%以上</p>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #f43f5e;"></i>
+                        <span>发布时间: 2026-03-20</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-user" style="width: 16px; color: #f43f5e;"></i>
+                        <span>发布者: 发业技术研究院</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-microchip" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">查看详情</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(244,63,94,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-handshake" style="color: #f43f5e; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">研发合作</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">产学研合作项目</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">申请合作 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 24px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(244,63,94,0.1);">
+                <div class="flex items-start justify-between mb-6">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">发制品新材料研发</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">联合高校和研究机构，开展发制品新材料的研发工作，推动行业技术进步</p>
+                    <div class="space-y-3">
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-users" style="width: 16px; color: #f43f5e;"></i>
+                        <span>合作单位: 5家</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <i class="fas fa-calendar" style="width: 16px; color: #f43f5e;"></i>
+                        <span>周期: 12个月</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-flask" style="color: white; font-size: 24px;"></i>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 500;">申请加入</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 信息资讯资源 -->
+      <div id="info-services" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(59,130,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-newspaper" style="color: #3b82f6; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">行业新闻</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">最新行业动态和资讯</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看更多 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 20px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(59,130,246,0.1); margin-bottom: 16px;">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">鄄城县发制品产业集群获评国家级示范集群</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">近日，鄄城县发制品产业集群成功获评国家级示范集群，这是对我县发制品产业发展的高度认可...</p>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-top: 12px;">
+                      <span style="font-size: 12px; color: var(--text-secondary);">2026-03-25</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">来源: 县政府官网</span>
+                    </div>
+                  </div>
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-newspaper" style="color: white; font-size: 16px;"></i>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 20px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(59,130,246,0.1);">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">2026年发制品国际展会即将举行</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">由中国发制品行业协会主办的2026年国际发制品展览会将于下月在上海举行，预计将有来自全球30多个国家和地区的参展商...</p>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-top: 12px;">
+                      <span style="font-size: 12px; color: var(--text-secondary);">2026-03-20</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">来源: 行业协会</span>
+                    </div>
+                  </div>
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-globe" style="color: white; font-size: 16px;"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; background: rgba(59,130,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-file-alt" style="color: #3b82f6; font-size: 20px;"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 2px;">政策法规</h3>
+                  <p style="font-size: 12px; color: var(--text-secondary);">最新政策解读和法规资讯</p>
+                </div>
+              </div>
+              <a href="#" style="font-size: 14px; color: var(--primary); font-weight: 500;">查看更多 <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div style="padding: 20px;">
+              <div style="padding: 20px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(59,130,246,0.1); margin-bottom: 16px;">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">关于促进发制品产业高质量发展的实施意见</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">山东省政府发布《关于促进发制品产业高质量发展的实施意见》，提出了一系列支持政策和措施...</p>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-top: 12px;">
+                      <span style="font-size: 12px; color: var(--text-secondary);">2026-03-15</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">来源: 山东省政府</span>
+                    </div>
+                  </div>
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-file-alt" style="color: white; font-size: 16px;"></i>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 20px; background: rgba(15,20,41,0.6); border-radius: 16px; border: 1px solid rgba(59,130,246,0.1);">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <h4 style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">出口退税新政策解读</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">国家税务总局发布最新出口退税政策，对发制品行业出口退税比例进行了调整，预计将为企业减轻税负...</p>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-top: 12px;">
+                      <span style="font-size: 12px; color: var(--text-secondary);">2026-03-10</span>
+                      <span style="font-size: 12px; color: var(--text-secondary);">来源: 国家税务总局</span>
+                    </div>
+                  </div>
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-file-invoice-dollar" style="color: white; font-size: 16px;"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 更多资源 -->
+      <div id="more-resources" class="service-section" style="display: none;">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card" style="border-radius: 16px;">
+            <div style="padding: 28px; text-align: center;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #64748b, #475569); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <i class="fas fa-cogs" style="color: white; font-size: 32px;"></i>
+              </div>
+              <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 8px;">供应链管理</h4>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6;">优化供应链流程，提升运营效率</p>
+              <button class="btn btn-primary" style="padding: 8px 24px; font-size: 14px; font-weight: 500;">了解更多</button>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div style="padding: 28px; text-align: center;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #64748b, #475569); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <i class="fas fa-shield-alt" style="color: white; font-size: 32px;"></i>
+              </div>
+              <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 8px;">质量认证</h4>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6;">产品质量认证和检测服务</p>
+              <button class="btn btn-primary" style="padding: 8px 24px; font-size: 14px; font-weight: 500;">了解更多</button>
+            </div>
+          </div>
+          
+          <div class="card" style="border-radius: 16px;">
+            <div style="padding: 28px; text-align: center;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #64748b, #475569); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <i class="fas fa-globe" style="color: white; font-size: 32px;"></i>
+              </div>
+              <h4 style="font-weight: 600; font-size: 18px; margin-bottom: 8px;">国际合作</h4>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6;">国际交流与合作平台</p>
+              <button class="btn btn-primary" style="padding: 8px 24px; font-size: 14px; font-weight: 500;">了解更多</button>
             </div>
           </div>
         </div>
@@ -365,6 +1511,44 @@
         nav.classList.remove('nav-scrolled');
       }
     });
+
+    // 服务切换功能
+    function showService(serviceId) {
+      // 隐藏所有服务内容
+      document.querySelectorAll('.service-section').forEach(section => {
+        section.style.display = 'none';
+      });
+      
+      // 显示选中的服务内容并添加淡入动画
+      const targetSection = document.getElementById(serviceId);
+      if (targetSection) {
+        targetSection.style.display = 'block';
+        targetSection.style.opacity = '0';
+        targetSection.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          targetSection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          targetSection.style.opacity = '1';
+          targetSection.style.transform = 'translateY(0)';
+        }, 10);
+      }
+      
+      // 更新服务导航卡片样式
+      document.querySelectorAll('.service-card').forEach(card => {
+        card.classList.remove('active');
+        card.style.borderColor = 'rgba(0, 242, 254, 0.2)';
+        card.style.background = 'transparent';
+      });
+      
+      // 高亮当前选中的服务卡片
+      const serviceCards = document.querySelectorAll('.service-card');
+      serviceCards.forEach((card, index) => {
+        if (index === ['supply-demand', 'resource-sharing', 'hr-services', 'expert-resources', 'financial-services', 'logistics-services', 'quality-testing', 'certification', 'intellectual-property', 'marketing', 'tech-innovation', 'info-services', 'more-resources'].indexOf(serviceId)) {
+          card.classList.add('active');
+          card.style.borderColor = 'var(--primary)';
+          card.style.background = 'rgba(26,95,180,0.05)';
+        }
+      });
+    }
   </script>
 </body>
 </html>

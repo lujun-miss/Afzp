@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>采购需求详情 - 发制品产业互联网平台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 全局样式 -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        'primary-light': '#4080FF',
+                        'text-primary': '#333333',
+                        'text-secondary': '#666666',
+                        'text-tertiary': '#999999',
+                        'border-gray': '#E5E7EB',
+                        'light-gray': '#F3F4F6',
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'button': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                    },
+                },
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            overflow-y: auto;
+            color: var(--text-primary);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover {
+            color: #c9a227;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a5fb4, #c9a227);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #c9a227;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <style>
+        /* 自定义样式 */
+        .hero-section {
+            background: linear-gradient(135deg, #165DFF 0%, #4080FF 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYtMi42ODYgNi02cy0yLjY4Ni02LTYtNmMtMy4zMTQgMC02IDIuNjg2LTYgNnMyLjY4NiA2IDYgNnptMCAzMGMzLjMxNCAwIDYtMi42ODYgNi02cy0yLjY4Ni02LTYtNmMtMy4zMTQgMC02IDIuNjg2LTYgNnMyLjY4NiA2IDYgNnptLTE4LTE1YzMuMzE0IDAgNi0yLjY4NiA2LTZzLTIuNjg2LTYtNi02Yy0zLjMxNCAwLTYgMi42ODYtNiA2czIuNjg2IDYgNiA2em0wIDM3YzMuMzE0IDAgNi0yLjY4NiA2LTZzLTIuNjg2LTYtNi02Yy0zLjMxNCAwLTYgMi42ODYtNiA2czIuNjg2IDYgNiA2em0tMTggMTZjMy4zMTQgMCA2LTIuNjg2IDYtNnMtMi42ODYtNi02LTZjLTMuMzE0IDAtNiAyLjY4Ni02IDZzMi42ODYgNiA2IDZ6bTAgMzJjMy4zMTQgMCA2LTIuNjg2IDYtNnMtMi42ODYtNi02LTZjLTMuMzE0IDAtNiAyLjY4Ni02IDZzMi42ODYgNiA2IDZ6Ii8+PC9nPjwvc3ZnPg==');
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .status-urgent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-top: 40px solid #f5222d;
+            border-right: 40px solid transparent;
+            z-index: 1;
+        }
+        .status-urgent::after {
+            content: '紧急';
+            position: absolute;
+            top: -35px;
+            left: 5px;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            transform: rotate(-45deg);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #52c41a;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .pagination button {
+            padding: 8px 12px;
+            margin: 0 2px;
+            border: 1px solid #E5E7EB;
+            background: white;
+            border-radius: 4px;
+            color: #666666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .pagination button:hover:not(:disabled) {
+            border-color: #165DFF;
+            color: #165DFF;
+        }
+        .pagination button.active {
+            background: #165DFF;
+            border-color: #165DFF;
+            color: white;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md transition-all duration-300 py-4" id="main-nav">
+        <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+                        <div class="text-xs text-gray-400">Industry Brain Platform</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4">
+                <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+                <a href="../cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+                <a href="../industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+                <a href="../monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+                <a href="../enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+                <a href="../supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+                <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+                <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+                <a href="hair-mall.html" class="nav-link active text-white">发品交易</a>
+                <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+                <a href="../digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+                <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+                <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+                    <i class="fas fa-cog"></i>
+                    <span>后台管理</span>
+                </a>
+                <a href="../index.html" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 pt-24 pb-4">
+        <!-- 面包屑导航 -->
+        <div class="flex items-center mb-4 text-base">
+            <a href="hair-mall.html" class="text-gray-400 hover:text-white font-medium transition-colors duration-300">找采购</a>
+            <i class="fa fa-chevron-right mx-2 text-gray-500"></i>
+            <span class="text-white font-bold">采购需求详情</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <!-- 主要内容区域 -->
+            <div class="lg:col-span-2 space-y-4">
+                <!-- 采购需求标题与状态 -->
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card p-4 relative">
+                    <!-- 紧急状态标签 -->
+                    <div class="status-urgent"></div>
+                    <div class="flex flex-wrap items-center justify-between mb-2">
+                        <h1 class="text-2xl font-bold text-white">真人发发绺采购</h1>
+                        <div class="flex gap-2">
+                            <span class="bg-blue-900 text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded">
+                                集采:拼单
+                            </span>
+                            <span class="bg-green-900 text-green-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
+                                进行中
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-gray-400 mb-2">
+                        <p class="font-medium">菏泽美发用品有限公司</p>
+                        <i class="fa fa-check-circle text-primary text-xs mx-2"></i>
+                        <p class="text-sm">联系人：李经理 | 138****5678</p>
+                    </div>
+                </div>
+
+                <!-- 核心数据看板 -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- 目标总量 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-gray-400 text-sm">目标总量</h3>
+                            <i class="fa fa-cubes text-primary"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-white">1000</p>
+                        <p class="text-gray-400 text-sm">束</p>
+                    </div>
+                    
+                    <!-- 报价进度 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-gray-400 text-sm">报价进度</h3>
+                            <i class="fa fa-tasks text-primary"></i>
+                        </div>
+                        <div class="flex items-end justify-between mb-2">
+                            <p class="text-2xl font-bold text-white">60%</p>
+                            <p class="text-gray-400 text-sm">12/20家</p>
+                        </div>
+                        <div class="progress-bar bg-gray-700">
+                            <div class="progress-fill bg-primary" style="width: 60%"></div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- 剩余天数 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-gray-400 text-sm">剩余天数</h3>
+                            <i class="fa fa-clock-o text-primary"></i>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-red-900 text-red-300 text-xs font-medium px-2.5 py-0.5 rounded">
+                                即将截止
+                            </span>
+                            <p class="text-2xl font-bold text-red-400" id="countdown">0</p>
+                            <p class="text-gray-400 text-sm">天</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 已参与商家 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-gray-400 text-sm">已参与商家</h3>
+                            <i class="fa fa-users text-primary"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-white">5</p>
+                        <p class="text-gray-400 text-sm">家</p>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-6 py-3 rounded-lg font-medium text-center text-lg">
+                        <i class="fa fa-file-text-o mr-2"></i> 立即报价
+                    </button>
+                    <button class="flex-1 bg-white border border-border-gray text-text-primary hover:bg-light-gray transition-colors duration-300 px-6 py-3 rounded-lg font-medium text-center text-lg">
+                        <i class="fa fa-users mr-2"></i> 申请加入拼单
+                    </button>
+                </div>
+
+                <!-- 详情内容 -->
+                <div class="space-y-4">
+                    <!-- 产品与质量要求 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card">
+                        <div class="p-4 border-b border-gray-700 flex justify-between items-center cursor-pointer" onclick="togglePanel('requirements')">
+                            <h2 class="text-lg font-bold text-white">产品与质量要求</h2>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300" id="requirementsIcon"></i>
+                        </div>
+                        <div class="p-4" id="requirementsContent" style="display: none;">
+                            <div class="mb-4">
+                                <p class="text-gray-400 font-medium mb-2">核心规格</p>
+                                <p class="text-gray-400">染色，10英寸</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 font-medium mb-3">详细采购要求</p>
+                                <ul class="list-disc list-inside space-y-2 text-gray-400">
+                                    <li>材质：100%真人发</li>
+                                    <li>长度：10英寸</li>
+                                    <li>颜色：自然黑、深棕色、浅棕色</li>
+                                    <li>工艺：手工编织，无打结</li>
+                                    <li>质量标准：无掉发，无分叉，光泽度好</li>
+                                    <li>包装：每束独立包装，标注颜色和长度</li>
+                                    <li>交货地点：山东省菏泽市鄄城县</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 商务与交付条款 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card">
+                        <div class="p-4 border-b border-gray-700 flex justify-between items-center cursor-pointer" onclick="togglePanel('terms')">
+                            <h2 class="text-lg font-bold text-white">商务与交付条款</h2>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300" id="termsIcon"></i>
+                        </div>
+                        <div class="p-4" id="termsContent" style="display: none;">
+                            <div class="space-y-3">
+                                <div class="flex">
+                                    <span class="w-1/3 font-medium text-white">付款方式：</span>
+                                    <span class="w-2/3 text-gray-400">30%预付，70%货到验收后付款</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="w-1/3 font-medium text-white">交付时间：</span>
+                                    <span class="w-2/3 text-gray-400">2024-04-30前</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="w-1/3 font-medium text-white">验收标准：</span>
+                                    <span class="w-2/3 text-gray-400">按照样品标准验收，不合格产品可退换</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="w-1/3 font-medium text-white">违约责任：</span>
+                                    <span class="w-2/3 text-gray-400">逾期交货每天按合同金额的0.1%赔偿</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="w-1/3 font-medium text-white">发布时间：</span>
+                                    <span class="w-2/3 text-gray-400">2024-04-01</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="w-1/3 font-medium text-white">期望交付：</span>
+                                    <span class="w-2/3 text-gray-400">2024-04-30</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 已加入采购商 -->
+                    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card">
+                        <div class="p-4 border-b border-gray-700 flex justify-between items-center cursor-pointer" onclick="togglePanel('suppliers')">
+                            <h2 class="text-lg font-bold text-white">已加入采购商</h2>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-blue-900 text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded">
+                                    已加入 3 家企业
+                                </span>
+                                <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300" id="suppliersIcon"></i>
+                            </div>
+                        </div>
+                        <div class="p-4" id="suppliersContent">
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-3 border border-gray-700 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-primary-light rounded-full flex items-center justify-center text-white mr-3">
+                                            <i class="fa fa-building"></i>
+                                        </div>
+                                        <p class="font-medium text-white">济南美发用品公司</p>
+                                    </div>
+                                    <p class="text-gray-400 text-sm">加入时间：2024-04-02</p>
+                                </div>
+                                <div class="flex justify-between items-center p-3 border border-gray-700 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-primary-light rounded-full flex items-center justify-center text-white mr-3">
+                                            <i class="fa fa-building"></i>
+                                        </div>
+                                        <p class="font-medium text-white">青岛美丝发制品</p>
+                                    </div>
+                                    <p class="text-gray-400 text-sm">加入时间：2024-04-03</p>
+                                </div>
+                                <div class="flex justify-between items-center p-3 border border-gray-700 rounded-lg">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-primary-light rounded-full flex items-center justify-center text-white mr-3">
+                                            <i class="fa fa-building"></i>
+                                        </div>
+                                        <p class="font-medium text-white">潍坊美发器材</p>
+                                    </div>
+                                    <p class="text-gray-400 text-sm">加入时间：2024-04-05</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧侧栏 -->
+            <div class="lg:col-span-1">
+                <!-- 相关采购需求 -->
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-card p-4 sticky top-24">
+                    <h2 class="text-lg font-bold text-white mb-4">相关采购需求</h2>
+                    <div class="space-y-4">
+                        <!-- 相关采购需求1 -->
+                        <div class="border-l-4 border-orange-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                            <!-- 紧急状态标签 -->
+                            <div class="absolute top-0 left-0 bg-danger text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                                紧急
+                            </div>
+                            <!-- 可拼单标签 -->
+                            <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                                可拼单
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-bold text-white mb-3">假发套采购</h4>
+                                <div class="flex items-center text-gray-400 text-sm mb-3">
+                                    <i class="fa fa-user-circle mr-2"></i>
+                                    <span>发布方：北京美发连锁机构</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">假发套</span>
+                                    <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-800">时尚款</span>
+                                    <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-800">16英寸</span>
+                                </div>
+                                <div class="flex flex-wrap gap-4 mb-4">
+                                    <div class="flex items-center text-gray-400 text-sm">
+                                        <i class="fa fa-box text-primary mr-2"></i>
+                                        <span>目标总量：300个</span>
+                                    </div>
+                                    <div class="flex items-center text-gray-400 text-sm">
+                                        <i class="fa fa-users text-primary mr-2"></i>
+                                        <span>已加入：2家采购商</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-gray-400 text-sm mb-4">
+                                    <div class="flex items-center">
+                                        <i class="fa fa-calendar text-primary mr-2"></i>
+                                        <span>期望交付：05-15</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa fa-clock text-primary mr-2"></i>
+                                        <span>报价截止：04-20</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-1 text-gray-400 text-sm">
+                                        <span>报价进度</span>
+                                        <span>5/12家</span>
+                                    </div>
+                                    <div class="progress-bar h-2 bg-gray-700">
+                                        <div class="progress-fill bg-warning" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 相关采购需求2 -->
+                        <div class="border-l-4 border-green-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                            <!-- 常规状态标签 -->
+                            <div class="absolute top-0 left-0 bg-success text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                                常规
+                            </div>
+                            <!-- 独家标签 -->
+                            <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                                独家
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-bold text-white mb-3">发片采购</h4>
+                                <div class="flex items-center text-gray-400 text-sm mb-3">
+                                    <i class="fa fa-user-circle mr-2"></i>
+                                    <span>发布方：山东发业集团</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">发片</span>
+                                    <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-800">自然色</span>
+                                    <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-800">12英寸</span>
+                                </div>
+                                <div class="flex flex-wrap gap-4 mb-4">
+                                    <div class="flex items-center text-gray-400 text-sm">
+                                        <i class="fa fa-box text-primary mr-2"></i>
+                                        <span>目标总量：2000片</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-gray-400 text-sm mb-4">
+                                    <div class="flex items-center">
+                                        <i class="fa fa-calendar text-primary mr-2"></i>
+                                        <span>期望交付：05-30</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa fa-clock text-primary mr-2"></i>
+                                        <span>报价截止：04-25</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-1 text-gray-400 text-sm">
+                                        <span>报价进度</span>
+                                        <span>15/25家</span>
+                                    </div>
+                                    <div class="progress-bar h-2 bg-gray-700">
+                                        <div class="progress-fill bg-success" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 相关采购需求3 -->
+                        <div class="border-l-4 border-orange-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                            <!-- 较急状态标签 -->
+                            <div class="absolute top-0 left-0 bg-warning text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                                较急
+                            </div>
+                            <!-- 可拼单标签 -->
+                            <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                                可拼单
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-bold text-white mb-3">接发采购</h4>
+                                <div class="flex items-center text-gray-400 text-sm mb-3">
+                                    <i class="fa fa-user-circle mr-2"></i>
+                                    <span>发布方：青岛美丝发制品</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">接发</span>
+                                    <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-800">无痕</span>
+                                    <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full border border-blue-800">14英寸</span>
+                                </div>
+                                <div class="flex flex-wrap gap-4 mb-4">
+                                    <div class="flex items-center text-gray-400 text-sm">
+                                        <i class="fa fa-box text-primary mr-2"></i>
+                                        <span>目标总量：800束</span>
+                                    </div>
+                                    <div class="flex items-center text-gray-400 text-sm">
+                                        <i class="fa fa-users text-primary mr-2"></i>
+                                        <span>已加入：4家采购商</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-gray-400 text-sm mb-4">
+                                    <div class="flex items-center">
+                                        <i class="fa fa-calendar text-primary mr-2"></i>
+                                        <span>期望交付：05-10</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fa fa-clock text-primary mr-2"></i>
+                                        <span>报价截止：04-15</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-1 text-gray-400 text-sm">
+                                        <span>报价进度</span>
+                                        <span>8/15家</span>
+                                    </div>
+                                    <div class="progress-bar h-2 bg-gray-700">
+                                        <div class="progress-fill bg-warning" style="width: 53%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 报价列表弹窗 -->
+        <div id="quoteListModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg w-full max-w-2xl">
+                <div class="p-4 border-b border-border-gray flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-text-primary">报价列表</h3>
+                    <button class="text-text-secondary hover:text-text-primary" onclick="closeQuoteList()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-text-secondary">已报价商家</p>
+                            <p class="font-medium text-primary">12家</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p class="text-text-secondary">报价区间</p>
+                            <p class="font-medium text-primary">￥180-220/束</p>
+                        </div>
+                    </div>
+                    <div class="border border-border-gray rounded-lg overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-light-gray">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-text-primary">供应商</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-text-primary">报价</th>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-text-primary">报价时间</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-border-gray">
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">山东发丝源有限公司</td>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">￥180/束</td>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">2024-04-10</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">河南美发制品厂</td>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">￥195/束</td>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">2024-04-09</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">江苏发业集团</td>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">￥220/束</td>
+                                    <td class="px-4 py-3 text-sm text-text-secondary">2024-04-08</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-border-gray flex justify-end">
+                    <button class="bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-2 rounded-lg font-medium" onclick="closeQuoteList()">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 我要采购弹窗 -->
+        <div id="purchaseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl w-full max-w-md max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" style="transform: scale(1); opacity: 1;">
+                <div class="bg-gradient-to-r from-cyan-500 to-teal-500 p-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white">我要采购</h3>
+                    <button class="text-white hover:text-gray-200 transition-colors duration-300 p-1 rounded-full hover:bg-white hover:bg-opacity-10">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-5 overflow-y-auto flex-grow">
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">采购内容</label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 bg-gray-50" value="真人发发绺" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">企业名称</label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入企业名称">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 数量
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入数量">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 联系人
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入联系人">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 电话
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入电话">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 地址
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入地址">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 补充说明
+                            </label>
+                            <textarea class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" rows="3" placeholder="请输入补充说明"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="p-5 border-t border-gray-100 flex justify-between">
+                    <button class="bg-gray-100 text-text-primary hover:bg-gray-200 transition-colors duration-300 px-5 py-2.5 rounded-lg font-medium text-sm" onclick="closePurchaseModal()">
+                        取消
+                    </button>
+                    <button type="button" class="bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:opacity-90 transition-opacity duration-300 px-6 py-2.5 rounded-lg font-medium text-sm shadow-md hover:shadow-lg transition-shadow duration-300">
+                        立即提交
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 我要报价弹窗 -->
+        <div id="quoteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl w-full max-w-md max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" style="transform: scale(1); opacity: 1;">
+                <div class="bg-gradient-to-r from-cyan-500 to-teal-500 p-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white">我要报价</h3>
+                    <button class="text-white hover:text-gray-200 transition-colors duration-300 p-1 rounded-full hover:bg-white hover:bg-opacity-10" onclick="closeQuoteModal()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-5 overflow-y-auto flex-grow">
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">采购内容</label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 bg-gray-50" value="真人发发绺" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">企业名称</label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入企业名称">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 单价
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入单价">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 联系人
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入联系人">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 电话
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入电话">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 地址
+                            </label>
+                            <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入地址">
+                        </div>
+                        <div>
+                            <label class="block text-text-secondary mb-1 text-sm">
+                                <span class="text-red-500">*</span> 补充说明
+                            </label>
+                            <textarea class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" rows="3" placeholder="请输入补充说明"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="p-5 border-t border-gray-100 flex justify-between">
+                    <button class="bg-gray-100 text-text-primary hover:bg-gray-200 transition-colors duration-300 px-5 py-2.5 rounded-lg font-medium text-sm" onclick="closeQuoteModal()">
+                        取消
+                    </button>
+                    <button type="button" class="bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:opacity-90 transition-opacity duration-300 px-6 py-2.5 rounded-lg font-medium text-sm shadow-md hover:shadow-lg transition-shadow duration-300">
+                        立即提交
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 倒计时功能
+            function updateCountdown() {
+                const deadline = new Date('2024-04-15');
+                const now = new Date();
+                const diffTime = deadline - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays > 0) {
+                    document.getElementById('countdown').textContent = diffDays;
+                } else {
+                    document.getElementById('countdown').textContent = '0';
+                }
+            }
+            
+            // 初始更新倒计时
+            updateCountdown();
+            
+            // 每秒更新一次倒计时
+            setInterval(updateCountdown, 1000);
+            
+            // 折叠面板功能
+            function togglePanel(panelId) {
+                const content = document.getElementById(panelId + 'Content');
+                const icon = document.getElementById(panelId + 'Icon');
+                
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    icon.classList.add('rotate-180');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.remove('rotate-180');
+                }
+            }
+            
+            // 滚动功能
+            function scrollLeft() {
+                const container = document.querySelector('.overflow-x-auto');
+                container.scrollBy({ left: -300, behavior: 'smooth' });
+            }
+            
+            function scrollRight() {
+                const container = document.querySelector('.overflow-x-auto');
+                container.scrollBy({ left: 300, behavior: 'smooth' });
+            }
+            
+            // 显示报价列表
+            function showQuoteList() {
+                const modal = document.getElementById('quoteListModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            // 关闭报价列表
+            function closeQuoteList() {
+                const modal = document.getElementById('quoteListModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+            }
+
+            // 显示采购弹窗
+            function showPurchaseModal() {
+                const modal = document.getElementById('purchaseModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            // 关闭采购弹窗
+            function closePurchaseModal() {
+                const modal = document.getElementById('purchaseModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+            }
+
+            // 显示报价弹窗
+            function showQuoteModal() {
+                const modal = document.getElementById('quoteModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            // 关闭报价弹窗
+            function closeQuoteModal() {
+                const modal = document.getElementById('quoteModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+            }
+
+            // 暴露函数到全局
+            window.togglePanel = togglePanel;
+            window.scrollLeft = scrollLeft;
+            window.scrollRight = scrollRight;
+            window.showQuoteList = showQuoteList;
+            window.closeQuoteList = closeQuoteList;
+            window.showPurchaseModal = showPurchaseModal;
+            window.closePurchaseModal = closePurchaseModal;
+            window.showQuoteModal = showQuoteModal;
+            window.closeQuoteModal = closeQuoteModal;
+            
+            // 导航栏滚动效果
+            const nav = document.getElementById('main-nav');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 100) {
+                    nav.classList.add('nav-scrolled');
+                } else {
+                    nav.classList.remove('nav-scrolled');
+                }
+            });
+            
+            // 返回顶部按钮
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.opacity = '1';
+                    backToTopBtn.style.visibility = 'visible';
+                } else {
+                    backToTopBtn.style.opacity = '0';
+                    backToTopBtn.style.visibility = 'hidden';
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // 报价按钮点击事件
+            const quoteBtn = document.querySelector('button:has(.fa-file-text-o)');
+            if (quoteBtn) {
+                quoteBtn.addEventListener('click', function() {
+                    showQuoteModal();
+                });
+            }
+            
+            // 加入采购按钮点击事件
+            const joinBtn = document.querySelector('button:has(.fa-users)');
+            if (joinBtn) {
+                joinBtn.addEventListener('click', function() {
+                    showPurchaseModal();
+                });
+            }
+        });
+    </script>
+
+    <!-- 返回顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 opacity-0">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 返回顶部按钮
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.opacity = '1';
+                    backToTopBtn.style.visibility = 'visible';
+                } else {
+                    backToTopBtn.style.opacity = '0';
+                    backToTopBtn.style.visibility = 'hidden';
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // 报价按钮点击事件
+            const quoteBtn = document.querySelector('button:has(.fa-file-text-o)');
+            if (quoteBtn) {
+                quoteBtn.addEventListener('click', function() {
+                    showQuoteModal();
+                });
+            }
+            
+            // 加入采购按钮点击事件
+            const joinBtn = document.querySelector('button:has(.fa-users)');
+            if (joinBtn) {
+                joinBtn.addEventListener('click', function() {
+                    showPurchaseModal();
+                });
+            }
+            
+            // 在线咨询按钮点击事件
+            const consultBtn = document.querySelector('button:has(.fa-envelope-o)');
+            if (consultBtn) {
+                consultBtn.addEventListener('click', function() {
+                    // 实际项目中这里会打开在线咨询窗口
+                    alert('打开在线咨询窗口');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

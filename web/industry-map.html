@@ -488,7 +488,7 @@
         <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
         <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
         <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
-        <a href="shop.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
         <a href="hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
         <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
         <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
@@ -525,8 +525,15 @@
           <button class="btn btn-outline filter-btn" data-filter="downstream" style="padding: 6px 12px; font-size: 12px;">下游</button>
         </div>
       </div>
-      <div class="map-container">
+      <div class="map-container" style="position: relative;">
         <div id="industryChainChart" style="width: 100%; height: 600px;"></div>
+        <!-- 鄄城产业地图附图 -->
+        <div id="juancheng-map-thumbnail" style="position: absolute; bottom: 20px; right: 20px; width: 300px; height: 250px; border: 2px solid #3b82f6; border-radius: 8px; background: #1c1c3e; z-index: 10;">
+          <div style="padding: 10px; background: #3b82f6; color: white; font-weight: bold; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+            鄄城产业地图
+          </div>
+          <div id="juancheng-thumbnail-chart" style="width: 100%; height: 220px;"></div>
+        </div>
       </div>
     </div>
 
@@ -903,7 +910,15 @@
             <button class="map-control-btn" data-map-mode="heatmap">热力图模式</button>
             <button class="map-control-btn" data-map-mode="flow">流向图模式</button>
           </div>
-          <div id="enterprise-map"></div>
+          <div id="enterprise-map" style="position: relative;">
+            <!-- 鄄城产业地图附图 -->
+            <div id="juancheng-map-thumbnail" style="position: absolute; bottom: 20px; right: 20px; width: 300px; height: 250px; border: 2px solid #3b82f6; border-radius: 8px; background: #1c1c3e; z-index: 10;">
+              <div style="padding: 10px; background: #3b82f6; color: white; font-weight: bold; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+                鄄城产业地图
+              </div>
+              <div id="juancheng-thumbnail-chart" style="width: 100%; height: 220px;"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1367,11 +1382,10 @@
       });
 
       window.addEventListener('resize', () => myChart.resize());
+
+      // 初始化鄄城产业地图小图
+      initJuanchengThumbnailMap();
     }
-    
-    // 全局变量
-    let currentJuanchengMode = 'geo'; // geo: 地理模式, force: 网络模式
-    let juanchengChart;
     
     // 模拟数据 - 鄄城企业关系数据
     const juanchengData = {
@@ -1443,6 +1457,10 @@
         ]
     };
     
+    // 全局变量
+    let currentJuanchengMode = 'geo'; // geo: 地理模式, force: 网络模式
+    let juanchengChart;
+    
     // 加载鄄城产业关系网络视图
     function loadJuanchengNetworkView() {
         console.log('加载鄄城产业关系网络视图');
@@ -1506,6 +1524,45 @@
     
     // 加载地理模式
     function loadJuanchengGeoMode() {
+        console.log('加载鄄城地理模式地图');
+        
+        // 获取图表实例
+        const chartDom = document.getElementById('industryChainChart');
+        if (!chartDom) {
+            console.error('未找到industryChainChart元素');
+            return;
+        }
+        
+        // 初始化图表
+        juanchengChart = echarts.init(chartDom);
+        
+        // 添加模式切换按钮
+        const switcherHTML = `
+            <div class="mode-switcher" style="position: absolute; top: 60px; right: 10px; z-index: 100; background: rgba(16, 25, 48, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 8px; padding: 8px; display: flex; gap: 6px;">
+                <div class="mode-btn active" data-mode="geo" onclick="switchJuanchengMode('geo')" style="padding: 6px 12px; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; background: rgba(0, 242, 254, 0.2); color: #00f2fe; font-size: 12px; cursor: pointer; transition: all 0.3s ease;">
+                    地理模式
+                </div>
+                <div class="mode-btn" data-mode="force" onclick="switchJuanchengMode('force')" style="padding: 6px 12px; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; background: rgba(0, 242, 254, 0.05); color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.3s ease;">
+                    网络模式
+                </div>
+                <div class="back-btn" onclick="initIndustryChainChart()" style="padding: 6px 12px; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; background: rgba(0, 242, 254, 0.05); color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-arrow-left"></i> 返回
+                </div>
+            </div>
+        `;
+        
+        // 移除现有的模式切换器
+        const existingSwitcher = document.querySelector('.mode-switcher');
+        if (existingSwitcher) {
+            existingSwitcher.remove();
+        }
+        
+        // 添加模式切换器
+        const container = document.querySelector('.industry-chain-container');
+        if (container) {
+            container.insertAdjacentHTML('beforeend', switcherHTML);
+        }
+        
         const option = {
             backgroundColor: '#1a1a2e',
             title: {
@@ -1530,8 +1587,8 @@
             geo: {
                 map: 'china',
                 roam: true,
-                center: [115.75, 35.55],
-                zoom: 11,
+                center: [115.5, 35.57], // 调整中心点到鄄城地区
+                zoom: 14, // 调整缩放级别，确保显示乡镇、街道或产业园区
                 label: {
                     show: true,
                     color: 'rgba(255,255,255,0.8)',
@@ -1587,6 +1644,7 @@
                     data: juanchengData.relationships.map(rel => {
                         const sourceCompany = juanchengData.companies.find(c => c.id === rel.source);
                         const targetCompany = juanchengData.companies.find(c => c.id === rel.target);
+                        if (!sourceCompany || !targetCompany) return null;
                         return {
                             coords: [[sourceCompany.lon, sourceCompany.lat], [targetCompany.lon, targetCompany.lat]],
                             value: rel.value,
@@ -1596,7 +1654,17 @@
                             },
                             relationshipData: rel
                         };
-                    }),
+                    }).filter(Boolean),
+                    lineStyle: {
+                        curveness: 0.2,
+                        width: function(params) {
+                            return Math.sqrt(params.data?.value || 0) * 0.05 + 1;
+                        },
+                        opacity: 0.8,
+                        type: function(params) {
+                            return (params.data?.type === 'material' || params.data?.type === 'product') ? 'solid' : 'dashed';
+                        }
+                    },
                     effect: {
                         show: true,
                         period: 4,
@@ -1925,12 +1993,13 @@
     
     // 获取企业图标形状
     function getCompanySymbol(type) {
+        // 使用SVG路径创建小旗子或其他图标
         const symbols = {
-            'supplier': 'square',       // 原料供应商 - 方形
-            'manufacturer': 'circle',   // 生产制造商 - 圆形
-            'logistics': 'triangle',    // 物流 - 三角形
-            'trade': 'triangle',        // 贸易 - 三角形
-            'service': 'diamond'        // 配套服务商 - 菱形
+            'supplier': 'path://M12,2 L12,16 L18,12 Z',       // 原料供应商 - 三角形旗子
+            'manufacturer': 'path://M12,2 C17,2 22,7 22,12 C22,17 17,22 12,22 C7,22 2,17 2,12 C2,7 7,2 12,2 Z',   // 生产制造商 - 圆形
+            'logistics': 'path://M12,2 L22,22 L2,22 Z',    // 物流 - 三角形
+            'trade': 'path://M12,2 L22,22 L2,22 Z',        // 贸易 - 三角形
+            'service': 'path://M12,2 L18,10 L12,18 L6,10 Z'        // 配套服务商 - 菱形
         };
         return symbols[type] || 'circle';
     }
@@ -2363,6 +2432,129 @@
           console.log('Selected enterprises:', selectedEnterprises);
         }
       });
+
+      // 初始化鄄城产业地图附图
+      initJuanchengThumbnailMap();
+    }
+
+    // 初始化鄄城产业地图附图
+    function initJuanchengThumbnailMap() {
+      const chartDom = document.getElementById('juancheng-thumbnail-chart');
+      if (!chartDom) return;
+      
+      const thumbnailChart = echarts.init(chartDom);
+
+      // 准备企业数据
+      const companyData = juanchengData.companies.map(company => ({
+        name: company.name,
+        value: [company.lon, company.lat, company.employees],
+        type: company.type,
+        category: company.category,
+        output: company.output,
+        products: company.products
+      }));
+
+      const option = {
+        backgroundColor: '#1c1c3e',
+        title: {
+          text: '鄄城企业分布',
+          left: 'center',
+          top: 5,
+          textStyle: { color: '#fff', fontSize: 12, fontWeight: 'bold' }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function(params) {
+            return `
+              <div style="font-weight: bold; margin-bottom: 5px; color: #fff;">${params.name}</div>
+              <div style="color: #ccc; font-size: 12px;">类型: ${params.data?.category || '未知'}</div>
+              <div style="color: #ccc; font-size: 12px;">主要产品: ${params.data?.products || '未知'}</div>
+              <div style="color: #ccc; font-size: 12px;">年产值: ${params.data?.output || '未知'}</div>
+            `;
+          },
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          borderColor: '#3a3a5e',
+          borderWidth: 1,
+          textStyle: { color: '#fff' }
+        },
+        geo: {
+          map: 'china',
+          roam: false,
+          center: [115.75, 35.55],
+          zoom: 12,
+          label: {
+            show: true,
+            color: 'rgba(255,255,255,0.6)',
+            fontSize: 8
+          },
+          itemStyle: {
+            areaColor: 'rgba(30, 60, 100, 0.3)',
+            borderColor: 'rgba(100, 160, 220, 0.5)',
+            borderWidth: 0.5
+          },
+          emphasis: {
+            itemStyle: {
+              areaColor: 'rgba(90, 170, 240, 0.5)'
+            }
+          }
+        },
+        series: [
+          {
+            name: '企业',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: companyData,
+            symbolSize: function(val) {
+              return Math.sqrt(val[2]) * 0.5 + 8;
+            },
+            itemStyle: {
+              color: function(params) {
+                const colors = {
+                  'supplier': '#52c41a',      // 原料供应商 - 绿色
+                  'manufacturer': '#3b82f6',  // 生产制造商 - 蓝色
+                  'logistics': '#f59e0b',     // 物流 - 橙色
+                  'trade': '#f59e0b',         // 贸易 - 橙色
+                  'service': '#7c3aed'        // 配套服务商 - 紫色
+                };
+                return colors[params.data?.type] || '#00f2fe';
+              },
+              opacity: 0.8
+            },
+            symbol: function(params) {
+              const symbols = {
+                'supplier': 'square',       // 原料供应商 - 方形
+                'manufacturer': 'circle',   // 生产制造商 - 圆形
+                'logistics': 'triangle',    // 物流 - 三角形
+                'trade': 'triangle',        // 贸易 - 三角形
+                'service': 'diamond'        // 配套服务商 - 菱形
+              };
+              return symbols[params.data?.type] || 'circle';
+            },
+            label: {
+              show: false
+            },
+            zlevel: 2
+          }
+        ]
+      };
+
+      thumbnailChart.setOption(option);
+
+      // 添加点击事件
+      thumbnailChart.on('click', function(params) {
+        if (params.componentType === 'series' && params.data) {
+          console.log('点击了企业:', params.data?.name);
+          // 这里可以添加点击后的处理逻辑，比如显示企业详情
+          alert('点击了企业: ' + (params.data?.name || '未知企业'));
+        } else {
+          // 点击小图空白处，打开独立的鄄城产业详图页面
+          console.log('点击了小图，打开独立的鄄城产业详图页面');
+          window.open('juancheng_map_real.html', '_blank');
+        }
+      });
+
+      // 窗口大小改变时重新调整图表大小
+      window.addEventListener('resize', () => thumbnailChart.resize());
     }
     
     function initViewControls() {
@@ -2382,7 +2574,7 @@
             content.style.display = content.dataset.view === view ? 'block' : 'none';
           });
           
-          // 如果切换到地图视图，重新初始化地图
+          // 如果切换到地图视图，重新初始化地图和鄄城产业地图小图
           if (view === 'map') {
             setTimeout(() => {
               const mapDom = document.getElementById('enterprise-map');
@@ -2391,6 +2583,8 @@
                 if (mapChart) {
                   mapChart.resize();
                 }
+                // 初始化鄄城产业地图小图
+                initJuanchengThumbnailMap();
               }
             }, 100);
           }

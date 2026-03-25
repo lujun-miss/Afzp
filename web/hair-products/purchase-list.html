@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>采购需求列表 - 鄄城县发制品产业大脑</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            overflow-y: auto;
+            color: var(--text-primary);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover {
+            color: #c9a227;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1a5fb4, #c9a227);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #c9a227;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        'primary-light': '#4080FF',
+                        'text-primary': '#E5E7EB',
+                        'text-secondary': '#9CA3AF',
+                        'text-tertiary': '#6B7280',
+                        'border-gray': '#374151',
+                        'light-gray': '#1F2937',
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
+                        'button': '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2)',
+                    },
+                },
+            }
+        }
+    </script>
+    
+    <!-- 导航栏滚动效果 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+    </script>
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. 状态继承 - 从URL参数获取采购类型
+            const urlParams = new URLSearchParams(window.location.search);
+            const purchaseType = urlParams.get('type');
+            if (purchaseType) {
+                // 更新顶部采购类型按钮状态
+                const purchaseTypeButtons = document.querySelectorAll('.flex.gap-2 button');
+                purchaseTypeButtons.forEach(button => {
+                    if (button.textContent.trim() === '全部') {
+                        button.className = 'px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600';
+                    } else if (button.textContent.trim() === '可拼单' && purchaseType === 'joinable') {
+                        button.className = 'px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium';
+                    } else if (button.textContent.trim() === '独家' && purchaseType === 'exclusive') {
+                        button.className = 'px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium';
+                    }
+                });
+            }
+            
+            // 2. 左侧筛选边栏收起/展开功能
+            const toggleFilterBtn = document.getElementById('toggleFilter');
+            const filterContent = document.getElementById('filterContent');
+            
+            // 默认展开，设置图标为向下
+            toggleFilterBtn.querySelector('i').className = 'fa fa-chevron-down';
+            
+            toggleFilterBtn.addEventListener('click', function() {
+                const icon = toggleFilterBtn.querySelector('i');
+                if (filterContent.style.display === 'none') {
+                    filterContent.style.display = 'block';
+                    icon.className = 'fa fa-chevron-down';
+                } else {
+                    filterContent.style.display = 'none';
+                    icon.className = 'fa fa-chevron-up';
+                }
+            });
+            
+            // 3. 顶部采购类型筛选按钮切换
+            const purchaseTypeButtons = document.querySelectorAll('.flex.gap-2 button');
+            purchaseTypeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 重置所有按钮样式
+                    purchaseTypeButtons.forEach(btn => {
+                        btn.className = 'px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600';
+                    });
+                    // 设置当前按钮为选中状态
+                    this.className = 'px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium';
+                    // 模拟筛选效果
+                    alert('已选择采购类型：' + this.textContent.trim());
+                });
+            });
+            
+            // 4. 顶部需求状态筛选按钮切换
+            const statusButtons = document.querySelectorAll('.flex.gap-2 button');
+            statusButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 这里可以根据需要实现单选或多选逻辑
+                    // 目前实现为单选
+                    statusButtons.forEach(btn => {
+                        if (btn.parentElement.previousElementSibling && btn.parentElement.previousElementSibling.textContent.includes('需求状态')) {
+                            btn.className = 'px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600';
+                        }
+                    });
+                    // 设置当前按钮为选中状态
+                    if (this.parentElement.previousElementSibling && this.parentElement.previousElementSibling.textContent.includes('需求状态')) {
+                        this.className = 'px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium';
+                        // 模拟筛选效果
+                        alert('已选择需求状态：' + this.textContent.trim());
+                    }
+                });
+            });
+            
+            // 5. 卡片按钮点击事件 - 跳转到详情页面
+            // 为立即报价按钮添加点击事件
+            const quoteButtons = document.querySelectorAll('button');
+            quoteButtons.forEach(button => {
+                if (button.textContent && button.textContent.trim() === '立即报价') {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'purchase-detail.html';
+                    });
+                }
+            });
+            
+            // 为加入采购按钮添加点击事件
+            const joinButtons = document.querySelectorAll('button');
+            joinButtons.forEach(button => {
+                if (button.textContent && button.textContent.trim() === '加入采购') {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'purchase-detail.html';
+                    });
+                }
+            });
+            
+
+            
+            // 6. 筛选器应用功能
+            const filterButtons = document.querySelectorAll('.flex.gap-3 button');
+            if (filterButtons.length > 1) {
+                const applyFilterBtn = filterButtons[1]; // 应用筛选按钮
+                applyFilterBtn.addEventListener('click', function() {
+                    // 模拟筛选效果
+                    alert('筛选条件已应用');
+                    // 实际项目中这里会发送请求获取筛选后的结果
+                });
+                
+                // 7. 重置筛选器功能
+                const resetFilterBtn = filterButtons[0]; // 重置按钮
+                resetFilterBtn.addEventListener('click', function() {
+                    // 重置所有筛选条件
+                    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.checked = false;
+                    });
+                    document.getElementById('categoryAll').checked = true;
+                    document.getElementById('timeAll').checked = true;
+                    document.getElementById('publisherAll').checked = true;
+                    
+                    // 清空输入框
+                    document.querySelectorAll('input[type="number"]').forEach(input => {
+                        input.value = '';
+                    });
+                });
+            }
+        });
+    </script>
+</head>
+<body style="overflow-y: auto;">
+    <!-- 顶部导航 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+        <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+                        <div class="text-xs text-gray-400">Industry Brain Platform</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4">
+                <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+                <a href="../cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+                <a href="../industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+                <a href="../monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+                <a href="../enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+                <a href="../supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+                <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+                <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+                <a href="hair-mall.html" class="nav-link active text-white">发品交易</a>
+                <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+                <a href="../digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+                <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+                <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+                    <i class="fas fa-cog"></i>
+                    <span>后台管理</span>
+                </a>
+                <a href="../index.html" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>退出系统</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-6 pt-24">
+        <!-- 顶部操作区 -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-card">
+            <!-- 面包屑导航 -->
+            <div class="flex items-center mb-6 text-base">
+                <a href="hair-mall.html?tab=purchase" class="text-gray-400 hover:text-white font-medium transition-colors duration-300">找采购</a>
+                <i class="fa fa-chevron-right mx-2 text-gray-500"></i>
+                <span class="text-white font-bold">采购需求列表</span>
+            </div>
+            
+            <!-- 搜索和发起集采 -->
+            <div class="flex flex-col md:flex-row gap-3 mb-6 items-center">
+                <div class="flex flex-1">
+                    <select id="searchType" class="border border-border-gray bg-gray-700 rounded-l-lg px-4 py-3 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="purchase">找采购</option>
+                        <option value="supply">找资源</option>
+                    </select>
+                    <input type="text" id="globalSearch" placeholder="搜索采购需求、采购商品名称" class="search-input flex-1 px-4 py-3 pl-10 border-t border-b border-border-gray text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button class="bg-gray-700 hover:bg-gray-600 transition-colors duration-300 px-4 py-3 border border-l-0 border-border-gray rounded-r-lg font-medium flex items-center text-text-primary">
+                        <i class="fa fa-search text-text-tertiary mr-1"></i>
+                        查询
+                    </button>
+                </div>
+                <button class="bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-5 py-3 rounded-lg font-medium flex items-center shadow-button whitespace-nowrap">
+                    <i class="fa fa-plus mr-2"></i>
+                    发起集采
+                </button>
+            </div>
+            
+            <script>
+                // 搜索类型切换功能
+                document.getElementById('searchType').addEventListener('change', function() {
+                    const selectedValue = this.value;
+                    if (selectedValue === 'supply') {
+                        window.location.href = 'product-list.html';
+                    }
+                });
+            </script>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- 左侧筛选边栏 -->
+            <div class="lg:w-1/5">
+                <div class="bg-gray-800 rounded-xl p-6 shadow-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">更多筛选</h3>
+                        <button id="toggleFilter" class="text-primary hover:text-primary-light transition-colors duration-300">
+                            <i class="fa fa-chevron-up"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="filterContent">
+                        <!-- 产品品类 -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-text-primary mb-3">产品品类</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="categoryAll" class="mr-2" checked>
+                                    <label for="categoryAll" class="text-text-secondary">全部</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="categoryRealHair" class="mr-2">
+                                    <label for="categoryRealHair" class="text-text-secondary">真人发绺</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="categoryWig" class="mr-2">
+                                    <label for="categoryWig" class="text-text-secondary">假发套</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="categoryHairPiece" class="mr-2">
+                                    <label for="categoryHairPiece" class="text-text-secondary">发片</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="categoryHairExtension" class="mr-2">
+                                    <label for="categoryHairExtension" class="text-text-secondary">接发</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="categoryHairAccessories" class="mr-2">
+                                    <label for="categoryHairAccessories" class="text-text-secondary">发饰</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                        <!-- 时间范围 -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-text-primary mb-3">时间范围</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="timeAll" name="timeRange" value="all" class="mr-2" checked>
+                                    <label for="timeAll" class="text-text-secondary">全部</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="timeToday" name="timeRange" value="today" class="mr-2">
+                                    <label for="timeToday" class="text-text-secondary">今天</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="timeThisWeek" name="timeRange" value="thisWeek" class="mr-2">
+                                    <label for="timeThisWeek" class="text-text-secondary">本周</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="timeThisMonth" name="timeRange" value="thisMonth" class="mr-2">
+                                    <label for="timeThisMonth" class="text-text-secondary">本月</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="timeCustom" name="timeRange" value="custom" class="mr-2">
+                                    <label for="timeCustom" class="text-text-secondary">自定义</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                        <!-- 底部按钮 -->
+                        <div class="flex gap-3">
+                            <button class="flex-1 bg-gray-700 border border-border-gray text-text-primary hover:bg-gray-600 transition-colors duration-300 px-4 py-2 rounded-lg font-medium">
+                                重置
+                            </button>
+                            <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-2 rounded-lg font-medium">
+                                应用筛选
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧列表主体区 -->
+            <div class="lg:w-3/4">
+                <!-- 工具栏 -->
+                <div class="bg-gray-800 rounded-xl p-6 mb-6 shadow-card">
+                    <div class="flex flex-wrap justify-between items-center gap-4">
+                        <!-- 高频筛选和排序 -->
+                        <div class="flex flex-wrap gap-4 w-full md:w-auto">
+                            <!-- 采购类型筛选 -->
+                            <div class="flex items-center space-x-2">
+                                <span class="text-text-secondary font-medium">采购类型：</span>
+                                <div class="flex gap-2">
+                                    <button class="px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium">全部</button>
+                                    <button class="px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600">可拼单</button>
+                                    <button class="px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600">独家</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 需求状态筛选 -->
+                            <div class="flex items-center space-x-2">
+                                <span class="text-text-secondary font-medium">需求状态：</span>
+                                <div class="flex gap-2">
+                                    <button class="px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium">全部</button>
+                                    <button class="px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600">紧急</button>
+                                    <button class="px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600">较急</button>
+                                    <button class="px-3 py-1.5 bg-gray-700 border border-border-gray text-text-primary rounded-lg text-sm font-medium hover:bg-gray-600">常规</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 排序选择 -->
+                            <div class="flex items-center space-x-2">
+                                <span class="text-text-secondary font-medium">排序：</span>
+                                <select class="bg-gray-700 border border-border-gray text-text-primary rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300">
+                                    <option>最新发起</option>
+                                    <option>报价即将截止</option>
+                                    <option>目标总量从高到低</option>
+                                    <option>已参与商家数从多到少</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 采购需求卡片视图 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 采购需求卡片1 -->
+                    <div class="border-l-4 border-orange-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                        <!-- 紧急状态标签 -->
+                        <div class="absolute top-0 left-0 bg-danger text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                            紧急
+                        </div>
+                        <!-- 可拼单标签 -->
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                            可拼单
+                        </div>
+                        <div class="p-6">
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #ffffff !important; margin-bottom: 0.75rem;">真人发发绺采购</h3>
+                            <div class="flex items-center text-text-secondary text-sm mb-3">
+                                <i class="fa fa-user-circle mr-2"></i>
+                                <span>发布方：菏泽美发用品有限公司 <i class="fa fa-check-circle text-primary text-xs"></i></span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">真人发绺</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">染色</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">10英寸</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-box text-primary mr-2"></i>
+                                    <span>目标总量：1000束</span>
+                                </div>
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-users text-primary mr-2"></i>
+                                    <span>已加入：5家采购商</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>期望交付：04-30</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock text-primary mr-2"></i>
+                                    <span>报价截止：04-15</span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-1 text-text-secondary text-sm">
+                                    <span>报价进度</span>
+                                    <span>12/20家</span>
+                                </div>
+                                <div class="progress-bar h-2">
+                                    <div class="progress-fill bg-danger" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showQuoteModal(); }">
+                                    立即报价
+                                </button>
+                                <button class="flex-1 bg-success text-white hover:bg-success/90 transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showPurchaseModal(); }">
+                                    加入采购
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 采购需求卡片2 -->
+                    <div class="border-l-4 border-orange-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                        <!-- 较急状态标签 -->
+                        <div class="absolute top-0 left-0 bg-warning text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                            较急
+                        </div>
+                        <!-- 可拼单标签 -->
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                            可拼单
+                        </div>
+                        <div class="p-6">
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #ffffff !important; margin-bottom: 0.75rem;">时尚假发套采购</h3>
+                            <div class="flex items-center text-text-secondary text-sm mb-3">
+                                <i class="fa fa-user-circle mr-2"></i>
+                                <span>发布方：鄄城时尚艺发有限公司 <i class="fa fa-check-circle text-primary text-xs"></i></span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">假发套</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">时尚款</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">16英寸</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-box text-primary mr-2"></i>
+                                    <span>目标总量：500个</span>
+                                </div>
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-users text-primary mr-2"></i>
+                                    <span>已加入：3家采购商</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>期望交付：05-15</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock text-primary mr-2"></i>
+                                    <span>报价截止：04-20</span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-1 text-text-secondary text-sm">
+                                    <span>报价进度</span>
+                                    <span>8/15家</span>
+                                </div>
+                                <div class="progress-bar h-2">
+                                    <div class="progress-fill bg-warning" style="width: 53%"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showQuoteModal(); }">
+                                    立即报价
+                                </button>
+                                <button class="flex-1 bg-success text-white hover:bg-success/90 transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showPurchaseModal(); }">
+                                    加入采购
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 采购需求卡片3 -->
+                    <div class="border-l-4 border-green-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                        <!-- 常规状态标签 -->
+                        <div class="absolute top-0 left-0 bg-success text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                            常规
+                        </div>
+                        <!-- 独家标签 -->
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                            独家
+                        </div>
+                        <div class="p-6">
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #ffffff !important; margin-bottom: 0.75rem;">发片采购</h3>
+                            <div class="flex items-center text-text-secondary text-sm mb-3">
+                                <i class="fa fa-user-circle mr-2"></i>
+                                <span>发布方：山东发业集团 <i class="fa fa-diamond text-yellow-500 text-xs"></i></span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">发片</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">自然色</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">12英寸</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-box text-primary mr-2"></i>
+                                    <span>目标总量：2000片</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>期望交付：05-30</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock text-primary mr-2"></i>
+                                    <span>报价截止：04-25</span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-1 text-text-secondary text-sm">
+                                    <span>报价进度</span>
+                                    <span>15/25家</span>
+                                </div>
+                                <div class="progress-bar h-2">
+                                    <div class="progress-fill bg-success" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showQuoteModal(); }">
+                                    立即报价
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 采购需求卡片4 -->
+                    <div class="border-l-4 border-orange-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                        <!-- 较急状态标签 -->
+                        <div class="absolute top-0 left-0 bg-warning text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                            较急
+                        </div>
+                        <!-- 可拼单标签 -->
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                            可拼单
+                        </div>
+                        <div class="p-6">
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #ffffff !important; margin-bottom: 0.75rem;">接发采购</h3>
+                            <div class="flex items-center text-text-secondary text-sm mb-3">
+                                <i class="fa fa-user-circle mr-2"></i>
+                                <span>发布方：青岛美丝发制品有限公司 <i class="fa fa-check-circle text-primary text-xs"></i></span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">接发</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">真人发</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">20英寸</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-box text-primary mr-2"></i>
+                                    <span>目标总量：800束</span>
+                                </div>
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-users text-primary mr-2"></i>
+                                    <span>已加入：2家采购商</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>期望交付：05-10</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock text-primary mr-2"></i>
+                                    <span>报价截止：04-22</span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-1 text-text-secondary text-sm">
+                                    <span>报价进度</span>
+                                    <span>8/20家</span>
+                                </div>
+                                <div class="progress-bar h-2">
+                                    <div class="progress-fill bg-warning" style="width: 40%"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showQuoteModal(); }">
+                                    立即报价
+                                </button>
+                                <button class="flex-1 bg-success text-white hover:bg-success/90 transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showPurchaseModal(); }">
+                                    加入采购
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 采购需求卡片5 -->
+                    <div class="border-l-4 border-green-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                        <!-- 常规状态标签 -->
+                        <div class="absolute top-0 left-0 bg-success text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                            常规
+                        </div>
+                        <!-- 独家标签 -->
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                            独家
+                        </div>
+                        <div class="p-6">
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #ffffff !important; margin-bottom: 0.75rem;">发饰采购</h3>
+                            <div class="flex items-center text-text-secondary text-sm mb-3">
+                                <i class="fa fa-user-circle mr-2"></i>
+                                <span>发布方：义乌小商品城</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">发饰</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">各种款式</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-box text-primary mr-2"></i>
+                                    <span>目标总量：5000件</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>期望交付：06-01</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock text-primary mr-2"></i>
+                                    <span>报价截止：05-01</span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-1 text-text-secondary text-sm">
+                                    <span>报价进度</span>
+                                    <span>9/30家</span>
+                                </div>
+                                <div class="progress-bar h-2">
+                                    <div class="progress-fill bg-success" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showQuoteModal(); }">
+                                    立即报价
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 采购需求卡片6 -->
+                    <div class="border-l-4 border-orange-400 bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer relative" onclick="window.location.href='purchase-detail.html'">
+                        <!-- 较急状态标签 -->
+                        <div class="absolute top-0 left-0 bg-warning text-white text-xs px-4 py-1 font-medium transform -translate-y-1 rotate-0 clip-triangle z-10">
+                            较急
+                        </div>
+                        <!-- 可拼单标签 -->
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                            可拼单
+                        </div>
+                        <div class="p-6">
+                            <h3 style="font-size: 1.25rem; font-weight: bold; color: #ffffff !important; margin-bottom: 0.75rem;">假发套采购</h3>
+                            <div class="flex items-center text-text-secondary text-sm mb-3">
+                                <i class="fa fa-user-circle mr-2"></i>
+                                <span>发布方：北京美发连锁机构 <i class="fa fa-check-circle text-primary text-xs"></i></span>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">假发套</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">真人发</span>
+                                <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full border border-primary/30">中长款</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-box text-primary mr-2"></i>
+                                    <span>目标总量：300个</span>
+                                </div>
+                                <div class="flex items-center text-text-secondary text-sm">
+                                    <i class="fa fa-users text-primary mr-2"></i>
+                                    <span>已加入：8家采购商</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>期望交付：05-15</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock text-primary mr-2"></i>
+                                    <span>报价截止：04-20</span>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-1 text-text-secondary text-sm">
+                                    <span>报价进度</span>
+                                    <span>12/18家</span>
+                                </div>
+                                <div class="progress-bar h-2">
+                                    <div class="progress-fill bg-warning" style="width: 67%"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-primary text-white hover:bg-primary-light transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showQuoteModal(); }">
+                                    立即报价
+                                </button>
+                                <button class="flex-1 bg-success text-white hover:bg-success/90 transition-colors duration-300 px-4 py-3 rounded-lg font-medium" onclick="e => { e.stopPropagation(); showPurchaseModal(); }">
+                                    加入采购
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="mt-8 flex justify-between items-center">
+                    <div class="text-text-secondary text-sm">
+                        共 156 条
+                    </div>
+                    <div class="pagination">
+                        <button disabled>
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>4</button>
+                        <button>5</button>
+                        <button>
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- 返回顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 opacity-0">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 找采购/找货源切换
+            const findPurchaseBtn = document.getElementById('findPurchaseBtn');
+            const findSupplyBtn = document.getElementById('findSupplyBtn');
+            const groupPurchase = document.getElementById('group-purchase');
+            const productShowcase = document.getElementById('product-showcase');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (findPurchaseBtn && findSupplyBtn) {
+                findPurchaseBtn.addEventListener('click', function() {
+                    findPurchaseBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
+                    findPurchaseBtn.classList.remove('text-text-secondary');
+                    findSupplyBtn.classList.add('text-text-secondary');
+                    findSupplyBtn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                    
+                    if (groupPurchase) {
+                        groupPurchase.classList.remove('hidden');
+                    }
+                    if (productShowcase) {
+                        productShowcase.classList.add('hidden');
+                    }
+                    
+                    if (searchInput) {
+                        searchInput.placeholder = '搜索采购需求、采购商品名称';
+                    }
+                });
+                
+                findSupplyBtn.addEventListener('click', function() {
+                    findSupplyBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
+                    findSupplyBtn.classList.remove('text-text-secondary');
+                    findPurchaseBtn.classList.add('text-text-secondary');
+                    findPurchaseBtn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                    
+                    if (groupPurchase) {
+                        groupPurchase.classList.add('hidden');
+                    }
+                    if (productShowcase) {
+                        productShowcase.classList.remove('hidden');
+                    }
+                    
+                    if (searchInput) {
+                        searchInput.placeholder = '搜索货源、商品名称';
+                    }
+                });
+            }
+            
+            // 搜索功能
+            const searchButton = document.querySelector('button:has(.fa-search)');
+            
+            if (searchButton && searchInput) {
+                searchButton.addEventListener('click', function() {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        performSearch(searchTerm);
+                    }
+                });
+                
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const searchTerm = searchInput.value.trim();
+                        if (searchTerm) {
+                            performSearch(searchTerm);
+                        }
+                    }
+                });
+            }
+            
+            // 执行搜索功能
+            function performSearch(searchTerm) {
+                // 模拟搜索结果数量
+                // 实际项目中，这里应该是真实的搜索逻辑
+                const isPurchaseTab = !document.getElementById('group-purchase')?.classList.contains('hidden');
+                const isSupplyTab = !document.getElementById('product-showcase')?.classList.contains('hidden');
+                
+                if (isPurchaseTab) {
+                    // 模拟搜索结果数量（随机生成0-5之间的数字）
+                    const resultCount = Math.floor(Math.random() * 6);
+                    
+                    // 检查搜索结果数量
+                    if (resultCount < 3) {
+                        // 显示智能提示
+                        showPurchaseSearchSuggestion(searchTerm);
+                    }
+                } else if (isSupplyTab) {
+                    // 模拟搜索结果数量（随机生成0-5之间的数字）
+                    const resultCount = Math.floor(Math.random() * 6);
+                    
+                    // 检查搜索结果数量
+                    if (resultCount < 3) {
+                        // 显示智能提示
+                        showSupplySearchSuggestion(searchTerm);
+                    }
+                }
+            }
+            
+            // 显示采购搜索提示
+            function showPurchaseSearchSuggestion(searchTerm) {
+                // 移除已存在的提示
+                const existingSuggestion = document.getElementById('purchase-search-suggestion');
+                if (existingSuggestion) {
+                    existingSuggestion.remove();
+                }
+                
+                // 创建提示元素
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.id = 'purchase-search-suggestion';
+                suggestionDiv.className = 'flex flex-col items-center justify-center py-16 px-4 text-center';
+                
+                suggestionDiv.innerHTML = `
+                    <i class="fa fa-search text-4xl text-text-tertiary mb-4"></i>
+                    <h3 class="text-xl font-bold text-text-primary mb-2">未找到相关采购需求</h3>
+                    <p class="text-text-secondary mb-6">您是否想去 <a href="#" id="switchToSupply" class="text-primary hover:underline">找货源</a> 中搜索「${searchTerm}」？</p>
+                `;
+                
+                // 找到采购需求容器并插入提示
+                const purchaseContainer = document.getElementById('kanbanView');
+                if (purchaseContainer) {
+                    purchaseContainer.innerHTML = '';
+                    purchaseContainer.appendChild(suggestionDiv);
+                }
+                
+                // 添加切换到货源的点击事件
+                const switchToSupply = document.getElementById('switchToSupply');
+                if (switchToSupply && findSupplyBtn) {
+                    switchToSupply.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        findSupplyBtn.click();
+                        if (searchInput) {
+                            searchInput.value = searchTerm;
+                        }
+                        const supplySearchButton = document.querySelector('button:has(.fa-search)');
+                        if (supplySearchButton) {
+                            supplySearchButton.click();
+                        }
+                    });
+                }
+            }
+            
+            // 显示货源搜索提示
+            function showSupplySearchSuggestion(searchTerm) {
+                // 移除已存在的提示
+                const existingSuggestion = document.getElementById('supply-search-suggestion');
+                if (existingSuggestion) {
+                    existingSuggestion.remove();
+                }
+                
+                // 创建提示元素
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.id = 'supply-search-suggestion';
+                suggestionDiv.className = 'flex flex-col items-center justify-center py-16 px-4 text-center';
+                
+                suggestionDiv.innerHTML = `
+                    <i class="fa fa-search text-4xl text-text-tertiary mb-4"></i>
+                    <h3 class="text-xl font-bold text-text-primary mb-2">未找到相关货源</h3>
+                    <p class="text-text-secondary mb-6">您是否想去 <a href="#" id="switchToPurchase" class="text-primary hover:underline">找采购</a> 中搜索「${searchTerm}」？</p>
+                `;
+                
+                // 找到货源容器并插入提示
+                const supplyContainer = document.getElementById('productGrid');
+                if (supplyContainer) {
+                    supplyContainer.innerHTML = '';
+                    supplyContainer.appendChild(suggestionDiv);
+                }
+                
+                // 添加切换到采购的点击事件
+                const switchToPurchase = document.getElementById('switchToPurchase');
+                if (switchToPurchase && findPurchaseBtn) {
+                    switchToPurchase.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        findPurchaseBtn.click();
+                        if (searchInput) {
+                            searchInput.value = searchTerm;
+                        }
+                        const purchaseSearchButton = document.querySelector('button:has(.fa-search)');
+                        if (purchaseSearchButton) {
+                            purchaseSearchButton.click();
+                        }
+                    });
+                }
+            }
+            
+            // 返回顶部功能
+            const backToTop = document.getElementById('backToTop');
+            
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 300) {
+                        backToTop.classList.remove('opacity-0');
+                        backToTop.classList.add('opacity-100');
+                    } else {
+                        backToTop.classList.remove('opacity-100');
+                        backToTop.classList.add('opacity-0');
+                    }
+                });
+                
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
+<!-- 我要采购弹窗 -->
+    <div id="purchaseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-xl w-full max-w-md max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" style="transform: scale(1); opacity: 1;">
+            <div class="bg-gradient-to-r from-cyan-500 to-teal-500 p-4 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-white">我要采购</h3>
+                <button class="text-white hover:text-gray-200 transition-colors duration-300 p-1 rounded-full hover:bg-gray-700" onclick="closePurchaseModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-grow">
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">采购内容</label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 bg-gray-50" value="真人发发绺" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">企业名称</label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入企业名称">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 数量
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入数量">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 联系人
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入联系人">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 电话
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入电话">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 地址
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入地址">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 补充说明
+                        </label>
+                        <textarea class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" rows="3" placeholder="请输入补充说明"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="p-5 border-t border-gray-100 flex justify-between">
+                <button class="bg-gray-700 text-text-primary hover:bg-gray-600 transition-colors duration-300 px-5 py-2.5 rounded-lg font-medium text-sm" onclick="closePurchaseModal()">
+                    取消
+                </button>
+                <button type="button" class="bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:opacity-90 transition-opacity duration-300 px-6 py-2.5 rounded-lg font-medium text-sm shadow-md hover:shadow-lg transition-shadow duration-300">
+                    立即提交
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我要报价弹窗 -->
+    <div id="quoteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-xl w-full max-w-md max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" style="transform: scale(1); opacity: 1;">
+            <div class="bg-gradient-to-r from-cyan-500 to-teal-500 p-4 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-white">我要报价</h3>
+                <button class="text-white hover:text-gray-200 transition-colors duration-300 p-1 rounded-full hover:bg-gray-700" onclick="closeQuoteModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-grow">
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">采购内容</label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 bg-gray-50" value="真人发发绺" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">企业名称</label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入企业名称">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 单价
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入单价">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 联系人
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入联系人">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 电话
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入电话">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 地址
+                        </label>
+                        <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" placeholder="请输入地址">
+                    </div>
+                    <div>
+                        <label class="block text-text-secondary mb-1 text-sm">
+                            <span class="text-red-500">*</span> 补充说明
+                        </label>
+                        <textarea class="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300" rows="3" placeholder="请输入补充说明"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="p-5 border-t border-gray-100 flex justify-between">
+                <button class="bg-gray-700 text-text-primary hover:bg-gray-600 transition-colors duration-300 px-5 py-2.5 rounded-lg font-medium text-sm" onclick="closeQuoteModal()">
+                    取消
+                </button>
+                <button type="button" class="bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:opacity-90 transition-opacity duration-300 px-6 py-2.5 rounded-lg font-medium text-sm shadow-md hover:shadow-lg transition-shadow duration-300">
+                    立即提交
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示采购弹窗
+        function showPurchaseModal() {
+            const modal = document.getElementById('purchaseModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // 关闭采购弹窗
+        function closePurchaseModal() {
+            const modal = document.getElementById('purchaseModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // 显示报价弹窗
+        function showQuoteModal() {
+            const modal = document.getElementById('quoteModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // 关闭报价弹窗
+        function closeQuoteModal() {
+            const modal = document.getElementById('quoteModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
+    </body>
+</html>
