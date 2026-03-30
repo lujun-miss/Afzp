@@ -6,8 +6,12 @@
   <title>产业全景 - 鄄城县发制品产业大脑</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     .nav-link {
       position: relative;
@@ -59,6 +63,61 @@
       padding: 20px;
       border: 1px solid var(--border);
     }
+    
+    /* Leaflet 地图样式 */
+    .leaflet-container {
+      background: #1a2536;
+    }
+    .custom-marker {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .custom-marker:hover {
+      transform: scale(1.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .custom-marker.active {
+      border-color: #00f2fe;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+      transform: scale(1.3);
+    }
+    .custom-marker.dimmed {
+      opacity: 0.3;
+    }
+    
+    /* 弹窗动画 */
+    @keyframes popupFadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+    
+    @keyframes overlayFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    #companyDetailOverlay {
+      animation: overlayFadeIn 0.3s ease-out;
+    }
   </style>
 </head>
 <body style="overflow-y: auto;">
@@ -82,12 +141,9 @@
         <a href="cockpit.html" class="nav-link active text-white">产业全景</a>
         <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
         <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
-        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
         <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
-        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
         <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
         <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
-
         <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
         <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
         <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
@@ -124,38 +180,29 @@
     </div>
 
     <!-- 核心KPI指标 -->
-    <div class="grid grid-cols-4 gap-5 mb-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
       <div class="kpi-card">
         <div class="flex items-center justify-between mb-3">
           <span style="color: var(--text-secondary); font-size: 14px;">产业总产值</span>
-          <i class="fas fa-chart-line" style="color: var(--primary);"></i>
+          <i class="fas fa-industry" style="color: var(--primary);"></i>
         </div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--primary);">128.6亿</div>
-        <div style="font-size: 12px; color: var(--success); margin-top: 4px;">
-          <i class="fas fa-arrow-up"></i> 同比增长 12.5%
-        </div>
-      </div>
-      
-      <div class="kpi-card">
-        <div class="flex items-center justify-between mb-3">
-          <span style="color: var(--text-secondary); font-size: 14px;">在产企业数</span>
-          <i class="fas fa-building" style="color: var(--success);"></i>
-        </div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--success);">186</div>
-        <div style="font-size: 12px; color: var(--success); margin-top: 4px;">
-          <i class="fas fa-arrow-up"></i> 新增 8 家
-        </div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">128.6亿</div>
       </div>
       
       <div class="kpi-card">
         <div class="flex items-center justify-between mb-3">
           <span style="color: var(--text-secondary); font-size: 14px;">出口总额</span>
-          <i class="fas fa-globe" style="color: var(--gold);"></i>
+          <i class="fas fa-globe" style="color: var(--success);"></i>
         </div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--gold);">$9.8亿</div>
-        <div style="font-size: 12px; color: var(--success); margin-top: 4px;">
-          <i class="fas fa-arrow-up"></i> 同比增长 8.3%
+        <div style="font-size: 24px; font-weight: 700; color: var(--success);">$9.8亿</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">企业总数</span>
+          <i class="fas fa-building" style="color: var(--gold);"></i>
         </div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--gold);">186家</div>
       </div>
       
       <div class="kpi-card">
@@ -163,439 +210,324 @@
           <span style="color: var(--text-secondary); font-size: 14px;">就业人数</span>
           <i class="fas fa-users" style="color: var(--warning);"></i>
         </div>
-        <div style="font-size: 32px; font-weight: 700; color: var(--warning);">4.2万</div>
-        <div style="font-size: 12px; color: var(--success); margin-top: 4px;">
-          <i class="fas fa-arrow-up"></i> 同比增长 5.2%
+        <div style="font-size: 24px; font-weight: 700; color: var(--warning);">4.2万</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">营业收入</span>
+          <i class="fas fa-money-bill-wave" style="color: var(--primary);"></i>
         </div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">98.5亿</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">税收收入</span>
+          <i class="fas fa-file-invoice-dollar" style="color: var(--success);"></i>
+        </div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--success);">6.2亿</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">利润收入</span>
+          <i class="fas fa-chart-pie" style="color: var(--gold);"></i>
+        </div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--gold);">12.8亿</div>
+      </div>
+      
+      <div class="kpi-card">
+        <div class="flex items-center justify-between mb-3">
+          <span style="color: var(--text-secondary); font-size: 14px;">产业用地</span>
+          <i class="fas fa-map-marker-alt" style="color: var(--warning);"></i>
+        </div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--warning);">2850亩</div>
       </div>
     </div>
 
-    <!-- 产业分布 -->
-    <div class="mb-6">
-      <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 12px;">产业分布</h2>
-      
-      <div class="grid grid-cols-3 gap-6 mb-6">
-        <!-- 上、中、下游企业分布 -->
-        <div class="chart-container">
+    <!-- 主要布局区域 - 中间地图，四周模块 -->
+    <div class="grid grid-cols-12 gap-6 mb-6">
+      <!-- 左侧模块 -->
+      <div class="col-span-12 md:col-span-3">
+        <!-- 企业活跃度监控 -->
+        <div class="chart-container mb-6">
           <div class="card-header">
             <div class="card-title">
-              <i class="fas fa-link"></i>
-              上、中、下游企业分布
-            </div>
-            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">
-              <i class="fas fa-expand"></i> 查看详情
-            </button>
-          </div>
-          <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
-            <canvas id="chainChart"></canvas>
-          </div>
-          <div class="grid grid-cols-3 gap-4 mt-4" style="text-align: center;">
-            <div>
-              <div style="font-size: 16px; font-weight: 700; color: var(--primary);">32家</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">上游企业</div>
-            </div>
-            <div>
-              <div style="font-size: 16px; font-weight: 700; color: var(--gold);">112家</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">中游企业</div>
-            </div>
-            <div>
-              <div style="font-size: 16px; font-weight: 700; color: var(--success);">42家</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">下游企业</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 企业基本信息 -->
-        <div class="chart-container">
-          <div class="card-header">
-            <div class="card-title">
-              <i class="fas fa-info-circle"></i>
-              企业基本信息
+              <i class="fas fa-tachometer-alt"></i>
+              企业活跃度监控
             </div>
             <div class="flex gap-2">
-              <span class="tag tag-primary">186家企业</span>
+              <span class="tag tag-success">正常生产 156家</span>
+              <span class="tag tag-warning">部分停产 18家</span>
+              <span class="tag tag-danger">完全停产 12家</span>
             </div>
           </div>
-          <div style="height: 250px; overflow-y: auto;">
-            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
-              <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城瑞发制品有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">类型：档发加工 | 员工：240人 | 年产值：2.8亿</div>
+          <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="activityChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- 产业融资 -->
+        <div class="chart-container mb-6">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-money-bill-wave"></i>
+              产业融资
             </div>
-            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
-              <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城恒发制品有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">类型：发套制作 | 员工：180人 | 年产值：1.9亿</div>
-            </div>
-            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
-              <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城顺发制品有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">类型：原料供应 | 员工：120人 | 年产值：1.2亿</div>
-            </div>
-            <div style="padding: 12px 0;">
-              <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城润发制品有限公司</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">类型：外贸出口 | 员工：80人 | 年产值：3.5亿</div>
+            <span class="tag tag-primary">186家企业</span>
+          </div>
+          <div style="height: 200px; overflow-y: auto;">
+            <div class="p-4">
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-300">创业板</span>
+                  <span class="text-sm font-medium text-blue-400">8家 (4.3%)</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-3">
+                  <div class="bg-blue-500 h-3 rounded-full" style="width: 4.3%"></div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-300">科创版</span>
+                  <span class="text-sm font-medium text-yellow-400">12家 (6.5%)</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-3">
+                  <div class="bg-yellow-500 h-3 rounded-full" style="width: 6.5%"></div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-300">新三板</span>
+                  <span class="text-sm font-medium text-green-400">25家 (13.4%)</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-3">
+                  <div class="bg-green-500 h-3 rounded-full" style="width: 13.4%"></div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-300">其他</span>
+                  <span class="text-sm font-medium text-orange-400">35家 (18.8%)</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-3">
+                  <div class="bg-orange-500 h-3 rounded-full" style="width: 18.8%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-300">无</span>
+                  <span class="text-sm font-medium text-red-400">106家 (57.0%)</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-3">
+                  <div class="bg-red-500 h-3 rounded-full" style="width: 57.0%"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         
-        <!-- 重点产业园区 -->
+        <!-- 供应链监测 -->
         <div class="chart-container">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-truck"></i>
+              供应链监测
+            </div>
+            <span class="tag tag-primary">原材料价格</span>
+          </div>
+          <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="supplyChainChart"></canvas>
+          </div>
+        </div>
+        
+
+      </div>
+
+      <!-- 中间地图区域 -->
+      <div class="col-span-12 md:col-span-6">
+        <div class="card h-full">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-map-marked-alt"></i>
+              鄄城人发产业地图
+            </div>
+          </div>
+          <div style="height: 900px;">
+            <div id="juanchengMap" style="width: 100%; height: 100%; border-radius: 12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧模块 -->
+      <div class="col-span-12 md:col-span-3">
+        <!-- 企业详情弹窗背景遮罩 -->
+        <div id="companyDetailOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999;"></div>
+        
+        <!-- 企业详情弹窗 -->
+        <div id="companyDetailPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 320px; background: #1e293b; border-radius: 12px; padding: 16px; z-index: 1000; box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); border: 1px solid #334155; animation: popupFadeIn 0.3s ease-out;">
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex items-center gap-3">
+              <div style="width: 50px; height: 50px; background: #1a5fb4; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">🏭</div>
+              <div>
+                <h3 id="companyName" style="font-size: 16px; font-weight: 600; color: white; margin: 0;">企业名称</h3>
+                <div style="font-size: 11px; color: #94a3b8; display: flex; gap: 8px;">
+                  <span>法人: <span id="companyLegalPerson">法人姓名</span></span>
+                  <span>成立: <span id="companyEstablishDate">2016-06-15</span></span>
+                  <span>注册资本: <span id="companyCapital">800万元</span></span>
+                </div>
+              </div>
+            </div>
+            <button onclick="closeCompanyDetail()" style="background: none; border: none; color: #94a3b8; font-size: 16px; cursor: pointer;">✕</button>
+          </div>
+          
+          <div class="mb-3">
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">企业地址</div>
+            <div id="companyAddress" style="font-size: 13px; color: white;">发制品二园</div>
+          </div>
+          
+          <div class="mb-3">
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">经营范围</div>
+            <div id="companyScope" style="font-size: 13px; color: white;">化纤假发、时尚发饰生产销售；货物进出口</div>
+          </div>
+          
+
+          
+          <div class="text-center">
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">查看企业档案</button>
+          </div>
+        </div>
+        
+        <!-- 重点产业园 -->
+        <div class="chart-container mb-6">
           <div class="card-header">
             <div class="card-title">
               <i class="fas fa-map-marker-alt"></i>
-              重点产业园区
+              重点产业园
             </div>
-            <div class="flex gap-2">
-              <span class="tag tag-success">5个园区</span>
-            </div>
+            <span class="tag tag-success">5个园区</span>
           </div>
-          <div style="height: 250px; overflow-y: auto;">
-            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+          <div style="height: 200px; overflow-y: auto;">
+            <div style="padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer;" onclick="focusOnPark('发制品一园')">
               <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城发制品产业园</div>
               <div style="font-size: 12px; color: var(--text-secondary);">入驻企业：56家 | 年产值：42.5亿</div>
             </div>
-            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <div style="padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer;" onclick="focusOnPark('发制品二园')">
               <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城国际发制品交易中心</div>
               <div style="font-size: 12px; color: var(--text-secondary);">入驻企业：32家 | 年交易额：38.2亿</div>
             </div>
-            <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <div style="padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer;" onclick="focusOnPark('发制品三园')">
               <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城发制品科技园区</div>
               <div style="font-size: 12px; color: var(--text-secondary);">入驻企业：28家 | 年产值：25.8亿</div>
             </div>
-            <div style="padding: 12px 0;">
+            <div style="padding: 12px 0; cursor: pointer;" onclick="focusOnPark('发制品物流园')">
               <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">鄄城发制品物流园区</div>
               <div style="font-size: 12px; color: var(--text-secondary);">入驻企业：18家 | 年吞吐量：120万吨</div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- 产业空间分布 -->
-      <div class="card mb-6">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-map-marked-alt"></i>
-            产业空间分布
-          </div>
-          <div class="flex gap-2">
-            <span class="tag tag-success">正常生产 156家</span>
-            <span class="tag tag-warning">部分停产 18家</span>
-            <span class="tag tag-danger">完全停产 12家</span>
-          </div>
-        </div>
-        <div style="height: 360px; background: linear-gradient(135deg, rgba(26,95,180,0.1) 0%, rgba(201,162,39,0.05) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=400&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3; position: absolute;" alt="map">
-          <div style="position: relative; z-index: 1; text-align: center;">
-            <i class="fas fa-map" style="font-size: 48px; color: var(--primary); margin-bottom: 16px;"></i>
-            <p style="color: var(--text-secondary);">3D产业地图可视化区域</p>
-            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">显示鄄城县发制品企业空间分布及产能热力</p>
-          </div>
-          <!-- 模拟地图标记 -->
-          <div style="position: absolute; top: 30%; left: 25%; width: 20px; height: 20px; background: var(--success); border-radius: 50%; box-shadow: 0 0 20px var(--success); animation: pulse 2s infinite;"></div>
-        <div style="position: absolute; top: 45%; left: 60%; width: 16px; height: 16px; background: var(--success); border-radius: 50%; box-shadow: 0 0 15px var(--success);"></div>
-        <div style="position: absolute; top: 60%; left: 40%; width: 18px; height: 18px; background: var(--warning); border-radius: 50%; box-shadow: 0 0 15px var(--warning);"></div>
-        <div style="position: absolute; top: 35%; left: 75%; width: 14px; height: 14px; background: var(--danger); border-radius: 50%; box-shadow: 0 0 15px var(--danger);"></div>
-      </div>
-    </div>
-
-    <!-- 产业发展 -->
-    <div class="mb-6">
-      <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 12px;">产业发展</h2>
-      
-      <div class="grid grid-cols-2 gap-6 mb-6">
-        <!-- 产业发展趋势 -->
-        <div class="chart-container">
+        
+        <!-- 市场竞争力分析 -->
+        <div class="chart-container mb-6">
           <div class="card-header">
             <div class="card-title">
-              <i class="fas fa-chart-line"></i>
-              产业发展趋势
+              <i class="fas fa-chart-bar"></i>
+              市场竞争力分析
             </div>
-            <span class="tag tag-primary">近5年</span>
+            <span class="tag tag-primary">出口目的地</span>
           </div>
-          <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-            <canvas id="developmentChart"></canvas>
+          <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="marketCompetitionChart"></canvas>
           </div>
         </div>
         
-        <!-- 产业规模 -->
+        <!-- 产品品类分布 -->
         <div class="chart-container">
           <div class="card-header">
             <div class="card-title">
-              <i class="fas fa-chart-pie"></i>
-              产业规模
+              <i class="fas fa-cubes"></i>
+              产品品类分布
             </div>
-            <div class="flex gap-2">
-              <span class="tag tag-success">存量企业 178家</span>
-              <span class="tag tag-primary">增量企业 8家</span>
-            </div>
+            <span class="tag tag-success">2026年</span>
           </div>
-          <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-            <canvas id="scaleChart"></canvas>
+          <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="productCategoryChart"></canvas>
           </div>
         </div>
+        
+
       </div>
     </div>
 
-    <!-- 产业环境与主体 -->
-    <div class="grid grid-cols-2 gap-6 mb-6">
-      <!-- 产业环境 -->
+    <!-- 底部模块 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- 产业创新扩展 -->
       <div class="chart-container">
         <div class="card-header">
           <div class="card-title">
-            <i class="fas fa-leaf"></i>
-            产业环境
+            <i class="fas fa-lightbulb"></i>
+            产业创新体系
           </div>
-          <span class="tag tag-success">良好</span>
+          <span class="tag tag-primary">近3年</span>
         </div>
-        <div style="height: 300px; overflow-y: auto;">
-          <div class="grid grid-cols-2 gap-4 p-4">
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">2.8亿</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">融资总额</div>
-            </div>
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--gold); margin-bottom: 4px;">12</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">融资笔数</div>
-            </div>
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--success); margin-bottom: 4px;">92%</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">政策支持率</div>
-            </div>
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--warning); margin-bottom: 4px;">85%</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">满意度</div>
-            </div>
+        <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="innovationSystemChart"></canvas>
+        </div>
+        <div class="grid grid-cols-4 gap-4 mt-4" style="text-align: center;">
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--primary);">128项</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">科技专利</div>
           </div>
-          <div style="padding: 12px; border-top: 1px solid var(--border);">
-            <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">环境评价</h3>
-            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 4px;">产业发展环境综合评价良好，政策支持力度大，融资环境改善，企业满意度较高。</p>
-            <p style="font-size: 14px; color: var(--text-secondary);">预计未来3年，产业环境将持续优化，为企业发展提供更好的支持。</p>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--gold);">86项</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">注册商标</div>
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--success);">42项</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">软件著作</div>
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--warning);">15项</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">产学研项目</div>
           </div>
         </div>
       </div>
       
-      <!-- 产业主体 -->
+      <!-- 人才与创新体系 -->
       <div class="chart-container">
         <div class="card-header">
           <div class="card-title">
-            <i class="fas fa-users"></i>
-            产业主体
+            <i class="fas fa-user-graduate"></i>
+            人才与创新体系
           </div>
-          <div class="flex gap-2">
-            <span class="tag tag-primary">186家企业</span>
-          </div>
+          <span class="tag tag-success">人才结构</span>
         </div>
-        <div style="height: 300px; overflow-y: auto;">
-          <div class="grid grid-cols-2 gap-4 p-4">
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">2家</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">A股上市公司</div>
-            </div>
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--gold); margin-bottom: 4px;">15家</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">专精特新企业</div>
-            </div>
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--success); margin-bottom: 4px;">28家</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">高新技术企业</div>
-            </div>
-            <div class="bg-dark-bg rounded-lg p-4 text-center">
-              <div style="font-size: 24px; font-weight: 700; color: var(--warning); margin-bottom: 4px;">12家</div>
-              <div style="font-size: 14px; color: var(--text-secondary);">私募融资企业</div>
-            </div>
+        <div style="height: 200px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="talentSystemChart"></canvas>
+        </div>
+        <div class="grid grid-cols-4 gap-4 mt-4" style="text-align: center;">
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--primary);">235人</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">技术人才</div>
           </div>
-          <div style="padding: 12px; border-top: 1px solid var(--border);">
-            <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">主体分析</h3>
-            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 4px;">产业主体结构合理，龙头企业引领作用明显，专精特新和高新技术企业占比逐步提高，创新能力不断增强。</p>
-            <p style="font-size: 14px; color: var(--text-secondary);">预计未来将有更多企业进入资本市场，产业整体实力将进一步提升。</p>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--gold);">186人</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">设计人才</div>
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--success);">128人</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">外贸人才</div>
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--warning);">89人</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">管理人才</div>
           </div>
         </div>
       </div>
     </div>
+    
 
-    <!-- 产业创新 -->
-    <div class="chart-container mb-6">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-lightbulb"></i>
-          产业创新
-        </div>
-        <span class="tag tag-primary">近3年</span>
-      </div>
-      <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-        <canvas id="innovationChart"></canvas>
-      </div>
-      <div class="grid grid-cols-3 gap-4 mt-4 p-4">
-        <div class="bg-dark-bg rounded-lg p-4 text-center">
-          <div style="font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">128项</div>
-          <div style="font-size: 14px; color: var(--text-secondary);">科技专利</div>
-        </div>
-        <div class="bg-dark-bg rounded-lg p-4 text-center">
-          <div style="font-size: 24px; font-weight: 700; color: var(--gold); margin-bottom: 4px;">86项</div>
-          <div style="font-size: 14px; color: var(--text-secondary);">注册商标</div>
-        </div>
-        <div class="bg-dark-bg rounded-lg p-4 text-center">
-          <div style="font-size: 24px; font-weight: 700; color: var(--success); margin-bottom: 4px;">42项</div>
-          <div style="font-size: 14px; color: var(--text-secondary);">软件著作</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 市场监控 -->
-    <div class="grid grid-cols-2 gap-6 mb-6">
-      <div class="chart-container">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-chart-line"></i>
-            出口趋势
-          </div>
-          <span class="tag tag-success">实时</span>
-        </div>
-        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-          <i class="fas fa-chart-line text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
-          <div style="position: absolute; text-align: center;">
-            <div style="font-size: 14px; color: var(--text-secondary);">出口趋势图表</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">近12个月出口数据</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="chart-container">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-globe-americas"></i>
-            出口目的地分布
-          </div>
-          <select style="background: var(--dark-bg); border: 1px solid var(--border); color: var(--text-primary); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-            <option>2026年</option>
-            <option>2025年</option>
-          </select>
-        </div>
-        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-          <canvas id="exportChart"></canvas>
-        </div>
-        <div class="flex justify-between mt-4" style="padding: 0 20px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 12px; height: 12px; background: var(--primary); border-radius: 2px;"></span>
-            <span style="font-size: 12px;">北美 35%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 12px; height: 12px; background: var(--gold); border-radius: 2px;"></span>
-            <span style="font-size: 12px;">非洲 28%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 12px; height: 12px; background: var(--success); border-radius: 2px;"></span>
-            <span style="font-size: 12px;">欧洲 22%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 12px; height: 12px; background: var(--warning); border-radius: 2px;"></span>
-            <span style="font-size: 12px;">其他 15%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 企业运行状态 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-building"></i>
-          企业运行状态
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">全部</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">正常运行</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">异常</button>
-        </div>
-      </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>企业名称</th>
-            <th>运行状态</th>
-            <th>产能利用率</th>
-            <th>今日产量</th>
-            <th>异常情况</th>
-            <th>最后更新</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: rgba(26, 95, 180, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-building" style="color: var(--primary);"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 600;">兴隆发制品有限公司</div>
-                  <div style="font-size: 12px; color: var(--text-secondary);">规上企业</div>
-                </div>
-              </div>
-            </td>
-            <td><span class="tag tag-success">正常运行</span></td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="progress-bar" style="width: 100px;">
-                  <div class="progress-fill" style="width: 85%; background: var(--success);"></div>
-                </div>
-                <span style="font-size: 12px;">85%</span>
-              </div>
-            </td>
-            <td>2,580件</td>
-            <td>无</td>
-            <td>14:35:22</td>
-          </tr>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: rgba(16, 185, 129, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-building" style="color: var(--success);"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 600;">华宇贸易有限公司</div>
-                  <div style="font-size: 12px; color: var(--text-secondary);">规上企业</div>
-                </div>
-              </div>
-            </td>
-            <td><span class="tag tag-success">正常运行</span></td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="progress-bar" style="width: 100px;">
-                  <div class="progress-fill" style="width: 78%; background: var(--success);"></div>
-                </div>
-                <span style="font-size: 12px;">78%</span>
-              </div>
-            </td>
-            <td>1,856件</td>
-            <td>无</td>
-            <td>14:34:15</td>
-          </tr>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-building" style="color: var(--warning);"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 600;">恒达发制品有限公司</div>
-                  <div style="font-size: 12px; color: var(--text-secondary);">规上企业</div>
-                </div>
-              </div>
-            </td>
-            <td><span class="tag tag-warning">产能异常</span></td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="progress-bar" style="width: 100px;">
-                  <div class="progress-fill" style="width: 45%; background: var(--warning);"></div>
-                </div>
-                <span style="font-size: 12px;">45%</span>
-              </div>
-            </td>
-            <td>856件</td>
-            <td><span class="tag tag-danger">产能利用率过低</span></td>
-            <td>14:32:08</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 
   <script>
@@ -609,129 +541,17 @@
       }
     });
 
-    // 产业链流转图
-    const chainCtx = document.getElementById('chainChart').getContext('2d');
-    new Chart(chainCtx, {
-      type: 'bar',
-      data: {
-        labels: ['原料采购', '档发加工', '发套制作', '质检包装', '出口贸易'],
-        datasets: [{
-          label: '产值（亿元）',
-          data: [12.5, 35.8, 42.6, 8.3, 29.4],
-          backgroundColor: [
-            'rgba(26, 95, 180, 0.8)',
-            'rgba(201, 162, 39, 0.8)',
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(245, 158, 11, 0.8)',
-            'rgba(239, 68, 68, 0.8)'
-          ],
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            ticks: { color: '#94a3b8' }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: '#94a3b8' }
-          }
-        }
-      }
-    });
+    // 查看详情按钮点击事件已移除（按钮已删除）
 
-    // 出口目的地饼图
-    const exportCtx = document.getElementById('exportChart').getContext('2d');
-    new Chart(exportCtx, {
-      type: 'doughnut',
+    // 企业活跃度监控饼图
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+      type: 'pie',
       data: {
-        labels: ['北美', '非洲', '欧洲', '其他'],
+        labels: ['正常生产', '部分停产', '完全停产'],
         datasets: [{
-          data: [35, 28, 22, 15],
+          data: [156, 18, 12],
           backgroundColor: [
-            '#1a5fb4',
-            '#c9a227',
-            '#10b981',
-            '#f59e0b'
-          ],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '60%',
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    });
-
-    // 产业发展趋势图
-    const developmentCtx = document.getElementById('developmentChart').getContext('2d');
-    new Chart(developmentCtx, {
-      type: 'line',
-      data: {
-        labels: ['2022', '2023', '2024', '2025', '2026'],
-        datasets: [{
-          label: '总产值（亿元）',
-          data: [86.5, 98.2, 105.8, 114.3, 128.6],
-          borderColor: '#1a5fb4',
-          backgroundColor: 'rgba(26, 95, 180, 0.1)',
-          fill: true,
-          tension: 0.4
-        }, {
-          label: '出口额（亿美元）',
-          data: [6.2, 7.1, 7.8, 9.1, 9.8],
-          borderColor: '#c9a227',
-          backgroundColor: 'rgba(201, 162, 39, 0.1)',
-          fill: true,
-          tension: 0.4
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: {
-              color: '#94a3b8'
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: false,
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            ticks: { color: '#94a3b8' }
-          },
-          x: {
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            ticks: { color: '#94a3b8' }
-          }
-        }
-      }
-    });
-
-    // 产业规模图
-    const scaleCtx = document.getElementById('scaleChart').getContext('2d');
-    new Chart(scaleCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['原料供应', '档发加工', '发套制作', '外贸出口', '其他'],
-        datasets: [{
-          data: [32, 86, 48, 12, 8],
-          backgroundColor: [
-            '#1a5fb4',
-            '#c9a227',
             '#10b981',
             '#f59e0b',
             '#ef4444'
@@ -744,17 +564,147 @@
         maintainAspectRatio: false,
         plugins: {
           legend: {
+            position: 'bottom',
             labels: {
-              color: '#94a3b8'
+              color: '#94a3b8',
+              padding: 15,
+              font: {
+                size: 11
+              }
             }
           }
         }
       }
     });
 
-    // 产业创新图
-    const innovationCtx = document.getElementById('innovationChart').getContext('2d');
-    new Chart(innovationCtx, {
+    // 供应链监测折线图
+    const supplyChainCtx = document.getElementById('supplyChainChart').getContext('2d');
+    new Chart(supplyChainCtx, {
+      type: 'line',
+      data: {
+        labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+        datasets: [{
+          label: '人发原料价格',
+          data: [85, 92, 105, 118, 112, 108],
+          borderColor: '#1a5fb4',
+          backgroundColor: 'rgba(26, 95, 180, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4
+        }, {
+          label: '纤维原料价格',
+          data: [45, 48, 52, 55, 53, 51],
+          borderColor: '#c9a227',
+          backgroundColor: 'rgba(201, 162, 39, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: '#94a3b8',
+              font: {
+                size: 11
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#94a3b8' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#94a3b8' }
+          }
+        }
+      }
+    });
+
+    // 市场竞争力分析饼图
+    const marketCompetitionCtx = document.getElementById('marketCompetitionChart').getContext('2d');
+    new Chart(marketCompetitionCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['北美', '非洲', '欧洲', '亚洲', '其他'],
+        datasets: [{
+          data: [35, 28, 22, 10, 5],
+          backgroundColor: [
+            '#1a5fb4',
+            '#c9a227',
+            '#10b981',
+            '#f59e0b',
+            '#6b7280'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#94a3b8',
+              padding: 15,
+              font: {
+                size: 11
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // 产品品类分布饼图
+    const productCategoryCtx = document.getElementById('productCategoryChart').getContext('2d');
+    new Chart(productCategoryCtx, {
+      type: 'pie',
+      data: {
+        labels: ['假发', '发套', '发帘', '接发', '其他'],
+        datasets: [{
+          data: [42, 28, 18, 8, 4],
+          backgroundColor: [
+            '#1a5fb4',
+            '#c9a227',
+            '#10b981',
+            '#f59e0b',
+            '#6b7280'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#94a3b8',
+              padding: 15,
+              font: {
+                size: 11
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // 产业创新体系柱状图
+    const innovationSystemCtx = document.getElementById('innovationSystemChart').getContext('2d');
+    new Chart(innovationSystemCtx, {
       type: 'bar',
       data: {
         labels: ['2024', '2025', '2026'],
@@ -773,6 +723,11 @@
           data: [8, 16, 18],
           backgroundColor: '#10b981',
           borderRadius: 6
+        }, {
+          label: '产学研项目',
+          data: [3, 6, 6],
+          backgroundColor: '#f59e0b',
+          borderRadius: 6
         }]
       },
       options: {
@@ -780,8 +735,12 @@
         maintainAspectRatio: false,
         plugins: {
           legend: {
+            position: 'top',
             labels: {
-              color: '#94a3b8'
+              color: '#94a3b8',
+              font: {
+                size: 11
+              }
             }
           }
         },
@@ -798,6 +757,215 @@
         }
       }
     });
+
+    // 人才与创新体系饼图
+    const talentSystemCtx = document.getElementById('talentSystemChart').getContext('2d');
+    new Chart(talentSystemCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['技术人才', '设计人才', '外贸人才', '管理人才'],
+        datasets: [{
+          data: [235, 186, 128, 89],
+          backgroundColor: [
+            '#1a5fb4',
+            '#c9a227',
+            '#10b981',
+            '#f59e0b'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#94a3b8',
+              padding: 15,
+              font: {
+                size: 11
+              }
+            }
+          }
+        }
+      }
+    });
+
+
+
+    // 全局地图变量
+    let juanchengMap;
+    let parkPolygons = [];
+
+    // 初始化鄄城人发产业地图
+    document.addEventListener('DOMContentLoaded', function() {
+      // 检查Leaflet是否加载
+      if (typeof L !== 'undefined') {
+        try {
+          juanchengMap = L.map('juanchengMap').setView([35.58, 115.75], 13);
+          
+          // 添加高德地图瓦片
+          L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+            attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
+            subdomains: '1234',
+            maxZoom: 18
+          }).addTo(juanchengMap);
+
+          // 企业数据 - 真实的鄄城发制品企业
+          const companies = [
+            // 原料供应商（绿色）
+            { id: 1, name: '鄄城XX原料厂', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '真人发丝、化纤丝', address: '鄄城县旧城镇工业区', location: [35.62, 115.68], legalPerson: '张三', establishDate: '2010-05-20', capital: '500万元', scope: '人发原料收购、加工、销售', position: ['原料供应'] },
+            { id: 2, name: '鄄城长发原料有限公司', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '档发、发帘、发把', address: '鄄城县旧城镇开发区', location: [35.60, 115.65], legalPerson: '李四', establishDate: '2012-08-15', capital: '800万元', scope: '人发原料加工、销售', position: ['原料供应'] },
+            
+            // 生产制造商（蓝色）
+            { id: 4, name: '鄄城YY发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '高端假发、发套、发条', address: '发制品一园', location: [35.61, 115.71], legalPerson: '王五', establishDate: '2014-03-10', capital: '1000万元', scope: '假发、发套、发条生产销售；货物进出口', position: ['生产制造', '成品出口'] },
+            { id: 5, name: '鄄城美丝发制品厂', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '化纤假发、时尚发饰', address: '发制品二园', location: [35.56, 115.76], legalPerson: '钱七', establishDate: '2016-06-15', capital: '800万元', scope: '化纤假发、时尚发饰生产销售；货物进出口', position: ['生产制造', '成品出口'] },
+            { id: 6, name: '鄄城瑞丽发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '真人发假发、医疗假发', address: '发制品三园', location: [35.66, 115.81], legalPerson: '赵六', establishDate: '2018-09-20', capital: '1200万元', scope: '真人发假发、医疗假发生产销售；货物进出口', position: ['生产制造', '成品出口'] },
+            
+            // 贸易企业（黄色）
+            { id: 10, name: '鄄城国际贸易有限公司', type: 'trade', typeName: '贸易企业', color: '#fac858', products: '进出口贸易、海外市场拓展', address: '发制品二园', location: [35.54, 115.74], legalPerson: '孙八', establishDate: '2015-11-05', capital: '600万元', scope: '货物进出口；国际贸易；市场营销', position: ['国际贸易'] },
+            
+            // 物流企业（红色）
+            { id: 8, name: '鄄城ZZ运输公司', type: 'logistics', typeName: '物流企业', color: '#ee6666', products: '货物运输、仓储服务', address: '发制品一园', location: [35.62, 115.72], legalPerson: '周九', establishDate: '2013-04-18', capital: '400万元', scope: '货物运输；仓储服务；物流配送', position: ['物流服务'] },
+            
+            // 配套服务（紫色）
+            { id: 12, name: '鄄城WW包装材料厂', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '包装纸箱、塑料包装、标签', address: '发制品一园', location: [35.58, 115.68], legalPerson: '吴十', establishDate: '2011-07-30', capital: '300万元', scope: '包装材料生产、销售', position: ['配套服务'] },
+            { id: 16, name: '鄄城科技研发中心', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '技术研发、产品设计、质量检测', address: '发制品二园', location: [35.56, 115.75], legalPerson: '郑十一', establishDate: '2017-02-12', capital: '500万元', scope: '发制品技术研发；产品设计；质量检测', position: ['技术研发'] }
+          ];
+
+          // 工业园区数据
+          const industrialParks = [
+            { id: 1, name: '发制品一园', center: [35.60, 115.70], radius: 3000, color: '#FF9800' },
+            { id: 2, name: '发制品二园', center: [35.55, 115.75], radius: 3000, color: '#2196F3' },
+            { id: 3, name: '发制品三园', center: [35.65, 115.80], radius: 3000, color: '#4CAF50' },
+            { id: 4, name: '发制品物流园', center: [35.63, 115.78], radius: 2000, color: '#9C27B0' }
+          ];
+
+          // 添加园区圆形
+          industrialParks.forEach(park => {
+            const circle = L.circle(park.center, {
+              radius: park.radius,
+              fillColor: park.color,
+              fillOpacity: 0.3,
+              color: park.color,
+              weight: 3
+            }).addTo(juanchengMap);
+            
+            // 保存园区多边形引用
+            parkPolygons.push({
+              name: park.name,
+              polygon: circle,
+              center: park.center
+            });
+          });
+
+          // 添加企业标记
+          companies.forEach(company => {
+            let iconEmoji = '🏭';
+            
+            // 根据企业类型设置不同的图标
+            switch(company.type) {
+              case 'supplier': iconEmoji = '🌾'; break;
+              case 'manufacturer': iconEmoji = '🏭'; break;
+              case 'trade': iconEmoji = '📦'; break;
+              case 'logistics': iconEmoji = '🚛'; break;
+              case 'service': iconEmoji = '🛠️'; break;
+            }
+            
+            const iconHtml = `<div class="custom-marker" style="background-color: ${company.color};">${iconEmoji}</div>`;
+            const customIcon = L.divIcon({
+              html: iconHtml,
+              className: 'custom-marker-container',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15]
+            });
+
+            const marker = L.marker(company.location, { icon: customIcon })
+              .addTo(juanchengMap)
+              .bindPopup(`<b>${company.name}</b><br>${company.typeName}<br>${company.products}`);
+            
+            // 添加点击事件显示企业详情
+            marker.on('click', function() {
+              showCompanyDetail(company);
+            });
+          });
+
+        } catch (error) {
+          console.error('地图初始化失败:', error);
+        }
+      } else {
+        console.error('Leaflet地图库未加载');
+      }
+    });
+
+    // 聚焦到指定产业园
+    function focusOnPark(parkName) {
+      if (!juanchengMap) {
+        console.error('地图未初始化');
+        return;
+      }
+
+      const park = parkPolygons.find(p => p.name === parkName);
+      if (park) {
+        // 将地图中心移动到园区位置
+        juanchengMap.setView(park.center, 14);
+        
+        // 高亮显示选中的园区
+        parkPolygons.forEach(p => {
+          if (p.name === parkName) {
+            // 选中的园区高亮显示
+            p.polygon.setStyle({
+              fillOpacity: 0.5,
+              weight: 5
+            });
+          } else {
+            // 其他园区恢复正常样式
+            p.polygon.setStyle({
+              fillOpacity: 0.3,
+              weight: 3
+            });
+          }
+        });
+      }
+    }
+
+    // 显示企业详情
+    function showCompanyDetail(company) {
+      const popup = document.getElementById('companyDetailPopup');
+      const overlay = document.getElementById('companyDetailOverlay');
+      
+      if (popup && overlay) {
+        // 设置企业详情数据
+        document.getElementById('companyName').textContent = company.name;
+        document.getElementById('companyLegalPerson').textContent = company.legalPerson;
+        document.getElementById('companyEstablishDate').textContent = company.establishDate;
+        document.getElementById('companyCapital').textContent = company.capital;
+        document.getElementById('companyAddress').textContent = company.address;
+        document.getElementById('companyScope').textContent = company.scope;
+        
+        // 显示背景遮罩和弹窗
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+        
+        // 添加点击遮罩关闭弹窗的事件
+        overlay.onclick = closeCompanyDetail;
+      }
+    }
+
+    // 关闭企业详情弹窗
+    function closeCompanyDetail() {
+      const popup = document.getElementById('companyDetailPopup');
+      const overlay = document.getElementById('companyDetailOverlay');
+      
+      if (popup && overlay) {
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+        overlay.onclick = null;
+      }
+    }
   </script>
 </body>
 </html>
