@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>专利申请 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    body {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="intellectual-property.html" class="text-gray-400 hover:text-white">知识产权</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white font-medium">专利申请</span>
+      </div>
+    </div>
+
+    <!-- 页面标题 -->
+    <div class="mb-10 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">专利申请</h1>
+      <p class="text-gray-400 max-w-3xl mx-auto">专业的专利申请服务，保护您的创新成果</p>
+    </div>
+
+    <!-- 专利介绍 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="card" style="border-radius: 16px;">
+        <div class="p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-lightbulb text-white text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">发明专利</h3>
+          </div>
+          <p class="text-gray-400 mb-4">针对产品、方法或者改进所提出的新的技术方案，保护期限为20年。</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">技术创新性高</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">保护期限最长</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">审查周期较长</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="border-radius: 16px;">
+        <div class="p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-cube text-white text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">实用新型专利</h3>
+          </div>
+          <p class="text-gray-400 mb-4">针对产品的形状、构造或者其结合所提出的适于实用的新的技术方案，保护期限为10年。</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">审查周期较短</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">保护范围较窄</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">适用于结构改进</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="border-radius: 16px;">
+        <div class="p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-palette text-white text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">外观设计专利</h3>
+          </div>
+          <p class="text-gray-400 mb-4">针对产品的形状、图案或者其结合以及色彩与形状、图案的结合所作出的富有美感并适于工业应用的新设计，保护期限为15年。</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">审查周期短</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">保护外观设计</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">强调美观性</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 标签页导航 -->
+    <div class="flex border-b border-gray-700 mb-8">
+      <button class="px-6 py-3 font-medium text-primary border-b-2 border-primary" onclick="switchPatentTab('application')">申请咨询</button>
+      <button class="px-6 py-3 font-medium text-gray-400 hover:text-white" onclick="switchPatentTab('process')">申请流程</button>
+      <button class="px-6 py-3 font-medium text-gray-400 hover:text-white" onclick="switchPatentTab('materials')">所需材料</button>
+    </div>
+
+    <!-- 申请咨询标签页 -->
+    <div id="application-tab" class="tab-content">
+      <div class="card" style="border-radius: 16px;">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-6">专利申请咨询</h3>
+          <form class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">企业名称</label>
+                <input type="text" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">联系人</label>
+                <input type="text" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">联系电话</label>
+                <input type="tel" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">专利类型</label>
+                <select class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                  <option value="">请选择专利类型</option>
+                  <option value="invention">发明专利</option>
+                  <option value="utility">实用新型专利</option>
+                  <option value="design">外观设计专利</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">技术描述</label>
+              <textarea class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-32 resize-none" placeholder="请简要描述您的技术方案"></textarea>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">备注信息</label>
+              <textarea class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-20 resize-none" placeholder="请输入其他需要说明的信息"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-full">提交咨询</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 申请流程标签页 -->
+    <div id="process-tab" class="tab-content hidden">
+      <div class="card" style="border-radius: 16px;">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-6">申请流程</h3>
+          <div class="relative">
+            <!-- 连接线 -->
+            <div class="absolute left-6 top-6 bottom-6 w-0.5 bg-gray-700"></div>
+            
+            <div class="space-y-8">
+              <div class="flex gap-4 relative">
+                <div style="width: 32px; height: 32px; background: rgba(26,95,180,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <span class="text-primary font-bold">1</span>
+                </div>
+                <div>
+                  <h4 class="font-medium mb-2">需求沟通</h4>
+                  <p class="text-sm text-gray-400">了解您的专利需求，确定专利类型和保护策略</p>
+                </div>
+              </div>
+              
+              <div class="flex gap-4 relative">
+                <div style="width: 32px; height: 32px; background: rgba(26,95,180,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <span class="text-primary font-bold">2</span>
+                </div>
+                <div>
+                  <h4 class="font-medium mb-2">材料准备</h4>
+                  <p class="text-sm text-gray-400">整理技术资料，撰写专利申请文件</p>
+                </div>
+              </div>
+              
+              <div class="flex gap-4 relative">
+                <div style="width: 32px; height: 32px; background: rgba(26,95,180,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <span class="text-primary font-bold">3</span>
+                </div>
+                <div>
+                  <h4 class="font-medium mb-2">申请提交</h4>
+                  <p class="text-sm text-gray-400">向国家知识产权局提交专利申请</p>
+                </div>
+              </div>
+              
+              <div class="flex gap-4 relative">
+                <div style="width: 32px; height: 32px; background: rgba(26,95,180,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <span class="text-primary font-bold">4</span>
+                </div>
+                <div>
+                  <h4 class="font-medium mb-2">审查答复</h4>
+                  <p class="text-sm text-gray-400">配合审查员进行审查意见答复</p>
+                </div>
+              </div>
+              
+              <div class="flex gap-4 relative">
+                <div style="width: 32px; height: 32px; background: rgba(26,95,180,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <span class="text-primary font-bold">5</span>
+                </div>
+                <div>
+                  <h4 class="font-medium mb-2">专利授权</h4>
+                  <p class="text-sm text-gray-400">获得专利授权，颁发专利证书</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 所需材料标签页 -->
+    <div id="materials-tab" class="tab-content hidden">
+      <div class="card" style="border-radius: 16px;">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-6">所需材料</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 class="font-medium mb-4">发明专利</h4>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">技术交底书</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">权利要求书</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">说明书及附图</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">摘要及摘要附图</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-id-card text-primary mt-1"></i>
+                  <span class="text-sm">申请人身份证明</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-4">实用新型专利</h4>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">技术交底书</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">权利要求书</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">说明书及附图</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-file-alt text-primary mt-1"></i>
+                  <span class="text-sm">摘要及摘要附图</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-id-card text-primary mt-1"></i>
+                  <span class="text-sm">申请人身份证明</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 专利详情页标签页切换功能
+    function switchPatentTab(tabName) {
+      // 隐藏所有标签页内容
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+      
+      // 显示选中的标签页内容
+      document.getElementById(tabName + '-tab').classList.remove('hidden');
+      
+      // 更新标签页按钮样式
+      document.querySelectorAll('.flex.border-b.border-gray-700 button').forEach(button => {
+        button.classList.remove('text-primary', 'border-b-2', 'border-primary');
+        button.classList.add('text-gray-400');
+      });
+      
+      // 设置当前选中的标签页按钮样式
+      event.target.classList.remove('text-gray-400');
+      event.target.classList.add('text-primary', 'border-b-2', 'border-primary');
+    }
+  </script>
+</body>
+</html>

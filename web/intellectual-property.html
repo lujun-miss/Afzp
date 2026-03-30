@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知识产权 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white font-medium">知识产权</span>
+      </div>
+    </div>
+
+      <!-- 页面标题 -->
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">知识产权一站式服务</h1>
+        <p class="text-gray-400 max-w-3xl mx-auto">专利代理、商标注册、软著登记，全方位保护企业创新成果和品牌价值</p>
+      </div>
+
+      <!-- 知识产权服务 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-lightbulb text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">专利代理</h3>
+          <p class="text-gray-400 mb-4">提供全方位的专利申请和知识产权保护服务</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">发明专利代理</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">实用新型专利代理</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">外观设计专利代理</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">专利价值评估</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">数据知识产权登记</span>
+            </li>
+          </ul>
+          <div class="space-y-2">
+            <button class="btn btn-primary w-full" onclick="window.location.href='patent-detail.html'">立即申请</button>
+            <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('专利申请')">
+              <i class="fas fa-heart text-primary"></i>
+              <span>我感兴趣</span>
+            </button>
+            <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('专利申请')">
+              <i class="fas fa-comments text-primary"></i>
+              <span>咨询专家</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-trademark text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">商标注册</h3>
+          <p class="text-gray-400 mb-4">提供商标全生命周期管理服务</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">商标注册</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">商标检索与风险评估</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">商标维护与管理</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">商标续展</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">商标异议答辩</span>
+            </li>
+          </ul>
+          <div class="space-y-2">
+            <button class="btn btn-primary w-full" onclick="window.location.href='trademark-detail.html'">立即注册</button>
+            <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('商标注册')">
+              <i class="fas fa-heart text-primary"></i>
+              <span>我感兴趣</span>
+            </button>
+            <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('商标注册')">
+              <i class="fas fa-comments text-primary"></i>
+              <span>咨询专家</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-code text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">软著登记</h3>
+          <p class="text-gray-400 mb-4">提供软件著作权登记和保护服务</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">前期评估</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">材料准备</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">加急申请</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">全程跟进</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">长期咨询</span>
+            </li>
+          </ul>
+          <div class="space-y-2">
+            <button class="btn btn-primary w-full" onclick="window.location.href='copyright-detail.html'">立即登记</button>
+            <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('软著登记')">
+              <i class="fas fa-heart text-primary"></i>
+              <span>我感兴趣</span>
+            </button>
+            <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('软著登记')">
+              <i class="fas fa-comments text-primary"></i>
+              <span>咨询专家</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 项目申报服务 -->
+      <div class="card mb-12" style="border-radius: 16px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">项目申报服务</h3>
+          <p class="text-sm text-gray-400">助力企业申请政府扶持项目，获取政策红利</p>
+          <div class="flex gap-3 mt-4">
+            <button class="btn btn-outline flex items-center gap-2" onclick="showGuide()">
+              <i class="fas fa-book text-sm"></i>
+              <span>申报指南</span>
+            </button>
+            <button class="btn btn-outline flex items-center gap-2" onclick="showTemplates()">
+              <i class="fas fa-file-alt text-sm"></i>
+              <span>材料模板</span>
+            </button>
+            <button class="btn btn-outline flex items-center gap-2" onclick="showConsultation()">
+              <i class="fas fa-comments text-sm"></i>
+              <span>在线咨询</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- 标签页分类 -->
+        <div class="flex border-b border-gray-700">
+          <button class="px-6 py-3 text-primary border-b-2 border-primary" onclick="switchTab('industry')">工信</button>
+          <button class="px-6 py-3 text-gray-400 hover:text-white" onclick="switchTab('tech')">科技</button>
+          <button class="px-6 py-3 text-gray-400 hover:text-white" onclick="switchTab('development')">发改</button>
+          <button class="px-6 py-3 text-gray-400 hover:text-white" onclick="switchTab('human')">人社</button>
+        </div>
+        
+        <!-- 项目列表 -->
+        <div class="p-6">
+          <!-- 工信部门项目 -->
+          <div id="industry-tab" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-trophy text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">国家级专精特新小巨人</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">专注于细分市场、创新能力强、市场占有率高的企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://gxt.shandong.gov.cn/', '_blank')">跳转山东省工信厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('国家级专精特新小巨人')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('国家级专精特新小巨人')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-microchip text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级"一企一技术"</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">拥有核心技术和自主知识产权的企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://gxt.shandong.gov.cn/', '_blank')">跳转山东省工信厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级一企一技术')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级一企一技术')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-crown text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">国家级制造业单项冠军</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">在某一细分产品市场占有率全球前三的企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://gxt.shandong.gov.cn/', '_blank')">跳转山东省工信厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('国家级制造业单项冠军')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('国家级制造业单项冠军')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-ant text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省瞪羚企业</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">高成长性、创新能力强的中小企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://gxt.shandong.gov.cn/', '_blank')">跳转山东省工信厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省瞪羚企业')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省瞪羚企业')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-star text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级"专精特新"</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">专业化、精细化、特色化、新颖化的企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://gxt.shandong.gov.cn/', '_blank')">跳转山东省工信厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级专精特新')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级专精特新')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-lightbulb text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">创新型中小企业</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">具有创新能力和发展潜力的中小企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://gxt.shandong.gov.cn/', '_blank')">跳转山东省工信厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('创新型中小企业')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('创新型中小企业')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-factory text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">晨星工厂</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">中小企业数字化转型服务平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://www.smesd.com.cn/', '_blank')">跳转山东省中小企业公共服务平台</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('晨星工厂')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('晨星工厂')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 科技部门项目 -->
+          <div id="tech-tab" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-flask text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">科技型中小企业</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">拥有一定科技实力和创新能力的企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://kjt.shandong.gov.cn/', '_blank')">跳转山东省科技厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('科技型中小企业')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('科技型中小企业')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-rocket text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">高新技术企业</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">拥有核心自主知识产权的企业</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://kjt.shandong.gov.cn/', '_blank')">跳转山东省科技厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('高新技术企业')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('高新技术企业')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-microscope text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级企业技术中心</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">企业技术创新的核心平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://kjt.shandong.gov.cn/', '_blank')">跳转山东省科技厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级企业技术中心')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级企业技术中心')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-cogs text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级工程研究中心</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">工程技术研究与开发的重要载体</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://kjt.shandong.gov.cn/', '_blank')">跳转山东省科技厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级工程研究中心')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级工程研究中心')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-search text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级重点实验室</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">开展基础研究和应用研究的平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://kjt.shandong.gov.cn/', '_blank')">跳转山东省科技厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级重点实验室')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级重点实验室')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-project-diagram text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">重点研发计划项目</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">支持重大科技成果转化的项目</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://kjt.shandong.gov.cn/', '_blank')">跳转山东省科技厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('重点研发计划项目')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('重点研发计划项目')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 发改部门项目 -->
+          <div id="development-tab" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-industry text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">技术改造项目</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">支持企业技术改造升级的项目</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://fgw.shandong.gov.cn/', '_blank')">跳转山东省发改委</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('技术改造项目')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('技术改造项目')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-microscope text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级企业技术中心</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">企业技术创新的核心平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://fgw.shandong.gov.cn/', '_blank')">跳转山东省发改委</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级企业技术中心')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级企业技术中心')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-cogs text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级工程研究中心</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">工程技术研究与开发的重要载体</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://fgw.shandong.gov.cn/', '_blank')">跳转山东省发改委</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级工程研究中心')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级工程研究中心')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-search text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">省级重点实验室</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">开展基础研究和应用研究的平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://fgw.shandong.gov.cn/', '_blank')">跳转山东省发改委</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('省级重点实验室')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('省级重点实验室')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-seedling text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">战略性新兴产业项目</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">支持新兴产业发展的项目</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://fgw.shandong.gov.cn/', '_blank')">跳转山东省发改委</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('战略性新兴产业项目')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('战略性新兴产业项目')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-leaf text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">绿色制造项目</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">推动绿色生产、节能减排的项目</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://fgw.shandong.gov.cn/', '_blank')">跳转山东省发改委</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('绿色制造项目')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('绿色制造项目')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 人社部门项目 -->
+          <div id="human-tab" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-users text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">高层次人才引进项目</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">引进高层次人才的扶持项目</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://rst.shandong.gov.cn/', '_blank')">跳转山东省人社厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('高层次人才引进项目')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('高层次人才引进项目')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">博士后科研工作站</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">吸引博士后研究人员的平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://rst.shandong.gov.cn/', '_blank')">跳转山东省人社厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('博士后科研工作站')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('博士后科研工作站')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-crown text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">技能大师工作室</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">培养高技能人才的平台</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://rst.shandong.gov.cn/', '_blank')">跳转山东省人社厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('技能大师工作室')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('技能大师工作室')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-briefcase text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">就业见习补贴</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">支持企业吸纳高校毕业生见习的补贴</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://rst.shandong.gov.cn/', '_blank')">跳转山东省人社厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('就业见习补贴')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('就业见习补贴')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-lightbulb text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">创业补贴</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">支持创业人员的补贴项目</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://rst.shandong.gov.cn/', '_blank')">跳转山东省人社厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('创业补贴')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('创业补贴')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="border border-gray-700 rounded-lg p-6 hover:border-primary transition-colors">
+                <div class="flex items-center gap-4 mb-4">
+                  <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-semibold">职业技能培训补贴</h4>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">支持企业开展员工技能培训的补贴</p>
+                <div class="space-y-2">
+                  <button class="btn btn-outline w-full" onclick="window.open('http://rst.shandong.gov.cn/', '_blank')">跳转山东省人社厅</button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showInterestForm('职业技能培训补贴')">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span>我感兴趣</span>
+                  </button>
+                  <button class="btn btn-outline w-full flex items-center gap-2" onclick="showConsultationForm('职业技能培训补贴')">
+                    <i class="fas fa-comments text-primary"></i>
+                    <span>咨询专家</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 专家团队介绍 -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-8 text-center">专业团队</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card text-center" style="border-radius: 16px; padding: 24px;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <i class="fas fa-user-tie text-white text-2xl"></i>
+            </div>
+            <h4 class="font-semibold mb-2">张律师</h4>
+            <p class="text-sm text-gray-400 mb-4">专利代理师 / 知识产权律师</p>
+            <p class="text-sm text-gray-400">10年知识产权从业经验，专注于专利申请和侵权诉讼</p>
+          </div>
+          <div class="card text-center" style="border-radius: 16px; padding: 24px;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <i class="fas fa-user-tie text-white text-2xl"></i>
+            </div>
+            <h4 class="font-semibold mb-2">李顾问</h4>
+            <p class="text-sm text-gray-400 mb-4">商标代理人 / 品牌战略专家</p>
+            <p class="text-sm text-gray-400">8年商标代理经验，擅长商标注册和品牌保护策略</p>
+          </div>
+          <div class="card text-center" style="border-radius: 16px; padding: 24px;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <i class="fas fa-user-tie text-white text-2xl"></i>
+            </div>
+            <h4 class="font-semibold mb-2">王工程师</h4>
+            <p class="text-sm text-gray-400 mb-4">软件著作权专家 / 技术顾问</p>
+            <p class="text-sm text-gray-400">7年软件开发经验，精通软件著作权登记流程</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 常见问题解答 -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-8 text-center">常见问题</h2>
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-semibold mb-2">专利申请需要多长时间？</h4>
+              <p class="text-sm text-gray-400">发明专利申请周期约18-36个月，实用新型专利约6-12个月，外观设计专利约3-6个月。</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">商标注册成功率是多少？</h4>
+              <p class="text-sm text-gray-400">通过专业检索和风险评估，商标注册成功率可达85%以上。我们会在申请前进行详细的检索分析。</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">软件著作权登记需要哪些材料？</h4>
+              <p class="text-sm text-gray-400">主要包括软件著作权登记申请表、软件说明书、源代码（前30页和后30页）、身份证明文件等。</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">知识产权保护的重要性是什么？</h4>
+              <p class="text-sm text-gray-400">知识产权保护可以维护企业的创新成果，提升品牌价值，增强市场竞争力，为企业发展提供法律保障。</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2">你们提供哪些增值服务？</h4>
+              <p class="text-sm text-gray-400">我们提供知识产权战略规划、侵权风险评估、专利布局分析、知识产权培训等增值服务。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  </div>
+
+
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 标签页切换功能
+    function switchTab(tabName) {
+      // 隐藏所有标签页内容
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+      
+      // 显示选中的标签页内容
+      document.getElementById(tabName + '-tab').classList.remove('hidden');
+      
+      // 更新标签页按钮样式
+      document.querySelectorAll('.flex.border-b.border-gray-700 button').forEach(button => {
+        button.classList.remove('text-primary', 'border-b-2', 'border-primary');
+        button.classList.add('text-gray-400');
+      });
+      
+      // 设置当前选中的标签页按钮样式
+      event.target.classList.remove('text-gray-400');
+      event.target.classList.add('text-primary', 'border-b-2', 'border-primary');
+    }
+    
+    // 申报指南功能
+    function showGuide() {
+      const guideContent = `
+        <div class="p-6">
+          <h4 class="text-lg font-semibold mb-4 text-gray-700">项目申报指南</h4>
+          <div class="space-y-4">
+            <div>
+              <h5 class="font-medium text-gray-700">申报流程</h5>
+              <ol class="list-decimal list-inside text-sm text-gray-700 mt-2 space-y-1">
+                <li>了解政策要求和申报条件</li>
+                <li>准备申报材料</li>
+                <li>在线填写申报信息</li>
+                <li>提交申报材料</li>
+                <li>等待审核结果</li>
+                <li>获得项目支持</li>
+              </ol>
+            </div>
+            <div>
+              <h5 class="font-medium text-gray-700">注意事项</h5>
+              <ul class="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
+                <li>确保申报材料真实有效</li>
+                <li>按时提交，避免逾期</li>
+                <li>仔细核对申报信息</li>
+                <li>保持联系方式畅通</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+      showModal('申报指南', guideContent);
+    }
+    
+    // 材料模板功能
+    function showTemplates() {
+      const templatesContent = `
+        <div class="p-6">
+          <h4 class="text-lg font-semibold mb-4 text-gray-700">申报材料模板</h4>
+          <div class="space-y-3">
+            <div class="border border-gray-300 rounded-lg p-4 hover:border-primary transition-colors">
+              <div class="flex items-center gap-3">
+                <i class="fas fa-file-pdf text-red-400 text-xl"></i>
+                <div>
+                  <h5 class="font-medium text-gray-700">项目申请书模板</h5>
+                  <p class="text-xs text-gray-700">PDF格式，可直接下载使用</p>
+                </div>
+              </div>
+              <button class="btn btn-outline w-full mt-3" onclick="downloadTemplate('application')">下载模板</button>
+            </div>
+            <div class="border border-gray-300 rounded-lg p-4 hover:border-primary transition-colors">
+              <div class="flex items-center gap-3">
+                <i class="fas fa-file-excel text-green-400 text-xl"></i>
+                <div>
+                  <h5 class="font-medium text-gray-700">企业信息表</h5>
+                  <p class="text-xs text-gray-700">Excel格式，填写企业基本信息</p>
+                </div>
+              </div>
+              <button class="btn btn-outline w-full mt-3" onclick="downloadTemplate('company')">下载模板</button>
+            </div>
+            <div class="border border-gray-300 rounded-lg p-4 hover:border-primary transition-colors">
+              <div class="flex items-center gap-3">
+                <i class="fas fa-file-word text-blue-400 text-xl"></i>
+                <div>
+                  <h5 class="font-medium text-gray-700">项目可行性报告</h5>
+                  <p class="text-xs text-gray-700">Word格式，撰写项目可行性分析</p>
+                </div>
+              </div>
+              <button class="btn btn-outline w-full mt-3" onclick="downloadTemplate('feasibility')">下载模板</button>
+            </div>
+          </div>
+        </div>
+      `;
+      showModal('材料模板', templatesContent);
+    }
+    
+    // 在线咨询功能
+    function showConsultation() {
+      const consultationContent = `
+        <div class="p-6">
+          <h4 class="text-lg font-semibold mb-4 text-gray-700">在线咨询</h4>
+          <form id="consultationForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">姓名</label>
+              <input type="text" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入您的姓名">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">联系方式</label>
+              <input type="tel" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入您的电话">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">咨询内容</label>
+              <textarea class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 h-32" placeholder="请详细描述您的问题"></textarea>
+            </div>
+            <button type="button" class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg font-medium hover:from-blue-700 hover:to-blue-600 transition-all" onclick="submitConsultation()">提交咨询</button>
+          </form>
+        </div>
+      `;
+      showModal('在线咨询', consultationContent);
+    }
+    
+    // 下载模板功能
+    function downloadTemplate(type) {
+      alert('模板下载功能即将上线，敬请期待！');
+    }
+    
+    // 提交咨询功能
+    function submitConsultation() {
+      alert('咨询提交成功，我们将尽快与您联系！');
+      closeModal();
+    }
+    
+    // 显示感兴趣表单功能
+    function showInterestForm(projectName) {
+      const interestContent = `
+        <div class="p-6">
+          <h4 class="text-lg font-semibold mb-4 text-gray-700">对"${projectName}"感兴趣</h4>
+          <form id="interestForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>企业名称</label>
+              <input type="text" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入企业名称">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>联系人姓名</label>
+              <input type="text" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入联系人姓名">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>联系方式</label>
+              <input type="tel" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入联系电话">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">邮箱</label>
+              <input type="email" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入电子邮箱">
+            </div>
+            <button type="button" class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg font-medium hover:from-blue-700 hover:to-blue-600 transition-all" onclick="submitInterest('${projectName}')">提交意向</button>
+          </form>
+        </div>
+      `;
+      showModal('项目意向登记', interestContent);
+    }
+    
+    // 显示咨询专家表单功能
+    function showConsultationForm(projectName) {
+      const consultationContent = `
+        <div class="p-6">
+          <h4 class="text-lg font-semibold mb-4 text-gray-700">咨询"${projectName}"专家</h4>
+          <form id="expertConsultationForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>企业名称</label>
+              <input type="text" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入企业名称">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>联系人姓名</label>
+              <input type="text" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入联系人姓名">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>联系方式</label>
+              <input type="tel" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700" placeholder="请输入联系电话">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700"><span class="text-red-500">*</span>咨询问题</label>
+              <textarea class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 h-32" placeholder="请详细描述您的咨询问题"></textarea>
+            </div>
+            <button type="button" class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg font-medium hover:from-blue-700 hover:to-blue-600 transition-all" onclick="submitExpertConsultation('${projectName}')">提交咨询</button>
+          </form>
+        </div>
+      `;
+      showModal('专家咨询', consultationContent);
+    }
+    
+    // 提交意向功能
+    function submitInterest(projectName) {
+      alert(`您对"${projectName}"的意向已提交，我们将尽快与您联系！`);
+      closeModal();
+    }
+    
+    // 提交专家咨询功能
+    function submitExpertConsultation(projectName) {
+      alert(`您对"${projectName}"的咨询已提交，专家将尽快为您解答！`);
+      closeModal();
+    }
+    
+    // 显示模态框功能
+    function showModal(title, content) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+      modal.id = 'customModal';
+      modal.innerHTML = `
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4">
+          <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-blue-500">
+            <h3 class="text-lg font-semibold text-white">${title}</h3>
+            <button onclick="closeModal()" class="text-white hover:text-gray-200">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          ${content}
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    // 关闭模态框功能
+    function closeModal() {
+      const modal = document.getElementById('customModal');
+      if (modal) {
+        modal.remove();
+      }
+    }
+  </script>
+</body>
+</html>

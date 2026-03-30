@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产业展会 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div><div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div><div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto pt-24 px-6">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white font-medium">产业展会</span>
+      </div>
+    </div>
+    
+    <!-- 页面标题 -->
+    <div class="mb-10">
+      <p class="text-gray-400 max-w-3xl">提供发制品行业展会信息、参展报名、展会资讯等服务，帮助企业拓展市场渠道</p>
+    </div>
+
+    <!-- 展会日历 -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-calendar"></i>
+          展会日历
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <input type="text" placeholder="搜索展会" class="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm w-48">
+            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <button class="btn btn-outline" style="padding: 5px 12px; font-size: 12px;" onclick="window.location.href='exhibition-calendar.html'">查看全部</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div style="background: var(--dark-bg); border-radius: 10px; padding: 16px; border: 1px solid var(--border);">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <div class="flex items-center gap-1 mb-1">
+                <span class="tag tag-primary">即将开始</span>
+                <span style="font-size: 12px; font-weight: 600;">展会ID: EX20260415</span>
+              </div>  <div style="font-size: 14px; font-weight: 600; margin-bottom: 2px;">2026中国发制品博览会</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">地点: 上海国家会展中心</div>
+            </div><div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), #1d4ed8); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-calendar-alt text-white text-sm"></i>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar text-gray-400 text-sm"></i>
+              <span style="font-size: 12px; color: var(--text-secondary);">时间: 2026-04-15 至 2026-04-17</span>
+            </div><div class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-gray-400 text-sm"></i>
+              <span style="font-size: 12px; color: var(--text-secondary);">地址: 上海市青浦区崧泽大道333号</span>
+            </div></div>
+          <div class="flex justify-end">
+            <button class="btn btn-outline" style="padding: 4px 12px; font-size: 10px;" onclick="window.location.href='exhibition-detail.html?id=EX20260415'">查看详情</button>
+          </div>
+        </div> <div style="background: var(--dark-bg); border-radius: 10px; padding: 16px; border: 1px solid var(--border);">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <div class="flex items-center gap-1 mb-1">
+                <span class="tag tag-success">已开始</span>
+                <span style="font-size: 12px; font-weight: 600;">展会ID: EX20260328</span>
+              </div>  <div style="font-size: 14px; font-weight: 600; margin-bottom: 2px;">广州发制品交易会</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">地点: 广州广交会展馆</div>
+            </div><div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--success), #16a34a); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-calendar-check text-white text-sm"></i>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar text-gray-400 text-sm"></i>
+              <span style="font-size: 12px; color: var(--text-secondary);">时间: 2026-03-28 至 2026-03-30</span>
+            </div><div class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-gray-400 text-sm"></i>
+              <span style="font-size: 12px; color: var(--text-secondary);">地址: 广州市海珠区阅江中路380号</span>
+            </div></div>
+          <div class="flex justify-end">
+            <button class="btn btn-outline" style="padding: 4px 12px; font-size: 10px;" onclick="window.location.href='exhibition-detail.html?id=EX20260328'">查看详情</button>
+          </div>
+        </div> <div style="background: var(--dark-bg); border-radius: 10px; padding: 16px; border: 1px solid var(--border);">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <div class="flex items-center gap-1 mb-1">
+                <span class="tag tag-warning">即将开始</span>
+                <span style="font-size: 12px; font-weight: 600;">展会ID: EX20260520</span>
+              </div>  <div style="font-size: 14px; font-weight: 600; margin-bottom: 2px;">国际发制品展览会</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">地点: 深圳国际会展中心</div>
+            </div><div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--warning), #f59e0b); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-calendar-week text-white text-sm"></i>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar text-gray-400 text-sm"></i>
+              <span style="font-size: 12px; color: var(--text-secondary);">时间: 2026-05-20 至 2026-05-22</span>
+            </div><div class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-gray-400 text-sm"></i>
+              <span style="font-size: 12px; color: var(--text-secondary);">地址: 深圳市宝安区展城路1号</span>
+            </div></div>
+          <div class="flex justify-end">
+            <button class="btn btn-outline" style="padding: 4px 12px; font-size: 10px;" onclick="window.location.href='exhibition-detail.html?id=EX20260520'">查看详情</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 展会资讯 -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-newspaper"></i>
+          展会资讯
+        </div>
+        <div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="window.location.href='exhibition-news.html'">查看全部</button>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div style="background: var(--dark-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <div class="flex items-start gap-3">
+            <div style="width: 100px; height: 60px; background: rgba(15,20,41,0.6); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-newspaper text-2xl text-gray-600"></i>
+            </div><div class="flex-1">
+              <div style="font-weight: 600; font-size: 15px; margin-bottom: 3px;">2026中国发制品博览会参展指南发布</div>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 6px;">详细介绍展会流程、展位布局、参展须知等信息，帮助企业做好参展准备...</p>
+              <div class="flex justify-between items-center">
+                <span style="font-size: 11px; color: var(--text-secondary);">2026-03-28</span>
+                <button class="btn btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="window.location.href='news-detail.html?id=news001'">阅读全文</button>
+              </div></div>
+          </div>
+        </div> <div style="background: var(--dark-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <div class="flex items-start gap-3">
+            <div style="width: 100px; height: 60px; background: rgba(15,20,41,0.6); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-chart-line text-2xl text-gray-600"></i>
+            </div><div class="flex-1">
+              <div style="font-weight: 600; font-size: 15px; margin-bottom: 3px;">2025年展会总结报告：发制品行业迎来新机遇</div>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 6px;">分析2025年展会数据，探讨行业发展趋势，为企业提供战略参考...</p>
+              <div class="flex justify-between items-center">
+                <span style="font-size: 11px; color: var(--text-secondary);">2026-03-25</span>
+                <button class="btn btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="window.location.href='news-detail.html?id=news002'">阅读全文</button>
+              </div></div>
+          </div>
+        </div> <div style="background: var(--dark-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border);">
+          <div class="flex items-start gap-3">
+            <div style="width: 100px; height: 60px; background: rgba(15,20,41,0.6); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-bullhorn text-2xl text-gray-600"></i>
+            </div><div class="flex-1">
+              <div style="font-weight: 600; font-size: 15px; margin-bottom: 3px;">国际发制品展览会参展商招募开始</div>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 6px;">即日起开始接受参展报名，展位有限，先到先得...</p>
+              <div class="flex justify-between items-center">
+                <span style="font-size: 11px; color: var(--text-secondary);">2026-03-20</span>
+                <button class="btn btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="window.location.href='news-detail.html?id=news003'">阅读全文</button>
+              </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

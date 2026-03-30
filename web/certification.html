@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>认证服务 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 导航栏 -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2">
+          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-industry text-white text-xl"></i>
+          </div>
+          <span class="text-xl font-bold text-white">发制品产业大脑</span>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="supply.html" class="nav-link active">资源枢纽</a>
+        <a href="market.html" class="nav-link">市场分析</a>
+        <a href="enterprise.html" class="nav-link">企业服务</a>
+        <a href="traceability.html" class="nav-link">溯源管理</a>
+        <a href="government.html" class="nav-link">政策服务</a>
+        <a href="thinktank.html" class="nav-link">行业智库</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button class="btn btn-outline" onclick="window.location.href='login.html'">登录</button>
+        <button class="btn btn-primary" onclick="window.location.href='register.html'">注册</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">认证服务</h1>
+        <p class="text-gray-400 max-w-3xl mx-auto">产品认证、体系认证、行业认证，提升企业竞争力和产品可信度</p>
+      </div>
+
+      <!-- 认证服务 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-certificate text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">产品认证</h3>
+          <p class="text-gray-400 mb-4">提供发制品产品的各类认证服务，确保产品符合市场要求</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">CE认证</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">FDA认证</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">环保认证</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-full">申请认证</button>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-sitemap text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">体系认证</h3>
+          <p class="text-gray-400 mb-4">提供质量管理体系等认证服务，提升企业管理水平</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">ISO9001认证</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">ISO14001认证</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">OHSAS18001认证</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-full">申请认证</button>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-award text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">行业认证</h3>
+          <p class="text-gray-400 mb-4">提供行业协会认证和荣誉证书申请服务</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">行业协会认证</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">优质产品认证</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fas fa-check text-green-500"></i>
+              <span class="text-sm">诚信企业认证</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-full">申请认证</button>
+        </div>
+      </div>
+
+      <!-- 认证流程 -->
+      <div class="card" style="border-radius: 16px; margin-bottom: 12px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">认证流程</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div class="text-center">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+                <span class="text-white font-bold">1</span>
+              </div>
+              <h4 class="font-semibold mb-1">申请提交</h4>
+              <p class="text-xs text-gray-400">提交认证申请和相关材料</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+                <span class="text-white font-bold">2</span>
+              </div>
+              <h4 class="font-semibold mb-1">材料审核</h4>
+              <p class="text-xs text-gray-400">审核申请材料的完整性</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+                <span class="text-white font-bold">3</span>
+              </div>
+              <h4 class="font-semibold mb-1">现场审核</h4>
+              <p class="text-xs text-gray-400">专业人员现场审核</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+                <span class="text-white font-bold">4</span>
+              </div>
+              <h4 class="font-semibold mb-1">认证评定</h4>
+              <p class="text-xs text-gray-400">评定认证结果</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+                <span class="text-white font-bold">5</span>
+              </div>
+              <h4 class="font-semibold mb-1">证书颁发</h4>
+              <p class="text-xs text-gray-400">颁发认证证书</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 认证咨询 -->
+      <div class="card" style="border-radius: 16px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">认证咨询</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 class="font-semibold mb-4">常见问题</h4>
+              <div class="space-y-3">
+                <div class="border border-gray-700 rounded-lg p-3">
+                  <h5 class="font-medium mb-1">认证需要多长时间？</h5>
+                  <p class="text-sm text-gray-400">一般需要1-3个月，具体根据认证类型和企业情况而定</p>
+                </div>
+                <div class="border border-gray-700 rounded-lg p-3">
+                  <h5 class="font-medium mb-1">认证费用是多少？</h5>
+                  <p class="text-sm text-gray-400">根据认证类型和企业规模不同，费用有所差异，具体咨询客服</p>
+                </div>
+                <div class="border border-gray-700 rounded-lg p-3">
+                  <h5 class="font-medium mb-1">认证有效期是多久？</h5>
+                  <p class="text-sm text-gray-400">一般为3年，期间需要进行年度监督审核</p>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-4">咨询表单</h4>
+              <form class="space-y-3">
+                <div>
+                  <label class="block text-sm font-medium mb-1">企业名称</label>
+                  <input type="text" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">联系人</label>
+                  <input type="text" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">联系电话</label>
+                  <input type="tel" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">咨询内容</label>
+                  <textarea rows="3" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">提交咨询</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 py-8">
+    <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+      <p>© 2024 鄄城县发制品产业大脑 版权所有</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <a href="#" class="hover:text-white transition-colors">关于我们</a>
+        <a href="#" class="hover:text-white transition-colors">联系我们</a>
+        <a href="#" class="hover:text-white transition-colors">隐私政策</a>
+        <a href="#" class="hover:text-white transition-colors">使用条款</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

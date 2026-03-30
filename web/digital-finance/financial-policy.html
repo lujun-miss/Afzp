@@ -377,7 +377,7 @@
                 <a href="../market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
                 <a href="../government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
                 <a href="../hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
-                <a href="../hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+
                 <a href="financial-policy.html" class="nav-link active text-white">金融服务</a>
                 <a href="../thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
                 <a href="../traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
@@ -392,6 +392,15 @@
     </nav>
     
     <div class="container mx-auto px-4 py-24">
+        <!-- 面包屑导航 -->
+        <div class="mb-8">
+            <div class="flex items-center space-x-2 text-sm">
+                <a href="../index.html" class="text-gray-400 hover:text-primary transition-colors duration-300">首页</a>
+                <i class="fa fa-angle-right text-gray-500"></i>
+                <span class="text-primary font-medium">金融服务</span>
+            </div>
+        </div>
+
         <!-- 融资动态 -->
         <div class="mb-8">
             <div class="bg-gradient-to-r from-primary/20 to-secondary/10 border border-primary/30 rounded-lg p-4 relative overflow-hidden">
@@ -1084,25 +1093,23 @@
     <script>
         // 确保DOM加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
-            // 为所有带有btn-primary类的按钮添加点击事件
-            const btnPrimaryButtons = document.querySelectorAll('.btn-primary');
+            // 为金融产品申请按钮添加点击事件（仅针对"立即申请"按钮）
+            const applyButtons = document.querySelectorAll('.btn-primary');
             const applyModal = document.getElementById('applyModal');
             const closeModal = document.getElementById('closeModal');
             const cancelApply = document.getElementById('cancelApply');
             const applyForm = document.getElementById('applyForm');
             
-            if (btnPrimaryButtons.length > 0 && applyModal) {
-                btnPrimaryButtons.forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        // 阻止默认行为（如果是表单提交）
-                        e.preventDefault();
-                        
-                        // 显示模态框
-                        applyModal.classList.remove('hidden');
-                        
-                        // 设置默认标题
-                        document.querySelector('#applyModal h3').textContent = '贷款 - 贷款申请';
-                    });
+            if (applyButtons.length > 0 && applyModal) {
+                applyButtons.forEach(button => {
+                    // 只对"立即申请"按钮添加弹窗事件，其他按钮保持原有功能
+                    if (button.textContent.trim() === '立即申请') {
+                        button.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            applyModal.classList.remove('hidden');
+                            document.querySelector('#applyModal h3').textContent = '贷款 - 贷款申请';
+                        });
+                    }
                 });
             }
             

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>岗位详情 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .job-item {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .job-item:hover {
+      background: rgba(26, 159, 180, 0.1);
+      transform: translateX(4px);
+    }
+    .job-item.active {
+      background: rgba(26, 159, 180, 0.2);
+      border-left: 4px solid var(--primary);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="hr.html" class="text-gray-400 hover:text-white">人力资源</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="hr-jobs.html" class="text-gray-400 hover:text-white">招聘岗位</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white">岗位详情</span>
+      </div>
+    </div>
+
+
+    <div class="grid grid-cols-4 gap-6">
+      <!-- 左侧企业招聘列表 -->
+      <div class="col-span-1">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <!-- 企业信息 -->
+          <div class="flex items-center gap-3 mb-6">
+            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 24px; font-weight: 600; color: white;">兴隆</span>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 18px;">兴隆发制品有限公司</div>
+              <div class="flex items-center gap-3 mt-1">
+                <span style="font-size: 12px; color: var(--text-secondary);">100-499人</span>
+                <span style="font-size: 12px; color: var(--text-secondary);">发制品</span>
+                <span class="tag tag-primary" style="font-size: 10px;">已融资</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 职位分类 -->
+          <div class="mb-6">
+            <div class="flex flex-wrap gap-2">
+              <button class="btn btn-outline btn-sm active">全部(12)</button>
+              <button class="btn btn-outline btn-sm">生产制造(6)</button>
+              <button class="btn btn-outline btn-sm">技术研发(3)</button>
+              <button class="btn btn-outline btn-sm">销售市场(2)</button>
+              <button class="btn btn-outline btn-sm">管理(1)</button>
+            </div>
+          </div>
+          
+
+          
+          <!-- 搜索框 -->
+          <div class="mb-6">
+            <div class="flex gap-2">
+              <input type="text" placeholder="搜索职位关键词" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm focus:outline-none focus:border-primary">
+              <button class="btn btn-outline btn-sm">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- 职位列表 -->
+          <div class="space-y-3">
+            <!-- 当前选中的职位 -->
+            <div class="job-item active p-4 border border-gray-700 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">高级假发设计师</div>
+                <span style="font-size: 14px; font-weight: 600; color: var(--gold);">¥8000-12000</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+                <span><i class="fas fa-briefcase"></i> 3-5年</span>
+                <span><i class="fas fa-graduation-cap"></i> 大专</span>
+              </div>
+            </div>
+            
+            <!-- 其他职位 -->
+            <div class="job-item p-4 border border-gray-700 rounded-lg" onclick="showJobDetail('生产主管')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">生产主管</div>
+                <span style="font-size: 14px; font-weight: 600; color: var(--gold);">¥7000-12000</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+                <span><i class="fas fa-briefcase"></i> 5-10年</span>
+                <span><i class="fas fa-graduation-cap"></i> 高中</span>
+              </div>
+            </div>
+            
+            <div class="job-item p-4 border border-gray-700 rounded-lg" onclick="showJobDetail('质量控制专员')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">质量控制专员</div>
+                <span style="font-size: 14px; font-weight: 600; color: var(--gold);">¥4000-6000</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+                <span><i class="fas fa-briefcase"></i> 1-2年</span>
+                <span><i class="fas fa-graduation-cap"></i> 大专</span>
+              </div>
+            </div>
+            
+            <div class="job-item p-4 border border-gray-700 rounded-lg" onclick="showJobDetail('设备维护工程师')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">设备维护工程师</div>
+                <span style="font-size: 14px; font-weight: 600; color: var(--gold);">¥5000-7000</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+                <span><i class="fas fa-briefcase"></i> 3-5年</span>
+                <span><i class="fas fa-graduation-cap"></i> 中专</span>
+              </div>
+            </div>
+            
+            <div class="job-item p-4 border border-gray-700 rounded-lg" onclick="showJobDetail('外贸业务员')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">外贸业务员</div>
+                <span style="font-size: 14px; font-weight: 600; color: var(--gold);">¥6000-10000</span>
+              </div>
+              <div class="flex items-center justify-between text-sm text-gray-400">
+                <span><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+                <span><i class="fas fa-briefcase"></i> 1-3年</span>
+                <span><i class="fas fa-graduation-cap"></i> 本科</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧岗位详情 -->
+      <div class="col-span-3">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <!-- 岗位基本信息 -->
+          <div class="mb-8">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 2px;">高级假发设计师</h2>
+                <div class="flex items-center gap-4 mt-2">
+                  <span style="color: var(--gold); font-weight: 600;">¥8000-12000</span>
+                  <span style="color: var(--text-secondary);"><i class="fas fa-map-marker-alt"></i> 鄄城县</span>
+                  <span style="color: var(--text-secondary);"><i class="fas fa-briefcase"></i> 3-5年</span>
+                  <span style="color: var(--text-secondary);"><i class="fas fa-graduation-cap"></i> 大专</span>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button class="btn btn-outline">
+                  <i class="fas fa-heart"></i> 收藏
+                </button>
+                <button class="btn btn-primary" onclick="document.getElementById('resumeModal').classList.remove('hidden')">
+                  <i class="fas fa-file-upload"></i> 投递简历
+                </button>
+              </div>
+            </div>
+            
+            <!-- 岗位标签 -->
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="tag tag-primary">发制品</span>
+              <span class="tag tag-secondary">设计</span>
+              <span class="tag tag-secondary">技术</span>
+              <span class="tag tag-secondary">创意</span>
+            </div>
+          </div>
+          
+          <!-- 岗位描述 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">职位描述</h3>
+            <div style="line-height: 1.8; color: var(--text-secondary);">
+              <p style="margin-bottom: 8px;">1. 负责假发产品的设计开发，包括款式设计、颜色搭配、材质选择等</p>
+              <p style="margin-bottom: 8px;">2. 根据市场需求和流行趋势，不断创新设计理念，提升产品竞争力</p>
+              <p style="margin-bottom: 8px;">3. 与生产部门密切合作，确保设计方案能够顺利实施和生产</p>
+              <p style="margin-bottom: 8px;">4. 收集市场反馈，优化产品设计，提高产品质量和用户满意度</p>
+              <p style="margin-bottom: 8px;">5. 参与产品研发团队，共同推动新产品的开发和创新</p>
+              <p style="margin-bottom: 8px;">6. 负责设计文档的整理和归档工作</p>
+            </div>
+          </div>
+          
+          <!-- 岗位要求 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">岗位要求</h3>
+            <div style="line-height: 1.8; color: var(--text-secondary);">
+              <p style="margin-bottom: 8px;">1. 大专及以上学历，设计相关专业优先</p>
+              <p style="margin-bottom: 8px;">2. 3年以上假发设计或相关行业工作经验</p>
+              <p style="margin-bottom: 8px;">3. 具备良好的审美能力和创意思维</p>
+              <p style="margin-bottom: 8px;">4. 熟练使用设计软件（如Photoshop、Illustrator等）</p>
+              <p style="margin-bottom: 8px;">5. 了解假发行业的生产工艺和材料特性</p>
+              <p style="margin-bottom: 8px;">6. 具备良好的沟通能力和团队协作精神</p>
+              <p style="margin-bottom: 8px;">7. 能够承受工作压力，按时完成设计任务</p>
+            </div>
+          </div>
+          
+          <!-- 工作环境 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">工作环境</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-building text-primary"></i>
+                  <span style="font-weight: 600;">公司规模</span>
+                </div>
+                <p style="color: var(--text-secondary);">100-499人，发制品行业领先企业</p>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-map-marker-alt text-primary"></i>
+                  <span style="font-weight: 600;">工作地点</span>
+                </div>
+                <p style="color: var(--text-secondary);">鄄城县经济开发区</p>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-clock text-primary"></i>
+                  <span style="font-weight: 600;">工作时间</span>
+                </div>
+                <p style="color: var(--text-secondary);">周一至周五，8:30-17:30</p>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-gift text-primary"></i>
+                  <span style="font-weight: 600;">福利待遇</span>
+                </div>
+                <p style="color: var(--text-secondary);">五险一金、年终奖、节日福利</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 联系方式 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">联系方式</h3>
+            <div class="flex items-center gap-4">
+              <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 20px; font-weight: 600; color: white;">郑</span>
+              </div>
+              <div>
+                <div style="font-weight: 600;">郑女士</div>
+                <div style="color: var(--text-secondary); font-size: 14px;">HRBP</div>
+              </div>
+              <div class="flex-1"></div>
+              <button class="btn btn-primary">
+                <i class="fas fa-file-upload"></i> 上传简历
+              </button>
+            </div>
+          </div>
+          
+          <!-- 公司简介 -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">公司简介</h3>
+            <div style="line-height: 1.8; color: var(--text-secondary);">
+              <p style="margin-bottom: 8px;">兴隆发制品有限公司成立于2005年，是一家专注于假发产品研发、生产和销售的高新技术企业。公司拥有先进的生产设备和专业的研发团队，产品远销欧美、日韩等多个国家和地区。</p>
+              <p style="margin-bottom: 8px;">公司秉承"品质第一、客户至上"的经营理念，不断创新和提升产品质量，致力于为客户提供优质的假发产品和服务。</p>
+              <p>公司注重人才培养和企业文化建设，为员工提供良好的发展空间和福利待遇，欢迎有志之士加入我们的团队！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 投递简历模态框 -->
+  <div id="resumeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+    <div class="relative bg-white rounded-lg max-w-2xl w-full mx-4">
+      <div class="bg-gradient-to-r from-blue-400 to-indigo-500 px-8 py-4 flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white">投递简历</h3>
+        <button class="text-white hover:text-gray-200" onclick="document.getElementById('resumeModal').classList.add('hidden')">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      
+      <form class="p-8">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span>姓名
+            </label>
+            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入您的姓名">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span>手机号码
+            </label>
+            <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入您的手机号码">
+          </div>
+          
+
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">应聘职位</label>
+            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="高级假发设计师" readonly>
+          </div>
+          
+
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span>上传简历
+            </label>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+              <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+              <p class="text-sm text-gray-500 mb-2">点击或拖拽文件到此处上传</p>
+              <p class="text-xs text-gray-400">支持 .pdf, .doc, .docx 格式，最大 10MB</p>
+              <input type="file" class="hidden" id="resumeFile" accept=".pdf,.doc,.docx">
+              <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onclick="document.getElementById('resumeFile').click()">选择文件</button>
+            </div>
+          </div>
+          
+
+        </div>
+        
+        <div class="mt-6 text-center">
+          <button type="submit" class="px-8 py-2 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-medium rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500">提交简历</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 显示职位详情
+    function showJobDetail(jobTitle) {
+      // 移除所有职位的active状态
+      const jobItems = document.querySelectorAll('.job-item');
+      jobItems.forEach(item => item.classList.remove('active'));
+      
+      // 添加当前职位的active状态
+      event.target.closest('.job-item').classList.add('active');
+      
+      // 更新右侧详情内容（这里可以根据实际需求进行AJAX请求或内容替换）
+      console.log('查看职位详情:', jobTitle);
+    }
+  </script>
+</body>
+</html>

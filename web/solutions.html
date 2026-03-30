@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字化全栈方案</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    #main-nav {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* 解决方案页面样式 */
+    .solution-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0, 128, 255, 0.2);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .tab {
+      padding: 10px 30px;
+      background: rgba(15, 42, 74, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 25px;
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .tab:hover {
+      background: rgba(0, 255, 255, 0.1);
+      border-color: rgba(0, 255, 255, 0.4);
+    }
+    
+    .tab.active {
+      background: linear-gradient(135deg, #00ffff, #0080ff);
+      border-color: #00ffff;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+    
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .solution-card {
+      background: rgba(15, 42, 74, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 0.75rem;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .solution-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 255, 255, 0.4);
+      box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
+    }
+    
+    .solution-header {
+      margin-bottom: 0.5rem;
+    }
+    
+    .solution-icon {
+      margin-bottom: 0.3rem;
+      font-size: 2rem;
+    }
+    
+    .solution-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      margin-top: 0.5rem;
+    }
+    
+    .free-tag {
+      background: rgba(0, 255, 0, 0.2);
+      color: #00ff00;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .get-btn {
+      background: linear-gradient(135deg, #0080ff, #00ffff);
+      color: #0a1929;
+      padding: 8px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .get-btn:hover {
+      background: linear-gradient(135deg, #0080ff, #00ffff);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 分类标签样式 */
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .category-tab {
+      padding: 6px 12px;
+      background: rgba(15, 42, 74, 0.3);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 16px;
+      color: #ccc;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .category-tab:hover {
+      background: rgba(0, 255, 255, 0.1);
+      color: #00ffff;
+    }
+    
+    .category-tab.active {
+      background: rgba(0, 255, 255, 0.2);
+      border-color: rgba(0, 255, 255, 0.4);
+      color: #00ffff;
+    }
+    
+    /* 分页样式 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2rem;
+    }
+    
+    .page-btn {
+      padding: 8px 16px;
+      background: rgba(15, 42, 74, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .page-btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      border-color: rgba(0, 255, 255, 0.4);
+    }
+    
+    .page-btn.active {
+      background: linear-gradient(135deg, #00ffff, #0080ff);
+      border-color: #00ffff;
+      color: #0a1929;
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑导航 -->
+    <div class="flex items-center gap-2 text-gray-400 text-sm mb-6">
+      <a href="../index.html" class="hover:text-white">首页</a>
+      <i class="fas fa-chevron-right text-xs"></i>
+      <a href="thinktank.html" class="hover:text-white">发业智库</a>
+      <i class="fas fa-chevron-right text-xs"></i>
+      <span class="text-white">数字化全栈方案</span>
+    </div>
+    
+    <!-- 页面标题 -->
+    <div class="text-center mb-6">
+      <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">数字化全栈方案</h1>
+      <p style="color: var(--text-secondary); font-size: 14px;">200+行业的落地实施经验，打造各行业的管理应用</p>
+    </div>
+    
+    <!-- 标签页切换 -->
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex-grow"></div>
+      <div class="solution-tabs">
+        <div class="tab active" data-tab="solutions">解决方案</div>
+        <div class="tab" data-tab="applications">应用类型</div>
+      </div>
+      <div class="flex-grow flex justify-end">
+        <div class="relative">
+          <input type="text" placeholder="搜索解决方案..." class="bg-gray-800 bg-opacity-50 border border-gray-700 rounded-lg px-4 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
+          <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 解决方案内容 -->
+    <div class="tab-content active" id="solutions-content">
+      <!-- 行业分类 -->
+      <div class="category-tabs">
+        <div class="category-tab active">全部</div>
+        <div class="category-tab">产业链</div>
+        <div class="category-tab">政府</div>
+        <div class="category-tab">零售</div>
+        <div class="category-tab">制造业</div>
+        <div class="category-tab">互联网</div>
+        <div class="category-tab">金融</div>
+        <div class="category-tab">医疗</div>
+        <div class="category-tab">交通</div>
+        <div class="category-tab">高校</div>
+        <div class="category-tab">地产物业</div>
+        <div class="category-tab">汽车</div>
+        <div class="category-tab">物流</div>
+      </div>
+      
+      <div class="solution-grid">
+          <!-- 解决方案卡片 -->
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-store text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">门店管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">门店管理系统主要包含了统计分析、会员管理、销售管理、库存管理等功能模块，帮助门店实现数字化管理。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-home text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">物业管理（住宅式）</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">1、业主管理 记录业主信息及合同管理；2、收费管理 物业费、水电费等收费管理；3、报修管理 业主报修处理流程。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-graduation-cap text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">云教研</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">学校系统云教研应用可以让教师在线进行教研活动，包括课题研究、公开课、评课等功能。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-shopping-cart text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">云进销存</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">1、购货 购货订单用于计划采购商品；2、销售 销售订单管理；3、库存 实时库存查询和管理。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-industry text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">生产管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">生产计划管理、生产进度跟踪、设备管理、质量管理等功能，实现生产流程数字化。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-hospital text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">医疗管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">患者管理、预约挂号、电子病历、药品管理等功能，提升医疗服务效率。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-car text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">汽车销售管理</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">车辆管理、客户管理、销售跟踪、售后服务等功能，优化汽车销售流程。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-truck text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">物流管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">订单管理、运输跟踪、仓储管理、配送管理等功能，实现物流全程可视化。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-university text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">金融管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">客户管理、理财产品、风险控制、报表分析等功能，提升金融服务质量。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-building text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">政府政务系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">行政审批、公共服务、数据管理、民生服务等功能，实现政务服务数字化。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-users text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">人力资源管理</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">招聘管理、绩效考核、培训发展、薪酬福利等功能，优化人力资源管理流程。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-file-invoice-dollar text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">财务管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">会计核算、预算管理、成本控制、财务报表等功能，实现财务管理数字化。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 分页控件 -->
+        <div class="pagination">
+          <button class="page-btn" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 应用类型内容 -->
+      <div class="tab-content" id="applications-content">
+        <!-- 功能分类 -->
+        <div class="category-tabs">
+          <div class="category-tab active">全部</div>
+          <div class="category-tab">人力行政</div>
+          <div class="category-tab">办公协作</div>
+          <div class="category-tab">客户关系</div>
+          <div class="category-tab">进销存</div>
+          <div class="category-tab">财务管理</div>
+          <div class="category-tab">项目管理</div>
+          <div class="category-tab">巡检系统</div>
+          <div class="category-tab">建筑管理</div>
+          <div class="category-tab">生产制造</div>
+          <div class="category-tab">门店管理</div>
+          <div class="category-tab">电商运营</div>
+          <div class="category-tab">教育培训</div>
+          <div class="category-tab">三方系统对接</div>
+        </div>
+        
+        <div class="solution-grid">
+          <!-- 应用类型卡片 -->
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-store text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">门店管理系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">门店管理系统主要包含了统计分析、会员管理、销售管理、库存管理等功能模块。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-home text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">物业管理（住宅式）</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">1、业主管理 记录业主信息及合同管理；2、收费管理 物业费、水电费等收费管理。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-graduation-cap text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">云教研</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">学校系统云教研应用可以让教师在线进行教研活动，包括课题研究、公开课、评课等。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-shopping-cart text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">云进销存</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">1、购货 购货订单用于计划采购商品；2、销售 销售订单管理；3、库存管理。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-briefcase text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">项目管理</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">任务分配、进度跟踪、团队协作、文档管理等功能，提升项目管理效率。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-check-circle text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">巡检系统</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">设备巡检、隐患排查、维修记录、数据分析等功能，保障设备正常运行。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-hard-hat text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">建筑管理</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">工程进度、质量控制、安全管理、成本核算等功能，优化建筑项目管理。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-industry text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">生产制造</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">生产计划、工艺流程、设备管理、质量控制等功能，实现智能制造。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-shopping-bag text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">电商运营</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">商品管理、订单处理、营销活动、数据分析等功能，提升电商运营效率。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+          
+          <div class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                <i class="fas fa-chalkboard-teacher text-cyan-400"></i>
+              </div>
+              <h3 class="font-semibold mb-2">教育培训</h3>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">课程管理、学员管理、在线学习、考试评估等功能，实现教育培训数字化。</p>
+            <div class="solution-footer">
+              <span class="free-tag">免费</span>
+              <a href="solution-detail.html" class="get-btn">获取</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 分页控件 -->
+        <div class="pagination">
+          <button class="page-btn" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // 标签页切换功能
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        const target = this.dataset.tab;
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.getElementById(`${target}-content`).classList.add('active');
+      });
+    });
+    
+    // 分类标签切换功能
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    categoryTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        const parent = this.closest('.tab-content');
+        parent.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+    
+    // 分页功能
+    const paginationButtons = document.querySelectorAll('.page-btn');
+    paginationButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        if (this.disabled) return;
+        
+        const pagination = this.closest('.pagination');
+        const currentActive = pagination.querySelector('.page-btn.active');
+        
+        if (this.textContent.trim() === '1' || this.textContent.trim() === '2' || this.textContent.trim() === '3') {
+          currentActive.classList.remove('active');
+          this.classList.add('active');
+        } else if (this.querySelector('.fa-chevron-right')) {
+          const nextPage = pagination.querySelector('.page-btn.active + .page-btn:not([disabled])');
+          if (nextPage && nextPage.textContent.trim() !== '') {
+            currentActive.classList.remove('active');
+            nextPage.classList.add('active');
+          }
+        } else if (this.querySelector('.fa-chevron-left')) {
+          const prevPage = pagination.querySelector('.page-btn.active').previousElementSibling;
+          if (prevPage && !prevPage.disabled) {
+            currentActive.classList.remove('active');
+            prevPage.classList.add('active');
+          }
+        }
+      });
+    });
+    
+    // 获取按钮点击处理
+    const getButtons = document.querySelectorAll('.get-btn');
+    getButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = this.getAttribute('href');
+      });
+    });
+    
+    // 处理URL参数，自动切换标签页
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+      const tabElement = document.querySelector(`[data-tab="${tabParam}"]`);
+      if (tabElement) {
+        tabElement.click();
+      }
+    }
+  </script>
+</body>
+</html>

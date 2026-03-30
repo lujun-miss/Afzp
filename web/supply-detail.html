@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>机构详情 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    body {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 面包屑 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 text-sm">
+          <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <a href="supply-demand.html" class="text-gray-400 hover:text-white">供需匹配</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <span class="text-white font-medium">机构详情</span>
+        </div>
+      </div>
+
+      <!-- 机构详情内容 -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- 左侧：机构基本信息 -->
+        <div class="lg:col-span-1">
+          <div class="card" style="border-radius: 16px;">
+            <div class="p-6">
+              
+              <div class="flex flex-col items-center mb-6">
+                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-industry text-white text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold mt-4">鄄城县发制品原材料供应有限公司</h2>
+                <div class="flex flex-col gap-2 mt-3">
+                  <button class="btn btn-primary btn-sm">
+                    <i class="fas fa-comments mr-2"></i>立即咨询
+                  </button>
+                  <button class="btn btn-outline btn-sm">
+                    <i class="fas fa-star mr-2"></i>收藏服务
+                  </button>
+                </div>
+              </div>
+              
+              <div class="space-y-4">
+                <div>
+                  <h3 class="text-sm font-semibold text-gray-400 mb-2">基本信息</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-map-marker-alt text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">所属地区</div>
+                        <div class="text-sm">山东省菏泽市鄄城县</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-building text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">详细地址</div>
+                        <div class="text-sm">鄄城县发制品产业园A区12号</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-user text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">联系人</div>
+                        <div class="text-sm">张经理</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-phone text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">联系电话</div>
+                        <div class="text-sm">13800138000</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-calendar-alt text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">发布日期</div>
+                        <div class="text-sm">2025-03-15</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 class="text-sm font-semibold text-gray-400 mb-2">服务方向</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">原材料供应</span>
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">电商服务</span>
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">品牌服务</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 右侧：机构详细介绍 -->
+        <div class="lg:col-span-3">
+          <div class="card" style="border-radius: 16px;">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4">机构介绍</h3>
+              <div class="prose prose-invert max-w-none">
+                <p>鄄城县发制品原材料供应有限公司成立于2010年，是一家专业从事发制品原材料供应的综合性企业。公司拥有先进的生产设备和专业的技术团队，致力于为发制品行业提供高质量的原材料和优质的服务。</p>
+                
+                <p>公司主要业务包括：</p>
+                <ul>
+                  <li>真人发原材料采购和销售</li>
+                  <li>化纤发原材料生产和供应</li>
+                  <li>发制品辅料和配件供应</li>
+                  <li>电商平台运营和品牌推广</li>
+                  <li>产品质量检测和认证服务</li>
+                </ul>
+                
+                <p>公司秉承"品质第一、服务至上"的经营理念，通过不断创新和优化，为客户提供全方位的原材料解决方案。目前已与国内外多家知名发制品企业建立了长期合作关系，产品远销欧美、东南亚等多个国家和地区。</p>
+                
+                <p>未来，公司将继续加大技术研发投入，拓展产品线，提升服务水平，为推动发制品行业的发展做出更大贡献。</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card mt-6" style="border-radius: 16px;">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4">专业资质</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-800 rounded-lg p-4 flex flex-col items-center">
+                  <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #1e3a8a, #1e40af); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+                    <i class="fas fa-certificate text-white text-4xl"></i>
+                  </div>
+                  <div class="text-sm text-center">ISO9001质量管理体系认证</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4 flex flex-col items-center">
+                  <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #1e3a8a, #1e40af); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+                    <i class="fas fa-shield-alt text-white text-4xl"></i>
+                  </div>
+                  <div class="text-sm text-center">产品质量认证证书</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card mt-6" style="border-radius: 16px;">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4">荣誉资质</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gray-800 rounded-lg p-4 flex flex-col items-center">
+                  <div style="width: 150px; height: 100px; background: linear-gradient(135deg, #d97706, #fbbf24); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+                    <i class="fas fa-trophy text-white text-3xl"></i>
+                  </div>
+                  <div class="text-sm text-center">优秀供应商</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4 flex flex-col items-center">
+                  <div style="width: 150px; height: 100px; background: linear-gradient(135deg, #d97706, #fbbf24); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+                    <i class="fas fa-medal text-white text-3xl"></i>
+                  </div>
+                  <div class="text-sm text-center">诚信企业</div>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4 flex flex-col items-center">
+                  <div style="width: 150px; height: 100px; background: linear-gradient(135deg, #d97706, #fbbf24); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+                    <i class="fas fa-star text-white text-3xl"></i>
+                  </div>
+                  <div class="text-sm text-center">行业标杆企业</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 咨询弹窗 -->
+  <div id="consultation-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <!-- 标题栏 -->
+      <div class="bg-blue-600 px-6 py-4 flex items-center justify-between">
+        <h3 class="text-xl font-semibold text-white">立即咨询</h3>
+        <button onclick="closeConsultationModal()" class="text-white hover:text-gray-200">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="consultation-form">
+          <!-- 企业名称 -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2 text-gray-800"><span class="text-red-500">*</span>企业名称</label>
+            <input type="text" class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" placeholder="请输入企业名称">
+          </div>
+          
+          <!-- 省市区 -->
+          <div class="grid grid-cols-3 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-800"><span class="text-red-500">*</span>省市区</label>
+              <select class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800">
+                <option value="">请选择省</option>
+                <option value="山东省">山东省</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">&nbsp;</label>
+              <select class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800">
+                <option value="">请选择市</option>
+                <option value="菏泽市">菏泽市</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">&nbsp;</label>
+              <select class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800">
+                <option value="">请选择区</option>
+                <option value="鄄城县">鄄城县</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- 需求方 -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2 text-gray-800"><span class="text-red-500">*</span>需求方</label>
+            <input type="text" class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" placeholder="请输入需求方">
+          </div>
+          
+          <!-- 联系人 -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2 text-gray-800"><span class="text-red-500">*</span>联系人</label>
+            <input type="text" class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" placeholder="请输入联系人">
+          </div>
+          
+          <!-- 电话 -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2 text-gray-800"><span class="text-red-500">*</span>电话</label>
+            <input type="tel" class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" placeholder="请输入电话">
+          </div>
+          
+          <!-- 服务方向 -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-3 text-gray-800"><span class="text-red-500">*</span>服务方向</label>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">金融服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">法律咨询服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">信息技术服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">创新创业服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">财税评估服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">管理咨询服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">人力资源服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">电商服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">品牌服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">知识产权服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">信用担保服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">科技中介服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">上市培育服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">发制品原材料供应</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">工业互联网服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">市场开拓服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">资讯服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">发制品生产加工服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">会展服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">教育培训服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">双招双引服务</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-blue-600">
+                <span class="text-sm text-gray-800">其他服务</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 咨询事宜 -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2 text-gray-800"><span class="text-red-500">*</span>咨询事宜</label>
+            <textarea class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 h-32 resize-none" placeholder="请输入咨询事宜"></textarea>
+          </div>
+          
+          <!-- 提交按钮 -->
+          <div class="flex gap-3">
+            <button type="button" onclick="closeConsultationModal()" class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">取消</button>
+            <button type="button" onclick="submitConsultation()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">提交咨询</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 打开咨询弹窗
+    document.querySelector('.lg\\:col-span-1 .btn-primary').addEventListener('click', function() {
+      document.getElementById('consultation-modal').classList.remove('hidden');
+    });
+    
+    // 关闭咨询弹窗
+    function closeConsultationModal() {
+      document.getElementById('consultation-modal').classList.add('hidden');
+    }
+    
+    // 提交咨询
+    function submitConsultation() {
+      alert('咨询提交成功！我们将尽快与您联系。');
+      closeConsultationModal();
+    }
+  </script>
+</body>
+</html>

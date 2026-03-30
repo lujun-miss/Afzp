@@ -75,7 +75,7 @@
         <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
         <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
         <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
-        <a href="hr.html" class="nav-link active text-white">人力资源</a>
+
         <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
         <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
         <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
@@ -95,10 +95,20 @@
   </nav>
 
   <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white font-medium">人力资源</span>
+      </div>
+    </div>
+    
     <!-- 页面标题 -->
     <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">人力资源</h1>
         <p style="color: var(--text-secondary); font-size: 14px;">招聘信息、人才培训、人力资源服务</p>
       </div>
       <div class="flex gap-3">
@@ -142,272 +152,388 @@
       
       <div class="card">
         <div class="flex items-center justify-between mb-3">
-          <span style="color: var(--text-secondary); font-size: 14px;">平均薪资</span>
-          <i class="fas fa-dollar-sign" style="color: var(--warning);"></i>
+          <span style="color: var(--text-secondary); font-size: 14px;">招聘企业</span>
+          <i class="fas fa-building" style="color: var(--warning);"></i>
         </div>
-        <div style="font-size: 32px; font-weight: 700;">¥6,850</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">月平均薪资水平</div>
+        <div style="font-size: 32px; font-weight: 700;">89</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">活跃招聘企业数</div>
+      </div>
+
+    </div>
+
+    <!-- 左右两列布局 -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- 左侧：热门招聘和培训课程 -->
+      <div class="lg:col-span-3 space-y-6">
+        <!-- 热门招聘 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-fire"></i>
+              热门招聘
+            </div>
+            <div>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="window.location.href='hr-jobs.html'">查看更多</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="job-card" style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-weight: 600; font-size: 16px;">高级假发设计师</div>
+                <span class="tag tag-success">急聘</span>
+              </div>
+              <div class="flex items-center gap-4 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-building" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">兴隆发制品有限公司</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-6 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">鄄城县经济开发区</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-briefcase" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">3-5年</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-6 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-graduation-cap" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">大专及以上</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-dollar-sign" style="color: var(--gold);"></i>
+                  <span style="font-size: 16px; font-weight: 600; color: var(--gold);">¥8000-12000</span>
+                </div>
+              </div>
+              <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                负责假发产品设计开发，具有3年以上相关工作经验，熟悉发制品生产工艺。
+              </div>
+              <div class="flex items-center justify-between">
+                <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-15</span>
+                <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="window.location.href='hr-job-detail.html'">
+                  <i class="fas fa-paper-plane"></i> 投递简历
+                </button>
+              </div>
+            </div>
+            
+            <div class="job-card" style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-weight: 600; font-size: 16px;">外贸业务员</div>
+                <span class="tag tag-warning">热招</span>
+              </div>
+              <div class="flex items-center gap-4 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-building" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">华宇贸易有限公司</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-6 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">鄄城县城区</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-briefcase" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">1-3年</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-6 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-graduation-cap" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">本科及以上</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-dollar-sign" style="color: var(--gold);"></i>
+                  <span style="font-size: 16px; font-weight: 600; color: var(--gold);">¥6000-10000</span>
+                </div>
+              </div>
+              <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                负责发制品海外市场开拓，英语听说读写流利，有外贸经验者优先。
+              </div>
+              <div class="flex items-center justify-between">
+                <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-14</span>
+                <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="window.location.href='hr-job-detail.html'">
+                  <i class="fas fa-paper-plane"></i> 投递简历
+                </button>
+              </div>
+            </div>
+            
+            <div class="job-card" style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-weight: 600; font-size: 16px;">生产主管</div>
+                <span class="tag tag-primary">招聘中</span>
+              </div>
+              <div class="flex items-center gap-4 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-building" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">恒达发制品有限公司</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-6 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">鄄城县工业园区</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-briefcase" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">5-10年</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-6 mb-4">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-graduation-cap" style="color: var(--text-secondary);"></i>
+                  <span style="font-size: 14px; color: var(--text-secondary);">高中及以上</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-dollar-sign" style="color: var(--gold);"></i>
+                  <span style="font-size: 16px; font-weight: 600; color: var(--gold);">¥7000-12000</span>
+                </div>
+              </div>
+              <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                负责生产车间管理，具有发制品生产管理经验，熟悉生产流程。
+              </div>
+              <div class="flex items-center justify-between">
+                <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-13</span>
+                <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="window.location.href='hr-job-detail.html'">
+                  <i class="fas fa-paper-plane"></i> 投递简历
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 培训课程 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-graduation-cap"></i>
+              培训课程
+            </div>
+            <a href="hr-training.html" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+              <div style="height: 120px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-hair text-3xl"></i>
+              </div>
+              <div style="padding: 16px;">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">假发设计与制作</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">掌握假发设计原理和制作工艺，提升专业技能</div>
+                <div class="flex items-center justify-between">
+                  <div style="font-size: 12px; color: var(--text-secondary);">
+                    <i class="fas fa-user"></i> 256人已报名
+                  </div>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="window.location.href='hr-training-detail.html'">
+                    <i class="fas fa-sign-up"></i> 报名
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--success)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+              <div style="height: 120px; background: linear-gradient(135deg, var(--success), #059669); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-globe text-3xl"></i>
+              </div>
+              <div style="padding: 16px;">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">外贸业务实战</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">学习外贸流程、谈判技巧和市场开拓策略</div>
+                <div class="flex items-center justify-between">
+                  <div style="font-size: 12px; color: var(--text-secondary);">
+                    <i class="fas fa-user"></i> 189人已报名
+                  </div>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="window.location.href='hr-training-detail.html'">
+                    <i class="fas fa-sign-up"></i> 报名
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+              <div style="height: 120px; background: linear-gradient(135deg, var(--gold), #d97706); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-chart-line text-3xl"></i>
+              </div>
+              <div style="padding: 16px;">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">企业管理提升</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">学习现代企业管理理念和实操方法</div>
+                <div class="flex items-center justify-between">
+                  <div style="font-size: 12px; color: var(--text-secondary);">
+                    <i class="fas fa-user"></i> 145人已报名
+                  </div>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="window.location.href='hr-training-detail.html'">
+                    <i class="fas fa-sign-up"></i> 报名
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--warning)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
+              <div style="height: 120px; background: linear-gradient(135deg, var(--warning), #ea580c); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-cogs text-3xl"></i>
+              </div>
+              <div style="padding: 16px;">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">生产技术革新</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">了解最新生产技术和设备操作技能</div>
+                <div class="flex items-center justify-between">
+                  <div style="font-size: 12px; color: var(--text-secondary);">
+                    <i class="fas fa-user"></i> 203人已报名
+                  </div>
+                  <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="window.location.href='hr-training-detail.html'">
+                    <i class="fas fa-sign-up"></i> 报名
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧：热门企业 -->
+      <div class="lg:col-span-1">
+        <div class="card" style="position: sticky; top: 120px;">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-building"></i>
+              热门企业
+            </div>
+            <a href="hr-companies.html" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="space-y-4">
+            <!-- 企业卡片1 -->
+            <div style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 16px; font-weight: 600; color: white;">兴隆</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">兴隆发制品有限公司</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">100-499人</span>
+                      <span class="tag tag-primary" style="font-size: 9px;">已融资</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div style="font-weight: 500; font-size: 14px;">高级假发设计师</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">鄄城县</span>
+                      <span style="font-size: 11px; color: var(--text-secondary);">3-5年</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gold);">¥8000-12000</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div style="font-weight: 500; font-size: 14px;">生产主管</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">鄄城县</span>
+                      <span style="font-size: 11px; color: var(--text-secondary);">5-10年</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gold);">¥7000-12000</span>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-gray-700">
+                <button class="btn btn-outline btn-sm w-full" onclick="window.location.href='hr-job-detail.html?company=兴隆发制品有限公司'">查看更多职位</button>
+              </div>
+            </div>
+            
+            <!-- 企业卡片2 -->
+            <div style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 16px; font-weight: 600; color: white;">华宇</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">华宇贸易有限公司</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">50-100人</span>
+                      <span class="tag tag-success" style="font-size: 9px;">未融资</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div style="font-weight: 500; font-size: 14px;">外贸业务员</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">鄄城县</span>
+                      <span style="font-size: 11px; color: var(--text-secondary);">1-3年</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gold);">¥6000-10000</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div style="font-weight: 500; font-size: 14px;">电商运营专员</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">鄄城县</span>
+                      <span style="font-size: 11px; color: var(--text-secondary);">2-3年</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gold);">¥5000-8000</span>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-gray-700">
+                <button class="btn btn-outline btn-sm w-full" onclick="window.location.href='hr-job-detail.html?company=华宇贸易有限公司'">查看更多职位</button>
+              </div>
+            </div>
+            
+            <!-- 企业卡片3 -->
+            <div style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 16px; font-weight: 600; color: white;">恒达</span>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px;">恒达发制品有限公司</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">500-999人</span>
+                      <span class="tag tag-warning" style="font-size: 9px;">已上市</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div style="font-weight: 500; font-size: 14px;">质量控制专员</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">鄄城县</span>
+                      <span style="font-size: 11px; color: var(--text-secondary);">1-2年</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gold);">¥4000-6000</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div style="font-weight: 500; font-size: 14px;">设备维护工程师</div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span style="font-size: 11px; color: var(--text-secondary);">鄄城县</span>
+                      <span style="font-size: 11px; color: var(--text-secondary);">3-5年</span>
+                    </div>
+                  </div>
+                  <span style="font-size: 13px; font-weight: 600; color: var(--gold);">¥5000-7000</span>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-gray-700">
+                <button class="btn btn-outline btn-sm w-full" onclick="window.location.href='hr-job-detail.html?company=恒达发制品有限公司'">查看更多职位</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 热门招聘 -->
-    <div class="card mb-6">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-fire"></i>
-          热门招聘
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">最新</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">薪资</button>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">热度</button>
-        </div>
-      </div>
-      <div class="grid grid-cols-3 gap-4">
-        <div class="job-card" style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
-          <div class="flex items-center justify-between mb-4">
-            <div style="font-weight: 600; font-size: 16px;">高级假发设计师</div>
-            <span class="tag tag-success">急聘</span>
-          </div>
-          <div class="flex items-center gap-4 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-building" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">兴隆发制品有限公司</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">鄄城县经济开发区</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-briefcase" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">3-5年</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-graduation-cap" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">大专及以上</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-dollar-sign" style="color: var(--gold);"></i>
-              <span style="font-size: 16px; font-weight: 600; color: var(--gold);">¥8000-12000</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-            负责假发产品设计开发，具有3年以上相关工作经验，熟悉发制品生产工艺。
-          </div>
-          <div class="flex items-center justify-between">
-            <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-15</span>
-            <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">
-              <i class="fas fa-paper-plane"></i> 投递简历
-            </button>
-          </div>
-        </div>
-        
-        <div class="job-card" style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
-          <div class="flex items-center justify-between mb-4">
-            <div style="font-weight: 600; font-size: 16px;">外贸业务员</div>
-            <span class="tag tag-warning">热招</span>
-          </div>
-          <div class="flex items-center gap-4 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-building" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">华宇贸易有限公司</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">鄄城县城区</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-briefcase" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">1-3年</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-graduation-cap" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">本科及以上</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-dollar-sign" style="color: var(--gold);"></i>
-              <span style="font-size: 16px; font-weight: 600; color: var(--gold);">¥6000-10000</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-            负责发制品海外市场开拓，英语听说读写流利，有外贸经验者优先。
-          </div>
-          <div class="flex items-center justify-between">
-            <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-14</span>
-            <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">
-              <i class="fas fa-paper-plane"></i> 投递简历
-            </button>
-          </div>
-        </div>
-        
-        <div class="job-card" style="background: var(--dark-bg); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
-          <div class="flex items-center justify-between mb-4">
-            <div style="font-weight: 600; font-size: 16px;">生产主管</div>
-            <span class="tag tag-primary">招聘中</span>
-          </div>
-          <div class="flex items-center gap-4 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-building" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">恒达发制品有限公司</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-map-marker-alt" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">鄄城县工业园区</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-briefcase" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">5-10年</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 mb-4">
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-graduation-cap" style="color: var(--text-secondary);"></i>
-              <span style="font-size: 14px; color: var(--text-secondary);">高中及以上</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 4px;">
-              <i class="fas fa-dollar-sign" style="color: var(--gold);"></i>
-              <span style="font-size: 16px; font-weight: 600; color: var(--gold);">¥7000-12000</span>
-            </div>
-          </div>
-          <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
-            负责生产车间管理，具有发制品生产管理经验，熟悉生产流程。
-          </div>
-          <div class="flex items-center justify-between">
-            <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-13</span>
-            <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">
-              <i class="fas fa-paper-plane"></i> 投递简历
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 培训课程 -->
-    <div class="card mb-6">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-graduation-cap"></i>
-          培训课程
-        </div>
-        <a href="#" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
-      </div>
-      <div class="grid grid-cols-4 gap-4">
-        <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="height: 120px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-hair text-3xl"></i>
-          </div>
-          <div style="padding: 16px;">
-            <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">假发设计与制作</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">掌握假发设计原理和制作工艺，提升专业技能</div>
-            <div class="flex items-center justify-between">
-              <div style="font-size: 12px; color: var(--text-secondary);">
-                <i class="fas fa-user"></i> 256人已报名
-              </div>
-              <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
-                <i class="fas fa-sign-up"></i> 报名
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--success)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="height: 120px; background: linear-gradient(135deg, var(--success), #059669); display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-globe text-3xl"></i>
-          </div>
-          <div style="padding: 16px;">
-            <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">外贸业务实战</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">学习外贸流程、谈判技巧和市场开拓策略</div>
-            <div class="flex items-center justify-between">
-              <div style="font-size: 12px; color: var(--text-secondary);">
-                <i class="fas fa-user"></i> 189人已报名
-              </div>
-              <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
-                <i class="fas fa-sign-up"></i> 报名
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--gold)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="height: 120px; background: linear-gradient(135deg, var(--gold), #d97706); display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-chart-line text-3xl"></i>
-          </div>
-          <div style="padding: 16px;">
-            <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">企业管理提升</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">学习现代企业管理理念和实操方法</div>
-            <div class="flex items-center justify-between">
-              <div style="font-size: 12px; color: var(--text-secondary);">
-                <i class="fas fa-user"></i> 145人已报名
-              </div>
-              <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
-                <i class="fas fa-sign-up"></i> 报名
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--warning)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)'">
-          <div style="height: 120px; background: linear-gradient(135deg, var(--warning), #ea580c); display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-cogs text-3xl"></i>
-          </div>
-          <div style="padding: 16px;">
-            <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">生产技术革新</div>
-            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">了解最新生产技术和设备操作技能</div>
-            <div class="flex items-center justify-between">
-              <div style="font-size: 12px; color: var(--text-secondary);">
-                <i class="fas fa-user"></i> 203人已报名
-              </div>
-              <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
-                <i class="fas fa-sign-up"></i> 报名
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 人才市场分析 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <i class="fas fa-chart-bar"></i>
-          人才市场分析
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-6">
-        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
-          <div style="font-weight: 600; font-size: 16px; margin-bottom: 16px;">岗位需求分布</div>
-          <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-chart-pie text-6xl" style="color: var(--primary); opacity: 0.5;"></i>
-            <div style="position: absolute; text-align: center;">
-              <div style="font-size: 14px; color: var(--text-secondary);">岗位需求分布图表</div>
-              <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">设计类 35% | 生产类 30% | 销售类 25% | 管理类 10%</div>
-            </div>
-          </div>
-        </div>
-        
-        <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
-          <div style="font-weight: 600; font-size: 16px; margin-bottom: 16px;">薪资水平趋势</div>
-          <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-chart-line text-6xl" style="color: var(--success); opacity: 0.5;"></i>
-            <div style="position: absolute; text-align: center;">
-              <div style="font-size: 14px; color: var(--text-secondary);">薪资水平趋势图表</div>
-              <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">同比增长 8.5% | 环比增长 2.3%</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>

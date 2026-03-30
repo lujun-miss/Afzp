@@ -17,6 +17,61 @@
       background: #0a0e1a;
       color: #fff;
       overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    
+    .quick-nav {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .quick-nav-item {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(26, 95, 180, 0.3);
+      border: 2px solid rgba(26, 95, 180, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .quick-nav-item:hover {
+      background: rgba(26, 95, 180, 0.6);
+      transform: scale(1.2);
+    }
+    
+    .quick-nav-item.active {
+      background: #1a5fb4;
+      box-shadow: 0 0 20px rgba(26, 95, 180, 0.6);
+    }
+    
+    .quick-nav-label {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10, 14, 26, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(26, 95, 180, 0.3);
+    }
+    
+    .quick-nav-item:hover .quick-nav-label {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* 导航栏 */
@@ -797,7 +852,7 @@
       <a href="web/market.html" class="nav-link">市场洞察</a>
       <a href="web/government.html" class="nav-link">政务服务</a>
       <a href="web/shop.html" class="nav-link">发品交易</a>
-      <a href="web/hr.html" class="nav-link">人力资源</a>
+
       <a href="web/digital-finance/financial-policy.html" class="nav-link">金融服务</a>
       <a href="web/thinktank.html" class="nav-link">发业智库</a>
       <a href="web/traceability.html" class="nav-link">发品溯源</a>
@@ -809,8 +864,25 @@
       <a href="web/register.html" class="nav-btn">
         <i class="fas fa-user-plus"></i> 注册
       </a>
+</div>
     </div>
   </nav>
+
+  <!-- 快速导航 -->
+  <div class="quick-nav">
+    <div class="quick-nav-item active" data-target="home">
+      <div class="quick-nav-label">首页</div>
+    </div>
+    <div class="quick-nav-item" data-target="features">
+      <div class="quick-nav-label">核心功能</div>
+    </div>
+    <div class="quick-nav-item" data-target="map">
+      <div class="quick-nav-label">产业布局</div>
+    </div>
+    <div class="quick-nav-item" data-target="about">
+      <div class="quick-nav-label">关于我们</div>
+    </div>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero" id="home">
@@ -1112,6 +1184,49 @@
       } else {
         navbar.classList.remove('scrolled');
       }
+      
+      // 更新快速导航状态
+      updateQuickNav();
+    });
+    
+    // 更新快速导航状态
+    function updateQuickNav() {
+      const sections = document.querySelectorAll('section[id]');
+      const navItems = document.querySelectorAll('.quick-nav-item');
+      
+      let currentSectionId = '';
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          currentSectionId = section.id;
+        }
+      });
+      
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('data-target') === currentSectionId) {
+          item.classList.add('active');
+        }
+      });
+    }
+    
+    // 快速导航点击事件
+    document.querySelectorAll('.quick-nav-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
     });
 
     // 滚动显示动画

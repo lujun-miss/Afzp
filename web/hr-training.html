@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>培训课程列表 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .course-card {
+      transition: all 0.3s ease;
+    }
+    .course-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(26, 159, 180, 0.2);
+    }
+    .filter-checkbox:checked + label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="hr.html" class="text-gray-400 hover:text-white">人力资源</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white">培训课程</span>
+      </div>
+    </div>
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">培训课程列表</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">共有 <span style="color: var(--primary); font-weight: 600;">36</span> 门培训课程</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-4 gap-6">
+      <!-- 左侧筛选面板 -->
+      <div class="col-span-1">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <h3 class="text-lg font-semibold mb-6">筛选条件</h3>
+          
+          <!-- 课程类型筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">课程类型</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="技能培训" checked>
+                <span>技能培训</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="管理培训">
+                <span>管理培训</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="行业知识">
+                <span>行业知识</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="语言培训">
+                <span>语言培训</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="认证考试">
+                <span>认证考试</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 课程时长筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">课程时长</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="短期课程">
+                <span>短期课程（1-3天）</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="中期课程">
+                <span>中期课程（1-2周）</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="长期课程">
+                <span>长期课程（1个月以上）</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 课程难度筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">课程难度</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="初级">
+                <span>初级</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="中级">
+                <span>中级</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="高级">
+                <span>高级</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 培训方式筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">培训方式</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="线下培训">
+                <span>线下培训</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="线上培训">
+                <span>线上培训</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="混合培训">
+                <span>混合培训</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 操作按钮 -->
+          <div class="flex gap-3">
+            <button class="btn btn-outline flex-1" onclick="resetFilters()">重置</button>
+            <button class="btn btn-primary flex-1" onclick="applyFilters()">筛选</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧课程列表 -->
+      <div class="col-span-3">
+        <!-- 搜索框 -->
+        <div class="card mb-6" style="border-radius: 16px; padding: 24px;">
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <input type="text" placeholder="搜索课程名称、培训机构" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:border-primary">
+            </div>
+            <button class="btn btn-primary" onclick="searchCourses()">
+              <i class="fas fa-search"></i> 搜索
+            </button>
+          </div>
+        </div>
+        
+        <!-- 排序选项 -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex gap-4">
+            <button class="btn btn-outline btn-sm active" onclick="sortCourses('default')">默认排序</button>
+            <button class="btn btn-outline btn-sm" onclick="sortCourses('popular')">人气排序</button>
+            <button class="btn btn-outline btn-sm" onclick="sortCourses('recent')">最新发布</button>
+          </div>
+          <div style="color: var(--text-secondary); font-size: 14px;">
+            显示 <span style="color: var(--primary);">1-12</span> 条，共 <span style="color: var(--primary);">36</span> 条
+          </div>
+        </div>
+        
+        <!-- 课程列表 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 课程卡片1 -->
+          <div class="course-card card" style="border-radius: 16px; overflow: hidden;" onclick="window.location.href='hr-training-detail.html'">
+            <div style="height: 180px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-hair text-5xl"></i>
+            </div>
+            <div style="padding: 24px;">
+              <div class="mb-3">
+                <span class="tag tag-primary">技能培训</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">假发设计与制作高级班</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                掌握假发设计原理和制作工艺，提升专业技能，适合有一定基础的从业人员。
+              </p>
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  <i class="fas fa-user"></i> 256人已报名
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="font-size: 14px; color: var(--text-secondary);">中级</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">|</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">2周</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span style="font-size: 18px; font-weight: 600; color: var(--primary);">¥2,800</span>
+                </div>
+                <button class="btn btn-primary" style="padding: 8px 20px;" onclick="window.location.href='hr-training-detail.html'">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 课程卡片2 -->
+          <div class="course-card card" style="border-radius: 16px; overflow: hidden;" onclick="window.location.href='hr-training-detail.html'">
+            <div style="height: 180px; background: linear-gradient(135deg, var(--success), #059669); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-globe text-5xl"></i>
+            </div>
+            <div style="padding: 24px;">
+              <div class="mb-3">
+                <span class="tag tag-success">语言培训</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">外贸业务实战英语</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                学习外贸流程、谈判技巧和市场开拓策略，提升英语沟通能力。
+              </p>
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  <i class="fas fa-user"></i> 189人已报名
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="font-size: 14px; color: var(--text-secondary);">中级</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">|</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">1个月</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span style="font-size: 18px; font-weight: 600; color: var(--primary);">¥3,500</span>
+                </div>
+                <button class="btn btn-primary" style="padding: 8px 20px;" onclick="window.location.href='hr-training-detail.html'">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 课程卡片3 -->
+          <div class="course-card card" style="border-radius: 16px; overflow: hidden;" onclick="window.location.href='hr-training-detail.html'">
+            <div style="height: 180px; background: linear-gradient(135deg, var(--gold), #d97706); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-chart-line text-5xl"></i>
+            </div>
+            <div style="padding: 24px;">
+              <div class="mb-3">
+                <span class="tag tag-warning">管理培训</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">企业管理提升课程</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                学习现代企业管理理念和实操方法，提升管理能力。
+              </p>
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  <i class="fas fa-user"></i> 145人已报名
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="font-size: 14px; color: var(--text-secondary);">高级</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">|</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">3天</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span style="font-size: 18px; font-weight: 600; color: var(--primary);">¥4,200</span>
+                </div>
+                <button class="btn btn-primary" style="padding: 8px 20px;" onclick="window.location.href='hr-training-detail.html'">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 课程卡片4 -->
+          <div class="course-card card" style="border-radius: 16px; overflow: hidden;" onclick="window.location.href='hr-training-detail.html'">
+            <div style="height: 180px; background: linear-gradient(135deg, var(--warning), #ea580c); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-cogs text-5xl"></i>
+            </div>
+            <div style="padding: 24px;">
+              <div class="mb-3">
+                <span class="tag tag-warning">技能培训</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">生产技术革新培训</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                了解最新生产技术和设备操作技能，提高生产效率。
+              </p>
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  <i class="fas fa-user"></i> 203人已报名
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="font-size: 14px; color: var(--text-secondary);">中级</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">|</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">1周</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span style="font-size: 18px; font-weight: 600; color: var(--primary);">¥2,500</span>
+                </div>
+                <button class="btn btn-primary" style="padding: 8px 20px;" onclick="window.location.href='hr-training-detail.html'">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 课程卡片5 -->
+          <div class="course-card card" style="border-radius: 16px; overflow: hidden;" onclick="window.location.href='hr-training-detail.html'">
+            <div style="height: 180px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-laptop-code text-5xl"></i>
+            </div>
+            <div style="padding: 24px;">
+              <div class="mb-3">
+                <span class="tag tag-info">技能培训</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">电商运营实战课程</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                掌握淘宝、京东等平台运营技巧，提升店铺销售业绩。
+              </p>
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  <i class="fas fa-user"></i> 278人已报名
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="font-size: 14px; color: var(--text-secondary);">中级</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">|</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">2周</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span style="font-size: 18px; font-weight: 600; color: var(--primary);">¥3,800</span>
+                </div>
+                <button class="btn btn-primary" style="padding: 8px 20px;" onclick="window.location.href='hr-training-detail.html'">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 课程卡片6 -->
+          <div class="course-card card" style="border-radius: 16px; overflow: hidden;" onclick="window.location.href='hr-training-detail.html'">
+            <div style="height: 180px; background: linear-gradient(135deg, #ec4899, #db2777); display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-paint-brush text-5xl"></i>
+            </div>
+            <div style="padding: 24px;">
+              <div class="mb-3">
+                <span class="tag tag-danger">技能培训</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">发制品设计软件培训</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                学习专业设计软件操作，掌握数字化设计技能。
+              </p>
+              <div class="flex items-center justify-between mb-4">
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  <i class="fas fa-user"></i> 167人已报名
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="font-size: 14px; color: var(--text-secondary);">初级</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">|</span>
+                  <span style="font-size: 14px; color: var(--text-secondary);">3天</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span style="font-size: 18px; font-weight: 600; color: var(--primary);">¥2,200</span>
+                </div>
+                <button class="btn btn-primary" style="padding: 8px 20px;" onclick="window.location.href='hr-training-detail.html'">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="flex items-center justify-center mt-8">
+          <div class="flex gap-2">
+            <button class="btn btn-outline btn-sm" disabled>上一页</button>
+            <button class="btn btn-primary btn-sm">1</button>
+            <button class="btn btn-outline btn-sm">2</button>
+            <button class="btn btn-outline btn-sm">3</button>
+            <button class="btn btn-outline btn-sm">下一页</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 筛选功能
+    function resetFilters() {
+      const checkboxes = document.querySelectorAll('.filter-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+    
+    function applyFilters() {
+      // 这里可以添加筛选逻辑
+      console.log('应用筛选条件');
+    }
+    
+    // 搜索功能
+    function searchCourses() {
+      const searchInput = document.querySelector('input[type="text"]');
+      const searchTerm = searchInput.value.trim();
+      console.log('搜索课程:', searchTerm);
+    }
+    
+    // 排序功能
+    function sortCourses(sortType) {
+      const buttons = document.querySelectorAll('.btn.btn-outline.btn-sm');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      console.log('排序方式:', sortType);
+    }
+  </script>
+</body>
+</html>

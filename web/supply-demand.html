@@ -40,34 +40,54 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
     }
+    
+    body {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
-  <!-- 导航栏 -->
-  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-300">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-4">
-        <a href="index.html" class="flex items-center gap-2">
-          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-industry text-white text-xl"></i>
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
           </div>
-          <span class="text-xl font-bold text-white">发制品产业大脑</span>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
         </a>
       </div>
       
-      <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="nav-link">首页</a>
-        <a href="supply.html" class="nav-link active">资源枢纽</a>
-        <a href="market.html" class="nav-link">市场分析</a>
-        <a href="enterprise.html" class="nav-link">企业服务</a>
-        <a href="traceability.html" class="nav-link">溯源管理</a>
-        <a href="government.html" class="nav-link">政策服务</a>
-        <a href="thinktank.html" class="nav-link">行业智库</a>
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
       </div>
       
       <div class="flex items-center gap-4">
-        <button class="btn btn-outline" onclick="window.location.href='login.html'">登录</button>
-        <button class="btn btn-primary" onclick="window.location.href='register.html'">注册</button>
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
       </div>
     </div>
   </nav>
@@ -75,142 +95,291 @@
   <!-- 页面内容 -->
   <div class="pt-24 pb-16">
     <div class="container mx-auto px-4">
-      <!-- 页面标题 -->
-      <div class="mb-10 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold mb-4">供需匹配</h1>
-        <p class="text-gray-400 max-w-3xl mx-auto">原材料供需对接、产能协作平台，帮助发制品企业快速匹配供应商和采购商</p>
+      <!-- 面包屑 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 text-sm">
+          <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <span class="text-white font-medium">供需匹配</span>
+        </div>
       </div>
 
-      <!-- 主要内容 -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- 左侧搜索筛选 -->
-        <div class="lg:col-span-1">
-          <div class="card" style="border-radius: 16px; padding: 24px;">
-            <h3 class="text-xl font-semibold mb-6">搜索筛选</h3>
-            
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium mb-2">搜索关键词</label>
-                <input type="text" placeholder="输入原材料名称、产品类型等" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+      <!-- 页面描述 -->
+      <div class="mb-8">
+        <p class="text-gray-400 max-w-3xl">专注于发制品行业原材料供需对接、加工订单协作，助力企业高效匹配合作伙伴</p>
+      </div>
+
+      <!-- 标签页 -->
+      <div class="mb-8">
+        <div class="flex justify-center gap-8">
+          <button id="supply-tab" class="text-xl font-semibold text-primary border-b-2 border-primary pb-2">供应大厅</button>
+          <button id="demand-tab" class="text-xl font-semibold text-gray-400 pb-2 hover:text-primary transition-colors">需求大厅</button>
+        </div>
+      </div>
+
+
+
+      <!-- 服务方向筛选 -->
+      <div class="mb-8">
+        <div class="flex flex-col gap-4">
+          <div class="flex gap-2">
+            <input type="text" placeholder="搜索服务方向..." class="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-300">
+            <button class="btn btn-primary">搜索</button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button class="btn btn-primary btn-sm" onclick="filterByService('all')">全部</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('金融服务')">金融服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('法律咨询服务')">法律咨询服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('信息技术服务')">信息技术服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('创新创业服务')">创新创业服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('财税评估服务')">财税评估服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('管理咨询服务')">管理咨询服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('人力资源服务')">人力资源服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('电商服务')">电商服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('品牌服务')">品牌服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('知识产权服务')">知识产权服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('信用担保服务')">信用担保服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('科技中介服务')">科技中介服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('上市培育服务')">上市培育服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('发制品原材料供应')">发制品原材料供应</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('工业互联网服务')">工业互联网服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('市场开拓服务')">市场开拓服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('资讯服务')">资讯服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('发制品生产加工服务')">发制品生产加工服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('会展服务')">会展服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('教育培训服务')">教育培训服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('双招双引服务')">双招双引服务</button>
+            <button class="btn btn-outline btn-sm" onclick="filterByService('其他服务')">其他服务</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 供应大厅内容 -->
+      <div id="supply-content" class="block">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- 供应卡片 1 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-industry text-white text-xl"></i>
               </div>
-              
-              <div>
-                <label class="block text-sm font-medium mb-2">供需类型</label>
-                <select class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option value="">全部</option>
-                  <option value="supply">供应</option>
-                  <option value="demand">需求</option>
-                </select>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">鄄城县发制品原材料供应有限公司</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-15</span>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">原材料供应</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">电商服务</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">品牌服务</span>
+                </div>
+                <div class="text-sm text-gray-400 mb-3">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市鄄城县</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 鄄城县发制品产业园A区12号</p>
+                  <p><i class="fas fa-user mr-1"></i> 联系人: 张经理</p>
+                  <p><i class="fas fa-phone mr-1"></i> 联系电话: 13800138000</p>
+                </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='supply-detail.html'">立即查看</button>
               </div>
-              
-              <div>
-                <label class="block text-sm font-medium mb-2">产品类型</label>
-                <select class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option value="">全部</option>
-                  <option value="human-hair">真人发</option>
-                  <option value="synthetic-hair">化纤发</option>
-                  <option value="tools">工具设备</option>
-                  <option value="materials">原材料</option>
-                </select>
+            </div>
+          </div>
+
+          <!-- 供应卡片 2 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-industry text-white text-xl"></i>
               </div>
-              
-              <div>
-                <label class="block text-sm font-medium mb-2">地区</label>
-                <select class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option value="">全部</option>
-                  <option value="juancheng">鄄城县</option>
-                  <option value="shandong">山东省</option>
-                  <option value="other">其他地区</option>
-                </select>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">菏泽市发制品原材料供应商</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-14</span>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">化纤发原材料</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">管理咨询服务</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">市场开拓服务</span>
+                </div>
+                <div class="text-sm text-gray-400 mb-3">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 菏泽市开发区工业路88号</p>
+                  <p><i class="fas fa-user mr-1"></i> 联系人: 李经理</p>
+                  <p><i class="fas fa-phone mr-1"></i> 联系电话: 13900139000</p>
+                </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='supply-detail.html'">立即查看</button>
               </div>
-              
-              <button class="btn btn-primary w-full mt-4">搜索</button>
+            </div>
+          </div>
+
+          <!-- 供应卡片 3 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-hands-helping text-white text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">菏泽市发制品加工协作中心</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-13</span>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">加工协作</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">人力资源服务</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">工业互联网服务</span>
+                </div>
+                <div class="text-sm text-gray-400 mb-3">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 菏泽市高新区科技大道123号</p>
+                  <p><i class="fas fa-user mr-1"></i> 联系人: 王经理</p>
+                  <p><i class="fas fa-phone mr-1"></i> 联系电话: 13700137000</p>
+                </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='supply-detail.html'">立即查看</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 供应卡片 4 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-chair text-white text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">鄄城县发制品场地共享平台</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-12</span>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">场地共享</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">教育培训服务</span>
+                  <span class="service-tag bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">会展服务</span>
+                </div>
+                <div class="text-sm text-gray-400 mb-3">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市鄄城县</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 鄄城县工业园区B区36号</p>
+                  <p><i class="fas fa-user mr-1"></i> 联系人: 刘经理</p>
+                  <p><i class="fas fa-phone mr-1"></i> 联系电话: 13600136000</p>
+                </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='supply-detail.html'">立即查看</button>
+              </div>
             </div>
           </div>
         </div>
-        
-        <!-- 右侧列表 -->
-        <div class="lg:col-span-2">
-          <!-- 供应列表 -->
-          <div class="card mb-8" style="border-radius: 16px;">
-            <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
-              <h3 class="text-xl font-semibold">供应信息</h3>
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
-                <div class="flex justify-between items-start mb-2">
-                  <h4 class="font-semibold">优质真人发原材料</h4>
-                  <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">供应</span>
-                </div>
-                <p class="text-sm text-gray-400 mb-3">长度：12-24英寸，颜色：自然色，数量：500kg</p>
-                <div class="flex justify-between items-center">
-                  <span class="text-primary font-semibold">¥800 / kg</span>
-                  <button class="btn btn-outline btn-sm">联系供应商</button>
-                </div>
+      </div>
+
+      <!-- 需求大厅内容 -->
+      <div id="demand-content" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- 需求卡片 1 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shopping-cart text-white text-xl"></i>
               </div>
-              
-              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
-                <div class="flex justify-between items-start mb-2">
-                  <h4 class="font-semibold">发制品生产设备</h4>
-                  <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">供应</span>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">鄄城县发制品生产有限公司</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span class="mr-4"><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-15</span>
+                  <span class="mr-4"><i class="fas fa-tag mr-1"></i> 原材料需求</span>
+                  <span class="text-red-400"><i class="fas fa-exclamation-triangle mr-1"></i> 紧急</span>
                 </div>
-                <p class="text-sm text-gray-400 mb-3">类型：编织机，数量：10台，成色：九成新</p>
-                <div class="flex justify-between items-center">
-                  <span class="text-primary font-semibold">¥50,000 / 台</span>
-                  <button class="btn btn-outline btn-sm">联系供应商</button>
+                <div class="text-sm text-gray-400 mb-4">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市鄄城县</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 鄄城县发制品产业园C区8号</p>
                 </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='demand-detail.html'">立即查看</button>
               </div>
             </div>
           </div>
-          
-          <!-- 需求列表 -->
-          <div class="card" style="border-radius: 16px;">
-            <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
-              <h3 class="text-xl font-semibold">需求信息</h3>
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
-                <div class="flex justify-between items-start mb-2">
-                  <h4 class="font-semibold">化纤发原材料采购</h4>
-                  <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded">需求</span>
-                </div>
-                <p class="text-sm text-gray-400 mb-3">类型：高温丝，颜色：多种，数量：1000kg/月</p>
-                <div class="flex justify-between items-center">
-                  <span class="text-blue-400 font-semibold">长期采购</span>
-                  <button class="btn btn-outline btn-sm">联系采购商</button>
-                </div>
+
+          <!-- 需求卡片 2 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-industry text-white text-xl"></i>
               </div>
-              
-              <div class="border border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
-                <div class="flex justify-between items-start mb-2">
-                  <h4 class="font-semibold">发制品加工订单</h4>
-                  <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded">需求</span>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">菏泽市发制品加工厂</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span class="mr-4"><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-14</span>
+                  <span class="mr-4"><i class="fas fa-tag mr-1"></i> 加工订单</span>
+                  <span class="text-yellow-400"><i class="fas fa-clock mr-1"></i> 一般</span>
                 </div>
-                <p class="text-sm text-gray-400 mb-3">产品：女士假发套，数量：5000件，交期：30天</p>
-                <div class="flex justify-between items-center">
-                  <span class="text-blue-400 font-semibold">急单</span>
-                  <button class="btn btn-outline btn-sm">联系采购商</button>
+                <div class="text-sm text-gray-400 mb-4">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 菏泽市牡丹区黄河路128号</p>
                 </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='demand-detail.html'">立即查看</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 需求卡片 3 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shopping-cart text-white text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">济南市发制品生产企业</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span class="mr-4"><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-13</span>
+                  <span class="mr-4"><i class="fas fa-tag mr-1"></i> 真人发原材料需求</span>
+                  <span class="text-red-400"><i class="fas fa-exclamation-triangle mr-1"></i> 紧急</span>
+                </div>
+                <div class="text-sm text-gray-400 mb-4">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省济南市</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 济南市高新区科技路666号</p>
+                </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='demand-detail.html'">立即查看</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 需求卡片 4 -->
+          <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
+            <div class="flex items-start gap-4">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-users text-white text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">鄄城县发制品企业联盟</h3>
+                <div class="flex items-center text-sm text-gray-400 mb-2">
+                  <span class="mr-4"><i class="fas fa-calendar-alt mr-1"></i> 发布日期: 2025-03-12</span>
+                  <span class="mr-4"><i class="fas fa-tag mr-1"></i> 技术合作</span>
+                  <span class="text-green-400"><i class="fas fa-check-circle mr-1"></i> 低</span>
+                </div>
+                <div class="text-sm text-gray-400 mb-4">
+                  <p><i class="fas fa-map-marker-alt mr-1"></i> 所在地区: 山东省菏泽市鄄城县</p>
+                  <p><i class="fas fa-building mr-1"></i> 详细地址: 鄄城县产业大厦15层</p>
+                </div>
+                <button class="btn btn-primary px-6 py-2" onclick="window.location.href='demand-detail.html'">立即查看</button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="mt-12 flex justify-center">
+        <nav class="flex items-center gap-2">
+          <button class="btn btn-outline btn-sm">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="switchPage(1)">1</button>
+          <button class="btn btn-outline btn-sm" onclick="switchPage(2)">2</button>
+          <button class="btn btn-outline btn-sm" onclick="switchPage(3)">3</button>
+          <button class="btn btn-outline btn-sm" onclick="switchPage(4)">4</button>
+          <button class="btn btn-outline btn-sm" onclick="switchPage(5)">5</button>
+          <button class="btn btn-outline btn-sm">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </nav>
       </div>
     </div>
   </div>
-
-  <!-- 页脚 -->
-  <footer class="bg-gray-800 py-8">
-    <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
-      <p>© 2024 鄄城县发制品产业大脑 版权所有</p>
-      <div class="flex justify-center gap-4 mt-4">
-        <a href="#" class="hover:text-white transition-colors">关于我们</a>
-        <a href="#" class="hover:text-white transition-colors">联系我们</a>
-        <a href="#" class="hover:text-white transition-colors">隐私政策</a>
-        <a href="#" class="hover:text-white transition-colors">使用条款</a>
-      </div>
-    </div>
-  </footer>
 
   <script>
     // 导航栏滚动效果
@@ -222,6 +391,85 @@
         nav.classList.remove('nav-scrolled');
       }
     });
+
+    // 标签页切换功能
+    document.getElementById('supply-tab').addEventListener('click', function() {
+      document.getElementById('supply-tab').classList.add('text-primary', 'border-b-2', 'border-primary');
+      document.getElementById('supply-tab').classList.remove('text-gray-400');
+      document.getElementById('demand-tab').classList.remove('text-primary', 'border-b-2', 'border-primary');
+      document.getElementById('demand-tab').classList.add('text-gray-400');
+      document.getElementById('supply-content').classList.remove('hidden');
+      document.getElementById('demand-content').classList.add('hidden');
+    });
+
+    document.getElementById('demand-tab').addEventListener('click', function() {
+      document.getElementById('demand-tab').classList.add('text-primary', 'border-b-2', 'border-primary');
+      document.getElementById('demand-tab').classList.remove('text-gray-400');
+      document.getElementById('supply-tab').classList.remove('text-primary', 'border-b-2', 'border-primary');
+      document.getElementById('supply-tab').classList.add('text-gray-400');
+      document.getElementById('demand-content').classList.remove('hidden');
+      document.getElementById('supply-content').classList.add('hidden');
+    });
+
+    // 服务方向筛选功能
+    function filterByService(service) {
+      // 更新按钮样式
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      });
+      
+      // 设置当前选中的按钮
+      event.target.classList.remove('btn-outline');
+      event.target.classList.add('btn-primary');
+      
+      // 获取所有供应卡片
+      const supplyCards = document.querySelectorAll('#supply-content .bg-gray-800');
+      
+      if (service === 'all') {
+        // 显示所有卡片
+        supplyCards.forEach(card => {
+          card.style.display = 'block';
+        });
+      } else {
+        // 根据服务方向筛选卡片
+        supplyCards.forEach(card => {
+          const cardServices = card.querySelectorAll('.service-tag');
+          let hasService = false;
+          
+          cardServices.forEach(tag => {
+            if (tag.textContent.trim() === service) {
+              hasService = true;
+            }
+          });
+          
+          card.style.display = hasService ? 'block' : 'none';
+        });
+      }
+    }
+
+    // 分页切换
+    function switchPage(page) {
+      // 更新分页按钮样式
+      document.querySelectorAll('.mt-12 .btn-primary').forEach(btn => {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      });
+      
+      event.target.classList.remove('btn-outline');
+      event.target.classList.add('btn-primary');
+      
+      // 根据当前激活的标签页进行分页
+      const isSupplyActive = document.getElementById('supply-tab').classList.contains('text-primary');
+      
+      if (isSupplyActive) {
+        console.log('供应大厅切换到第', page, '页');
+        // 供应大厅分页逻辑
+      } else {
+        console.log('需求大厅切换到第', page, '页');
+        // 需求大厅分页逻辑
+      }
+    }
   </script>
 </body>
 </html>

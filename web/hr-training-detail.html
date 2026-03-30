@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>培训课程详情 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .course-item {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .course-item:hover {
+      background: rgba(26, 159, 180, 0.1);
+      transform: translateX(4px);
+    }
+    .course-item.active {
+      background: rgba(26, 159, 180, 0.2);
+      border-left: 4px solid var(--primary);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="hr.html" class="text-gray-400 hover:text-white">人力资源</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <a href="hr-training.html" class="text-gray-400 hover:text-white">培训课程</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white">课程详情</span>
+      </div>
+    </div>
+
+
+    <div class="grid grid-cols-4 gap-6">
+      <!-- 左侧课程列表 -->
+      <div class="col-span-1">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <!-- 机构信息 -->
+          <div class="mb-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 24px; font-weight: 600; color: white;">发</span>
+              </div>
+              <div>
+                <div style="font-weight: 600; font-size: 18px;">鄄城县发制品培训中心</div>
+                <div class="flex items-center gap-3 mt-1">
+                  <span style="font-size: 12px; color: var(--text-secondary);">成立于2010年</span>
+                  <span style="font-size: 12px; color: var(--text-secondary);">发制品行业</span>
+                  <span class="tag tag-primary" style="font-size: 10px;">认证机构</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 课程分类 -->
+            <div class="flex flex-wrap gap-2">
+              <button class="btn btn-outline btn-sm active">全部(12)</button>
+              <button class="btn btn-outline btn-sm">技能培训(6)</button>
+              <button class="btn btn-outline btn-sm">语言培训(3)</button>
+              <button class="btn btn-outline btn-sm">管理培训(2)</button>
+              <button class="btn btn-outline btn-sm">其他(1)</button>
+            </div>
+          </div>
+          
+          <!-- 搜索框 -->
+          <div class="mb-6">
+            <div class="flex gap-2">
+              <input type="text" placeholder="搜索课程关键词" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm focus:outline-none focus:border-primary">
+              <button class="btn btn-outline btn-sm">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- 课程列表 -->
+          <div class="space-y-3">
+            <!-- 当前选中的课程 -->
+            <div class="course-item active p-4 border border-gray-700 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">假发设计与制作高级班</div>
+                <span class="tag tag-primary" style="font-size: 10px;">技能培训</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-clock"></i> 2周</span>
+                <span><i class="fas fa-user"></i> 中级</span>
+                <span><i class="fas fa-tag"></i> ¥2,800</span>
+              </div>
+            </div>
+            
+            <!-- 其他课程 -->
+            <div class="course-item p-4 border border-gray-700 rounded-lg" onclick="showCourseDetail('外贸业务实战英语')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">外贸业务实战英语</div>
+                <span class="tag tag-success" style="font-size: 10px;">语言培训</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-clock"></i> 1个月</span>
+                <span><i class="fas fa-user"></i> 中级</span>
+                <span><i class="fas fa-tag"></i> ¥3,500</span>
+              </div>
+            </div>
+            
+            <div class="course-item p-4 border border-gray-700 rounded-lg" onclick="showCourseDetail('企业管理提升课程')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">企业管理提升课程</div>
+                <span class="tag tag-warning" style="font-size: 10px;">管理培训</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-clock"></i> 3天</span>
+                <span><i class="fas fa-user"></i> 高级</span>
+                <span><i class="fas fa-tag"></i> ¥4,200</span>
+              </div>
+            </div>
+            
+            <div class="course-item p-4 border border-gray-700 rounded-lg" onclick="showCourseDetail('生产技术革新培训')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">生产技术革新培训</div>
+                <span class="tag tag-warning" style="font-size: 10px;">技能培训</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-clock"></i> 1周</span>
+                <span><i class="fas fa-user"></i> 中级</span>
+                <span><i class="fas fa-tag"></i> ¥2,500</span>
+              </div>
+            </div>
+            
+            <div class="course-item p-4 border border-gray-700 rounded-lg" onclick="showCourseDetail('电商运营实战课程')">
+              <div class="flex items-center justify-between mb-2">
+                <div style="font-weight: 600; font-size: 16px;">电商运营实战课程</div>
+                <span class="tag tag-info" style="font-size: 10px;">技能培训</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-400">
+                <span><i class="fas fa-clock"></i> 2周</span>
+                <span><i class="fas fa-user"></i> 中级</span>
+                <span><i class="fas fa-tag"></i> ¥3,800</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧课程详情 -->
+      <div class="col-span-3">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <!-- 课程基本信息 -->
+          <div class="mb-8">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 2px;">假发设计与制作高级班</h2>
+                <div class="flex items-center gap-4 mt-2">
+                  <span class="tag tag-primary">技能培训</span>
+                  <span style="color: var(--gold); font-weight: 600;">¥2,800</span>
+                  <span style="color: var(--text-secondary);"><i class="fas fa-clock"></i> 2周</span>
+                  <span style="color: var(--text-secondary);"><i class="fas fa-user"></i> 中级</span>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button class="btn btn-outline">
+                  <i class="fas fa-heart"></i> 收藏
+                </button>
+                <button class="btn btn-primary" onclick="document.getElementById('registrationModal').classList.remove('hidden')">
+                  <i class="fas fa-sign-up"></i> 立即报名
+                </button>
+              </div>
+            </div>
+            
+            <!-- 课程标签 -->
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="tag tag-secondary">假发设计</span>
+              <span class="tag tag-secondary">制作工艺</span>
+              <span class="tag tag-secondary">专业技能</span>
+              <span class="tag tag-secondary">发制品</span>
+            </div>
+          </div>
+          
+          <!-- 课程介绍 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">课程简介</h3>
+            <div style="line-height: 1.8; color: var(--text-secondary);">
+              <p style="margin-bottom: 8px;">本课程专为有一定基础的发制品从业人员设计，系统讲解假发设计原理和制作工艺。通过理论学习和实践操作相结合的方式，帮助学员掌握专业技能，提升职业竞争力。</p>
+              <p style="margin-bottom: 8px;">课程内容涵盖假发设计基础、材料选择、工艺制作、质量控制等方面，由行业资深专家授课，确保学员能够掌握实用技能。</p>
+            </div>
+          </div>
+          
+          <!-- 课程特色 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">课程特色</h3>
+            <div class="space-y-4">
+              <div class="flex gap-3">
+                <div style="width: 24px; height: 24px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 12px; font-weight: 600;">1</span>
+                </div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">理论与实践结合</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">不仅讲解理论知识，还提供实际操作机会</div>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <div style="width: 24px; height: 24px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 12px; font-weight: 600;">2</span>
+                </div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">资深讲师授课</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">由行业资深专家和技术骨干担任讲师</div>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <div style="width: 24px; height: 24px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 12px; font-weight: 600;">3</span>
+                </div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">就业推荐服务</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">优秀学员推荐到合作企业就业</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 适合人群 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">适合人群</h3>
+            <div style="line-height: 1.8; color: var(--text-secondary);">
+              <p style="margin-bottom: 8px;">1. 有1年以上发制品相关工作经验</p>
+              <p style="margin-bottom: 8px;">2. 希望提升专业技能的从业人员</p>
+              <p style="margin-bottom: 8px;">3. 有意从事假发设计制作工作的人员</p>
+              <p style="margin-bottom: 8px;">4. 对假发设计制作感兴趣的初学者</p>
+            </div>
+          </div>
+          
+          <!-- 课程信息 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">课程信息</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-calendar text-primary"></i>
+                  <span style="font-weight: 600;">开课时间</span>
+                </div>
+                <p style="color: var(--text-secondary);">2026年4月15日</p>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-clock text-primary"></i>
+                  <span style="font-weight: 600;">课程时长</span>
+                </div>
+                <p style="color: var(--text-secondary);">2周（每周一至周五）</p>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-map-marker-alt text-primary"></i>
+                  <span style="font-weight: 600;">上课地点</span>
+                </div>
+                <p style="color: var(--text-secondary);">鄄城县发制品培训中心</p>
+              </div>
+              <div style="background: var(--dark-bg); border-radius: 12px; padding: 20px;">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fas fa-users text-primary"></i>
+                  <span style="font-weight: 600;">课程形式</span>
+                </div>
+                <p style="color: var(--text-secondary);">线上+线下相结合</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 讲师信息 -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">讲师介绍</h3>
+            <div class="flex items-center gap-4">
+              <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #7c3aed); display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 20px; font-weight: 600; color: white;">张</span>
+              </div>
+              <div>
+                <div style="font-weight: 600;">张教授</div>
+                <div style="color: var(--text-secondary); font-size: 14px;">资深假发设计专家</div>
+              </div>
+
+            </div>
+          </div>
+          
+          <!-- 机构简介 -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">机构简介</h3>
+            <div style="background: var(--dark-bg); border-radius: 12px; padding: 24px;">
+
+              <div style="line-height: 1.8; color: var(--text-secondary);">
+                <p style="margin-bottom: 8px;">鄄城县发制品培训中心是一家专注于发制品行业人才培养的专业培训机构，成立于2010年。中心拥有一支由行业资深专家和技术骨干组成的教师团队，致力于为发制品企业培养高素质专业人才。</p>
+                <p style="margin-bottom: 8px;">中心开设的课程涵盖假发设计、生产技术、质量管理、外贸业务、企业管理等多个领域，采用理论与实践相结合的教学方式，确保学员能够掌握实用技能。</p>
+                <p>多年来，中心已为行业培养了数千名专业人才，得到了企业和学员的高度认可。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 报名表单模态框 -->
+  <div id="registrationModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+    <div class="relative bg-white rounded-lg max-w-2xl w-full mx-4">
+      <div class="bg-gradient-to-r from-cyan-400 to-teal-500 px-8 py-4 flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white">立即报名</h3>
+        <button class="text-white hover:text-gray-200" onclick="document.getElementById('registrationModal').classList.add('hidden')">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      
+      <form class="p-8">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span>姓名
+            </label>
+            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="请输入您的姓名">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span>手机号码
+            </label>
+            <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="请输入您的手机号码">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">报名课程</label>
+            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="假发设计与制作高级班" readonly>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span>上传报名表
+            </label>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+              <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+              <p class="text-sm text-gray-500 mb-2">点击或拖拽文件到此处上传</p>
+              <p class="text-xs text-gray-400">支持 .pdf, .doc, .docx 格式，最大 10MB</p>
+              <input type="file" class="hidden" id="registrationFile" accept=".pdf,.doc,.docx">
+              <button type="button" class="mt-4 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600" onclick="document.getElementById('registrationFile').click()">选择文件</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 text-center">
+          <button type="submit" class="px-8 py-2 bg-gradient-to-r from-cyan-400 to-teal-500 text-white font-medium rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-cyan-500">立即提交</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 显示课程详情
+    function showCourseDetail(courseTitle) {
+      // 移除所有课程的active状态
+      const courseItems = document.querySelectorAll('.course-item');
+      courseItems.forEach(item => item.classList.remove('active'));
+      
+      // 添加当前课程的active状态
+      event.target.closest('.course-item').classList.add('active');
+      
+      // 更新右侧详情内容（这里可以根据实际需求进行AJAX请求或内容替换）
+      console.log('查看课程详情:', courseTitle);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>招聘岗位列表 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .job-card {
+      transition: all 0.3s ease;
+    }
+    .job-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(26, 159, 180, 0.2);
+    }
+    .filter-checkbox:checked + label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-[1600px] mx-auto pt-24 px-8">
+    <!-- 面包屑 -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="hr.html" class="text-gray-400 hover:text-white">人力资源</a>
+        <i class="fas fa-chevron-right text-gray-600"></i>
+        <span class="text-white">招聘岗位</span>
+      </div>
+    </div>
+    <!-- 页面标题 -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">招聘岗位列表</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">共有 <span style="color: var(--primary); font-weight: 600;">528</span> 个招聘岗位</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-4 gap-6">
+      <!-- 左侧筛选面板 -->
+      <div class="col-span-1">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <h3 class="text-lg font-semibold mb-6">筛选条件</h3>
+          
+          <!-- 行业筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">行业类型</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="发制品" checked>
+                <span>发制品</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="化工">
+                <span>化工</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="生物工程">
+                <span>生物工程</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="环保">
+                <span>环保</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="电商">
+                <span>电商</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="外贸">
+                <span>外贸</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 工作经验筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">工作经验</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="不限">
+                <span>不限</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="应届毕业生">
+                <span>应届毕业生</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="1-3年">
+                <span>1-3年</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="3-5年">
+                <span>3-5年</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="5-10年">
+                <span>5-10年</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="10年以上">
+                <span>10年以上</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 学历要求筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">学历要求</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="不限">
+                <span>不限</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="高中及以下">
+                <span>高中及以下</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="大专">
+                <span>大专</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="本科">
+                <span>本科</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="硕士">
+                <span>硕士</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="博士">
+                <span>博士</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 薪资范围筛选 -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium mb-3">薪资范围</h4>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="3k以下">
+                <span>3k以下</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="3k-5k">
+                <span>3k-5k</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="5k-8k">
+                <span>5k-8k</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="8k-10k">
+                <span>8k-10k</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="10k-15k">
+                <span>10k-15k</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox" value="15k以上">
+                <span>15k以上</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- 操作按钮 -->
+          <div class="flex gap-3">
+            <button class="btn btn-outline flex-1" onclick="resetFilters()">重置</button>
+            <button class="btn btn-primary flex-1" onclick="applyFilters()">筛选</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧岗位列表 -->
+      <div class="col-span-3">
+        <!-- 搜索框 -->
+        <div class="card mb-6" style="border-radius: 16px; padding: 24px;">
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <input type="text" placeholder="搜索岗位名称、公司名称" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:border-primary">
+            </div>
+            <button class="btn btn-primary" onclick="searchJobs()">
+              <i class="fas fa-search"></i> 搜索
+            </button>
+          </div>
+        </div>
+        
+        <!-- 排序选项 -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex gap-4">
+            <button class="btn btn-outline btn-sm active" onclick="sortJobs('default')">默认排序</button>
+            <button class="btn btn-outline btn-sm" onclick="sortJobs('salary_desc')">薪资从高到低</button>
+            <button class="btn btn-outline btn-sm" onclick="sortJobs('salary_asc')">薪资从低到高</button>
+            <button class="btn btn-outline btn-sm" onclick="sortJobs('date')">最新发布</button>
+          </div>
+          <div style="color: var(--text-secondary); font-size: 14px;">
+            显示 <span style="color: var(--primary);">1-20</span> 条，共 <span style="color: var(--primary);">528</span> 条
+          </div>
+        </div>
+        
+        <!-- 岗位列表 -->
+        <div class="space-y-4">
+          <!-- 岗位卡片1 -->
+          <div class="job-card card" style="border-radius: 16px; padding: 24px;">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <h3 style="font-size: 18px; font-weight: 600;">高级假发设计师</h3>
+                  <span class="tag tag-success">急聘</span>
+                </div>
+                <div class="flex items-center gap-6 mb-3">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-building"></i>
+                    <span>兴隆发制品有限公司</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>鄄城县经济开发区</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-6 mb-4">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-briefcase"></i>
+                    <span>3-5年</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>大专及以上</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm font-semibold text-yellow-500">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>¥8000-12000</span>
+                  </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px;">
+                  负责假发产品设计开发，具有3年以上相关工作经验，熟悉发制品生产工艺，能够独立完成产品设计方案。
+                </p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span class="tag">假发设计</span>
+                  <span class="tag">产品开发</span>
+                  <span class="tag">工艺设计</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+              <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-15</span>
+              <button class="btn btn-primary" style="padding: 8px 24px;" onclick="window.location.href='hr-job-detail.html'">
+                <i class="fas fa-paper-plane"></i> 立即投递
+              </button>
+            </div>
+          </div>
+          
+          <!-- 岗位卡片2 -->
+          <div class="job-card card" style="border-radius: 16px; padding: 24px;">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <h3 style="font-size: 18px; font-weight: 600;">外贸业务员</h3>
+                  <span class="tag tag-warning">热招</span>
+                </div>
+                <div class="flex items-center gap-6 mb-3">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-building"></i>
+                    <span>华宇贸易有限公司</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>鄄城县城区</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-6 mb-4">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-briefcase"></i>
+                    <span>1-3年</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>本科及以上</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm font-semibold text-yellow-500">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>¥6000-10000</span>
+                  </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px;">
+                  负责发制品海外市场开拓，英语听说读写流利，有外贸经验者优先，能够独立开发客户。
+                </p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span class="tag">外贸</span>
+                  <span class="tag">英语</span>
+                  <span class="tag">客户开发</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+              <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-14</span>
+              <button class="btn btn-primary" style="padding: 8px 24px;" onclick="window.location.href='hr-job-detail.html'">
+                <i class="fas fa-paper-plane"></i> 立即投递
+              </button>
+            </div>
+          </div>
+          
+          <!-- 岗位卡片3 -->
+          <div class="job-card card" style="border-radius: 16px; padding: 24px;">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <h3 style="font-size: 18px; font-weight: 600;">生产主管</h3>
+                  <span class="tag tag-primary">招聘中</span>
+                </div>
+                <div class="flex items-center gap-6 mb-3">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-building"></i>
+                    <span>恒达发制品有限公司</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>鄄城县工业园区</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-6 mb-4">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-briefcase"></i>
+                    <span>5-10年</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>高中及以上</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm font-semibold text-yellow-500">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>¥7000-12000</span>
+                  </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px;">
+                  负责生产车间管理，具有发制品生产管理经验，熟悉生产流程，能够有效管理团队提高生产效率。
+                </p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span class="tag">生产管理</span>
+                  <span class="tag">团队管理</span>
+                  <span class="tag">流程优化</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+              <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-13</span>
+              <button class="btn btn-primary" style="padding: 8px 24px;" onclick="window.location.href='hr-job-detail.html'">
+                <i class="fas fa-paper-plane"></i> 立即投递
+              </button>
+            </div>
+          </div>
+          
+          <!-- 岗位卡片4 -->
+          <div class="job-card card" style="border-radius: 16px; padding: 24px;">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <h3 style="font-size: 18px; font-weight: 600;">电商运营专员</h3>
+                  <span class="tag tag-info">急聘</span>
+                </div>
+                <div class="flex items-center gap-6 mb-3">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-building"></i>
+                    <span>美丝发制品有限公司</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>鄄城县城区</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-6 mb-4">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-briefcase"></i>
+                    <span>2-3年</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>大专及以上</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm font-semibold text-yellow-500">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>¥5000-8000</span>
+                  </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px;">
+                  负责淘宝、京东等平台的店铺运营，熟悉电商平台规则，能够制定运营策略提高销售业绩。
+                </p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span class="tag">电商运营</span>
+                  <span class="tag">淘宝运营</span>
+                  <span class="tag">京东运营</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+              <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-12</span>
+              <button class="btn btn-primary" style="padding: 8px 24px;" onclick="window.location.href='hr-job-detail.html'">
+                <i class="fas fa-paper-plane"></i> 立即投递
+              </button>
+            </div>
+          </div>
+          
+          <!-- 岗位卡片5 -->
+          <div class="job-card card" style="border-radius: 16px; padding: 24px;">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <h3 style="font-size: 18px; font-weight: 600;">质量控制专员</h3>
+                  <span class="tag tag-primary">招聘中</span>
+                </div>
+                <div class="flex items-center gap-6 mb-3">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-building"></i>
+                    <span>诚信发制品有限公司</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>鄄城县工业园区</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-6 mb-4">
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-briefcase"></i>
+                    <span>1-2年</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>大专及以上</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm font-semibold text-yellow-500">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>¥4000-6000</span>
+                  </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px;">
+                  负责产品质量检验，熟悉质量管理体系，能够严格把控产品质量，确保产品符合标准。
+                </p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span class="tag">质量控制</span>
+                  <span class="tag">质检</span>
+                  <span class="tag">品质管理</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+              <span style="font-size: 12px; color: var(--text-secondary);">发布时间：2026-03-11</span>
+              <button class="btn btn-primary" style="padding: 8px 24px;" onclick="window.location.href='hr-job-detail.html'">
+                <i class="fas fa-paper-plane"></i> 立即投递
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="flex items-center justify-center mt-8">
+          <div class="flex gap-2">
+            <button class="btn btn-outline btn-sm" disabled>上一页</button>
+            <button class="btn btn-primary btn-sm">1</button>
+            <button class="btn btn-outline btn-sm">2</button>
+            <button class="btn btn-outline btn-sm">3</button>
+            <button class="btn btn-outline btn-sm">4</button>
+            <button class="btn btn-outline btn-sm">5</button>
+            <button class="btn btn-outline btn-sm">下一页</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 筛选功能
+    function resetFilters() {
+      const checkboxes = document.querySelectorAll('.filter-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+    
+    function applyFilters() {
+      // 这里可以添加筛选逻辑
+      console.log('应用筛选条件');
+    }
+    
+    // 搜索功能
+    function searchJobs() {
+      const searchInput = document.querySelector('input[type="text"]');
+      const searchTerm = searchInput.value.trim();
+      console.log('搜索岗位:', searchTerm);
+    }
+    
+    // 排序功能
+    function sortJobs(sortType) {
+      const buttons = document.querySelectorAll('.btn.btn-outline.btn-sm');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      console.log('排序方式:', sortType);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>专家详情 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    body {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 面包屑 -->
+      <div class="mb-8">
+        <div class="flex items-center gap-2 text-sm">
+          <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <a href="expert-resources.html" class="text-gray-400 hover:text-white">专家资源</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <span class="text-white font-medium">专家详情</span>
+        </div>
+      </div>
+
+      <!-- 专家详情内容 -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- 左侧：专家基本信息 -->
+        <div class="lg:col-span-1">
+          <div class="card" style="border-radius: 16px;">
+            <div class="p-6">
+              <div class="flex flex-col items-center mb-6">
+                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-user-md text-white text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold mt-4">王教授</h2>
+                <p class="text-gray-400 mt-2">技术专家 | 发制品工艺</p>
+              </div>
+              
+              <div class="space-y-4">
+                <div>
+                  <h3 class="text-sm font-semibold text-gray-400 mb-2">基本信息</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-graduation-cap text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">学历</div>
+                        <div class="text-sm">博士</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-building text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">工作单位</div>
+                        <div class="text-sm">发制品研究院</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-briefcase text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">职务</div>
+                        <div class="text-sm">首席研究员</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <i class="fas fa-map-marker-alt text-blue-400 mt-1"></i>
+                      <div>
+                        <div class="text-xs text-gray-500">所属地区</div>
+                        <div class="text-sm">山东省菏泽市</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 class="text-sm font-semibold text-gray-400 mb-2">擅长领域</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">工艺研发</span>
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">生产优化</span>
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">技术咨询</span>
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">质量控制</span>
+                    <span class="bg-blue-900 text-blue-300 text-xs px-3 py-1 rounded-full">产品设计</span>
+                  </div>
+                </div>
+                
+                <div class="pt-4 border-t border-gray-700">
+                  <button class="btn btn-primary w-full mb-3" onclick="showConsultModal()">
+                    <i class="fas fa-comment-dots mr-2"></i>立即咨询
+                  </button>
+                  <button class="btn btn-outline w-full">
+                    <i class="fas fa-star mr-2"></i>收藏专家
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 右侧：专家详细介绍 -->
+        <div class="lg:col-span-3">
+          <div class="card" style="border-radius: 16px;">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4">专家介绍</h3>
+              <div class="prose prose-invert max-w-none">
+                <p>王教授拥有20年发制品行业经验，曾任多家知名企业技术总监，擅长高端假发工艺研发和生产流程优化。在发制品领域拥有丰富的技术经验和创新思维，为多家企业提供技术咨询和解决方案。</p>
+                
+                <p>主要研究方向包括：</p>
+                <ul>
+                  <li>高端假发工艺研发</li>
+                  <li>生产流程优化</li>
+                  <li>产品质量控制</li>
+                  <li>新材料应用研究</li>
+                  <li>工艺创新与改进</li>
+                </ul>
+                
+                <p>曾主持多项国家级科研项目，获得专利15项，发表学术论文30余篇。在行业内享有很高的声誉，多次受邀参加国内外行业会议并发表演讲。</p>
+                
+                <p>致力于推动发制品行业的技术进步和创新发展，为企业提供专业的技术支持和解决方案，帮助企业提升竞争力和市场占有率。</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card mt-6" style="border-radius: 16px;">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4">服务案例</h3>
+              <div class="space-y-4">
+                <div class="border-l-2 border-blue-500 pl-4">
+                  <div class="flex items-center gap-3 mb-2">
+                    <div class="text-blue-400 font-semibold">兴隆发制品有限公司</div>
+                    <span class="text-xs text-gray-500">2024年</span>
+                  </div>
+                  <p class="text-sm text-gray-400">为企业提供工艺优化方案，提升生产效率30%，产品合格率提高15%。</p>
+                </div>
+                
+                <div class="border-l-2 border-blue-500 pl-4">
+                  <div class="flex items-center gap-3 mb-2">
+                    <div class="text-blue-400 font-semibold">华宇贸易有限公司</div>
+                    <span class="text-xs text-gray-500">2023年</span>
+                  </div>
+                  <p class="text-sm text-gray-400">提供产品设计和质量控制服务，帮助企业进入高端市场，销售额增长50%。</p>
+                </div>
+                
+                <div class="border-l-2 border-blue-500 pl-4">
+                  <div class="flex items-center gap-3 mb-2">
+                    <div class="text-blue-400 font-semibold">恒达发制品有限公司</div>
+                    <span class="text-xs text-gray-500">2022年</span>
+                  </div>
+                  <p class="text-sm text-gray-400">优化生产流程，降低生产成本20%，提升产品质量和一致性。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 咨询弹窗 -->
+  <div id="consult-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+    <div class="bg-gray-800 rounded-lg max-w-lg w-full mx-4 shadow-2xl">
+      <div class="bg-blue-600 px-6 py-4 flex items-center justify-between">
+        <h3 class="text-white font-semibold">专家咨询</h3>
+        <button class="text-white hover:text-gray-200" onclick="hideConsultModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="consult-form" class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">企业名称</label>
+          <input type="text" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入企业名称">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">联系人</label>
+          <input type="text" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入联系人姓名">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">联系电话</label>
+          <input type="tel" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入联系电话">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">咨询内容</label>
+          <textarea class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="请详细描述您的咨询需求"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">提交咨询</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 咨询弹窗控制
+    function showConsultModal() {
+      document.getElementById('consult-modal').classList.remove('hidden');
+    }
+    
+    function hideConsultModal() {
+      document.getElementById('consult-modal').classList.add('hidden');
+    }
+    
+    // 点击弹窗背景关闭
+    document.getElementById('consult-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        hideConsultModal();
+      }
+    });
+    
+    // 表单提交
+    document.getElementById('consult-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // 这里可以添加表单提交逻辑
+      alert('咨询信息已提交，我们会尽快与您联系！');
+      hideConsultModal();
+    });
+  </script>
+</body>
+</html>

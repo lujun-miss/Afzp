@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>政策文件列表 - 政务服务</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link active text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16 px-8">
+    <div class="max-w-[1600px] mx-auto">
+      <!-- 面包屑导航 -->
+      <div class="mb-6 text-sm">
+        <a href="../index.html" style="color: #9ca3af;">首页</a>
+        <span style="color: #6b7280;"> / </span>
+        <a href="government.html" style="color: #9ca3af;">政务服务</a>
+        <span style="color: #6b7280;"> / </span>
+        <span style="color: white;">政策文件列表</span>
+      </div>
+
+
+
+      <!-- 查询条件 -->
+      <div class="bg-gray-800 rounded-lg p-6 mb-6">
+        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">查询条件</h3>
+        
+        <!-- 发布地域 -->
+        <div class="mb-4">
+          <div class="flex items-center gap-2">
+            <label class="text-gray-300 text-sm font-medium">发布地域</label>
+            <select class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">中央</option>
+              <option value="shandong">山东省</option>
+            </select>
+            <select class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">请选择市</option>
+              <option value="heze">菏泽市</option>
+            </select>
+            <select class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">请选择区县</option>
+              <option value="juancheng">鄄城县</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- 发文部门 -->
+        <div class="mb-4">
+          <div class="flex items-start gap-2">
+            <label class="text-gray-300 text-sm font-medium mt-1">发文部门</label>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">省人民政府</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省科技厅</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省工业和信息化厅</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省发展和改革委员会</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省人力资源和社会保障厅</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省商务厅</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省财政厅</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">国家税务总局山东省税务局</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省市场监督管理局</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省大数据局</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">山东省国家安全厅</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">其他</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 政策类别 -->
+        <div class="mb-4">
+          <div class="flex items-start gap-2">
+            <label class="text-gray-300 text-sm font-medium mt-1">政策类别</label>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">战略规划</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">民营经济</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">中小企业发展</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">税收优惠</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">资质认定</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">人才政策</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">科技创新</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">知识产权</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">数字化转型</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">金融服务</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">乡村振兴</span>
+              <span class="px-3 py-1 bg-gray-700 rounded-full text-sm cursor-pointer hover:bg-gray-600 transition-colors" onclick="toggleTag(this)">其他政策</span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- 模糊查询 -->
+      <div class="mb-6">
+        <div class="flex gap-2">
+          <input type="text" placeholder="请输入政策名称或关键词..." class="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <button class="btn btn-primary">
+            <i class="fas fa-search"></i> 查询
+          </button>
+        </div>
+      </div>
+
+      <!-- 政策列表 -->
+      <div class="space-y-4">
+        <!-- 政策项 -->
+        <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors cursor-pointer" onclick="window.location.href='policy-detail.html?id=1'">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="tag tag-success">新政策</span>
+            <span style="font-size: 12px; color: var(--text-secondary);">2026-03-15</span>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.4;" class="clickable-title">关于支持发制品产业高质量发展的若干措施</h3>
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">为加快推进鄄城县发制品产业转型升级，提升产业竞争力，结合我县实际，制定如下措施...</p>
+          <div class="mt-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span style="font-size: 12px; color: #9ca3af;">发布部门：商务局</span>
+              <span style="font-size: 12px; color: #9ca3af;">政策类别：扶持政策</span>
+            </div>
+            <button class="btn btn-outline btn-sm">
+              <i class="fas fa-file-alt"></i> 查看详情
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors cursor-pointer" onclick="window.location.href='policy-detail.html?id=2'">
+          <div class="flex items-center gap-2 mb-2">
+            <span style="font-size: 12px; color: var(--text-secondary);">2026-03-10</span>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.4;" class="clickable-title">关于促进中小企业健康发展的实施意见</h3>
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">为贯彻落实国家、省、市关于促进中小企业健康发展的决策部署，进一步优化营商环境...</p>
+          <div class="mt-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span style="font-size: 12px; color: #9ca3af;">发布部门：工信局</span>
+              <span style="font-size: 12px; color: #9ca3af;">政策类别：扶持政策</span>
+            </div>
+            <button class="btn btn-outline btn-sm">
+              <i class="fas fa-file-alt"></i> 查看详情
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors cursor-pointer" onclick="window.location.href='policy-detail.html?id=3'">
+          <div class="flex items-center gap-2 mb-2">
+            <span style="font-size: 12px; color: var(--text-secondary);">2026-03-05</span>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.4;">关于进一步优化营商环境的若干措施</h3>
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">为持续优化营商环境，激发市场活力，推动高质量发展，结合我县实际，制定如下措施...</p>
+          <div class="mt-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span style="font-size: 12px; color: #9ca3af;">发布部门：发改委</span>
+              <span style="font-size: 12px; color: #9ca3af;">政策类别：战略规划</span>
+            </div>
+            <button class="btn btn-outline btn-sm">
+              <i class="fas fa-file-alt"></i> 查看详情
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="mt-8 flex justify-center">
+        <nav class="flex items-center gap-2">
+          <button class="btn btn-outline btn-sm" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="btn btn-primary btn-sm">1</button>
+          <button class="btn btn-outline btn-sm">2</button>
+          <button class="btn btn-outline btn-sm">3</button>
+          <button class="btn btn-outline btn-sm">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 标签选中/取消选中
+    function toggleTag(element) {
+      element.classList.toggle('tag-selected');
+    }
+  </script>
+</body>
+</html>

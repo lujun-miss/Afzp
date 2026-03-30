@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>政策详情 - 政务服务</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+    .policy-content {
+      line-height: 1.8;
+    }
+    .policy-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: #f3f4f6;
+    }
+    .policy-content h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #e5e7eb;
+    }
+    .policy-content p {
+      margin-bottom: 16px;
+      color: #d1d5db;
+    }
+    .policy-content ul {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+    .policy-content li {
+      margin-bottom: 8px;
+      color: #d1d5db;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link active text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16 px-8">
+    <div class="max-w-[1200px] mx-auto">
+      <!-- 面包屑导航 -->
+      <div class="mb-6 text-sm">
+        <a href="../index.html" style="color: #9ca3af;">首页</a>
+        <span style="color: #6b7280;"> / </span>
+        <a href="government.html" style="color: #9ca3af;">政务服务</a>
+        <span style="color: #6b7280;"> / </span>
+        <a href="policy-list.html" style="color: #9ca3af;">政策文件列表</a>
+        <span style="color: #6b7280;"> / </span>
+        <span style="color: white;">政策详情</span>
+      </div>
+
+
+
+      <!-- 政策详情 -->
+      <div class="bg-gray-800 rounded-lg p-8">
+        <!-- 政策标题 -->
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 20px; line-height: 1.4; text-align: center;" class="clickable-title">关于支持发制品产业高质量发展的若干措施</h1>
+
+        <!-- 政策信息 -->
+        <div class="flex flex-wrap gap-6 mb-8 text-sm text-gray-400">
+          <div>
+            <span style="color: #9ca3af;">发布部门：</span>
+            <span style="color: #d1d5db;">商务局</span>
+          </div>
+          <div>
+            <span style="color: #9ca3af;">发布日期：</span>
+            <span style="color: #d1d5db;">2026-03-15</span>
+          </div>
+          <div>
+            <span style="color: #9ca3af;">政策类别：</span>
+            <span style="color: #d1d5db;">扶持政策</span>
+          </div>
+          <div>
+            <span style="color: #9ca3af;">发布地域：</span>
+            <span style="color: #d1d5db;">鄄城县</span>
+          </div>
+        </div>
+
+        <!-- 政策内容 -->
+        <div class="policy-content">
+          <h3>一、总体要求</h3>
+          <p>为深入贯彻落实习近平总书记关于推动高质量发展的重要论述，加快推进鄄城县发制品产业转型升级，提升产业竞争力，结合我县实际，制定如下措施。</p>
+
+          <h3>二、支持措施</h3>
+          
+          <h4>（一）支持企业技术创新</h4>
+          <p>1. 对获得国家级、省级、市级科技奖励的发制品企业，分别给予50万元、30万元、10万元奖励。</p>
+          <p>2. 对新认定的国家级、省级、市级研发平台，分别给予100万元、50万元、20万元奖励。</p>
+          <p>3. 支持企业开展产学研合作，对与高校、科研机构合作开展技术研发的，按照实际投入的30%给予补贴，最高不超过50万元。</p>
+
+          <h4>（二）支持企业扩大规模</h4>
+          <p>1. 对年营业收入首次突破1亿元、5亿元、10亿元的发制品企业，分别给予50万元、100万元、200万元奖励。</p>
+          <p>2. 对新引进的发制品产业链项目，固定资产投资在5000万元以上的，按照实际投资额的5%给予补贴，最高不超过500万元。</p>
+
+          <h4>（三）支持企业品牌建设</h4>
+          <p>1. 对获得中国驰名商标、山东省著名商标的发制品企业，分别给予100万元、50万元奖励。</p>
+          <p>2. 对获得国家级、省级质量奖的发制品企业，分别给予50万元、30万元奖励。</p>
+          <p>3. 支持企业参加国内外展会，对参加国家级展会的给予展位费50%补贴，最高不超过10万元；参加省级展会的给予展位费30%补贴，最高不超过5万元。</p>
+
+          <h4>（四）支持企业数字化转型</h4>
+          <p>1. 对实施数字化改造的发制品企业，按照实际投资额的20%给予补贴，最高不超过100万元。</p>
+          <p>2. 对新认定的国家级、省级智能制造示范企业，分别给予50万元、30万元奖励。</p>
+
+          <h4>（五）支持企业人才引进</h4>
+          <p>1. 对引进的高层次人才，按照《鄄城县人才引进实施办法》给予相应待遇。</p>
+          <p>2. 对企业引进的本科及以上学历人才，给予每月500元生活补贴，连续补贴3年。</p>
+
+          <h3>三、保障措施</h3>
+          <p>（一）加强组织领导。成立由县长任组长的发制品产业发展领导小组，统筹协调产业发展重大事项。</p>
+          <p>（二）加大资金支持。设立发制品产业发展专项资金，每年安排不低于2000万元用于支持产业发展。</p>
+          <p>（三）强化服务保障。建立企业服务专员制度，为企业提供"一对一"精准服务。</p>
+          <p>（四）严格考核评估。将发制品产业发展纳入全县绩效考核，确保各项措施落实到位。</p>
+
+          <h3>四、附则</h3>
+          <p>1. 本措施自发布之日起施行，有效期3年。</p>
+          <p>2. 本措施由鄄城县商务局负责解释。</p>
+          <p>3. 如遇国家、省、市出台相关政策与本措施不一致的，按照上级政策执行。</p>
+        </div>
+
+        <!-- 附件下载 -->
+        <div class="mt-8 pt-6 border-t border-gray-700">
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">附件下载</h3>
+          <div class="space-y-3">
+            <a href="#" class="flex items-center gap-3 p-3 bg-gray-750 rounded-lg hover:bg-gray-700 transition-colors">
+              <i class="fas fa-file-pdf text-red-400 text-xl"></i>
+              <div>
+                <div style="font-size: 14px; font-weight: 500;">关于支持发制品产业高质量发展的若干措施.pdf</div>
+                <div style="font-size: 12px; color: #9ca3af;">文件大小：2.5MB</div>
+              </div>
+              <i class="fas fa-download ml-auto text-gray-400"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 相关政策推荐 -->
+      <div class="mt-8">
+        <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">相关政策推荐</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-colors cursor-pointer" onclick="window.location.href='policy-detail.html?id=2'">
+            <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.4;">关于促进中小企业健康发展的实施意见</h3>
+            <p style="font-size: 12px; color: var(--text-secondary);">发布日期：2026-03-10</p>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-colors cursor-pointer" onclick="window.location.href='policy-detail.html?id=3'">
+            <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.4;">关于进一步优化营商环境的若干措施</h3>
+            <p style="font-size: 12px; color: var(--text-secondary);">发布日期：2026-03-05</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

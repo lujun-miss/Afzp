@@ -3,10 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Page</title>
+  <title>JavaScript测试</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Test Page</h1>
-  <p>This is a test page to check if HTML files can be loaded correctly.</p>
+  <h1>JavaScript功能测试</h1>
+  
+  <button class="btn" onclick="testFunction()">点击测试</button>
+  <button class="btn" onclick="toggleDiv()">切换显示</button>
+  
+  <div id="test-div" class="result" style="display: none;">
+    这是一个测试div
+  </div>
+  
+  <div id="result" class="result">
+    点击按钮查看结果
+  </div>
+
+  <script>
+    function testFunction() {
+      document.getElementById('result').innerHTML = 'JavaScript函数执行成功！';
+      console.log('测试函数执行');
+    }
+    
+    function toggleDiv() {
+      var div = document.getElementById('test-div');
+      if (div.style.display === 'none') {
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
+    }
+    
+    console.log('页面加载完成');
+  </script>
 </body>
 </html>

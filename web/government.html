@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>政务服务</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .nav-link {
@@ -68,7 +68,7 @@
         <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
         <a href="government.html" class="nav-link active text-white">政务服务</a>
         <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
-        <a href="hr.html" class="nav-link text-gray-300 hover:text-white">人力资源</a>
+
         <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
         <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
         <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
@@ -95,286 +95,454 @@
         <p style="color: var(--text-secondary); font-size: 14px;">政策发布、在线办事、政企互动</p>
       </div>
       <div class="flex gap-3">
-        <button class="btn btn-outline">
-          <i class="fas fa-phone"></i> 联系客服
-        </button>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" onclick="openAppealModal()">
           <i class="fas fa-edit"></i> 提交诉求
         </button>
       </div>
     </div>
 
-    <!-- 快捷入口 -->
-    <div class="grid grid-cols-6 gap-4 mb-6">
-      <div class="card" style="text-align: center; padding: 24px 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-          <i class="fas fa-file-alt" style="font-size: 24px;"></i>
+    <!-- 政策服务 -->
+    <div class="mb-6">
+      <!-- 政策搜索框 -->
+      <div class="mb-4">
+        <div class="relative">
+          <input type="text" placeholder="搜索政策文件..." class="w-full px-4 py-2 pl-10 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
         </div>
-        <div style="font-weight: 600; font-size: 14px;">政策申报</div>
       </div>
       
-      <div class="card" style="text-align: center; padding: 24px 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-          <i class="fas fa-leaf" style="font-size: 24px;"></i>
+      <!-- 统计信息 -->
+      <div class="mb-6">
+        <div class="grid grid-cols-4 gap-6">
+          <div class="card text-center">
+            <div class="card-body">
+              <div style="font-size: 32px; font-weight: bold; color: #1a5fb4; margin-bottom: 2px;">248</div>
+              <div style="font-size: 14px; color: #6c757d;">政策文件数量</div>
+            </div>
+          </div>
+          <div class="card text-center">
+            <div class="card-body">
+              <div style="font-size: 32px; font-weight: bold; color: #4CAF50; margin-bottom: 2px;">18,567</div>
+              <div style="font-size: 14px; color: #6c757d;">阅读次数</div>
+            </div>
+          </div>
+          <div class="card text-center">
+            <div class="card-body">
+              <div style="font-size: 32px; font-weight: bold; color: #ffc107; margin-bottom: 2px;">1,245</div>
+              <div style="font-size: 14px; color: #6c757d;">政策订阅数</div>
+            </div>
+          </div>
+          <div class="card text-center">
+            <div class="card-body">
+              <div style="font-size: 32px; font-weight: bold; color: #dc3545; margin-bottom: 2px;">9,876</div>
+              <div style="font-size: 14px; color: #6c757d;">政策推送数</div>
+            </div>
+          </div>
         </div>
-        <div style="font-weight: 600; font-size: 14px;">环评审批</div>
       </div>
       
-      <div class="card" style="text-align: center; padding: 24px 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gold), #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-          <i class="fas fa-certificate" style="font-size: 24px;"></i>
+      <div class="grid grid-cols-5 gap-5">
+        <!-- 最新政策文件 -->
+        <div class="card col-span-3">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-file-alt"></i>
+              最新政策文件
+            </div>
+            <a href="policy-list.html" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="card-body">
+            <div class="space-y-4">
+              <div style="padding: 16px; background: linear-gradient(135deg, rgba(26,95,180,0.2) 0%, rgba(26,95,180,0.05) 100%); border: 1px solid rgba(26,95,180,0.3); border-radius: 12px; cursor: pointer;" onclick="window.location.href='policy-detail.html?id=1'">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="tag tag-success">新政策</span>
+                  <span style="font-size: 12px; color: var(--text-secondary);">2026-03-15</span>
+                </div>
+                <h4 style="font-weight: 600; margin-bottom: 4px; line-height: 1.4;">关于支持发制品产业高质量发展的若干措施</h4>
+                <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">为加快推进鄄城县发制品产业转型升级，提升产业竞争力...</p>
+              </div>
+              
+              <div style="padding: 16px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;" onclick="window.location.href='policy-detail.html?id=2'">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="tag" style="background: rgba(201,162,39,0.15); color: var(--gold);">申报中</span>
+                  <span style="font-size: 12px; color: var(--text-secondary);">2026-03-10</span>
+                </div>
+                <h4 style="font-weight: 600; margin-bottom: 4px; line-height: 1.4;">2026年度发制品企业技术改造专项资金申报指南</h4>
+                <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">支持企业开展技术改造、设备更新、智能化升级等项目...</p>
+              </div>
+              
+              <div style="padding: 16px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;" onclick="window.location.href='policy-detail.html?id=3'">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="tag" style="background: rgba(16,185,129,0.15); color: var(--success);">培训通知</span>
+                  <span style="font-size: 12px; color: var(--text-secondary);">2026-03-08</span>
+                </div>
+                <h4 style="font-weight: 600; margin-bottom: 4px; line-height: 1.4;">关于举办发制品外贸业务培训班的通知</h4>
+                <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">为帮助企业拓展国际市场，提升外贸业务能力...</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="font-weight: 600; font-size: 14px;">质检认证</div>
-      </div>
-      
-      <div class="card" style="text-align: center; padding: 24px 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--warning), #ea580c); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-          <i class="fas fa-ship" style="font-size: 24px;"></i>
+        
+        <!-- 政策分类订阅 -->
+        <div class="card col-span-2">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fas fa-bell"></i>
+              政策分类订阅
+            </div>
+            <button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;" id="save-subscription">保存订阅</button>
+          </div>
+          <div class="card-body" style="padding: 8px;">
+            <!-- 产业发展类 -->
+            <div class="border border-gray-700 rounded-lg mb-2">
+              <div class="flex items-center justify-between p-2 cursor-pointer bg-gray-800 border-b border-gray-700" onclick="toggleCollapse('industry-collapse')">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-industry text-blue-400" style="font-size: 14px;"></i>
+                  <span style="font-weight: 600; color: white; font-size: 12px;">产业发展类</span>
+                </div>
+                <i class="fas fa-chevron-down text-gray-400" id="industry-icon" style="font-size: 12px;"></i>
+              </div>
+              <div id="industry-collapse" class="p-2 flex flex-wrap gap-3 bg-gray-800">
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="strategic" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">战略规划</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="private" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">民营经济</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="smes" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">中小企业发展</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="specialized" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">专精特新</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="champion" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">单项冠军</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="high-tech" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">高新技术企业</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- 政策支持类 -->
+            <div class="border border-gray-700 rounded-lg mb-2">
+              <div class="flex items-center justify-between p-2 cursor-pointer bg-gray-800 border-b border-gray-700" onclick="toggleCollapse('support-collapse')">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-hand-holding-usd text-green-400" style="font-size: 14px;"></i>
+                  <span style="font-weight: 600; color: white; font-size: 12px;">政策支持类</span>
+                </div>
+                <i class="fas fa-chevron-down text-gray-400" id="support-icon" style="font-size: 12px;"></i>
+              </div>
+              <div id="support-collapse" class="p-2 flex flex-wrap gap-3 bg-gray-800">
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="tax" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">税收政策</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="qualification" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">资质认定</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="finance" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">金融服务</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- 创新发展类 -->
+            <div class="border border-gray-700 rounded-lg mb-2">
+              <div class="flex items-center justify-between p-2 cursor-pointer bg-gray-800 border-b border-gray-700" onclick="toggleCollapse('innovation-collapse')">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-lightbulb text-yellow-400" style="font-size: 14px;"></i>
+                  <span style="font-weight: 600; color: white; font-size: 12px;">创新发展类</span>
+                </div>
+                <i class="fas fa-chevron-down text-gray-400" id="innovation-icon" style="font-size: 12px;"></i>
+              </div>
+              <div id="innovation-collapse" class="p-2 flex flex-wrap gap-3 bg-gray-800">
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="innovation" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">科技创新</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="ip" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">知识产权</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="digital" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">数字化转型</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- 其他类 -->
+            <div class="border border-gray-700 rounded-lg">
+              <div class="flex items-center justify-between p-2 cursor-pointer bg-gray-800 border-b border-gray-700" onclick="toggleCollapse('other-collapse')">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-ellipsis-h text-gray-400" style="font-size: 14px;"></i>
+                  <span style="font-weight: 600; color: white; font-size: 12px;">其他类</span>
+                </div>
+                <i class="fas fa-chevron-down text-gray-400" id="other-icon" style="font-size: 12px;"></i>
+              </div>
+              <div id="other-collapse" class="p-2 flex flex-wrap gap-3 bg-gray-800">
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="talent" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">人才政策</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="environmental" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">节能环保</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="military" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">军民融合</span>
+                </label>
+                <label class="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" class="policy-type" value="rural" checked style="width: 12px; height: 12px;">
+                  <span style="color: white; font-size: 11px;">乡村振兴</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="font-weight: 600; font-size: 14px;">出口备案</div>
-      </div>
-      
-      <div class="card" style="text-align: center; padding: 24px 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-          <i class="fas fa-graduation-cap" style="font-size: 24px;"></i>
-        </div>
-        <div style="font-weight: 600; font-size: 14px;">人才培训</div>
-      </div>
-      
-      <div class="card" style="text-align: center; padding: 24px 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-          <i class="fas fa-calendar-alt" style="font-size: 24px;"></i>
-        </div>
-        <div style="font-weight: 600; font-size: 14px;">展会报名</div>
+        
+
       </div>
     </div>
 
-    <!-- 我的待办和政策 -->
-    <div class="grid grid-cols-3 gap-5 mb-6">
-      <!-- 我的待办 -->
+
+
+    <!-- 项目申报 -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          <i class="fas fa-file-signature text-primary"></i>
+          项目申报
+        </h2>
+        <a href="intellectual-property.html" class="btn btn-primary">
+          <i class="fas fa-arrow-right"></i> 项目申报入口
+        </a>
+      </div>
+      
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-tasks"></i>
-            我的待办
-          </div>
-          <span class="tag tag-warning">3项待办</span>
-        </div>
-        <div>
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px; border-left: 3px solid var(--warning);">
-            <div class="flex items-center justify-between mb-2">
-              <span style="font-weight: 600;">出口退税申报</span>
-              <span class="tag tag-warning">待提交</span>
-            </div>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">2026年第一季度出口退税申报，截止3月31日</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 12px; color: var(--text-secondary);">剩余 15 天</span>
-              <button class="btn btn-primary" style="padding: 4px 12px; font-size: 12px;">立即办理</button>
-            </div>
-          </div>
-          
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; margin-bottom: 12px; border-left: 3px solid var(--primary);">
-            <div class="flex items-center justify-between mb-2">
-              <span style="font-weight: 600;">企业年报填报</span>
-              <span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">进行中</span>
-            </div>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">2025年度企业年报信息填报</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 12px; color: var(--text-secondary);">已完成 60%</span>
-              <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;">继续填报</button>
-            </div>
-          </div>
-          
-          <div style="padding: 16px; background: var(--dark-bg); border-radius: 12px; border-left: 3px solid var(--success);">
-            <div class="flex items-center justify-between mb-2">
-              <span style="font-weight: 600;">培训报名确认</span>
-              <span class="tag tag-success">待确认</span>
-            </div>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">发制品质量管理培训课程报名</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 12px; color: var(--text-secondary);">3月20日开课</span>
-              <button class="btn btn-primary" style="padding: 4px 12px; font-size: 12px;">确认参加</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 最新政策 -->
-      <div class="card col-span-2">
-        <div class="card-header">
-          <div class="card-title">
-            <i class="fas fa-bullhorn"></i>
-            最新政策
-          </div>
-          <a href="#" style="font-size: 14px; color: var(--primary);">查看全部 <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div style="padding: 20px; background: linear-gradient(135deg, rgba(26,95,180,0.2) 0%, rgba(26,95,180,0.05) 100%); border: 1px solid rgba(26,95,180,0.3); border-radius: 12px;">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="tag tag-success">新政策</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-15</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px; line-height: 1.4;">关于支持发制品产业高质量发展的若干措施</h4>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6;">为加快推进鄄城县发制品产业转型升级，提升产业竞争力，制定以下支持措施...</p>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">查看详情</button>
-              <button class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">立即申报</button>
-            </div>
-          </div>
-          
-          <div style="padding: 20px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 12px;">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="tag" style="background: rgba(201,162,39,0.15); color: var(--gold);">申报中</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-10</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px; line-height: 1.4;">2026年度发制品企业技术改造专项资金申报指南</h4>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6;">支持企业开展技术改造、设备更新、智能化升级等项目...</p>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">查看详情</button>
-              <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">立即申报</button>
-            </div>
-          </div>
-          
-          <div style="padding: 20px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 12px;">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="tag" style="background: rgba(16,185,129,0.15); color: var(--success);">培训通知</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-08</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px; line-height: 1.4;">关于举办发制品外贸业务培训班的通知</h4>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6;">为帮助企业拓展国际市场，提升外贸业务能力，拟举办专题培训班...</p>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">查看详情</button>
-              <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">立即报名</button>
-            </div>
-          </div>
-          
-          <div style="padding: 20px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 12px;">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="tag" style="background: rgba(245,158,11,0.15); color: var(--warning);">展会信息</span>
-              <span style="font-size: 12px; color: var(--text-secondary);">2026-03-05</span>
-            </div>
-            <h4 style="font-weight: 600; margin-bottom: 8px; line-height: 1.4;">第137届中国进出口商品交易会（广交会）参展通知</h4>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6;">广交会发制品展区展位申报工作现已开始，请有意向的企业及时报名...</p>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">查看详情</button>
-              <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">立即报名</button>
+        <div class="card-body">
+          <!-- 梯度培育路径 -->
+          <div style="padding: 40px;">
+            <div class="relative">
+              <!-- 阶梯图形 -->
+              <svg width="100%" height="300" viewBox="0 0 900 300" style="display: block;">
+                <!-- 虚线分隔线 -->
+                <line x1="0" y1="150" x2="900" y2="150" stroke="#ccc" stroke-width="2" stroke-dasharray="5,5"/>
+                
+                <!-- 连续阶梯路径 -->
+                <path d="M150,250 L300,250 L300,210 L450,210 L450,170 L600,170 L600,130 L750,130 L750,90 L900,90 L900,50" stroke="#4CAF50" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <!-- 向上箭头 -->
+                <path d="M900,50 L940,50 L920,10" stroke="#4CAF50" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <!-- 国家级圆形 -->
+                <circle cx="20" cy="80" r="40" fill="#1a5fb4" stroke="white" stroke-width="2"/>
+                <text x="20" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">国家级</text>
+                
+                <!-- 省级圆形 -->
+                <circle cx="20" cy="220" r="40" fill="#4CAF50" stroke="white" stroke-width="2"/>
+                <text x="20" y="225" text-anchor="middle" fill="white" font-size="14" font-weight="bold">省级</text>
+              </svg>
+              
+              <!-- 文字内容 -->
+              <div style="position: absolute; top: 30px; left: 920px; font-size: 16px; font-weight: 600; color: #1a5fb4;">产业链领航企业</div>
+              <div style="position: absolute; top: 80px; left: 770px; font-size: 16px; font-weight: 600; color: #1a5fb4;">国家级制造业单项冠军企业</div>
+              <div style="position: absolute; top: 120px; left: 620px; font-size: 16px; font-weight: 600; color: #1a5fb4;">专精特新"小巨人"企业</div>
+              <div style="position: absolute; top: 150px; left: 770px; font-size: 16px; font-weight: 600; color: #4CAF50;">山东省制造业单项冠军企业</div>
+              <div style="position: absolute; top: 190px; left: 620px; font-size: 16px; font-weight: 600; color: #4CAF50;">山东省瞪羚企业</div>
+              <div style="position: absolute; top: 230px; left: 320px; font-size: 16px; font-weight: 600; color: #4CAF50;">山东省"专精特新"中小企业</div>
+              
+              <!-- 标题 -->
+              <div style="position: absolute; bottom: -30px; right: 20px; font-size: 24px; font-weight: 600; color: #4CAF50;">梯度培育路径及目标</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 办事进度查询 -->
-    <div class="card">
+    <!-- 诉求提交 -->
+    <div id="appeal-submit-section" class="card mb-6">
       <div class="card-header">
         <div class="card-title">
-          <i class="fas fa-history"></i>
-          办事进度查询
-        </div>
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="搜索办事事项..." style="width: 240px; padding: 8px 12px 8px 36px;">
+          <i class="fas fa-comments"></i>
+          诉求提交
         </div>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>事项名称</th>
-            <th>申请时间</th>
-            <th>当前环节</th>
-            <th>办理进度</th>
-            <th>预计完成</th>
-            <th>状态</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: rgba(26,95,180,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-leaf" style="color: var(--primary);"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 600;">建设项目环境影响评价审批</div>
-                  <div style="font-size: 12px; color: var(--text-secondary);">编号：HP202603001</div>
-                </div>
+      <div class="card-body">
+        <!-- 诉求流程 -->
+        <div class="mb-4">
+          <h3 style="font-size: 14px; font-weight: 700; color: #d1d5db;">诉求办理流程</h3>
+          <div class="flex items-center justify-between">
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-1">
+                <i class="fas fa-edit text-blue-600 text-sm"></i>
               </div>
-            </td>
-            <td>2026-03-10</td>
-            <td>技术审查</td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="progress-bar" style="width: 120px;">
-                  <div class="progress-fill" style="width: 75%; background: var(--primary);"></div>
-                </div>
-                <span style="font-size: 12px;">75%</span>
+              <div style="font-size: 12px;">提出诉求</div>
+            </div>
+            <div class="flex-1 h-1 bg-gray-200 mx-2 relative">
+              <div class="absolute top-0 left-0 w-full h-full bg-blue-500"></div>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-1">
+                <i class="fas fa-check-circle text-blue-600 text-sm"></i>
               </div>
-            </td>
-            <td>2026-03-25</td>
-            <td><span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">办理中</span></td>
-            <td>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">查看进度</button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: rgba(16,185,129,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-certificate" style="color: var(--success);"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 600;">出口产品质量许可证申请</div>
-                  <div style="font-size: 12px; color: var(--text-secondary);">编号：ZJ202603015</div>
-                </div>
+              <div style="font-size: 12px;">信息核实</div>
+            </div>
+            <div class="flex-1 h-1 bg-gray-200 mx-2 relative">
+              <div class="absolute top-0 left-0 w-full h-full bg-blue-500"></div>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-1">
+                <i class="fas fa-tasks text-blue-600 text-sm"></i>
               </div>
-            </td>
-            <td>2026-03-05</td>
-            <td>现场核查</td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="progress-bar" style="width: 120px;">
-                  <div class="progress-fill" style="width: 60%; background: var(--success);"></div>
-                </div>
-                <span style="font-size: 12px;">60%</span>
+              <div style="font-size: 12px;">落实诉求</div>
+            </div>
+            <div class="flex-1 h-1 bg-gray-200 mx-2 relative">
+              <div class="absolute top-0 left-0 w-full h-full bg-blue-500"></div>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-1">
+                <i class="fas fa-search text-blue-600 text-sm"></i>
               </div>
-            </td>
-            <td>2026-03-20</td>
-            <td><span class="tag" style="background: rgba(26,95,180,0.15); color: var(--primary);">办理中</span></td>
-            <td>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">查看进度</button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: rgba(201,162,39,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-file-invoice-dollar" style="color: var(--gold);"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 600;">技术改造专项资金申请</div>
-                  <div style="font-size: 12px; color: var(--text-secondary);">编号：ZZ202603008</div>
-                </div>
+              <div style="font-size: 12px;">企业查询</div>
+            </div>
+            <div class="flex-1 h-1 bg-gray-200 mx-2 relative">
+              <div class="absolute top-0 left-0 w-full h-full bg-blue-500"></div>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-1">
+                <i class="fas fa-star text-blue-600 text-sm"></i>
               </div>
-            </td>
-            <td>2026-03-01</td>
-            <td>已办结</td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="progress-bar" style="width: 120px;">
-                  <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
-                </div>
-                <span style="font-size: 12px;">100%</span>
-              </div>
-            </td>
-            <td>2026-03-12</td>
-            <td><span class="tag tag-success">已完成</span></td>
-            <td>
-              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">查看结果</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <div style="font-size: 12px;">企业评价</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div style="font-size: 14px; font-weight: 700; color: #d1d5db;">请选择您需要的诉求分类</div>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-4">
+          <div style="text-align: center; padding: 24px 16px; border: 2px dashed var(--border); border-radius: 12px; cursor: pointer; transition: all 0.3s;" onclick="openAppealModal()">
+            <div style="width: 64px; height: 64px; background: rgba(239,68,68,0.15); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+              <i class="fas fa-question-circle text-red-500" style="font-size: 32px;"></i>
+            </div>
+            <div style="font-weight: 600; font-size: 16px; margin-bottom: 4px;">求助</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">遇到问题需要帮助</div>
+          </div>
+          
+          <div style="text-align: center; padding: 24px 16px; border: 2px dashed var(--border); border-radius: 12px; cursor: pointer; transition: all 0.3s;" onclick="openAppealModal()">
+            <div style="width: 64px; height: 64px; background: rgba(59,130,246,0.15); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+              <i class="fas fa-info-circle text-blue-500" style="font-size: 32px;"></i>
+            </div>
+            <div style="font-weight: 600; font-size: 16px; margin-bottom: 4px;">咨询</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">咨询政策或业务问题</div>
+          </div>
+          
+          <div style="text-align: center; padding: 24px 16px; border: 2px dashed var(--border); border-radius: 12px; cursor: pointer; transition: all 0.3s;" onclick="openAppealModal()">
+            <div style="width: 64px; height: 64px; background: rgba(16,185,129,0.15); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+              <i class="fas fa-ellipsis-h text-green-500" style="font-size: 32px;"></i>
+            </div>
+            <div style="font-weight: 600; font-size: 16px; margin-bottom: 4px;">其他诉求</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">其他类型的诉求</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- 提交诉求弹窗 -->
+  <div id="appeal-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between p-4 bg-blue-600">
+        <h2 class="text-xl font-bold text-white">提交诉求</h2>
+        <button id="close-appeal-modal" class="text-white hover:text-gray-200 text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="appeal-form" class="p-6">
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="appeal-type">
+            诉求类型 <span class="text-red-500">*</span>
+          </label>
+          <select id="appeal-type" name="appeal-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" style="color: #374151;">
+            <option value="">请选择诉求类型</option>
+            <option value="help">求助</option>
+            <option value="consult">咨询</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="appeal-title">
+            诉求标题 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="appeal-title" name="appeal-title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请用一句话概述您的咨询内容？如：企业减税咨询">
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="appeal-content">
+            诉求内容 <span class="text-red-500">*</span>
+          </label>
+          <textarea id="appeal-content" name="appeal-content" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请详细描述您的诉求内容"></textarea>
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="company-name">
+            企业名称 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="company-name" name="company-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入企业名称">
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="company-region">
+            所属地区 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="company-region" name="company-region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入所属地区">
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="company-address">
+            注册地址 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="company-address" name="company-address" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入注册地址">
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="appeal-contact">
+            联系人姓名 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="appeal-contact" name="appeal-contact" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入联系人姓名">
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="appeal-phone">
+            联系电话 <span class="text-red-500">*</span>
+          </label>
+          <input type="tel" id="appeal-phone" name="appeal-phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入联系电话">
+        </div>
+        
+        <div class="flex justify-end gap-3">
+          <button type="button" id="cancel-appeal" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
+            取消
+          </button>
+          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            提交诉求
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -387,6 +555,141 @@
       } else {
         nav.classList.remove('nav-scrolled');
       }
+    });
+
+    // 政策订阅保存功能
+    document.getElementById('save-subscription').addEventListener('click', function() {
+      const selectedTypes = Array.from(document.querySelectorAll('.policy-type:checked')).map(cb => cb.value);
+      console.log('保存的政策类型:', selectedTypes);
+      alert('政策订阅设置已保存！');
+    });
+
+    // 提交诉求弹窗控制
+    const appealModal = document.getElementById('appeal-modal');
+    const submitAppealBtn = document.getElementById('submit-appeal-btn');
+    const closeAppealModalBtn = document.getElementById('close-appeal-modal');
+    const cancelAppealBtn = document.getElementById('cancel-appeal');
+    const appealForm = document.getElementById('appeal-form');
+
+    function openAppealModal() {
+      appealModal.classList.remove('hidden');
+    }
+
+    function closeAppealModal() {
+      appealModal.classList.add('hidden');
+      appealForm.reset();
+    }
+
+    if (submitAppealBtn) {
+      submitAppealBtn.addEventListener('click', openAppealModal);
+    }
+
+    if (closeAppealModalBtn) {
+      closeAppealModalBtn.addEventListener('click', closeAppealModal);
+    }
+
+    if (cancelAppealBtn) {
+      cancelAppealBtn.addEventListener('click', closeAppealModal);
+    }
+
+    // 点击弹窗外部关闭
+    appealModal.addEventListener('click', function(e) {
+      if (e.target === appealModal) {
+        closeAppealModal();
+      }
+    });
+
+    // 表单提交
+    appealForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const appealType = document.getElementById('appeal-type').value;
+      const appealTitle = document.getElementById('appeal-title').value.trim();
+      const appealContent = document.getElementById('appeal-content').value.trim();
+      const companyName = document.getElementById('company-name').value.trim();
+      const companyRegion = document.getElementById('company-region').value.trim();
+      const companyAddress = document.getElementById('company-address').value.trim();
+      const appealContact = document.getElementById('appeal-contact').value.trim();
+      const appealPhone = document.getElementById('appeal-phone').value.trim();
+
+    // 折叠面板功能
+    function toggleCollapse(collapseId) {
+      const collapseElement = document.getElementById(collapseId);
+      const iconElement = document.getElementById(collapseId.replace('-collapse', '-icon'));
+      
+      if (collapseElement.style.display === 'none') {
+        collapseElement.style.display = 'block';
+        iconElement.classList.remove('fa-chevron-right');
+        iconElement.classList.add('fa-chevron-down');
+      } else {
+        collapseElement.style.display = 'none';
+        iconElement.classList.remove('fa-chevron-down');
+        iconElement.classList.add('fa-chevron-right');
+      }
+    }
+
+      // 表单验证
+      if (!appealType) {
+        alert('请选择诉求类型');
+        return;
+      }
+
+      if (!appealTitle) {
+        alert('请输入诉求标题');
+        return;
+      }
+
+      if (!appealContent) {
+        alert('请输入诉求内容');
+        return;
+      }
+
+      if (!companyName) {
+        alert('请输入企业名称');
+        return;
+      }
+
+      if (!companyRegion) {
+        alert('请输入所属地区');
+        return;
+      }
+
+      if (!companyAddress) {
+        alert('请输入注册地址');
+        return;
+      }
+
+      if (!appealContact) {
+        alert('请输入联系人姓名');
+        return;
+      }
+
+      if (!appealPhone) {
+        alert('请输入联系电话');
+        return;
+      }
+
+      // 手机号验证
+      const phoneRegex = /^1[3-9]\d{9}$/;
+      if (!phoneRegex.test(appealPhone)) {
+        alert('请输入正确的手机号码');
+        return;
+      }
+
+      // 模拟提交
+      console.log('提交的诉求:', {
+        type: appealType,
+        title: appealTitle,
+        content: appealContent,
+        companyName: companyName,
+        companyRegion: companyRegion,
+        companyAddress: companyAddress,
+        contact: appealContact,
+        phone: appealPhone
+      });
+
+      alert('诉求提交成功！我们将尽快处理您的诉求。');
+      closeAppealModal();
     });
   </script>
 </body>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>展会详情 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 卡片内容样式 */
+    .card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 18px;
+      padding: 32px;
+      border: 1px solid rgba(26, 95, 180, 0.1);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(26, 95, 180, 0.25);
+      border-color: rgba(26, 95, 180, 0.3);
+    }
+
+    /* 按钮样式增强 */
+    .btn-primary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(26, 95, 180, 0.3);
+    }
+
+    /* 标签样式 */
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+
+    /* 展会信息样式 */
+    .exhibition-info {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 32px;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border-radius: 20px;
+      border: 1px solid rgba(26, 95, 180, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(26, 95, 180, 0.1);
+    }
+    
+    .exhibition-status {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .exhibition-info:hover .exhibition-status {
+      transform: scale(1.05);
+    }
+    
+    .status-upcoming {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+    
+    .status-ongoing {
+      background: linear-gradient(135deg, #10b981, #34d399);
+    }
+    
+    .status-completed {
+      background: linear-gradient(135deg, #1a5fb4, #3b82f6);
+    }
+    
+    .exhibition-details {
+      flex: 1;
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding: 8px 0;
+    }
+    
+    .detail-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .detail-label {
+      font-size: 15px;
+      color: var(--text-secondary);
+      min-width: 90px;
+      font-weight: 500;
+    }
+    
+    .detail-value {
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 32px;
+      padding: 8px;
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .tab-item {
+      padding: 14px 28px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 15px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+    
+    .tab-item.active {
+      background: linear-gradient(135deg, #1a5fb4, #2563eb);
+      color: white;
+      border-color: rgba(26, 95, 180, 0.3);
+      box-shadow: 0 6px 16px rgba(26, 95, 180, 0.3);
+    }
+    
+    .tab-item:hover:not(.active) {
+      background: rgba(26, 95, 180, 0.1);
+      color: #1a5fb4;
+      border-color: rgba(26, 95, 180, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .exhibition-content {
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    
+    .exhibition-content h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 32px 0 16px 0;
+    }
+    
+    .exhibition-content h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 24px 0 12px 0;
+    }
+    
+    .exhibition-content p {
+      margin-bottom: 16px;
+    }
+    
+    .exhibition-content ul,
+    .exhibition-content ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+    
+    .exhibition-content li {
+      margin-bottom: 8px;
+    }
+    
+    .exhibition-highlight {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid var(--primary);
+      margin: 24px 0;
+    }
+    
+    .exhibition-section {
+      margin-bottom: 40px;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .exhibition-map {
+      width: 100%;
+      height: 400px;
+      background: rgba(15, 20, 41, 0.6);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    
+    .exhibition-timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -40px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 4px solid var(--bg-primary);
+    }
+    
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      left: -33px;
+      top: 16px;
+      width: 2px;
+      height: calc(100% + 8px);
+      background: var(--border-color);
+    }
+    
+    .timeline-item:last-child::after {
+      display: none;
+    }
+    
+    .timeline-time {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    
+    .timeline-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .timeline-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body style="overflow-y: auto;">
+  <!-- 导航栏 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主要内容 -->
+  <div class="pt-32 pb-16 px-8">
+    <div class="max-w-[1200px] mx-auto">
+      <!-- 面包屑 -->
+      <div class="breadcrumb">
+        <span class="breadcrumb-item" onclick="window.location.href='supply.html'">资源枢纽</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item" onclick="window.location.href='marketing.html'">产业展会</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">展会详情</span>
+      </div>
+      
+      <!-- 展会内容容器 -->
+      <div id="exhibition-content-container">
+        <!-- 展会内容将通过JavaScript动态加载 -->
+        <div style="text-align: center; padding: 40px;">
+          <i class="fas fa-spinner fa-spin text-4xl text-gray-400"></i>
+          <p style="margin-top: 16px; color: var(--text-secondary);">加载中...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+    
+    // 展会数据
+    const exhibitionData = {
+      'EX20260415': {
+        id: 'EX20260415',
+        name: '2026中国发制品博览会',
+        status: 'upcoming',
+        statusText: '即将开始',
+        location: '上海国家会展中心',
+        address: '上海市青浦区崧泽大道333号',
+        startTime: '2026-04-15',
+        endTime: '2026-04-17',
+        organizer: '中国发制品协会',
+        website: 'www.hairshow2026.com',
+        description: '2026中国发制品博览会是中国发制品行业最重要的专业展会之一，旨在推动行业交流与合作，展示最新产品和技术。',
+        highlights: [
+          '展览面积超过20,000平方米',
+          '预计吸引300+企业参展',
+          '专业观众超过3,000人',
+          '举办多场行业高峰论坛',
+          '设置新产品发布专区',
+          '提供一对一商务对接服务'
+        ],
+        schedule: [
+          { time: '4月15日 09:00-10:00', title: '开幕式', content: '展会开幕式及领导致辞' },
+          { time: '4月15日 10:30-12:00', title: '行业高峰论坛', content: '探讨发制品行业发展趋势和技术创新' },
+          { time: '4月15日 14:00-16:00', title: '新产品发布会', content: '参展企业新产品发布展示' },
+          { time: '4月16日 09:30-11:30', title: '技术创新研讨会', content: '分享最新技术成果和应用案例' },
+          { time: '4月16日 14:00-16:00', title: '国际采购对接会', content: '国内外采购商与参展企业对接洽谈' },
+          { time: '4月17日 10:00-11:30', title: '行业颁奖盛典', content: '表彰行业优秀企业和个人' },
+          { time: '4月17日 14:00-15:00', title: '闭幕式', content: '展会总结和成果发布' }
+        ],
+        exhibitors: [
+          { name: '瑞贝卡发制品股份有限公司', booth: 'A101', category: '假发制造' },
+          { name: '河南瑞美真发股份有限公司', booth: 'A102', category: '真人发制品' },
+          { name: '青岛海森林发制品有限公司', booth: 'A103', category: '发制品材料' },
+          { name: '许昌龙正美发饰品有限公司', booth: 'A104', category: '时尚发饰' },
+          { name: '山东恒源发制品有限公司', booth: 'A105', category: '接发产品' }
+        ],
+        floorPlan: '展会分为A、B、C三个展馆，A馆主要展示假发产品，B馆展示发制品材料和工具，C馆设置论坛和会议区域。',
+        transportation: '乘坐地铁2号线至徐泾东站，从5号出口步行约10分钟即可到达。也可乘坐展会专线巴士直达展馆。',
+        accommodation: '周边有多家酒店可供选择，组委会提供酒店预订优惠服务。'
+      },
+      'EX20260328': {
+        id: 'EX20260328',
+        name: '广州发制品交易会',
+        status: 'ongoing',
+        statusText: '已开始',
+        location: '广州广交会展馆',
+        address: '广州市海珠区阅江中路380号',
+        startTime: '2026-03-28',
+        endTime: '2026-03-30',
+        organizer: '广东省发制品行业协会',
+        website: 'www.gzfair2026.com',
+        description: '广州发制品交易会是华南地区最具影响力的发制品专业展会，为企业提供展示和交流的平台。',
+        highlights: [
+          '华南地区规模最大的发制品展会',
+          '吸引国内外采购商超过2,000人',
+          '聚焦时尚发制品和个性化定制',
+          '举办跨境电商对接会',
+          '提供现场检测和认证服务'
+        ],
+        schedule: [
+          { time: '3月28日 09:00-10:00', title: '开幕式', content: '展会开幕仪式' },
+          { time: '3月28日 10:30-12:00', title: '跨境电商论坛', content: '探讨发制品跨境电商发展策略' },
+          { time: '3月29日 09:30-11:30', title: '时尚趋势发布', content: '2026年发制品时尚趋势发布' },
+          { time: '3月29日 14:00-16:00', title: '采购商见面会', content: '参展企业与采购商面对面交流' },
+          { time: '3月30日 10:00-11:30', title: '颁奖典礼', content: '优秀参展企业颁奖' },
+          { time: '3月30日 14:00-15:00', title: '闭幕式', content: '展会总结' }
+        ],
+        exhibitors: [
+          { name: '广州美莱雅发制品有限公司', booth: 'B201', category: '时尚假发' },
+          { name: '深圳发之美科技有限公司', booth: 'B202', category: '智能发制品' },
+          { name: '东莞发艺达制品有限公司', booth: 'B203', category: '发制品配件' },
+          { name: '中山发丽雅制品有限公司', booth: 'B204', category: '接发产品' },
+          { name: '佛山发之源商贸有限公司', booth: 'B205', category: '发制品贸易' }
+        ],
+        floorPlan: '展会设在广交会展馆B区，分为时尚发制品区、材料设备区、OEM/ODM服务区等多个功能区域。',
+        transportation: '乘坐地铁8号线至琶洲站，从A出口步行即可到达展馆。',
+        accommodation: '琶洲周边有多家星级酒店，组委会提供优惠预订服务。'
+      },
+      'EX20260520': {
+        id: 'EX20260520',
+        name: '国际发制品展览会',
+        status: 'upcoming',
+        statusText: '即将开始',
+        location: '深圳国际会展中心',
+        address: '深圳市宝安区展城路1号',
+        startTime: '2026-05-20',
+        endTime: '2026-05-22',
+        organizer: '国际发制品协会',
+        website: 'www.internationalhairshow.com',
+        description: '国际发制品展览会是全球发制品行业的重要盛会，汇聚了来自全球的参展商和专业观众。',
+        highlights: [
+          '国际化程度最高的发制品展会',
+          '预计吸引40多个国家和地区的参展商',
+          '专业观众超过4,000人',
+          '举办多场国际论坛和研讨会',
+          '设置国际采购专区',
+          '提供商务配对服务'
+        ],
+        schedule: [
+          { time: '5月20日 09:30-10:30', title: '国际开幕式', content: '多国嘉宾出席的开幕式' },
+          { time: '5月20日 11:00-12:30', title: '全球发制品市场论坛', content: '探讨全球市场趋势和机遇' },
+          { time: '5月20日 14:00-16:00', title: '国际采购商大会', content: '大型采购商采购需求发布' },
+          { time: '5月21日 09:30-11:30', title: '技术创新峰会', content: '最新技术成果展示和交流' },
+          { time: '5月21日 14:00-16:00', title: '品牌营销论坛', content: '发制品品牌建设和营销策略' },
+          { time: '5月22日 10:00-11:30', title: '国际合作签约仪式', content: '企业间合作项目签约' },
+          { time: '5月22日 14:00-15:00', title: '闭幕式', content: '展会成果展示和总结' }
+        ],
+        exhibitors: [
+          { name: '美国HairArt International', booth: 'C301', category: '国际品牌' },
+          { name: '韩国HairTech Co., Ltd.', booth: 'C302', category: '发制品技术' },
+          { name: '日本Beauty Hair Corporation', booth: 'C303', category: '高端发制品' },
+          { name: '德国HairFashion GmbH', booth: 'C304', category: '时尚发饰' },
+          { name: '法国Style Hair Paris', booth: 'C305', category: '设计品牌' }
+        ],
+        floorPlan: '展会设在深圳国际会展中心1-4号馆，分为国际品牌区、国内精品区、材料设备区、服务配套区等。',
+        transportation: '乘坐地铁11号线至福永站，换乘展会专线巴士直达展馆。',
+        accommodation: '组委会推荐多家合作酒店，提供优惠价格和接送服务。'
+      }
+    };
+    
+    // 获取URL参数
+    function getUrlParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+    
+    // 加载展会内容
+    function loadExhibitionContent() {
+      const exhibitionId = getUrlParam('id');
+      const container = document.getElementById('exhibition-content-container');
+      
+      if (!exhibitionId || !exhibitionData[exhibitionId]) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px;">
+            <i class="fas fa-exclamation-triangle text-4xl text-warning"></i>
+            <p style="margin-top: 16px; color: var(--text-secondary);">展会信息不存在</p>
+            <button class="btn btn-primary" onclick="window.location.href='marketing.html'" style="margin-top: 24px;">
+              返回展会列表
+            </button>
+          </div>
+        `;
+        return;
+      }
+      
+      const exhibition = exhibitionData[exhibitionId];
+      
+      container.innerHTML = `
+        <!-- 展会标题 -->
+        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 24px;">${exhibition.name}</h1>
+        
+        <!-- 展会基本信息 -->
+        <div class="exhibition-info">
+          <div class="exhibition-status status-${exhibition.status}">
+            <i class="fas fa-${exhibition.status === 'ongoing' ? 'calendar-check' : exhibition.status === 'upcoming' ? 'calendar-week' : 'calendar-times'} text-white text-2xl"></i>
+          </div>
+          <div class="exhibition-details">
+            <div class="flex flex-wrap gap-4">
+              <div class="detail-item">
+                <span class="detail-label">展会状态：</span>
+                <span class="detail-value">
+                  <span class="tag ${exhibition.status === 'ongoing' ? 'tag-success' : exhibition.status === 'upcoming' ? 'tag-warning' : 'tag-info'}">${exhibition.statusText}</span>
+                </span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">展会时间：</span>
+                <span class="detail-value">${exhibition.startTime} 至 ${exhibition.endTime}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">展会地点：</span>
+                <span class="detail-value">${exhibition.location}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">详细地址：</span>
+                <span class="detail-value">${exhibition.address}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">主办单位：</span>
+                <span class="detail-value">${exhibition.organizer}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">官方网站：</span>
+                <span class="detail-value">
+                  <a href="http://${exhibition.website}" target="_blank" style="color: var(--primary); text-decoration: underline;">${exhibition.website}</a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 标签导航 -->
+        <div class="tab-nav">
+          <div class="tab-item active" data-tab="overview">展会概况</div>
+          <div class="tab-item" data-tab="products">展品范围</div>
+          <div class="tab-item" data-tab="schedule">展会日程</div>
+          <div class="tab-item" data-tab="exhibitors">参展企业</div>
+        </div>
+        
+        <!-- 标签内容 -->
+        <!-- 展会概况 -->
+        <div class="tab-content active" id="overview">
+          <div class="card">
+            <div class="exhibition-content">
+              <p>${exhibition.description}</p>
+              
+              <div class="exhibition-highlight">
+                <h3>展会亮点</h3>
+                <ul>
+                  ${exhibition.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 展会日程 -->
+        <div class="tab-content" id="schedule">
+          <div class="card">
+            <div class="exhibition-timeline">
+              ${exhibition.schedule.map(item => `
+                <div class="timeline-item">
+                  <div class="timeline-time">${item.time}</div>
+                  <div class="timeline-title">${item.title}</div>
+                  <div class="timeline-content">${item.content}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        
+        <!-- 展品范围 -->
+        <div class="tab-content" id="products">
+          <div class="card">
+            <div class="exhibition-content">
+              <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">发制品</h3>
+                <p style="line-height: 1.6;">男女假发、工艺发条、教习发、接发、发块、发把、手织发、眼睫毛、化学纤维、天然仿制原料等其他假发类原材料、生产设备以及跨境电商服务商等；</p>
+              </div>
+              
+              <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">美睫美甲</h3>
+                <p style="line-height: 1.6;">假睫毛定制、睫毛原材料、胶水、包装设备、OEM、COM、直播网红选品、跨境电商及服务机构，涵盖美甲耗材、美甲硬件、美甲工具等；</p>
+              </div>
+              
+              <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">美发用品</h3>
+                <p style="line-height: 1.6;">洗护烫染等美发用品，发剪、发梳、电吹风、电推剪、电夹板等美发工具、烫发机、理髲椅等美发设备，加盟教育培训机构、管理操作设备、软件等新产品技术；</p>
+              </div>
+              
+              <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">植发科技</h3>
+                <p style="line-height: 1.6;">植发、补发与技术加盟培训机构、毛发移植设备与产品、发医疗机构等；</p>
+              </div>
+              
+              <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">养发育发</h3>
+                <p style="line-height: 1.6;">头皮护理产品等加盟培训机构、头皮检测设备、天然养发育发产品、白转黑等产品以及养发育发连锁机构等；</p>
+              </div>
+              
+              <div>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">发饰品</h3>
+                <p style="line-height: 1.6;">发夹、头花、发珠、发带、发簪、发环等头饰产品。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 展会日程 -->
+        <div class="tab-content" id="schedule">
+          <div class="card">
+            <div class="exhibition-timeline">
+              ${exhibition.schedule.map(item => `
+                <div class="timeline-item">
+                  <div class="timeline-time">${item.time}</div>
+                  <div class="timeline-title">${item.title}</div>
+                  <div class="timeline-content">${item.content}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        
+        <!-- 参展企业 -->
+        <div class="tab-content" id="exhibitors">
+          <div class="card">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${exhibition.exhibitors.map(exhibitor => `
+                <div style="background: var(--bg-primary); border-radius: 12px; padding: 20px; border: 1px solid var(--border-color);">
+                  <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">${exhibitor.name}</div>
+                  <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 4px;">展位：${exhibitor.booth}</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">类别：${exhibitor.category}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // 添加标签切换功能
+      setupTabNavigation();
+    }
+    
+    // 设置标签导航
+    function setupTabNavigation() {
+      document.querySelectorAll('.tab-item').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabId = this.dataset.tab;
+          
+          // 更新标签状态
+          document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 更新内容显示
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+    }
+    
+    // 页面加载完成后加载展会内容
+    window.addEventListener('DOMContentLoaded', loadExhibitionContent);
+  </script>
+</body>
+</html>

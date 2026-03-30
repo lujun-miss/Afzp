@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>质量检测 - 鄄城县发制品产业大脑</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .nav-link:hover {
+      color: #c9a227;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a5fb4, #c9a227);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active {
+      color: #c9a227;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4" id="main-nav">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-yellow-500 flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg">鄄城县发制品产业大脑</div>
+            <div class="text-xs text-gray-400">Industry Brain Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-4">
+        <a href="../index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+        <a href="cockpit.html" class="nav-link text-gray-300 hover:text-white">产业全景</a>
+        <a href="industry-map.html" class="nav-link text-gray-300 hover:text-white">产业透视</a>
+        <a href="monitor.html" class="nav-link text-gray-300 hover:text-white">安全防控</a>
+        <a href="enterprise.html" class="nav-link text-gray-300 hover:text-white">企业画像</a>
+        <a href="supply.html" class="nav-link text-gray-300 hover:text-white">资源枢纽</a>
+        <a href="market.html" class="nav-link text-gray-300 hover:text-white">市场洞察</a>
+        <a href="government.html" class="nav-link text-gray-300 hover:text-white">政务服务</a>
+        <a href="hair-products/hair-mall.html" class="nav-link text-gray-300 hover:text-white">发品交易</a>
+
+        <a href="digital-finance/financial-policy.html" class="nav-link text-gray-300 hover:text-white">金融服务</a>
+        <a href="thinktank.html" class="nav-link text-gray-300 hover:text-white">发业智库</a>
+        <a href="traceability.html" class="nav-link text-gray-300 hover:text-white">发品溯源</a>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="../admin/index.html" class="hidden md:flex items-center gap-2 text-gray-300 hover:text-white">
+          <i class="fas fa-cog"></i>
+          <span>后台管理</span>
+        </a>
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出系统</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <!-- 面包屑 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 text-sm">
+          <a href="../index.html" class="text-gray-400 hover:text-white">首页</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <a href="supply.html" class="text-gray-400 hover:text-white">资源枢纽</a>
+          <i class="fas fa-chevron-right text-gray-600"></i>
+          <span class="text-white font-medium">质量检测</span>
+        </div>
+      </div>
+      
+      <!-- 页面标题 -->
+      <div class="mb-10">
+        <p class="text-gray-400 max-w-3xl">专业的发制品质量检测服务，确保产品符合国家标准和行业标准</p>
+      </div>
+
+      <!-- 检测项目 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-vial text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-4">拉力测试</h3>
+          <p class="text-sm text-gray-400">检测发束的拉力强度，确保产品耐用性</p>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-microscope text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-4">成分分析</h3>
+          <p class="text-sm text-gray-400">分析发制品的成分构成，确保符合安全标准</p>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-tint text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-4">耐水性测试</h3>
+          <p class="text-sm text-gray-400">测试产品在水环境下的性能表现</p>
+        </div>
+        
+        <div class="card" style="border-radius: 16px; padding: 24px;">
+          <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+            <i class="fas fa-temperature-high text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-4">耐热性测试</h3>
+          <p class="text-sm text-gray-400">测试产品在高温环境下的稳定性</p>
+        </div>
+      </div>
+
+      <!-- 检测流程 -->
+      <div class="card" style="border-radius: 16px; margin-bottom: 12px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">检测流程</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="text-center">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                <span class="text-white font-bold">1</span>
+              </div>
+              <h4 class="font-semibold mb-2">样品提交</h4>
+              <p class="text-sm text-gray-400">提交待检测样品和相关信息</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                <span class="text-white font-bold">2</span>
+              </div>
+              <h4 class="font-semibold mb-2">检测分析</h4>
+              <p class="text-sm text-gray-400">专业设备进行各项指标检测</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                <span class="text-white font-bold">3</span>
+              </div>
+              <h4 class="font-semibold mb-2">报告生成</h4>
+              <p class="text-sm text-gray-400">生成详细的检测报告</p>
+            </div>
+            
+            <div class="text-center">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1a5fb4, #c9a227); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                <span class="text-white font-bold">4</span>
+              </div>
+              <h4 class="font-semibold mb-2">结果反馈</h4>
+              <p class="text-sm text-gray-400">提供检测结果和改进建议</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 检测申请 -->
+      <div class="card" style="border-radius: 16px;">
+        <div class="card-header" style="padding: 20px; border-bottom: 1px solid rgba(0, 242, 254, 0.1);">
+          <h3 class="text-xl font-semibold">检测申请</h3>
+        </div>
+        <div class="p-6">
+          <form class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">企业名称</label>
+                <input type="text" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">联系人</label>
+                <input type="text" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">联系电话</label>
+                <input type="tel" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">产品名称</label>
+                <input type="text" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">检测项目</label>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="rounded border-gray-700 bg-gray-800 text-primary focus:ring-primary">
+                  <span>拉力测试</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="rounded border-gray-700 bg-gray-800 text-primary focus:ring-primary">
+                  <span>成分分析</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="rounded border-gray-700 bg-gray-800 text-primary focus:ring-primary">
+                  <span>耐水性测试</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="rounded border-gray-700 bg-gray-800 text-primary focus:ring-primary">
+                  <span>耐热性测试</span>
+                </label>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">备注</label>
+              <textarea rows="3" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">提交申请</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
