@@ -542,14 +542,15 @@
     </div>
 
     <div class="card mb-6" style="background: #1e293b; border: 1px solid #334155;">
-      <div class="card-header" style="border-bottom: 1px solid #334155; padding: 16px 20px;">
-        <div class="card-title" style="color: #fff;"><i class="fas fa-project-diagram"></i> 产业链图谱</div>
+      <div class="card-header" style="border-bottom: 1px solid #334155; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div class="card-title" style="color: #fff;"><i class="fas fa-project-diagram"></i> 产业链图谱</div>
+          <div class="flex gap-2">
+            <button class="view-tab-btn active" data-view="global-map" style="padding: 6px 12px; font-size: 12px;">全球产业链图</button>
+            <button class="view-tab-btn" data-view="industry-chain" style="padding: 6px 12px; font-size: 12px;">行业图谱</button>
+          </div>
+        </div>
         <div class="flex gap-2">
-          <button class="view-tab-btn active" data-view="global-map" style="padding: 6px 12px; font-size: 12px;">全球产业链图</button>
-          <button class="view-tab-btn" data-view="industry-chain" style="padding: 6px 12px; font-size: 12px;">产业链全景</button>
-          <button class="toggle-chain-btn" id="toggleChainBtn" style="padding: 6px 12px; background: transparent; border: 1px solid #64748b; border-radius: 6px; font-size: 12px; color: #94a3b8; cursor: pointer; transition: all 0.3s ease; display: none;" title="收缩/放大产业链全景">
-            <i class="fas fa-chevron-up"></i> 收起
-          </button>
           <button class="btn btn-outline filter-btn active" data-filter="all" style="padding: 6px 12px; font-size: 12px;">全景</button>
           <button class="btn btn-outline filter-btn" data-filter="upstream" style="padding: 6px 12px; font-size: 12px;">上游</button>
           <button class="btn btn-outline filter-btn" data-filter="midstream" style="padding: 6px 12px; font-size: 12px;">中游</button>
@@ -571,9 +572,7 @@
         
         <!-- 产业链全景视图 -->
         <div id="industry-chain-view" class="industry-chain-view">
-          <div id="chain-view-container" style="width: 100%; height: 600px; transition: height 0.3s ease;">
-            <iframe src="hair_industry_chain.html" style="width: 100%; height: 100%; border: none; border-radius: 8px;"></iframe>
-          </div>
+          <iframe src="hair_industry_chain.html" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
         </div>
       </div>
     </div>
@@ -2689,9 +2688,6 @@
       const tabBtns = document.querySelectorAll('.view-tab-btn');
       const globalMapView = document.getElementById('global-map-view');
       const industryChainView = document.getElementById('industry-chain-view');
-      const chainViewContainer = document.getElementById('chain-view-container');
-      const toggleChainBtn = document.getElementById('toggleChainBtn');
-      let isChainExpanded = true;
       
       tabBtns.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -2705,33 +2701,11 @@
           if (view === 'global-map') {
             globalMapView.style.display = 'block';
             industryChainView.style.display = 'none';
-            toggleChainBtn.style.display = 'none';
           } else if (view === 'industry-chain') {
             globalMapView.style.display = 'none';
             industryChainView.style.display = 'block';
-            toggleChainBtn.style.display = 'inline-block';
-            
-            // 重置为展开状态
-            isChainExpanded = true;
-            chainViewContainer.style.height = '600px';
-            toggleChainBtn.innerHTML = '<i class="fas fa-chevron-up"></i> 收起';
           }
         });
-      });
-      
-      // 添加收缩放大功能
-      toggleChainBtn.addEventListener('click', function() {
-        if (isChainExpanded) {
-          // 收缩
-          chainViewContainer.style.height = '200px';
-          toggleChainBtn.innerHTML = '<i class="fas fa-chevron-down"></i> 展开';
-          isChainExpanded = false;
-        } else {
-          // 放大
-          chainViewContainer.style.height = '600px';
-          toggleChainBtn.innerHTML = '<i class="fas fa-chevron-up"></i> 收起';
-          isChainExpanded = true;
-        }
       });
     }
   </script>
