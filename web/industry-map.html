@@ -463,6 +463,35 @@
       background: #3b82f6;
       border-color: #3b82f6;
     }
+    
+    /* 视图切换选项卡样式 */
+    .view-tab-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #64748b;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .view-tab-btn:hover {
+      background: #334155;
+      border-color: #94a3b8;
+    }
+    
+    .view-tab-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+    
+    .industry-chain-view {
+      display: none;
+      width: 100%;
+      height: 600px;
+    }
   </style>
 </head>
 <body style="overflow-y: auto; background: #0f172a;">
@@ -501,21 +530,27 @@
   </nav>
 
   <div class="max-w-[1600px] mx-auto pt-24 px-8">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #fff;">发制品行业图谱</h1>
-        <p style="color: #94a3b8; font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
+    <div class="flex flex-col gap-4 mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #fff;">发制品行业图谱</h1>
+          <p style="color: #94a3b8; font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
+        </div>
+        <div class="flex gap-3">
+          <button class="btn btn-outline" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> 全屏查看</button>
+          <button class="btn btn-primary" onclick="exportChart()"><i class="fas fa-download"></i> 导出图谱</button>
+        </div>
       </div>
-      <div class="flex gap-3">
-        <button class="btn btn-outline" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> 全屏查看</button>
-        <button class="btn btn-primary" onclick="exportChart()"><i class="fas fa-download"></i> 导出图谱</button>
-      </div>
+      
+
     </div>
 
     <div class="card mb-6" style="background: #1e293b; border: 1px solid #334155;">
       <div class="card-header" style="border-bottom: 1px solid #334155; padding: 16px 20px;">
         <div class="card-title" style="color: #fff;"><i class="fas fa-project-diagram"></i> 产业链图谱</div>
         <div class="flex gap-2">
+          <button class="view-tab-btn active" data-view="global-map" style="padding: 6px 12px; font-size: 12px;">全球产业链图</button>
+          <button class="view-tab-btn" data-view="industry-chain" style="padding: 6px 12px; font-size: 12px;">产业链全景</button>
           <button class="btn btn-outline filter-btn active" data-filter="all" style="padding: 6px 12px; font-size: 12px;">全景</button>
           <button class="btn btn-outline filter-btn" data-filter="upstream" style="padding: 6px 12px; font-size: 12px;">上游</button>
           <button class="btn btn-outline filter-btn" data-filter="midstream" style="padding: 6px 12px; font-size: 12px;">中游</button>
@@ -523,13 +558,23 @@
         </div>
       </div>
       <div class="map-container" style="position: relative;">
-        <div id="industryChainChart" style="width: 100%; height: 600px;"></div>
-        <!-- 鄄城产业地图附图 -->
-        <div id="juancheng-map-thumbnail" style="position: absolute; bottom: 20px; right: 20px; width: 300px; height: 250px; border: 2px solid #3b82f6; border-radius: 8px; background: #1c1c3e; z-index: 10;">
-          <div style="padding: 10px; background: #3b82f6; color: white; font-weight: bold; border-top-left-radius: 6px; border-top-right-radius: 6px;">
-            鄄城产业地图
+        <!-- 全球产业链图 -->
+        <div id="global-map-view" style="width: 100%; height: 600px; position: relative;">
+          <div id="industryChainChart" style="width: 100%; height: 100%;"></div>
+          <!-- 鄄城产业地图附图 -->
+          <div id="juancheng-map-thumbnail" style="position: absolute; bottom: 20px; right: 20px; width: 300px; height: 250px; border: 2px solid #3b82f6; border-radius: 8px; background: #1c1c3e; z-index: 10;">
+            <div style="padding: 10px; background: #3b82f6; color: white; font-weight: bold; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+              鄄城产业地图
+            </div>
+            <div id="juancheng-thumbnail-chart" style="width: 100%; height: 220px;"></div>
           </div>
-          <div id="juancheng-thumbnail-chart" style="width: 100%; height: 220px;"></div>
+        </div>
+        
+        <!-- 产业链全景视图 -->
+        <div id="industry-chain-view" class="industry-chain-view">
+          <div id="chain-view-container" style="width: 100%; height: 600px; transition: height 0.3s ease;">
+            <iframe src="hair_industry_chain.html" style="width: 100%; height: 100%; border: none; border-radius: 8px;"></iframe>
+          </div>
         </div>
       </div>
     </div>
@@ -553,6 +598,7 @@
             <button class="view-btn active" data-view="card">卡片视图</button>
             <button class="view-btn" data-view="table">表格视图</button>
             <button class="view-btn" data-view="map">地图分布</button>
+            <button class="view-btn" data-view="industry-chain">产业链全景</button>
           </div>
           
           <div class="export-actions">
@@ -917,6 +963,11 @@
             </div>
           </div>
         </div>
+
+        <!-- 产业链全景视图 -->
+        <div class="view-content" data-view="industry-chain" style="display: none;">
+          <iframe src="hair_industry_chain.html" style="width: 100%; height: 800px; border: none; border-radius: 8px;"></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -971,6 +1022,7 @@
       initViewControls();
       initCardInteractions();
       initEnterpriseMap();
+      initViewTabControls();
     });
 
     function initIndustryChainChart() {
@@ -2632,6 +2684,56 @@
       console.log('Opening enterprise dashboard for:', enterpriseId);
       // 这里可以实现跳转到企业详情页的逻辑
       alert('打开企业档案：' + enterpriseId);
+    }
+    
+    function initViewTabControls() {
+      const tabBtns = document.querySelectorAll('.view-tab-btn');
+      const globalMapView = document.getElementById('global-map-view');
+      const industryChainView = document.getElementById('industry-chain-view');
+      const chainViewContainer = document.getElementById('chain-view-container');
+      const toggleChainBtn = document.getElementById('toggleChainBtn');
+      let isChainExpanded = true;
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const view = this.dataset.view;
+          
+          // 更新按钮状态
+          tabBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // 切换视图
+          if (view === 'global-map') {
+            globalMapView.style.display = 'block';
+            industryChainView.style.display = 'none';
+            toggleChainBtn.style.display = 'none';
+          } else if (view === 'industry-chain') {
+            globalMapView.style.display = 'none';
+            industryChainView.style.display = 'block';
+            toggleChainBtn.style.display = 'inline-block';
+            
+            // 重置为展开状态
+            isChainExpanded = true;
+            chainViewContainer.style.height = '600px';
+            toggleChainBtn.innerHTML = '<i class="fas fa-chevron-up"></i> 收起';
+          }
+        });
+      });
+      
+      // 添加收缩放大功能
+      toggleChainBtn.addEventListener('click', function() {
+        if (isChainExpanded) {
+          // 收缩
+          chainViewContainer.style.height = '200px';
+          toggleChainBtn.innerHTML = '<i class="fas fa-chevron-down"></i> 展开';
+          isChainExpanded = false;
+        } else {
+          // 放大
+          chainViewContainer.style.height = '600px';
+          toggleChainBtn.innerHTML = '<i class="fas fa-chevron-up"></i> 收起';
+          isChainExpanded = true;
+        }
+      });
     }
   </script>
 </body>

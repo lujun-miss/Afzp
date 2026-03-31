@@ -138,9 +138,9 @@
         
         .section-content {
             text-align: center;
-            padding: 20px;
-            min-width: 120px;
-            min-height: 100px;
+            padding: 15px;
+            min-width: 80px;
+            min-height: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -148,19 +148,19 @@
         }
         
         .section-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 32px;
+            margin-bottom: 8px;
         }
         
         .section-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             line-height: 1.2;
         }
         
         .section-desc {
-            font-size: 12px;
+            font-size: 11px;
             color: #94a3b8;
             line-height: 1.3;
         }
@@ -274,6 +274,123 @@
             box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
         }
         
+        /* 节点详情面板 */
+        .detail-panel {
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            width: 320px;
+            background: rgba(20, 30, 48, 0.9);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .detail-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), transparent);
+        }
+        
+        .detail-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #00f2fe;
+            font-weight: 600;
+        }
+        
+        .detail-content {
+            padding: 20px;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+        
+        .search-box input::placeholder {
+            color: #64748b;
+        }
+        
+        .detail-info {
+            display: none;
+        }
+        
+        .detail-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .detail-description {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+
+
+        
+        .detail-children {
+            margin-top: 15px;
+        }
+        
+        .detail-children ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .detail-children li {
+            padding: 8px 0;
+            font-size: 13px;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.4;
+        }
+        
+        .detail-children li:last-child {
+            border-bottom: none;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        
         /* 响应式设计 */
         @media (max-width: 1024px) {
             .chart-container {
@@ -320,12 +437,34 @@
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-btn">← 返回首页</a>
-        
-        <div class="header">
-            <h1>发制品产业链</h1>
-            <p>产业价值流动图 - 从原料到终端的完整价值链</p>
-        </div>
+            
+            <div class="header">
+                <h1>发制品产业链</h1>
+                <p>产业价值流动图 - 从原料到终端的完整价值链</p>
+            </div>
+            
+            <!-- 节点详情面板 -->
+            <div class="detail-panel" id="detailPanel">
+                <div class="detail-header">
+                    <h3>节点详情</h3>
+                </div>
+                <div class="detail-content">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="搜索子项..." />
+                    </div>
+                    <div class="detail-info" id="detailInfo">
+                        <div class="detail-title" id="detailTitle"></div>
+                        <div class="detail-description" id="detailDescription"></div>
+                        <div class="detail-children" id="detailChildren">
+                            <ul id="childrenList"></ul>
+                        </div>
+                    </div>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon">📋</div>
+                        <div class="empty-text">请点击环形图中的节点查看详情</div>
+                    </div>
+                </div>
+            </div>
         
         <div class="chart-container">
             <div class="chart">
@@ -342,148 +481,331 @@
                     </div>
                 </div>
                 
-                <!-- 上游供应层（内环） -->
-                <div class="section section-upstream" style="width: 120px; height: 120px; left: 190px; top: 190px;">
+                <!-- 上游材料层（内环） -->
+                <!-- 最内层圆线：真人发原料、化纤丝原料、基底材料、连接配件、粘合材料 -->
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: 180px; top: 0px;">
                     <div class="section-content">
                         <div class="section-icon">👱‍♀️</div>
                         <div class="section-title">真人发原料</div>
-                        <div class="section-desc">原辫发、泡发、色发</div>
+                        <div class="section-desc">原材料</div>
                     </div>
                 </div>
                 
-                <div class="section section-upstream" style="width: 120px; height: 120px; left: 190px; top: -210px;">
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: 90px; top: -155px;">
                     <div class="section-content">
                         <div class="section-icon">🧵</div>
                         <div class="section-title">化纤丝原料</div>
-                        <div class="section-desc">高温丝、低温丝、蛋白丝、功能丝</div>
+                        <div class="section-desc">原材料</div>
                     </div>
                 </div>
                 
-                <div class="section section-upstream" style="width: 120px; height: 120px; left: -210px; top: -210px;">
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: -90px; top: -155px;">
+                    <div class="section-content">
+                        <div class="section-icon">🧵</div>
+                        <div class="section-title">基底材料</div>
+                        <div class="section-desc">核心辅料</div>
+                    </div>
+                </div>
+                
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: -180px; top: 0px;">
                     <div class="section-content">
                         <div class="section-icon">🔩</div>
-                        <div class="section-title">核心辅料</div>
-                        <div class="section-desc">瑞士网、发夹、胶水、弹力网</div>
+                        <div class="section-title">连接配件</div>
+                        <div class="section-desc">核心辅料</div>
                     </div>
                 </div>
                 
-                <div class="section section-upstream" style="width: 120px; height: 120px; left: -210px; top: 190px;">
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: 0px; top: 180px;">
+                    <div class="section-content">
+                        <div class="section-icon">🧴</div>
+                        <div class="section-title">粘合材料</div>
+                        <div class="section-desc">核心辅料</div>
+                    </div>
+                </div>
+                
+                <!-- 二环圆线：染色材料、造型材料、包装材料 -->
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: 0px; top: -260px;">
                     <div class="section-content">
                         <div class="section-icon">🎨</div>
-                        <div class="section-title">处理材料</div>
-                        <div class="section-desc">染料、漂发剂、烫发药水</div>
+                        <div class="section-title">染色材料</div>
+                        <div class="section-desc">处理材料</div>
+                    </div>
+                </div>
+                
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: -225px; top: 130px;">
+                    <div class="section-content">
+                        <div class="section-icon">💈</div>
+                        <div class="section-title">造型材料</div>
+                        <div class="section-desc">处理材料</div>
+                    </div>
+                </div>
+                
+                <div class="section section-upstream" style="width: 100px; height: 100px; left: 225px; top: 130px;">
+                    <div class="section-content">
+                        <div class="section-icon">📦</div>
+                        <div class="section-title">包装材料</div>
+                        <div class="section-desc">包装工具</div>
                     </div>
                 </div>
                 
                 <!-- 中游制造层（中环） -->
-                <div class="section section-midstream" style="width: 140px; height: 140px; left: 320px; top: 180px;">
-                    <div class="section-content">
-                        <div class="section-icon">🚰</div>
-                        <div class="section-title">前处理</div>
-                        <div class="section-desc">清洗、脱脂、消毒、分级</div>
-                    </div>
-                </div>
-                
-                <div class="section section-midstream" style="width: 140px; height: 140px; left: 320px; top: -220px;">
-                    <div class="section-content">
-                        <div class="section-icon">🧵</div>
-                        <div class="section-title">编织工艺</div>
-                        <div class="section-desc">手织、机织、蕾丝工艺</div>
-                    </div>
-                </div>
-                
-                <div class="section section-midstream" style="width: 140px; height: 140px; left: 180px; top: -360px;">
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: 0px; top: -360px;">
                     <div class="section-content">
                         <div class="section-icon">💇</div>
                         <div class="section-title">后处理</div>
-                        <div class="section-desc">染色、烫发、造型、修剪</div>
+                        <div class="section-desc">工艺流程</div>
                     </div>
                 </div>
                 
-                <div class="section section-midstream" style="width: 140px; height: 140px; left: -220px; top: -360px;">
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: 240px; top: -240px;">
                     <div class="section-content">
-                        <div class="section-icon">🧩</div>
-                        <div class="section-title">半成品组件</div>
-                        <div class="section-desc">发帘、发块、发套基础</div>
+                        <div class="section-icon">🧵</div>
+                        <div class="section-title">编织工艺</div>
+                        <div class="section-desc">制造工艺</div>
                     </div>
                 </div>
                 
-                <div class="section section-midstream" style="width: 140px; height: 140px; left: -360px; top: -220px;">
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: 480px; top: -120px;">
                     <div class="section-content">
                         <div class="section-icon">🏭</div>
-                        <div class="section-title">生产设备</div>
-                        <div class="section-desc">三联机、染色缸、定型机</div>
+                        <div class="section-title">前处理设备</div>
+                        <div class="section-desc">生产设备</div>
                     </div>
                 </div>
                 
-                <div class="section section-midstream" style="width: 140px; height: 140px; left: -360px; top: 180px;">
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: -240px; top: 240px;">
                     <div class="section-content">
-                        <div class="section-icon">📦</div>
-                        <div class="section-title">检测包装</div>
-                        <div class="section-desc">质检、包装、贴标</div>
+                        <div class="section-icon">💇‍♀️</div>
+                        <div class="section-title">接发产品</div>
+                        <div class="section-desc">成品</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: 0px; top: 360px;">
+                    <div class="section-content">
+                        <div class="section-icon">🔧</div>
+                        <div class="section-title">后处理设备</div>
+                        <div class="section-desc">生产设备</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: -480px; top: -120px;">
+                    <div class="section-content">
+                        <div class="section-icon">🧵</div>
+                        <div class="section-title">编织设备</div>
+                        <div class="section-desc">生产设备</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: -360px; top: 120px;">
+                    <div class="section-content">
+                        <div class="section-icon">👒</div>
+                        <div class="section-title">发套</div>
+                        <div class="section-desc">成品</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: -240px; top: -240px;">
+                    <div class="section-content">
+                        <div class="section-icon">👱‍♀️</div>
+                        <div class="section-title">发帘</div>
+                        <div class="section-desc">半成品</div>
+                    </div>
+                </div>
+                
+                <div class="section section-midstream" style="width: 120px; height: 120px; left: 360px; top: 120px;">
+                    <div class="section-content">
+                        <div class="section-icon">🚿</div>
+                        <div class="section-title">前处理</div>
+                        <div class="section-desc">制造工艺</div>
                     </div>
                 </div>
                 
                 <!-- 下游应用层（外环） -->
-                <div class="section section-downstream" style="width: 160px; height: 160px; left: 480px; top: 170px;">
-                    <div class="section-content">
-                        <div class="section-icon">🏷️</div>
-                        <div class="section-title">时尚消费</div>
-                        <div class="section-desc">日常美妆、接发、造型变换</div>
-                    </div>
-                </div>
-                
-                <div class="section section-downstream" style="width: 160px; height: 160px; left: 480px; top: -230px;">
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: 0px; top: -520px;">
                     <div class="section-content">
                         <div class="section-icon">🏥</div>
-                        <div class="section-title">医疗康复</div>
-                        <div class="section-desc">癌症患者、脱发症、烧伤患者</div>
+                        <div class="section-title">医疗假发</div>
+                        <div class="section-desc">应用场景</div>
                     </div>
                 </div>
                 
-                <div class="section section-downstream" style="width: 160px; height: 160px; left: 170px; top: -540px;">
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: 360px; top: -320px;">
                     <div class="section-content">
-                        <div class="section-icon">🎬</div>
-                        <div class="section-title">演艺特效</div>
-                        <div class="section-desc">影视、戏剧、COSPLAY、舞台</div>
+                        <div class="section-icon">💇‍♀️</div>
+                        <div class="section-title">接发增密</div>
+                        <div class="section-desc">应用场景</div>
                     </div>
                 </div>
                 
-                <div class="section section-downstream" style="width: 160px; height: 160px; left: -230px; top: -540px;">
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: 520px; top: 80px;">
                     <div class="section-content">
-                        <div class="section-icon">🔧</div>
-                        <div class="section-title">职业防护</div>
-                        <div class="section-desc">食品加工、无尘车间、医疗手术</div>
+                        <div class="section-icon">💄</div>
+                        <div class="section-title">日常美妆</div>
+                        <div class="section-desc">应用场景</div>
                     </div>
                 </div>
                 
-                <div class="section section-downstream" style="width: 160px; height: 160px; left: -540px; top: -230px;">
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: 360px; top: 320px;">
                     <div class="section-content">
                         <div class="section-icon">🎁</div>
-                        <div class="section-title">发教与礼品</div>
-                        <div class="section-desc">教学头模、玩具娃娃、创意礼品</div>
+                        <div class="section-title">礼品玩具</div>
+                        <div class="section-desc">发教礼品</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: 0px; top: 520px;">
+                    <div class="section-content">
+                        <div class="section-icon">🎓</div>
+                        <div class="section-title">美发教学</div>
+                        <div class="section-desc">发教礼品</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: -360px; top: 320px;">
+                    <div class="section-content">
+                        <div class="section-icon">🛡️</div>
+                        <div class="section-title">职业防护</div>
+                        <div class="section-desc">职业防护</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: -520px; top: 80px;">
+                    <div class="section-content">
+                        <div class="section-icon">🎭</div>
+                        <div class="section-title">舞台表演</div>
+                        <div class="section-desc">应用场景</div>
+                    </div>
+                </div>
+                
+                <div class="section section-downstream" style="width: 140px; height: 140px; left: -360px; top: -320px;">
+                    <div class="section-content">
+                        <div class="section-icon">🎬</div>
+                        <div class="section-title">影视戏剧</div>
+                        <div class="section-desc">应用场景</div>
                     </div>
                 </div>
                 
                 <!-- 连接线将在JavaScript中动态生成 -->
             </div>
             
-            <!-- 图例 -->
-            <div class="legend">
-                <h3>图例说明</h3>
-                <div class="legend-item">
-                    <div class="legend-color legend-color-solid"></div>
-                    <span>物料/工作流（实线）</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color legend-color-dashed"></div>
-                    <span>资金/价值流（虚线）</span>
-                </div>
-            </div>
+
         </div>
     </div>
     
     <script>
+        // 节点数据模型
+        const nodeData = {
+            // 上游节点
+            '真人发原料': {
+                description: '包括原辫发、泡发、色发等天然人发资源',
+                children: ['原辫发', '泡发', '色发']
+            },
+            '化纤丝原料': {
+                description: '高温丝、低温丝、蛋白丝等合成纤维材料',
+                children: ['高温丝', '低温丝', '蛋白丝', '功能丝']
+            },
+            '基底材料': {
+                description: '瑞士网、法国网、单层网等假发基底材料',
+                children: ['瑞士网', '法国网', '单层网']
+            },
+            '连接配件': {
+                description: '发夹、调节扣、魔术贴等固定配件',
+                children: ['发夹', '调节扣', '魔术贴']
+            },
+            '粘合材料': {
+                description: '医用双面胶、专用胶水等粘合产品',
+                children: ['医用双面胶', '专用胶水', '粘合产品']
+            },
+            '染色材料': {
+                description: '染发剂、染料、染助剂等染色材料',
+                children: ['染发剂', '染料', '染助剂']
+            },
+            '造型材料': {
+                description: '烫发水、定型剂、发蜡、发胶等造型产品',
+                children: ['烫发水', '定型剂', '发蜡', '发胶']
+            },
+            '包装材料': {
+                description: '包装盒、包装袋、标签、说明书等包装用品',
+                children: ['包装盒', '包装袋', '标签', '说明书']
+            },
+            
+            // 中游节点
+            '前处理': {
+                description: '清洗、脱脂、消毒、分级、梳发等前期处理',
+                children: ['清洗', '脱脂', '消毒', '分级', '梳发']
+            },
+            '编织工艺': {
+                description: '手织、机织、蕾丝工艺等编织技术',
+                children: ['手织', '机织', '蕾丝工艺']
+            },
+            '后处理': {
+                description: '染色、烫发、造型、修剪、护理等后期处理',
+                children: ['染色', '烫发', '造型', '修剪', '护理']
+            },
+            '发帘': {
+                description: '前顶发帘、全蕾丝发帘等半成品组件',
+                children: ['前顶发帘', '全蕾丝发帘']
+            },
+            '发套': {
+                description: '机制发套、手织发套、蕾丝假发等成品',
+                children: ['机制发套', '手织发套', '蕾丝假发']
+            },
+            '接发产品': {
+                description: '发条、发束、发片等接发产品',
+                children: ['发条', '发束', '发片']
+            },
+            '前处理设备': {
+                description: '清洗机、脱脂机、消毒设备、分级设备等生产设备',
+                children: ['清洗机', '脱脂机', '消毒设备', '分级设备']
+            },
+            '编织设备': {
+                description: '三联机、编织机、蕾丝机等编织生产设备',
+                children: ['三联机', '编织机', '蕾丝机']
+            },
+            '后处理设备': {
+                description: '染色缸、蒸汽定型机、烘干机等后处理设备',
+                children: ['染色缸', '蒸汽定型机', '烘干机']
+            },
+            
+            // 下游节点
+            '日常美妆': {
+                description: '日常美容美发、造型变换等时尚消费',
+                children: ['美容美发', '造型变换', '时尚潮流']
+            },
+            '接发增密': {
+                description: '接发、增发、密发等美容服务',
+                children: ['接发', '增发', '密发']
+            },
+            '医疗假发': {
+                description: '癌症患者、脱发症、烧伤患者专用假发',
+                children: ['癌症患者', '脱发症', '烧伤患者']
+            },
+            '影视戏剧': {
+                description: '电影、电视剧、戏剧等影视制作假发',
+                children: ['电影', '电视剧', '戏剧']
+            },
+            '舞台表演': {
+                description: 'COSPLAY、舞台演出、时尚秀场等表演假发',
+                children: ['COSPLAY', '舞台演出', '时尚秀场']
+            },
+            '职业防护': {
+                description: '食品加工、无尘车间、医疗手术等防护假发',
+                children: ['食品加工', '无尘车间', '医疗手术']
+            },
+            '美发教学': {
+                description: '美发教学头模、培训教具等教育产品',
+                children: ['教学头模', '培训教具', '教育产品']
+            },
+            '礼品玩具': {
+                description: '玩具娃娃发、假发配件、创意礼品等',
+                children: ['玩具娃娃发', '假发配件', '创意礼品']
+            }
+        };
+        
+        // 当前选中的节点
+        let currentNode = null;
+        
         // 动态生成连接线
         function createConnector(x1, y1, x2, y2, isDashed = false) {
             const connector = document.createElement('div');
@@ -544,8 +866,74 @@
             chart.appendChild(createConnector(350, 350, 300, 300, true));
         }
         
-        // 页面加载完成后添加连接线
-        window.addEventListener('load', addConnections);
+        // 显示节点详情
+        function showNodeDetail(nodeName) {
+            const detailInfo = document.getElementById('detailInfo');
+            const emptyState = document.getElementById('emptyState');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailDescription = document.getElementById('detailDescription');
+            const childrenList = document.getElementById('childrenList');
+            
+            if (nodeData[nodeName]) {
+                const data = nodeData[nodeName];
+                detailTitle.textContent = nodeName;
+                detailDescription.textContent = data.description;
+                
+                // 清空并填充子项列表
+                childrenList.innerHTML = '';
+                data.children.forEach(child => {
+                    const li = document.createElement('li');
+                    li.textContent = child;
+                    childrenList.appendChild(li);
+                });
+                
+                // 显示详情，隐藏空状态
+                detailInfo.style.display = 'block';
+                emptyState.style.display = 'none';
+                
+                currentNode = nodeName;
+            }
+        }
+        
+        // 搜索子项
+        function searchChildren() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.toLowerCase();
+            const childrenList = document.getElementById('childrenList');
+            const items = childrenList.querySelectorAll('li');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            addConnections();
+            
+            // 添加节点点击事件
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.addEventListener('click', function() {
+                    const title = this.querySelector('.section-title').textContent;
+                    showNodeDetail(title);
+                });
+            });
+            
+            // 添加搜索事件
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', searchChildren);
+            
+            // 初始化显示空状态
+            document.getElementById('emptyState').style.display = 'block';
+        });
     </script>
 </body>
 </html>
