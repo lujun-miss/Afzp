@@ -466,11 +466,11 @@
     
     /* 视图切换选项卡样式 */
     .view-tab-btn {
-      padding: 8px 16px;
+      padding: 6px 12px;
       background: transparent;
       border: 1px solid #64748b;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -530,19 +530,15 @@
   </nav>
 
   <div class="max-w-[1600px] mx-auto pt-24 px-8">
-    <div class="flex flex-col gap-4 mb-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #fff;">发制品行业图谱</h1>
-          <p style="color: #94a3b8; font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
-        </div>
-        <div class="flex gap-3">
-          <button class="btn btn-outline" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> 全屏查看</button>
-          <button class="btn btn-primary" onclick="exportChart()"><i class="fas fa-download"></i> 导出图谱</button>
-        </div>
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #fff;">发制品行业图谱</h1>
+        <p style="color: #94a3b8; font-size: 14px;">全景展示发制品产业生态链与企业关系</p>
       </div>
-      
-
+      <div class="flex gap-3">
+        <button class="btn btn-outline" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> 全屏查看</button>
+        <button class="btn btn-primary" onclick="exportChart()"><i class="fas fa-download"></i> 导出图谱</button>
+      </div>
     </div>
 
     <div class="card mb-6" style="background: #1e293b; border: 1px solid #334155;">
@@ -551,6 +547,9 @@
         <div class="flex gap-2">
           <button class="view-tab-btn active" data-view="global-map" style="padding: 6px 12px; font-size: 12px;">全球产业链图</button>
           <button class="view-tab-btn" data-view="industry-chain" style="padding: 6px 12px; font-size: 12px;">产业链全景</button>
+          <button class="toggle-chain-btn" id="toggleChainBtn" style="padding: 6px 12px; background: transparent; border: 1px solid #64748b; border-radius: 6px; font-size: 12px; color: #94a3b8; cursor: pointer; transition: all 0.3s ease; display: none;" title="收缩/放大产业链全景">
+            <i class="fas fa-chevron-up"></i> 收起
+          </button>
           <button class="btn btn-outline filter-btn active" data-filter="all" style="padding: 6px 12px; font-size: 12px;">全景</button>
           <button class="btn btn-outline filter-btn" data-filter="upstream" style="padding: 6px 12px; font-size: 12px;">上游</button>
           <button class="btn btn-outline filter-btn" data-filter="midstream" style="padding: 6px 12px; font-size: 12px;">中游</button>
