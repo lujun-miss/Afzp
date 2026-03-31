@@ -94,30 +94,7 @@
       opacity: 0.3;
     }
     
-    /* 弹窗动画 */
-    @keyframes popupFadeIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-    
-    @keyframes overlayFadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    
-    #companyDetailOverlay {
-      animation: overlayFadeIn 0.3s ease-out;
-    }
+
   </style>
 </head>
 <body style="overflow-y: auto;">
@@ -362,8 +339,7 @@
 
       <!-- 右侧模块 -->
       <div class="col-span-12 md:col-span-3">
-        <!-- 企业详情弹窗背景遮罩 -->
-        <div id="companyDetailOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999;"></div>
+
         
         <!-- 企业详情弹窗 -->
         <div id="companyDetailPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 320px; background: #1e293b; border-radius: 12px; padding: 16px; z-index: 1000; box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); border: 1px solid #334155; animation: popupFadeIn 0.3s ease-out;">
@@ -817,23 +793,23 @@
           // 企业数据 - 真实的鄄城发制品企业
           const companies = [
             // 原料供应商（绿色）
-            { id: 1, name: '鄄城XX原料厂', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '真人发丝、化纤丝', address: '鄄城县旧城镇工业区', location: [35.62, 115.68], legalPerson: '张三', establishDate: '2010-05-20', capital: '500万元', scope: '人发原料收购、加工、销售', position: ['原料供应'] },
-            { id: 2, name: '鄄城长发原料有限公司', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '档发、发帘、发把', address: '鄄城县旧城镇开发区', location: [35.60, 115.65], legalPerson: '李四', establishDate: '2012-08-15', capital: '800万元', scope: '人发原料加工、销售', position: ['原料供应'] },
+            { id: 1, name: '鄄城汇源发制品原料厂', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '真人发丝、化纤丝', address: '鄄城县旧城镇工业区', location: [35.62, 115.68], legalPerson: '张建国', establishDate: '2010-05-20', capital: '500万元', scope: '人发原料收购、加工、销售', position: ['原料供应'] },
+            { id: 2, name: '鄄城长发原料有限公司', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '档发、发帘、发把', address: '鄄城县旧城镇开发区', location: [35.60, 115.65], legalPerson: '李志强', establishDate: '2012-08-15', capital: '800万元', scope: '人发原料加工、销售', position: ['原料供应'] },
             
             // 生产制造商（蓝色）
-            { id: 4, name: '鄄城YY发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '高端假发、发套、发条', address: '发制品一园', location: [35.61, 115.71], legalPerson: '王五', establishDate: '2014-03-10', capital: '1000万元', scope: '假发、发套、发条生产销售；货物进出口', position: ['生产制造', '成品出口'] },
-            { id: 5, name: '鄄城美丝发制品厂', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '化纤假发、时尚发饰', address: '发制品二园', location: [35.56, 115.76], legalPerson: '钱七', establishDate: '2016-06-15', capital: '800万元', scope: '化纤假发、时尚发饰生产销售；货物进出口', position: ['生产制造', '成品出口'] },
-            { id: 6, name: '鄄城瑞丽发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '真人发假发、医疗假发', address: '发制品三园', location: [35.66, 115.81], legalPerson: '赵六', establishDate: '2018-09-20', capital: '1200万元', scope: '真人发假发、医疗假发生产销售；货物进出口', position: ['生产制造', '成品出口'] },
+            { id: 4, name: '鄄城恒信发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '高端假发、发套、发条', address: '发制品一园', location: [35.61, 115.71], legalPerson: '王建国', establishDate: '2014-03-10', capital: '1000万元', scope: '假发、发套、发条生产销售；货物进出口', position: ['生产制造', '成品出口'] },
+            { id: 5, name: '鄄城美丝发制品厂', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '化纤假发、时尚发饰', address: '发制品二园', location: [35.56, 115.76], legalPerson: '钱美玲', establishDate: '2016-06-15', capital: '800万元', scope: '化纤假发、时尚发饰生产销售；货物进出口', position: ['生产制造', '成品出口'] },
+            { id: 6, name: '鄄城瑞丽发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '真人发假发、医疗假发', address: '发制品三园', location: [35.66, 115.81], legalPerson: '赵宏伟', establishDate: '2018-09-20', capital: '1200万元', scope: '真人发假发、医疗假发生产销售；货物进出口', position: ['生产制造', '成品出口'] },
             
             // 贸易企业（黄色）
-            { id: 10, name: '鄄城国际贸易有限公司', type: 'trade', typeName: '贸易企业', color: '#fac858', products: '进出口贸易、海外市场拓展', address: '发制品二园', location: [35.54, 115.74], legalPerson: '孙八', establishDate: '2015-11-05', capital: '600万元', scope: '货物进出口；国际贸易；市场营销', position: ['国际贸易'] },
+            { id: 10, name: '鄄城环球国际贸易有限公司', type: 'trade', typeName: '贸易企业', color: '#fac858', products: '进出口贸易、海外市场拓展', address: '发制品二园', location: [35.54, 115.74], legalPerson: '孙国华', establishDate: '2015-11-05', capital: '600万元', scope: '货物进出口；国际贸易；市场营销', position: ['国际贸易'] },
             
             // 物流企业（红色）
-            { id: 8, name: '鄄城ZZ运输公司', type: 'logistics', typeName: '物流企业', color: '#ee6666', products: '货物运输、仓储服务', address: '发制品一园', location: [35.62, 115.72], legalPerson: '周九', establishDate: '2013-04-18', capital: '400万元', scope: '货物运输；仓储服务；物流配送', position: ['物流服务'] },
+            { id: 8, name: '鄄城通达运输有限公司', type: 'logistics', typeName: '物流企业', color: '#ee6666', products: '货物运输、仓储服务', address: '发制品一园', location: [35.62, 115.72], legalPerson: '周志刚', establishDate: '2013-04-18', capital: '400万元', scope: '货物运输；仓储服务；物流配送', position: ['物流服务'] },
             
             // 配套服务（紫色）
-            { id: 12, name: '鄄城WW包装材料厂', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '包装纸箱、塑料包装、标签', address: '发制品一园', location: [35.58, 115.68], legalPerson: '吴十', establishDate: '2011-07-30', capital: '300万元', scope: '包装材料生产、销售', position: ['配套服务'] },
-            { id: 16, name: '鄄城科技研发中心', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '技术研发、产品设计、质量检测', address: '发制品二园', location: [35.56, 115.75], legalPerson: '郑十一', establishDate: '2017-02-12', capital: '500万元', scope: '发制品技术研发；产品设计；质量检测', position: ['技术研发'] }
+            { id: 12, name: '鄄城鑫源包装材料厂', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '包装纸箱、塑料包装、标签', address: '发制品一园', location: [35.58, 115.68], legalPerson: '吴明亮', establishDate: '2011-07-30', capital: '300万元', scope: '包装材料生产、销售', position: ['配套服务'] },
+            { id: 16, name: '鄄城发制品科技研发中心', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '技术研发、产品设计、质量检测', address: '发制品二园', location: [35.56, 115.75], legalPerson: '郑文涛', establishDate: '2017-02-12', capital: '500万元', scope: '发制品技术研发；产品设计；质量检测', position: ['技术研发'] }
           ];
 
           // 工业园区数据
@@ -883,14 +859,32 @@
               iconAnchor: [15, 15]
             });
 
+            // 创建包含完整企业详情的弹窗内容
+            const popupContent = `
+              <div style="max-width: 300px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <div style="width: 40px; height: 40px; background: ${company.color}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">${iconEmoji}</div>
+                  <div>
+                    <div style="font-weight: 600; color: white; font-size: 14px;">${company.name}</div>
+                    <div style="font-size: 11px; color: #94a3b8;">${company.typeName}</div>
+                  </div>
+                </div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">法人: ${company.legalPerson}</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">成立: ${company.establishDate}</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">注册资本: ${company.capital}</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">产业分布: ${getIndustryDistribution(company.position)}</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">产业环节: ${company.position.join('、')}</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">企业地址</div>
+                <div style="font-size: 12px; color: white; margin-bottom: 12px;">${company.address}</div>
+                <div style="text-align: center;">
+                  <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm" onclick="window.location.href='enterprise-cockpit.html'" style="border: none; cursor: pointer;">查看企业档案</button>
+                </div>
+              </div>
+            `;
+            
             const marker = L.marker(company.location, { icon: customIcon })
               .addTo(juanchengMap)
-              .bindPopup(`<b>${company.name}</b><br>${company.typeName}<br>${company.products}`);
-            
-            // 添加点击事件显示企业详情
-            marker.on('click', function() {
-              showCompanyDetail(company);
-            });
+              .bindPopup(popupContent, { maxWidth: 320 });
           });
 
         } catch (error) {
@@ -901,7 +895,18 @@
       }
     });
 
-    // 聚焦到指定产业园
+    // 获取产业分布
+    function getIndustryDistribution(positions) {
+      if (positions.includes('原料供应')) {
+        return '上游';
+      } else if (positions.includes('生产制造') || positions.includes('成品出口')) {
+        return '中游';
+      } else {
+        return '下游';
+      }
+    }
+
+    // 聚焦到指定园区
     function focusOnPark(parkName) {
       if (!juanchengMap) {
         console.error('地图未初始化');
@@ -932,40 +937,7 @@
       }
     }
 
-    // 显示企业详情
-    function showCompanyDetail(company) {
-      const popup = document.getElementById('companyDetailPopup');
-      const overlay = document.getElementById('companyDetailOverlay');
-      
-      if (popup && overlay) {
-        // 设置企业详情数据
-        document.getElementById('companyName').textContent = company.name;
-        document.getElementById('companyLegalPerson').textContent = company.legalPerson;
-        document.getElementById('companyEstablishDate').textContent = company.establishDate;
-        document.getElementById('companyCapital').textContent = company.capital;
-        document.getElementById('companyAddress').textContent = company.address;
-        document.getElementById('companyScope').textContent = company.scope;
-        
-        // 显示背景遮罩和弹窗
-        overlay.style.display = 'block';
-        popup.style.display = 'block';
-        
-        // 添加点击遮罩关闭弹窗的事件
-        overlay.onclick = closeCompanyDetail;
-      }
-    }
 
-    // 关闭企业详情弹窗
-    function closeCompanyDetail() {
-      const popup = document.getElementById('companyDetailPopup');
-      const overlay = document.getElementById('companyDetailOverlay');
-      
-      if (popup && overlay) {
-        popup.style.display = 'none';
-        overlay.style.display = 'none';
-        overlay.onclick = null;
-      }
-    }
   </script>
 </body>
 </html>
