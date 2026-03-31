@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     * {
       margin: 0;
@@ -499,6 +500,36 @@
     .animate-float {
       animation: float 3s ease-in-out infinite;
     }
+    
+    /* Leaflet地图样式 */
+    .leaflet-container {
+      background: #1a2536;
+    }
+    
+    .custom-marker {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .custom-marker:hover {
+      transform: scale(1.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    
+    .custom-marker.active {
+      border-color: #00f2fe;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+      transform: scale(1.3);
+    }
   </style>
 </head>
 <body>
@@ -544,32 +575,23 @@
   </nav>
 
   <!-- 企业信息顶部栏 -->
-  <div class="enterprise-header">
-    <div class="enterprise-name">
-      <i class="fas fa-building"></i> 鄄城YYY发制品集团
+    <div class="enterprise-header">
+      <div class="enterprise-name">
+        <i class="fas fa-building"></i> <span id="currentCompanyName">鄄城恒信发制品有限公司</span>
+      </div>
+      <div class="enterprise-tags">
+        <span class="tag tag-success">正常企业</span>
+      </div>
+
     </div>
-    <div class="enterprise-tags">
-      <span class="tag tag-primary">AEO认证</span>
-      <span class="tag tag-primary">高新企业</span>
-      <span class="tag tag-warning">预警企业</span>
-    </div>
-    <div style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 16px; margin-left: 8px;">
-      <div style="font-size: 11px; color: #94a3b8;">实时负债</div>
-      <div style="font-size: 18px; font-weight: 700; color: #ff2d75;">85%</div>
-    </div>
-    <div style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 16px;">
-      <div style="font-size: 11px; color: #94a3b8;">设备在线</div>
-      <div style="font-size: 18px; font-weight: 700; color: #00f2fe;">32/35</div>
-    </div>
-  </div>
 
   <!-- 操作按钮 -->
   <div class="action-bar">
+    <button class="action-btn" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i> 返回
+    </button>
     <button class="action-btn" onclick="refreshData()">
       <i class="fas fa-sync-alt"></i> 刷新
-    </button>
-    <button class="action-btn" onclick="exportData()">
-      <i class="fas fa-download"></i> 导出
     </button>
   </div>
 
@@ -589,7 +611,7 @@
       <div class="panel-content">
         <div class="info-item">
           <span class="info-label">企业名称</span>
-          <span class="info-value highlight">鄄城YYY发制品集团</span>
+          <span class="info-value highlight" id="companyName">鄄城恒信发制品有限公司</span>
         </div>
         <div class="info-item">
           <span class="info-label">统一社会信用代码</span>
@@ -597,19 +619,19 @@
         </div>
         <div class="info-item">
           <span class="info-label">法定代表人</span>
-          <span class="info-value highlight">祁灵霞</span>
+          <span class="info-value highlight" id="legalPerson">王建国</span>
         </div>
         <div class="info-item">
           <span class="info-label">企业类型</span>
-          <span class="info-value">民营企业</span>
+          <span class="info-value" id="companyType">生产制造商</span>
         </div>
         <div class="info-item">
           <span class="info-label">注册资金</span>
-          <span class="info-value highlight">500万人民币</span>
+          <span class="info-value highlight" id="registeredCapital">1000万元</span>
         </div>
         <div class="info-item">
           <span class="info-label">成立时间</span>
-          <span class="info-value">2020年12月04日</span>
+          <span class="info-value" id="establishmentDate">2015-01-01</span>
         </div>
         <div class="info-item">
           <span class="info-label">登记状态</span>
@@ -618,47 +640,49 @@
       </div>
     </div>
 
-    <!-- 左中面板：经营健康度 -->
+    <!-- 左中面板：企业资质 -->
     <div class="panel left-middle">
       <div class="panel-header">
         <div class="panel-icon">
-          <i class="fas fa-heartbeat"></i>
+          <i class="fas fa-certificate"></i>
         </div>
-        <div class="panel-title">经营健康度</div>
+        <div class="panel-title">企业资质</div>
       </div>
       <div class="panel-content">
-        <!-- 风险雷达 -->
-        <div class="risk-radar" style="cursor: pointer;" onclick="showRiskDetail()">
-          <div class="risk-number animate-pulse">3</div>
-          <div class="risk-text">
-            <div class="risk-title">预警提醒</div>
-            <div class="risk-desc">点击查看详细风险事件</div>
-          </div>
-          <i class="fas fa-chevron-right" style="color: #ffc107;"></i>
+        <!-- 企业资质证书 -->
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-file-alt" style="margin-right: 6px; color: #00f2fe;"></i>企业资质</span>
+          <span class="info-value" style="color: #22c55e;">高新技术企业</span>
         </div>
         
-        <!-- 关键指标 -->
-        <div class="metric-grid">
-          <div class="metric-card">
-            <div class="metric-value" style="color: #ff2d75;">0</div>
-            <div class="metric-label">参保人数</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-value" style="color: #ff2d75;">0</div>
-            <div class="metric-label">专利数量</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-value" style="color: #ff2d75;">0</div>
-            <div class="metric-label">商标数量</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-value" style="color: #ff2d75;">0</div>
-            <div class="metric-label">软件著作权</div>
-          </div>
+        <!-- 行业认证 -->
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-award" style="margin-right: 6px; color: #00f2fe;"></i>行业认证</span>
+          <span class="info-value" style="color: #22c55e;">AEO认证</span>
         </div>
         
-        <div style="margin-top: 10px; padding: 8px; background: rgba(255, 193, 7, 0.1); border-radius: 6px; font-size: 11px; color: #ffc107;">
-          <i class="fas fa-exclamation-triangle"></i> 关键短板：社保与知识产权均为0，建议关注
+        <!-- 荣誉奖项 -->
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-star" style="margin-right: 6px; color: #00f2fe;"></i>荣誉奖项</span>
+          <span class="info-value" style="font-size: 11px;">市级龙头企业、创新型企业</span>
+        </div>
+        
+        <!-- 知识产权 -->
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-lightbulb" style="margin-right: 6px; color: #00f2fe;"></i>知识产权</span>
+          <span class="info-value" style="color: #22c55e;">3项发明专利</span>
+        </div>
+        
+        <!-- 质量体系认证 -->
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-shield-alt" style="margin-right: 6px; color: #00f2fe;"></i>质量认证</span>
+          <span class="info-value" style="color: #22c55e;">ISO9001认证</span>
+        </div>
+        
+        <!-- 环保认证 -->
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-leaf" style="margin-right: 6px; color: #00f2fe;"></i>环保认证</span>
+          <span class="info-value" style="color: #22c55e;">ISO14001认证</span>
         </div>
       </div>
     </div>
@@ -673,10 +697,10 @@
       </div>
       <div class="panel-content">
         <div class="shareholder-item">
-          <div class="shareholder-avatar">祁</div>
+          <div class="shareholder-avatar" id="shareholderAvatar">王</div>
           <div class="shareholder-info">
-            <div class="shareholder-name">祁灵霞</div>
-            <div class="shareholder-detail">认缴出资 500万元</div>
+            <div class="shareholder-name" id="shareholderName">王建国</div>
+            <div class="shareholder-detail">认缴出资 1000万元</div>
           </div>
           <div class="shareholder-percent">100%</div>
         </div>
@@ -684,8 +708,8 @@
         <!-- 股权结构图 -->
         <div style="margin-top: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px;">
           <div style="text-align: center; margin-bottom: 10px;">
-            <div style="display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(255, 45, 117, 0.2)); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 8px; font-weight: 600;">
-              鄄城YYY发制品集团
+            <div style="display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(255, 45, 117, 0.2)); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 8px; font-weight: 600;" id="shareholderCompanyName">
+              鄄城恒信发制品有限公司
             </div>
           </div>
           <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
@@ -734,38 +758,49 @@
       </div>
     </div>
 
-    <!-- 右上面板：联系与资质 -->
+    <!-- 右上面板：数字化转型进度 -->
     <div class="panel right-top">
       <div class="panel-header">
         <div class="panel-icon">
-          <i class="fas fa-address-card"></i>
+          <i class="fas fa-robot"></i>
         </div>
-        <div class="panel-title">联系与资质</div>
+        <div class="panel-title">数字化转型进度</div>
       </div>
       <div class="panel-content">
+        <!-- 数字化成熟度评估 -->
         <div class="info-item">
-          <span class="info-label"><i class="fas fa-phone" style="margin-right: 6px; color: #00f2fe;"></i>联系电话</span>
-          <span class="info-value highlight">15553091331</span>
+          <span class="info-label"><i class="fas fa-chart-line" style="margin-right: 6px; color: #00f2fe;"></i>成熟度评估</span>
+          <span class="info-value highlight">3/5级</span>
         </div>
+        
+        <!-- 转型任务进度 -->
         <div class="info-item">
-          <span class="info-label"><i class="fas fa-envelope" style="margin-right: 6px; color: #00f2fe;"></i>企业邮箱</span>
-          <span class="info-value">15553091331@qq.com</span>
+          <span class="info-label"><i class="fas fa-tasks" style="margin-right: 6px; color: #00f2fe;"></i>任务完成率</span>
+          <span class="info-value" style="color: #22c55e;">65%</span>
         </div>
+        
+        <!-- 技术应用情况 -->
         <div class="info-item">
-          <span class="info-label"><i class="fas fa-map-marker-alt" style="margin-right: 6px; color: #00f2fe;"></i>注册地址</span>
-          <span class="info-value" style="font-size: 11px;">山东省菏泽市鄄城县</span>
+          <span class="info-label"><i class="fas fa-microchip" style="margin-right: 6px; color: #00f2fe;"></i>技术应用</span>
+          <span class="info-value" style="font-size: 11px;">ERP系统、MES系统、CRM系统</span>
         </div>
+        
+        <!-- 投资回报分析 -->
         <div class="info-item">
-          <span class="info-label"><i class="fas fa-certificate" style="margin-right: 6px; color: #00f2fe;"></i>企业资质</span>
-          <span class="info-value" style="color: #ff2d75;">无</span>
+          <span class="info-label"><i class="fas fa-coins" style="margin-right: 6px; color: #00f2fe;"></i>ROI预估</span>
+          <span class="info-value highlight">18%</span>
         </div>
+        
+        <!-- 转型阶段 -->
         <div class="info-item">
-          <span class="info-label"><i class="fas fa-award" style="margin-right: 6px; color: #00f2fe;"></i>行业认证</span>
-          <span class="info-value" style="color: #64748b;">暂未获取</span>
+          <span class="info-label"><i class="fas fa-road" style="margin-right: 6px; color: #00f2fe;"></i>当前阶段</span>
+          <span class="info-value" style="color: #f59e0b;">智能化升级</span>
         </div>
+        
+        <!-- 下一步计划 -->
         <div class="info-item">
-          <span class="info-label"><i class="fas fa-star" style="margin-right: 6px; color: #00f2fe;"></i>荣誉奖项</span>
-          <span class="info-value" style="color: #64748b;">暂无</span>
+          <span class="info-label"><i class="fas fa-calendar-check" style="margin-right: 6px; color: #00f2fe;"></i>下一步计划</span>
+          <span class="info-value" style="font-size: 11px;">引进AI质检系统，实现质量全流程监控</span>
         </div>
       </div>
     </div>
@@ -864,155 +899,335 @@
       }
     });
 
+    // 获取URL参数
+    function getUrlParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+    
+    // 当前企业ID（从URL参数获取，默认为4）
+    const currentCompanyId = parseInt(getUrlParam('companyId')) || 4;
+    
+    // 企业数据 - 真实的鄄城发制品企业
+    const companies = [
+      // 原料供应商（绿色）- 位于园区外部
+      { id: 1, name: '鄄城汇源发制品原料厂', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '真人发丝、化纤丝', address: '鄄城县旧城镇工业区', output: '5000万', employees: 420, desc: '专业从事真人发原料收购和初加工', location: [35.62, 115.68], legalPerson: '张建国', establishmentDate: '2010-05-15', registeredCapital: '2000万元', businessScope: '真人发、化纤原料收购、加工、销售；货物进出口', industryTags: ['原料采购'] },
+      { id: 2, name: '鄄城长发原料有限公司', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '档发、发帘、发把', address: '鄄城县旧城镇开发区', output: '8000万', employees: 550, desc: '生产高质量化纤原料', location: [35.60, 115.65], legalPerson: '李志强', establishmentDate: '2012-03-20', registeredCapital: '3000万元', businessScope: '化纤原料生产、销售；发制品辅料加工', industryTags: ['原料采购'] },
+      { id: 3, name: '鄄城润发原料厂', type: 'supplier', typeName: '原料供应商', color: '#91cc75', products: '化纤原料、发网', address: '鄄城县旧城镇工业园', output: '3000万', employees: 280, desc: '位于旧城镇，生产假发配套辅料', location: [35.63, 115.67], legalPerson: '王五', establishmentDate: '2014-08-10', registeredCapital: '1500万元', businessScope: '化纤原料、发网、发套生产销售', industryTags: ['原料采购'] },
+      
+      // 生产制造商（蓝色）- 分布在三个园区内
+      { id: 4, name: '鄄城恒信发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '高端假发、发套、发条', address: '发制品一园', output: '1.2亿', employees: 850, desc: '鄄城龙头企业，专业生产高端假发产品', location: [35.61, 115.71], legalPerson: '王建国', establishmentDate: '2015-01-01', registeredCapital: '1000万元', businessScope: '发制品、假发、头套及相关配件的生产、销售；货物进出口、技术进出口；高端真人发定制', industryTags: ['原料采购', '生产制造', '成品出口'] },
+      { id: 5, name: '鄄城美丝发制品厂', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '化纤假发、时尚发饰', address: '发制品二园', output: '9000万', employees: 680, desc: '专注于创新技术，生产高品质假发', location: [35.56, 115.76], legalPerson: '钱美玲', establishmentDate: '2016-06-15', registeredCapital: '800万元', businessScope: '化纤假发、时尚发饰生产销售；货物进出口', industryTags: ['生产制造', '成品出口'] },
+      { id: 6, name: '鄄城瑞丽发制品有限公司', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '真人发假发、医疗假发', address: '发制品三园', output: '1.5亿', employees: 1200, desc: '以手工编织工艺著称，产品质量上乘', location: [35.66, 115.81], legalPerson: '赵宏伟', establishmentDate: '2018-04-20', registeredCapital: '1500万元', businessScope: '真人发假发、医疗假发生产销售；货物进出口；技术研发', industryTags: ['生产制造', '成品出口'] },
+      { id: 7, name: '鄄城金发来制品厂', type: 'manufacturer', typeName: '生产制造商', color: '#5470c6', products: '发片、发束、发帘', address: '发制品一园', output: '6000万', employees: 450, desc: '专业生产各类发制品', location: [35.59, 115.69], legalPerson: '周九', establishmentDate: '2019-09-05', registeredCapital: '600万元', businessScope: '发片、发束、发帘生产销售；货物进出口', industryTags: ['生产制造', '成品出口'] },
+      
+      // 贸易企业（黄色）- 分布在三个园区内
+      { id: 10, name: '鄄城环球国际贸易有限公司', type: 'trade', typeName: '贸易企业', color: '#fac858', products: '进出口贸易、海外市场拓展', address: '发制品二园', output: '2亿', employees: 350, desc: '专注于国际市场，通过电商平台出口假发产品', location: [35.54, 115.74], legalPerson: '孙国华', establishmentDate: '2017-02-10', registeredCapital: '2000万元', businessScope: '货物进出口；技术进出口；进出口代理；国际贸易代理服务；跨境电商运营', industryTags: ['成品出口'] },
+      { id: 11, name: '鄄城环球贸易公司', type: 'trade', typeName: '贸易企业', color: '#fac858', products: '跨境电商、海外仓服务', address: '发制品三园', output: '1.8亿', employees: 300, desc: '负责国内市场的批发和分销业务', location: [35.64, 115.79], legalPerson: '郑十一', establishmentDate: '2020-03-15', registeredCapital: '1800万元', businessScope: '货物进出口；国内贸易；跨境电商；海外仓服务；供应链管理', industryTags: ['成品出口'] },
+      
+      // 物流企业（红色）- 分布在三个园区内
+      { id: 8, name: '鄄城通达运输有限公司', type: 'logistics', typeName: '物流企业', color: '#ee6666', products: '货物运输、仓储服务', address: '发制品一园', output: '3000万', employees: 180, desc: '提供仓储和物流配送服务，确保产品及时送达', location: [35.62, 115.72], legalPerson: '周志刚', establishmentDate: '2013-07-20', registeredCapital: '1000万元', businessScope: '道路货物运输；仓储服务；物流配送；装卸搬运服务', industryTags: ['物流运输'] },
+      { id: 9, name: '鄄城通达物流有限公司', type: 'logistics', typeName: '物流企业', color: '#ee6666', products: '国内物流、国际货代', address: '发制品二园', output: '4500万', employees: 220, desc: '为企业提供生产设备的维修和保养服务', location: [35.57, 115.77], legalPerson: '李十三', establishmentDate: '2015-11-05', registeredCapital: '1200万元', businessScope: '国内物流；国际货运代理；报关报检服务；供应链管理', industryTags: ['物流运输'] },
+      
+      // 配套服务（紫色）- 分布在三个园区内
+      { id: 12, name: '鄄城鑫源包装材料厂', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '包装纸箱、塑料包装、标签', address: '发制品一园', output: '1500万', employees: 200, desc: '生产各类包装材料', location: [35.58, 115.68], legalPerson: '吴明亮', establishmentDate: '2014-04-10', registeredCapital: '500万元', businessScope: '包装材料、纸箱、塑料包装、标签生产销售', industryTags: ['配套服务'] },
+      { id: 13, name: '鄄城鑫源包装有限公司', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '高档包装盒、礼品盒、手提袋', address: '发制品二园', output: '2000万', employees: 250, desc: '生产高档包装材料', location: [35.53, 115.73], legalPerson: '刘十五', establishmentDate: '2016-08-15', registeredCapital: '600万元', businessScope: '高档包装盒、礼品盒、手提袋生产销售；包装设计服务', industryTags: ['配套服务'] },
+      { id: 14, name: '鄄城精密配件厂', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '假发配件、发夹、发网', address: '发制品三园', output: '1200万', employees: 180, desc: '生产假发配件', location: [35.63, 115.78], legalPerson: '陈十六', establishmentDate: '2017-05-20', registeredCapital: '400万元', businessScope: '假发配件、发夹、发网生产销售', industryTags: ['配套服务'] },
+      { id: 15, name: '鄄城美饰配件有限公司', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '发饰、头带、发箍', address: '发制品一园', output: '1800万', employees: 220, desc: '生产发饰配件', location: [35.60, 115.70], legalPerson: '杨十七', establishmentDate: '2018-03-10', registeredCapital: '550万元', businessScope: '发饰、头带、发箍生产销售；饰品设计', industryTags: ['配套服务'] },
+      { id: 16, name: '鄄城发制品科技研发中心', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '技术研发、产品设计、质量检测', address: '发制品二园', output: '800万', employees: 100, desc: '提供技术研发服务', location: [35.56, 115.75], legalPerson: '郑文涛', establishmentDate: '2019-01-05', registeredCapital: '300万元', businessScope: '发制品技术研发；产品设计；质量检测；技术咨询', industryTags: ['技术研发'] },
+      { id: 17, name: '鄄城人才培训中心', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '技能培训、人才招聘、管理咨询', address: '发制品三园', output: '500万', employees: 80, desc: '提供人才培训服务', location: [35.65, 115.80], legalPerson: '周十九', establishmentDate: '2020-06-15', registeredCapital: '200万元', businessScope: '职业技能培训；人才招聘；企业管理咨询；人力资源服务', industryTags: ['人才培训'] },
+      { id: 18, name: '鄄城金融服务中心', type: 'service', typeName: '配套服务', color: '#9b59b6', products: '融资服务、保险代理、财务咨询', address: '发制品一园', output: '1000万', employees: 120, desc: '提供金融服务', location: [35.61, 115.69], legalPerson: '吴二十', establishmentDate: '2021-02-20', registeredCapital: '800万元', businessScope: '融资咨询；保险代理；财务咨询；企业管理咨询', industryTags: ['金融服务'] }
+    ];
+    
+    // 企业间关系数据 (定义上下游)
+    const relationships = [
+      // 原料供应商 -> 生产制造商
+      { source: 1, target: 4, value: 4000, type: 'material', product: '真人发丝', years: 8 },
+      { source: 1, target: 6, value: 3500, type: 'material', product: '真人发丝', years: 6 },
+      { source: 2, target: 4, value: 3000, type: 'material', product: '档发', years: 7 },
+      { source: 2, target: 5, value: 2500, type: 'material', product: '发帘', years: 5 },
+      { source: 3, target: 5, value: 1500, type: 'material', product: '化纤原料', years: 4 },
+      { source: 3, target: 7, value: 1200, type: 'material', product: '发网', years: 3 },
+      
+      // 生产制造商 -> 贸易公司
+      { source: 4, target: 10, value: 8000, type: 'product', product: '高端假发', years: 9 },
+      { source: 4, target: 11, value: 4000, type: 'product', product: '发套', years: 7 },
+      { source: 5, target: 10, value: 5000, type: 'product', product: '化纤假发', years: 6 },
+      { source: 6, target: 11, value: 10000, type: 'product', product: '医疗假发', years: 8 },
+      { source: 7, target: 10, value: 3000, type: 'product', product: '发片', years: 4 },
+      
+      // 配套服务商 -> 生产制造商
+      { source: 12, target: 4, value: 800, type: 'service', product: '包装材料', years: 5 },
+      { source: 12, target: 6, value: 1000, type: 'service', product: '包装材料', years: 6 },
+      { source: 13, target: 4, value: 600, type: 'service', product: '高档包装盒', years: 4 },
+      { source: 14, target: 5, value: 400, type: 'service', product: '假发配件', years: 3 },
+      { source: 15, target: 7, value: 300, type: 'service', product: '发饰', years: 2 },
+      { source: 16, target: 4, value: 200, type: 'service', product: '技术研发', years: 3 },
+      { source: 16, target: 6, value: 300, type: 'service', product: '产品设计', years: 4 },
+      { source: 17, target: 4, value: 150, type: 'service', product: '人才培训', years: 2 },
+      { source: 17, target: 5, value: 120, type: 'service', product: '技能培训', years: 1 },
+      { source: 18, target: 4, value: 250, type: 'service', product: '融资服务', years: 3 },
+      { source: 18, target: 10, value: 350, type: 'service', product: '财务咨询', years: 5 },
+      
+      // 贸易公司 -> 物流公司
+      { source: 10, target: 8, value: 10000, type: 'logistics', product: '货物运输', years: 7 },
+      { source: 10, target: 9, value: 8000, type: 'logistics', product: '国际物流', years: 6 },
+      { source: 11, target: 8, value: 7000, type: 'logistics', product: '国内运输', years: 5 },
+      { source: 11, target: 9, value: 9000, type: 'logistics', product: '跨境物流', years: 4 }
+    ];
+    
+    // 获取与当前企业相关的企业（上下游）
+    function getRelatedCompanies(currentId) {
+      const relatedIds = new Set();
+      relatedIds.add(currentId); // 添加当前企业
+      
+      // 查找上游企业（供应商）
+      relationships.forEach(rel => {
+        if (rel.target === currentId) {
+          relatedIds.add(rel.source);
+        }
+      });
+      
+      // 查找下游企业（客户）
+      relationships.forEach(rel => {
+        if (rel.source === currentId) {
+          relatedIds.add(rel.target);
+        }
+      });
+      
+      return companies.filter(company => relatedIds.has(company.id));
+    }
+    
+    // 工业园区数据
+    const industrialParks = [
+      {
+        id: 1,
+        name: '发制品一园',
+        center: [35.60, 115.70], // 临商路北段路东
+        radius: 3000,
+        color: '#FF9800', // 橙色
+        info: {
+          year: '2012年启动建设，2014年建成',
+          location: '鄄城县临商路北段路东',
+          scale: '成熟园区'
+        }
+      },
+      {
+        id: 2,
+        name: '发制品二园',
+        center: [35.55, 115.75], // 凤凰路北段路东
+        radius: 3000,
+        color: '#2196F3', // 蓝色
+        info: {
+          year: '2012年启动建设，2014年建成',
+          location: '鄄城县凤凰路北段路东',
+          scale: '成熟园区'
+        }
+      },
+      {
+        id: 3,
+        name: '发制品三园',
+        center: [35.65, 115.80], // 新建成
+        radius: 3000,
+        color: '#4CAF50', // 绿色
+        info: {
+          year: '2024年开工建设',
+          location: '鄄城县新城区',
+          scale: '占地486亩，可容纳60余家企业入驻'
+        }
+      }
+    ];
+    
+    let map = null;
+    let markers = {};
+    let parkCircles = {};
+    let relationshipLines = [];
+    
+    // 获取当前企业信息
+    const currentCompany = companies.find(company => company.id === currentCompanyId);
+    
+    // 获取相关企业
+    const relatedCompanies = getRelatedCompanies(currentCompanyId);
+    
+    // 获取相关关系
+    function getRelatedRelationships(currentId) {
+      return relationships.filter(rel => {
+        return rel.source === currentId || rel.target === currentId;
+      });
+    }
+    
     // 初始化地图
     function initMap() {
-      const chartDom = document.getElementById('mainMap');
-      const myChart = echarts.init(chartDom);
-      
-      // 鄄城坐标
-      const juanchengCoord = [115.5, 35.6];
-      
-      // 主要贸易伙伴坐标
-      const tradePartners = {
-        '美国': [-100, 40],
-        '欧洲': [10, 50],
-        '日本': [138, 36],
-        '韩国': [127, 37],
-        '印度': [78, 20],
-        '巴西': [-55, -15],
-        '非洲': [20, 0]
-      };
-      
-      // 生成贸易流向数据
-      const tradeLines = [
-        { from: juanchengCoord, to: tradePartners['美国'], value: 35, name: '美国市场' },
-        { from: juanchengCoord, to: tradePartners['欧洲'], value: 28, name: '欧洲市场' },
-        { from: juanchengCoord, to: tradePartners['日本'], value: 15, name: '日本市场' },
-        { from: juanchengCoord, to: tradePartners['韩国'], value: 12, name: '韩国市场' },
-        { from: juanchengCoord, to: tradePartners['印度'], value: 5, name: '印度市场' },
-        { from: juanchengCoord, to: tradePartners['巴西'], value: 3, name: '巴西市场' },
-        { from: juanchengCoord, to: tradePartners['非洲'], value: 2, name: '非洲市场' }
-      ];
-      
-      const option = {
-        backgroundColor: 'transparent',
-        geo: {
-          map: 'world',
-          roam: true,
-          zoom: 1.2,
-          center: [105, 35],
-          label: {
-            show: false
-          },
-          itemStyle: {
-            areaColor: 'rgba(16, 25, 48, 0.8)',
-            borderColor: 'rgba(0, 242, 254, 0.2)',
-            borderWidth: 1
-          },
-          emphasis: {
-            itemStyle: {
-              areaColor: 'rgba(0, 242, 254, 0.2)'
-            }
-          },
-          // 中国区域高亮
-          regions: [{
-            name: 'China',
-            itemStyle: {
-              areaColor: 'rgba(0, 242, 254, 0.3)',
-              borderColor: '#00f2fe',
-              borderWidth: 2
-            }
-          }]
-        },
-        series: [
-          // 贸易流向线
-          {
-            type: 'lines',
-            zlevel: 1,
-            effect: {
-              show: true,
-              period: 6,
-              trailLength: 0.7,
-              color: '#00f2fe',
-              symbolSize: 3
-            },
-            lineStyle: {
-              color: '#00f2fe',
-              width: 1,
-              curveness: 0.2,
-              opacity: 0.6
-            },
-            data: tradeLines.map(line => ({
-              coords: [line.from, line.to],
-              lineStyle: {
-                width: Math.max(1, line.value / 10),
-                opacity: 0.4 + (line.value / 100)
-              }
-            }))
-          },
-          // 目标点
-          {
-            type: 'effectScatter',
-            coordinateSystem: 'geo',
-            zlevel: 2,
-            rippleEffect: {
-              brushType: 'stroke',
-              scale: 3
-            },
-            label: {
-              show: true,
-              position: 'right',
-              formatter: '{b}',
-              fontSize: 10,
-              color: '#fff'
-            },
-            symbolSize: function(val) {
-              return Math.max(8, val[2] / 3);
-            },
-            itemStyle: {
-              color: '#ffc107'
-            },
-            data: tradeLines.map(line => ({
-              name: line.name,
-              value: [...line.to, line.value]
-            }))
-          },
-          // 鄄城中心点
-          {
-            type: 'effectScatter',
-            coordinateSystem: 'geo',
-            zlevel: 3,
-            rippleEffect: {
-              brushType: 'stroke',
-              scale: 5,
-              period: 4
-            },
-            label: {
-              show: true,
-              position: 'bottom',
-              formatter: '鄄城总部',
-              fontSize: 12,
-              fontWeight: 'bold',
-              color: '#00f2fe'
-            },
-            symbolSize: 15,
-            itemStyle: {
-              color: '#ff2d75'
-            },
-            data: [{
-              name: '鄄城总部',
-              value: [...juanchengCoord, 100]
-            }]
+      try {
+        // 创建地图实例
+        map = L.map('mainMap').setView(currentCompany.location, 14);
+        
+        // 添加地图图层（使用高德地图瓦片）
+        L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+          attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
+          subdomains: '1234',
+          maxZoom: 18
+        }).addTo(map);
+        
+        // 添加园区圆形
+        industrialParks.forEach(park => {
+          const parkCircle = L.circle(park.center, {
+            radius: park.radius,
+            fillColor: park.color,
+            fillOpacity: 0.1,
+            color: park.color,
+            weight: 2
+          }).addTo(map);
+          
+          parkCircles[park.id] = parkCircle;
+        });
+        
+        // 添加企业标记（只显示相关企业）
+        relatedCompanies.forEach(company => {
+          let iconEmoji = '🏭';
+          
+          // 根据企业类型设置不同的图标
+          switch(company.type) {
+            case 'supplier':
+              iconEmoji = '🌾'; // 原料供应商
+              break;
+            case 'manufacturer':
+              iconEmoji = '🏭'; // 生产制造商
+              break;
+            case 'trade':
+              iconEmoji = '📦'; // 贸易企业
+              break;
+            case 'logistics':
+              iconEmoji = '🚛'; // 物流企业
+              break;
+            case 'service':
+              iconEmoji = '🛠️'; // 配套服务
+              break;
           }
-        ]
-      };
-      
-      myChart.setOption(option);
-      
-      // 响应式
-      window.addEventListener('resize', function() {
-        myChart.resize();
-      });
+          
+          // 当前企业使用特殊样式
+          let iconClass = 'custom-marker';
+          if (company.id === currentCompanyId) {
+            iconClass += ' active';
+          }
+          
+          const iconHtml = `<div class="${iconClass}" style="background-color: ${company.color};">${iconEmoji}</div>`;
+          const customIcon = L.divIcon({
+            html: iconHtml,
+            className: 'custom-marker-container',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+          });
+          
+          // 创建包含完整企业详情的弹窗内容
+          let popupContent = `
+            <div style="max-width: 300px;">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="width: 40px; height: 40px; background: ${company.color}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">${iconEmoji}</div>
+                <div>
+                  <div style="font-weight: 600; color: white; font-size: 14px;">${company.name}</div>
+                  <div style="font-size: 11px; color: #94a3b8;">${company.typeName}</div>
+                </div>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">法人: ${company.legalPerson}</div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">成立: ${company.establishmentDate}</div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">注册资本: ${company.registeredCapital}</div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 3px;">企业地址</div>
+              <div style="font-size: 12px; color: white; margin-bottom: 12px;">${company.address}</div>
+          `;
+          
+          // 只有关联企业才显示查看企业档案按钮
+          if (company.id !== currentCompanyId) {
+            popupContent += `
+              <div style="text-align: center;">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm" onclick="window.location.href='enterprise-cockpit.html?companyId=${company.id}'" style="border: none; cursor: pointer;">查看企业档案</button>
+              </div>
+            `;
+          }
+          
+          popupContent += `
+            </div>
+          `;
+          
+          const marker = L.marker(company.location, { icon: customIcon })
+            .addTo(map)
+            .bindPopup(popupContent, { maxWidth: 320 });
+            
+          markers[company.id] = marker;
+        });
+        
+        // 绘制关系线
+        const relatedRelationships = getRelatedRelationships(currentCompanyId);
+        relatedRelationships.forEach(rel => {
+          const sourceCompany = companies.find(c => c.id === rel.source);
+          const targetCompany = companies.find(c => c.id === rel.target);
+          
+          if (sourceCompany && targetCompany) {
+            // 根据关系类型设置不同的颜色
+            let lineColor = '#00f2fe';
+            switch(rel.type) {
+              case 'material':
+                lineColor = '#91cc75'; // 原料供应
+                break;
+              case 'product':
+                lineColor = '#5470c6'; // 产品销售
+                break;
+              case 'service':
+                lineColor = '#9b59b6'; // 服务支持
+                break;
+              case 'logistics':
+                lineColor = '#ee6666'; // 物流运输
+                break;
+            }
+            
+            const line = L.polyline(
+              [sourceCompany.location, targetCompany.location],
+              {
+                color: lineColor,
+                weight: 3,
+                opacity: 0.8,
+                dashArray: rel.source === currentCompanyId ? '10,5' : '5,5',
+                arrowHead: {
+                  enabled: true,
+                  fillColor: lineColor,
+                  fillOpacity: 0.8
+                }
+              }
+            ).addTo(map);
+            
+            // 添加关系线弹窗
+            const relationTypeMap = {
+              'material': '原料供应',
+              'product': '产品销售',
+              'service': '服务支持',
+              'logistics': '物流运输'
+            };
+            
+            const popupContent = `
+              <div style="font-size: 12px; color: white;">
+                <div style="font-weight: 600;">${sourceCompany.name} → ${targetCompany.name}</div>
+                <div>关系类型: ${relationTypeMap[rel.type]}</div>
+                <div>合作产品: ${rel.product}</div>
+                <div>合作金额: ${rel.value}万元</div>
+                <div>合作年限: ${rel.years}年</div>
+              </div>
+            `;
+            
+            line.bindPopup(popupContent);
+            relationshipLines.push(line);
+          }
+        });
+        
+        // 响应式
+        window.addEventListener('resize', function() {
+          if (map) {
+            map.invalidateSize();
+          }
+        });
+        
+      } catch (error) {
+        console.error('地图初始化失败:', error);
+      }
     }
 
     // 刷新数据
@@ -1027,18 +1242,38 @@
       }, 1000);
     }
 
-    // 导出数据
-    function exportData() {
-      alert('正在导出企业档案数据...');
-    }
+
 
     // 显示风险详情
     function showRiskDetail() {
       alert('风险详情：\n1. 参保人数为0，存在用工风险\n2. 知识产权为0，创新能力不足\n3. 企业负债率85%，财务风险较高');
     }
+    
+    // 返回上一页
+    function goBack() {
+      window.history.back();
+    }
 
+    // 更新页面企业信息
+    function updateCompanyInfo() {
+      if (currentCompany) {
+        document.getElementById('currentCompanyName').textContent = currentCompany.name;
+        document.getElementById('companyName').textContent = currentCompany.name;
+        document.getElementById('legalPerson').textContent = currentCompany.legalPerson;
+        document.getElementById('companyType').textContent = currentCompany.typeName;
+        document.getElementById('registeredCapital').textContent = currentCompany.registeredCapital;
+        document.getElementById('establishmentDate').textContent = currentCompany.establishmentDate;
+        
+        // 更新股东信息
+        document.getElementById('shareholderCompanyName').textContent = currentCompany.name;
+        document.getElementById('shareholderName').textContent = currentCompany.legalPerson;
+        document.getElementById('shareholderAvatar').textContent = currentCompany.legalPerson.charAt(0);
+      }
+    }
+    
     // 页面加载完成后初始化
     document.addEventListener('DOMContentLoaded', function() {
+      updateCompanyInfo();
       initMap();
     });
   </script>
