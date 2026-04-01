@@ -544,5 +544,122 @@
       }
     });
   </script>
+
+  <!-- 悬浮智能客服 -->
+  <div id="floatingSupport" class="fixed bottom-6 right-6 z-50">
+    <div id="supportButton" class="w-14 h-14 bg-gradient-to-r from-blue-600 to-green-500 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-110">
+      <i class="fa fa-headset text-2xl"></i>
+    </div>
+    
+    <div id="supportWindow" class="hidden absolute bottom-20 right-0 w-80 bg-white border border-gray-300 rounded-xl shadow-xl overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-600 to-green-500 p-4 flex justify-between items-center">
+        <h3 class="text-white font-bold">平台智能客服</h3>
+        <button id="closeSupport" class="text-white hover:text-gray-200">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="p-4">
+        <div class="mb-4">
+          <p class="text-gray-600 text-sm mb-3">请选择您想咨询的领域：</p>
+          <div class="space-y-2">
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="policy">
+              <i class="fa fa-file-alt mr-2 text-blue-500"></i> 政策咨询
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="supply">
+              <i class="fa fa-exchange-alt mr-2 text-green-500"></i> 供需对接
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="finance">
+              <i class="fa fa-money-bill-wave mr-2 text-yellow-500"></i> 金融服务
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="procurement">
+              <i class="fa fa-shopping-cart mr-2 text-purple-500"></i> 集采服务
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="products">
+              <i class="fa fa-cubes mr-2 text-red-500"></i> 商品咨询
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="digital">
+              <i class="fa fa-laptop-code mr-2 text-indigo-500"></i> 数字化转型
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="appeal">
+              <i class="fa fa-comments mr-2 text-orange-500"></i> 诉求处理
+            </button>
+            <button class="support-category w-full text-left px-3 py-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors" data-category="talent">
+              <i class="fa fa-users mr-2 text-pink-500"></i> 人才资源
+            </button>
+          </div>
+        </div>
+        
+        <div id="supportResponse" class="hidden">
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <div class="flex items-start mb-3">
+              <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                <i class="fa fa-robot text-blue-600 text-sm"></i>
+              </div>
+              <div class="bg-white p-3 rounded-lg border border-gray-200 flex-1">
+                <p id="responseContent" class="text-gray-700 text-sm"></p>
+              </div>
+            </div>
+            <button id="backToCategories" class="w-full px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg text-sm transition-colors">
+              返回选择咨询领域
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 悬浮智能客服功能
+    const supportButton = document.getElementById('supportButton');
+    const supportWindow = document.getElementById('supportWindow');
+    const closeSupport = document.getElementById('closeSupport');
+    const supportCategories = document.querySelectorAll('.support-category');
+    const supportResponse = document.getElementById('supportResponse');
+    const responseContent = document.getElementById('responseContent');
+    const backToCategories = document.getElementById('backToCategories');
+    const categoriesContainer = document.querySelector('.space-y-2').parentElement;
+    
+    // 客服回答内容
+    const supportAnswers = {
+      policy: '政策咨询：我们提供发制品产业相关的政策解读、申报指南、补贴申请等服务。您可以咨询减税降费、产业扶持、资质认定等政策问题。',
+      supply: '供需对接：我们提供原材料采购、产品销售、供应链匹配等服务。您可以发布采购需求或供应信息，平台会为您智能匹配合适的合作伙伴。',
+      finance: '金融服务：我们提供企业贷款、信用担保、融资咨询等金融服务。支持线上申请，快速审批，为发制品企业提供全方位的金融解决方案。',
+      procurement: '集采服务：我们提供原材料集中采购服务，通过规模优势降低采购成本，保证产品质量。涵盖发制品生产所需的各种原材料和辅料。',
+      products: '商品咨询：我们提供发制品产品信息查询、价格咨询、质量认证等服务。您可以了解最新产品动态、市场行情和质量标准。',
+      digital: '数字化转型：我们提供企业数字化转型咨询、系统建设、数据管理等服务。帮助企业实现生产智能化、管理信息化、营销数字化。',
+      appeal: '诉求处理：我们提供企业诉求收集、问题解决、政策反馈等服务。您可以提交各类诉求，我们会及时处理并反馈结果。',
+      talent: '人才资源：我们提供人才招聘、培训服务、人才政策咨询等服务。帮助企业解决人才短缺问题，提升员工技能水平。'
+    };
+    
+    // 打开客服窗口
+    supportButton.addEventListener('click', function() {
+      supportWindow.classList.toggle('hidden');
+    });
+    
+    // 关闭客服窗口
+    closeSupport.addEventListener('click', function() {
+      supportWindow.classList.add('hidden');
+    });
+    
+    // 选择咨询领域
+    supportCategories.forEach(button => {
+      button.addEventListener('click', function() {
+        const category = this.dataset.category;
+        const answer = supportAnswers[category];
+        
+        // 隐藏分类列表，显示回答
+        categoriesContainer.style.display = 'none';
+        supportResponse.classList.remove('hidden');
+        responseContent.textContent = answer;
+      });
+    });
+    
+    // 返回分类选择
+    backToCategories.addEventListener('click', function() {
+      supportResponse.classList.add('hidden');
+      categoriesContainer.style.display = 'block';
+    });
+  </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -190,15 +190,11 @@
             </div>
         </div>
         
-        <!-- 页面标题 -->
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-white mb-2">发布需求</h1>
-            <p class="text-gray-400">请填写以下信息，我们将为您提供专业的金融解决方案</p>
-        </div>
+
         
         <!-- 表单卡片 -->
         <div class="form-card p-8 max-w-4xl mx-auto">
-            <!-- 状态提示 -->
+            <!-- 状态提示和AI按钮 -->
             <div class="mb-8">
                 <div class="bg-primary/10 border border-primary/30 rounded-lg p-4 flex items-center">
                     <i class="fa fa-info-circle text-primary mr-3 text-xl"></i>
@@ -207,56 +203,83 @@
                         <p class="text-gray-400 text-sm mt-1">请完整填写以下信息，提交后我们将尽快与您联系</p>
                     </div>
                 </div>
+                
+                <!-- AI智能填充区域 -->
+                <div class="mt-4">
+                    <!-- AI填充按钮 -->
+                    <button id="showAiFillBtn" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 hover:shadow-lg">
+                        <i class="fa fa-robot mr-2"></i> AI智能填充
+                    </button>
+                    
+                    <!-- AI智能填充内容区域 -->
+                    <div id="aiFillArea" class="mt-3 hidden">
+                        <label class="form-label block mb-2">AI智能填充</label>
+                        <div class="bg-dark-lighter border border-gray-600 rounded-lg p-4">
+                            <textarea id="aiInput" class="form-input w-full rounded-lg px-4 py-3" rows="3" placeholder="请描述您的融资需求，例如：我需要申请300万元的企业贷款，用于扩大生产规模，期限2年，希望通过信用担保方式..."></textarea>
+                            <div class="flex items-center justify-between mt-3">
+                                <button id="aiFillBtn" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 hover:shadow-lg">
+                                    <i class="fa fa-magic mr-2"></i> 开始填充
+                                </button>
+                                <button id="voiceInputBtn" class="bg-secondary hover:bg-secondary/90 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 hover:shadow-lg">
+                                    <i class="fa fa-microphone mr-2"></i> 语音输入
+                                </button>
+                            </div>
+                            <div id="aiProcessing" class="hidden text-center text-primary mt-2">
+                                <i class="fa fa-spinner fa-spin mr-2"></i> AI正在分析您的需求...
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <form id="requestForm">
-                <!-- 融资金额 -->
-                <div class="mb-6">
-                    <label for="financingAmount" class="form-label block mb-2">* 融资金额</label>
-                    <select id="financingAmount" class="form-input w-full rounded-lg px-4 py-3" required>
-                        <option value="">请选择</option>
-                        <option value="50以下">50万元以下</option>
-                        <option value="50-100">50-100万元</option>
-                        <option value="100-500">100-500万元</option>
-                        <option value="500-1000">500-1000万元</option>
-                        <option value="1000以上">1000万元以上</option>
-                    </select>
-                </div>
-                
-                <!-- 意向金额 -->
-                <div class="mb-6">
-                    <label for="intendedAmount" class="form-label block mb-2">* 意向金额</label>
-                    <div class="flex">
-                        <input type="number" id="intendedAmount" class="form-input flex-1 rounded-l-lg px-4 py-3" placeholder="请输入意向金额" min="1" step="0.01" required>
-                        <div class="bg-dark-lighter border border-l-0 border-gray-600 text-gray-300 rounded-r-lg px-4 py-3 flex items-center">
-                            万元
+                <!-- 融资金额和意向金额 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="financingAmount" class="form-label block mb-2">* 融资金额</label>
+                        <select id="financingAmount" class="form-input w-full rounded-lg px-4 py-3" required>
+                            <option value="">请选择</option>
+                            <option value="50以下">50万元以下</option>
+                            <option value="50-100">50-100万元</option>
+                            <option value="100-500">100-500万元</option>
+                            <option value="500-1000">500-1000万元</option>
+                            <option value="1000以上">1000万元以上</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="intendedAmount" class="form-label block mb-2">* 意向金额</label>
+                        <div class="flex">
+                            <input type="number" id="intendedAmount" class="form-input flex-1 rounded-l-lg px-4 py-3" placeholder="请输入意向金额" min="1" step="0.01" required>
+                            <div class="bg-dark-lighter border border-l-0 border-gray-600 text-gray-300 rounded-r-lg px-4 py-3 flex items-center">
+                                万元
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- 融资期限 -->
-                <div class="mb-6">
-                    <label for="financingTerm" class="form-label block mb-2">* 融资期限</label>
-                    <select id="financingTerm" class="form-input w-full rounded-lg px-4 py-3" required>
-                        <option value="">请选择</option>
-                        <option value="1年以下">1年以下</option>
-                        <option value="1-3年">1-3年</option>
-                        <option value="3-5年">3-5年</option>
-                        <option value="5年以上">5年以上</option>
-                    </select>
-                </div>
-                
-                <!-- 融资类型 -->
-                <div class="mb-6">
-                    <label for="financingType" class="form-label block mb-2">* 融资类型</label>
-                    <select id="financingType" class="form-input w-full rounded-lg px-4 py-3" required>
-                        <option value="">请选择</option>
-                        <option value="personal">个人贷款</option>
-                        <option value="business">企业贷款</option>
-                        <option value="mortgage">抵押贷款</option>
-                        <option value="credit">信用贷款</option>
-                        <option value="other">其他类型</option>
-                    </select>
+                <!-- 融资期限和融资类型 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="financingTerm" class="form-label block mb-2">* 融资期限</label>
+                        <select id="financingTerm" class="form-input w-full rounded-lg px-4 py-3" required>
+                            <option value="">请选择</option>
+                            <option value="1年以下">1年以下</option>
+                            <option value="1-3年">1-3年</option>
+                            <option value="3-5年">3-5年</option>
+                            <option value="5年以上">5年以上</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="financingType" class="form-label block mb-2">* 融资类型</label>
+                        <select id="financingType" class="form-input w-full rounded-lg px-4 py-3" required>
+                            <option value="">请选择</option>
+                            <option value="personal">个人贷款</option>
+                            <option value="business">企业贷款</option>
+                            <option value="mortgage">抵押贷款</option>
+                            <option value="credit">信用贷款</option>
+                            <option value="other">其他类型</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <!-- 资金用途 -->
@@ -371,18 +394,20 @@
                     </div>
                 </div>
                 
-                <!-- 联系人 -->
-                <div class="mb-6">
-                    <label for="contactName" class="form-label block mb-2">* 联系人</label>
-                    <input type="text" id="contactName" class="form-input w-full rounded-lg px-4 py-3" placeholder="请输入联系人姓名" required>
+                <!-- 联系人信息 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="contactName" class="form-label block mb-2">* 联系人</label>
+                        <input type="text" id="contactName" class="form-input w-full rounded-lg px-4 py-3" placeholder="请输入联系人姓名" required>
+                    </div>
+                    <div>
+                        <label for="contactPhone" class="form-label block mb-2">* 电话</label>
+                        <input type="tel" id="contactPhone" class="form-input w-full rounded-lg px-4 py-3" placeholder="请输入联系电话" required>
+                    </div>
                 </div>
                 
-                <!-- 电话 -->
-                <div class="mb-8">
-                    <label for="contactPhone" class="form-label block mb-2">* 电话</label>
-                    <input type="tel" id="contactPhone" class="form-input w-full rounded-lg px-4 py-3" placeholder="请输入联系电话" required>
-                </div>
-                
+
+
                 <!-- 提交按钮 -->
                 <div class="flex space-x-4">
                     <button type="button" class="back-btn px-6 py-3 rounded-lg flex items-center" onclick="window.location.href='financial-products.html'">
@@ -710,6 +735,185 @@
             cancelApply.addEventListener('click', function() {
                 applyModal.classList.add('hidden');
             });
+            
+            // AI智能填充区域显示/隐藏
+            const showAiFillBtn = document.getElementById('showAiFillBtn');
+            const aiFillArea = document.getElementById('aiFillArea');
+            
+            if (showAiFillBtn && aiFillArea) {
+                showAiFillBtn.addEventListener('click', function() {
+                    aiFillArea.classList.toggle('hidden');
+                });
+            }
+            
+            // AI智能填充功能
+            const aiFillBtn = document.getElementById('aiFillBtn');
+            const voiceInputBtn = document.getElementById('voiceInputBtn');
+            const aiInput = document.getElementById('aiInput');
+            const aiProcessing = document.getElementById('aiProcessing');
+            
+            // AI智能填充
+            if (aiFillBtn) {
+                aiFillBtn.addEventListener('click', function() {
+                    const inputText = aiInput.value.trim();
+                    if (!inputText) {
+                        alert('请先输入您的融资需求描述');
+                        return;
+                    }
+                    
+                    // 显示处理中状态
+                    aiProcessing.classList.remove('hidden');
+                    
+                    // 模拟AI处理延迟
+                    setTimeout(() => {
+                        // 解析输入文本并填充表单
+                        parseAndFillForm(inputText);
+                        aiProcessing.classList.add('hidden');
+                        alert('AI智能填充完成！请检查并确认填写的信息。');
+                    }, 1500);
+                });
+            }
+            
+            // 语音输入功能
+            if (voiceInputBtn) {
+                voiceInputBtn.addEventListener('click', function() {
+                    // 检查浏览器是否支持语音识别
+                    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                        alert('您的浏览器不支持语音识别功能，请使用Chrome浏览器。');
+                        return;
+                    }
+                    
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    const recognition = new SpeechRecognition();
+                    recognition.lang = 'zh-CN';
+                    recognition.continuous = false;
+                    recognition.interimResults = false;
+                    
+                    // 语音识别开始
+                    voiceInputBtn.innerHTML = '<i class="fa fa-microphone-slash mr-2"></i> 停止录音';
+                    voiceInputBtn.classList.add('bg-danger');
+                    voiceInputBtn.classList.remove('bg-secondary');
+                    
+                    recognition.start();
+                    
+                    recognition.onresult = function(event) {
+                        const transcript = event.results[0][0].transcript;
+                        aiInput.value = transcript;
+                    };
+                    
+                    recognition.onerror = function(event) {
+                        console.error('语音识别错误:', event.error);
+                        alert('语音识别失败，请重试');
+                    };
+                    
+                    recognition.onend = function() {
+                        voiceInputBtn.innerHTML = '<i class="fa fa-microphone mr-2"></i> 语音输入';
+                        voiceInputBtn.classList.remove('bg-danger');
+                        voiceInputBtn.classList.add('bg-secondary');
+                    };
+                });
+            }
+            
+            // AI解析和填充表单函数
+            function parseAndFillForm(text) {
+                // 金额匹配
+                const amountMatch = text.match(/(\d+(?:\.\d+)?)\s*万(?:元)?/);
+                if (amountMatch) {
+                    const amount = parseFloat(amountMatch[1]);
+                    document.getElementById('intendedAmount').value = amount;
+                    
+                    // 根据金额选择融资金额范围
+                    if (amount< 50) {
+                        document.getElementById('financingAmount').value = '50以下';
+                    } else if (amount >= 50 && amount< 100) {
+                        document.getElementById('financingAmount').value = '50-100';
+                    } else if (amount >= 100 && amount< 500) {
+                        document.getElementById('financingAmount').value = '100-500';
+                    } else if (amount >= 500 && amount< 1000) {
+                        document.getElementById('financingAmount').value = '500-1000';
+                    } else {
+                        document.getElementById('financingAmount').value = '1000以上';
+                    }
+                }
+                
+                // 期限匹配
+                const termMatch = text.match(/(\d+)\s*年/);
+                if (termMatch) {
+                    const term = parseInt(termMatch[1]);
+                    if (term< 1) {
+                        document.getElementById('financingTerm').value = '1年以下';
+                    } else if (term >= 1 && term< 3) {
+                        document.getElementById('financingTerm').value = '1-3年';
+                    } else if (term >= 3 && term< 5) {
+                        document.getElementById('financingTerm').value = '3-5年';
+                    } else {
+                        document.getElementById('financingTerm').value = '5年以上';
+                    }
+                }
+                
+                // 融资类型匹配
+                if (text.includes('企业') || text.includes('公司')) {
+                    document.getElementById('financingType').value = 'business';
+                } else if (text.includes('个人')) {
+                    document.getElementById('financingType').value = 'personal';
+                } else if (text.includes('抵押')) {
+                    document.getElementById('financingType').value = 'mortgage';
+                } else if (text.includes('信用')) {
+                    document.getElementById('financingType').value = 'credit';
+                }
+                
+                // 资金用途匹配
+                if (text.includes('生产') || text.includes('扩大')) {
+                    document.getElementById('fundUsage').value = '扩大生产规模';
+                } else if (text.includes('研发') || text.includes('技术')) {
+                    document.getElementById('fundUsage').value = '技术研发';
+                } else if (text.includes('采购') || text.includes('原材料')) {
+                    document.getElementById('fundUsage').value = '原材料采购';
+                } else if (text.includes('设备')) {
+                    document.getElementById('fundUsage').value = '设备购置';
+                } else if (text.includes('流动资金')) {
+                    document.getElementById('fundUsage').value = '补充流动资金';
+                }
+                
+                // 担保方式匹配
+                if (text.includes('信用担保')) {
+                    document.getElementById('guarantee1').checked = true;
+                } else if (text.includes('保证')) {
+                    document.getElementById('guarantee2').checked = true;
+                } else if (text.includes('质押')) {
+                    document.getElementById('guarantee3').checked = true;
+                } else if (text.includes('抵押')) {
+                    document.getElementById('guarantee4').checked = true;
+                }
+                
+                // 意向银行匹配（简单匹配）
+                const bankKeywords = {
+                    '农业银行': 'bank2',
+                    '恒丰银行': 'bank3',
+                    '青岛银行': 'bank4',
+                    '威海银行': 'bank5',
+                    '兴业银行': 'bank6',
+                    '建设银行': 'bank7',
+                    '莱商银行': 'bank8',
+                    '浦发银行': 'bank9',
+                    '邮政储蓄': 'bank14',
+                    '济宁银行': 'bank15',
+                    '中国银行': 'bank16',
+                    '招商银行': 'bank17',
+                    '工商银行': 'bank18'
+                };
+                
+                for (const [keyword, bankId] of Object.entries(bankKeywords)) {
+                    if (text.includes(keyword)) {
+                        document.getElementById(bankId).checked = true;
+                    }
+                }
+                
+                // 如果没有指定银行，默认选择不限
+                if (!text.match(/(银行|金融|机构)/)) {
+                    document.getElementById('bank1').checked = true;
+                }
+            }
             
             // 提交申请
             applyForm.addEventListener('submit', function(e) {

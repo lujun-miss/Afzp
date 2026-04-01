@@ -8,71 +8,17 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
-    
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
       background: #0a0e1a;
       color: #fff;
       overflow-x: hidden;
       scroll-behavior: smooth;
     }
     
-    .quick-nav {
-      position: fixed;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 900;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .quick-nav-item {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(26, 95, 180, 0.3);
-      border: 2px solid rgba(26, 95, 180, 0.5);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    
-    .quick-nav-item:hover {
-      background: rgba(26, 95, 180, 0.6);
-      transform: scale(1.2);
-    }
-    
-    .quick-nav-item.active {
-      background: #1a5fb4;
-      box-shadow: 0 0 20px rgba(26, 95, 180, 0.6);
-    }
-    
-    .quick-nav-label {
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(10, 14, 26, 0.9);
-      backdrop-filter: blur(10px);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      white-space: nowrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(26, 95, 180, 0.3);
-    }
-    
-    .quick-nav-item:hover .quick-nav-label {
-      opacity: 1;
-      visibility: visible;
-    }
+
 
     /* 导航栏 */
     .navbar {
@@ -189,30 +135,13 @@
       background: radial-gradient(ellipse at center, #1a2744 0%, #0a0e1a 70%);
     }
 
-    /* Tab Navigation */
-    .tab-nav-container {
-      position: sticky;
-      top: 80px;
-      z-index: 100;
-      background: rgba(10, 14, 26, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px 0;
-    }
 
-    .tab-nav {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
 
     .tab-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 24px;
+      padding: 12px 20px;
       background: rgba(26, 95, 180, 0.1);
       border: 1px solid rgba(26, 95, 180, 0.3);
       border-radius: 8px;
@@ -242,6 +171,21 @@
 
     .tab-btn span {
       font-size: 14px;
+    }
+
+    /* Tab内容显示控制 */
+    .features,
+    .news-section,
+    .map-section,
+    .cta-section {
+      display: none;
+    }
+
+    .features.active,
+    .news-section.active,
+    .map-section.active,
+    .cta-section.active {
+      display: block;
     }
 
     .hero-bg {
@@ -363,6 +307,14 @@
       justify-content: center;
       gap: 20px;
       animation: fadeInUp 0.8s ease 0.8s both;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 80px;
+      z-index: 100;
+      background: rgba(10, 14, 26, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
     }
 
     .hero-btn-primary {
@@ -429,13 +381,13 @@
 
     /* Features Section */
     .features {
-      padding: 120px 60px;
+      padding: 40px 60px 80px;
       background: linear-gradient(180deg, #0a0e1a 0%, #0d1321 100%);
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 80px;
+      margin-bottom: 40px;
     }
 
     .section-tag {
@@ -465,7 +417,7 @@
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+      gap: 20px;
       max-width: 1400px;
       margin: 0 auto;
     }
@@ -675,6 +627,31 @@
       margin-bottom: 40px;
     }
 
+    .organization-info {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .org-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    .org-label {
+      font-weight: 600;
+      color: #c9a227;
+      margin-right: 12px;
+    }
+
+    .org-value {
+      color: rgba(255, 255, 255, 0.8);
+      flex: 1;
+    }
+
     /* Footer */
     .footer {
       padding: 60px;
@@ -757,6 +734,120 @@
       color: rgba(255,255,255,0.4);
     }
 
+
+
+    /* 新闻资讯板块样式 */
+    .news-section {
+      padding: 120px 60px;
+      background: linear-gradient(180deg, #0a0e1a 0%, #0d1321 100%);
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .news-category {
+      background: rgba(26, 95, 180, 0.1);
+      border: 1px solid rgba(26, 95, 180, 0.2);
+      border-radius: 20px;
+      padding: 40px;
+      transition: all 0.4s;
+    }
+
+    .news-category:hover {
+      transform: translateY(-5px);
+      border-color: rgba(26, 95, 180, 0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .news-category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .news-category-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 20px;
+    }
+
+    .news-category-title {
+      font-size: 24px;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .news-category-more {
+      color: #c9a227;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .news-category-more:hover {
+      color: #f59e0b;
+    }
+
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .news-item {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .news-time {
+      width: 100px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      flex-shrink: 0;
+    }
+
+    .news-content {
+      flex: 1;
+    }
+
+    .news-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+      transition: color 0.3s;
+    }
+
+    .news-item:hover .news-title {
+      color: #c9a227;
+    }
+
+    .news-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
     /* Scroll animations */
     .scroll-reveal {
       opacity: 0;
@@ -834,6 +925,8 @@
   </style>
 </head>
 <body>
+
+
   <!-- 导航栏 -->
   <nav class="navbar" id="navbar">
     <div class="logo">
@@ -865,21 +958,7 @@
     </div>
   </nav>
 
-  <!-- 快速导航 -->
-  <div class="quick-nav">
-    <div class="quick-nav-item active" data-target="home">
-      <div class="quick-nav-label">首页</div>
-    </div>
-    <div class="quick-nav-item" data-target="features">
-      <div class="quick-nav-label">核心功能</div>
-    </div>
-    <div class="quick-nav-item" data-target="map">
-      <div class="quick-nav-label">产业布局</div>
-    </div>
-    <div class="quick-nav-item" data-target="about">
-      <div class="quick-nav-label">关于我们</div>
-    </div>
-  </div>
+
 
   <!-- Hero Section -->
   <section class="hero" id="home">
@@ -920,107 +999,86 @@
         </div>
       </div>
       <div class="hero-btns">
-        <a href="web/cockpit.html" class="hero-btn-primary" style="text-decoration: none; display: inline-flex;">
-          <i class="fas fa-rocket"></i>
-          立即体验
-        </a>
-        <button class="hero-btn-secondary" onclick="scrollToSection('features')">
-          <i class="fas fa-play-circle"></i>
-          了解更多
+        <button class="tab-btn active" data-target="features">
+          <i class="fas fa-th-large"></i>
+          <span>核心功能</span>
+        </button>
+        <button class="tab-btn" data-target="news">
+          <i class="fas fa-newspaper"></i>
+          <span>最新资讯</span>
+        </button>
+        <button class="tab-btn" data-target="map">
+          <i class="fas fa-map-marked-alt"></i>
+          <span>产业空间布局</span>
+        </button>
+        <button class="tab-btn" data-target="about">
+          <i class="fas fa-info-circle"></i>
+          <span>关于我们</span>
         </button>
       </div>
     </div>
   </section>
 
-  <!-- Tab Navigation -->
-  <div class="tab-nav-container">
-    <div class="tab-nav">
-      <button class="tab-btn active" data-target="features">
-        <i class="fas fa-th-large"></i>
-        <span>核心功能</span>
-      </button>
-      <button class="tab-btn" data-target="map">
-        <i class="fas fa-map-marked-alt"></i>
-        <span>产业空间布局</span>
-      </button>
-      <button class="tab-btn" data-target="about">
-        <i class="fas fa-info-circle"></i>
-        <span>关于我们</span>
-      </button>
-    </div>
-  </div>
+
 
   <!-- Quick Access Section -->
   <section class="features" id="features">
     <div class="section-header scroll-reveal">
-      <div class="section-tag">快捷入口</div>
-      <h2 class="section-title">核心功能模块</h2>
       <p class="section-subtitle">点击卡片直接进入功能页面，快速获取所需信息</p>
     </div>
     <div class="features-grid">
-      <a href="web/cockpit.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+      <a href="web/thinktank.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
         <div class="feature-icon" style="background: linear-gradient(135deg, #1a5fb4 0%, #0d3a7a 100%);">
-          <i class="fas fa-tachometer-alt"></i>
+          <i class="fas fa-lightbulb"></i>
         </div>
-        <h3 class="feature-title">产业全景</h3>
-        <p class="feature-desc">产业宏观数据可视化展示和智能分析，支持领导层快速决策</p>
+        <h3 class="feature-title">数字化全栈方案</h3>
+        <p class="feature-desc">为企业提供智能化解决方案，包括数字化转型、系统集成等服务</p>
         <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #1a5fb4; font-size: 14px;">
-          <span>进入全景</span>
+          <span>进入方案</span>
           <i class="fas fa-arrow-right"></i>
         </div>
       </a>
-      <a href="web/industry-map.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+      <a href="web/policy-list.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
         <div class="feature-icon" style="background: linear-gradient(135deg, #c9a227 0%, #9a7b1a 100%);">
-          <i class="fas fa-project-diagram"></i>
+          <i class="fas fa-file-alt"></i>
         </div>
-        <h3 class="feature-title">产业透视</h3>
-        <p class="feature-desc">产业链结构与企业关系分析，识别产业集聚区，了解产业生态</p>
+        <h3 class="feature-title">项目申报入口</h3>
+        <p class="feature-desc">产业扶持政策申报、项目申请、资金申请等一站式服务</p>
         <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #c9a227; font-size: 14px;">
-          <span>查看透视</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
-      </a>
-      <a href="web/enterprise.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-          <i class="fas fa-building"></i>
-        </div>
-        <h3 class="feature-title">企业画像</h3>
-        <p class="feature-desc">企业基本信息查询，包括名称、地址、类型等，支持筛选定位</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #10b981; font-size: 14px;">
-          <span>查看企业</span>
+          <span>进入申报</span>
           <i class="fas fa-arrow-right"></i>
         </div>
       </a>
       <a href="web/supply.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
           <i class="fas fa-link"></i>
         </div>
         <h3 class="feature-title">资源枢纽</h3>
         <p class="feature-desc">原材料供需对接、产能共享、物流协同，打通产业链上下游</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #f59e0b; font-size: 14px;">
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #10b981; font-size: 14px;">
           <span>进入枢纽</span>
           <i class="fas fa-arrow-right"></i>
         </div>
       </a>
-      <a href="web/market.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-          <i class="fas fa-chart-pie"></i>
+      <a href="web/government.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+          <i class="fas fa-landmark"></i>
         </div>
-        <h3 class="feature-title">市场洞察</h3>
-        <p class="feature-desc">全球市场趋势分析、竞品分析、智能预警，助力把握商机</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #ef4444; font-size: 14px;">
-          <span>查看市场</span>
+        <h3 class="feature-title">惠企政策</h3>
+        <p class="feature-desc">政策发布、在线办事、政企互动，打造一站式服务平台</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #f59e0b; font-size: 14px;">
+          <span>查看政策</span>
           <i class="fas fa-arrow-right"></i>
         </div>
       </a>
-      <a href="web/government.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-          <i class="fas fa-landmark"></i>
+      <a href="web/finance.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+          <i class="fas fa-chart-line"></i>
         </div>
-        <h3 class="feature-title">政务服务</h3>
-        <p class="feature-desc">政策发布、在线办事、政企互动，打造一站式服务平台</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #8b5cf6; font-size: 14px;">
-          <span>进入政务</span>
+        <h3 class="feature-title">金融服务</h3>
+        <p class="feature-desc">提供融资贷款、保险保障、金融产品等全方位金融服务</p>
+        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #6366f1; font-size: 14px;">
+          <span>进入金融</span>
           <i class="fas fa-arrow-right"></i>
         </div>
       </a>
@@ -1035,39 +1093,108 @@
           <i class="fas fa-arrow-right"></i>
         </div>
       </a>
-      <a href="web/monitor.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-          <i class="fas fa-shield-alt"></i>
+
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section class="news-section" id="news">
+    <div class="max-w-[1400px] mx-auto px-6 py-120">
+      <div class="section-header scroll-reveal">
+        <p class="section-subtitle">了解发制品产业最新动态、政策资讯和行业新闻</p>
+      </div>
+      
+      <div class="news-grid">
+        <!-- 通知公告 -->
+        <div class="news-category scroll-reveal">
+          <div class="news-category-header">
+            <div class="news-category-icon">
+              <i class="fas fa-bell"></i>
+            </div>
+            <h3 class="news-category-title">通知公告</h3>
+            <a href="#" class="news-category-more">查看更多</a>
+          </div>
+          
+          <div class="news-list">
+            <div class="news-item">
+              <div class="news-time">2026-03-28</div>
+              <div class="news-content">
+                <h4 class="news-title">2026年发制品产业扶持政策申报指南发布</h4>
+                <p class="news-desc">关于开展2026年度发制品产业扶持政策申报工作的通知，请各企业按要求准备材料</p>
+              </div>
+            </div>
+            
+            <div class="news-item">
+              <div class="news-time">2026-03-25</div>
+              <div class="news-content">
+                <h4 class="news-title">关于举办2026年国际发制品博览会的通知</h4>
+                <p class="news-desc">2026年国际发制品博览会将于5月18日-20日在鄄城县举办，诚邀各企业参展</p>
+              </div>
+            </div>
+            
+            <div class="news-item">
+              <div class="news-time">2026-03-20</div>
+              <div class="news-content">
+                <h4 class="news-title">发制品企业安全生产检查通知</h4>
+                <p class="news-desc">开展2026年度发制品企业安全生产专项检查工作，请各企业做好迎检准备</p>
+              </div>
+            </div>
+            
+            <div class="news-item">
+              <div class="news-time">2026-03-15</div>
+              <div class="news-content">
+                <h4 class="news-title">关于组织参加发制品产业数字化转型培训的通知</h4>
+                <p class="news-desc">为推进企业数字化转型，组织开展专题培训，请各企业积极报名参加</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <h3 class="feature-title">安全防控</h3>
-        <p class="feature-desc">实时生产监控、设备运行监测、安全隐患预警，保障企业安全</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #6366f1; font-size: 14px;">
-          <span>进入防控</span>
-          <i class="fas fa-arrow-right"></i>
+        
+        <!-- 新闻资讯 -->
+        <div class="news-category scroll-reveal">
+          <div class="news-category-header">
+            <div class="news-category-icon">
+              <i class="fas fa-newspaper"></i>
+            </div>
+            <h3 class="news-category-title">新闻资讯</h3>
+            <a href="#" class="news-category-more">查看更多</a>
+          </div>
+          
+          <div class="news-list">
+            <div class="news-item">
+              <div class="news-time">2026-03-30</div>
+              <div class="news-content">
+                <h4 class="news-title">鄄城县发制品产业集群获评国家级优势特色产业集群</h4>
+                <p class="news-desc">鄄城县发制品产业集群成功入选国家级优势特色产业集群名单，彰显产业实力</p>
+              </div>
+            </div>
+            
+            <div class="news-item">
+              <div class="news-time">2026-03-28</div>
+              <div class="news-content">
+                <h4 class="news-title">发制品产业数字化转型取得新突破</h4>
+                <p class="news-desc">多家企业成功实现数字化转型，生产效率提升30%，产品质量显著提高</p>
+              </div>
+            </div>
+            
+            <div class="news-item">
+              <div class="news-time">2026-03-25</div>
+              <div class="news-content">
+                <h4 class="news-title">2026年第一季度发制品出口额同比增长15%</h4>
+                <p class="news-desc">一季度发制品出口形势良好，出口额达到X亿元，同比增长15%</p>
+              </div>
+            </div>
+            
+            <div class="news-item">
+              <div class="news-time">2026-03-20</div>
+              <div class="news-content">
+                <h4 class="news-title">发制品产业大脑平台用户突破10万</h4>
+                <p class="news-desc">鄄城县发制品产业大脑平台注册用户突破10万，日均访问量达5000人次</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </a>
-      <a href="web/thinktank.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
-          <i class="fas fa-lightbulb"></i>
-        </div>
-        <h3 class="feature-title">发业智库</h3>
-        <p class="feature-desc">数字化全栈方案、小快轻产品，为企业提供智能化解决方案</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #14b8a6; font-size: 14px;">
-          <span>进入智库</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
-      </a>
-      <a href="web/traceability.html" class="feature-card scroll-reveal" style="text-decoration: none; color: inherit; display: block;">
-        <div class="feature-icon" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
-          <i class="fas fa-search"></i>
-        </div>
-        <h3 class="feature-title">发品溯源</h3>
-        <p class="feature-desc">产品全生命周期追溯，确保产品质量，提升消费者信任</p>
-        <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; color: #f97316; font-size: 14px;">
-          <span>进入溯源</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
-      </a>
+      </div>
     </div>
   </section>
 
@@ -1115,62 +1242,30 @@
   <section class="cta-section" id="about">
     <div class="cta-box scroll-reveal">
       <div class="cta-content">
-        <h2 class="cta-title">开启产业数字化新时代</h2>
-        <p class="cta-desc">加入鄄城县发制品产业大脑，共享产业数据，共创智慧未来</p>
-        <button class="hero-btn-primary" onclick="enterSystem()">
-          <i class="fas fa-rocket"></i>
-          立即进入系统
-        </button>
+        <div class="organization-info">
+          <div class="org-item">
+            <span class="org-label">组织单位：</span>
+            <span class="org-value">山东省工业和信息化厅、菏泽市工业和信息化局</span>
+          </div>
+          <div class="org-item">
+            <span class="org-label">主办单位：</span>
+            <span class="org-value">鄄城县人民政府、鄄城县工业和信息化局</span>
+          </div>
+          <div class="org-item">
+            <span class="org-label">承建单位：</span>
+            <span class="org-value">山东云泽大数据有限公司、好易通（山东）科技发展有限公司</span>
+          </div>
+          <div class="org-item">
+            <span class="org-label">服务热线：</span>
+            <span class="org-value">0530-2133118</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div>
-        <div class="footer-brand">
-          <div class="footer-brand-icon">
-            <i class="fas fa-industry"></i>
-          </div>
-          <div class="footer-brand-text">鄄城发制品产业大脑</div>
-        </div>
-        <p class="footer-desc">
-          以数据驱动产业治理现代化，打造全球发制品产业数字化标杆平台，助力鄄城县发制品产业高质量发展。
-        </p>
-      </div>
-      <div>
-        <h4 class="footer-title">快速链接</h4>
-        <ul class="footer-links">
-          <li><a href="#home">首页</a></li>
-          <li><a href="#features">核心功能</a></li>
-          <li><a href="#data">产业数据</a></li>
-          <li><a href="#map">产业地图</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="footer-title">功能模块</h4>
-        <ul class="footer-links">
-          <li><a href="web/dashboard.html">产业仪表盘</a></li>
-          <li><a href="web/monitor.html">运行监测</a></li>
-          <li><a href="web/enterprise.html">企业画像</a></li>
-          <li><a href="web/supply.html">供应链协同</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="footer-title">联系我们</h4>
-        <ul class="footer-links">
-          <li><a href="#"><i class="fas fa-phone"></i> 0530-XXXXXXX</a></li>
-          <li><a href="#"><i class="fas fa-envelope"></i> contact@juancheng.gov.cn</a></li>
-          <li><a href="#"><i class="fas fa-map-marker-alt"></i> 山东省菏泽市鄄城县</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div>© 2026 鄄城县发制品产业大脑 版权所有</div>
-      <div>技术支持：鄄城县工业和信息化局</div>
-    </div>
-  </footer>
+
 
   <script>
     // 导航栏滚动效果
@@ -1181,49 +1276,6 @@
       } else {
         navbar.classList.remove('scrolled');
       }
-      
-      // 更新快速导航状态
-      updateQuickNav();
-    });
-    
-    // 更新快速导航状态
-    function updateQuickNav() {
-      const sections = document.querySelectorAll('section[id]');
-      const navItems = document.querySelectorAll('.quick-nav-item');
-      
-      let currentSectionId = '';
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-      
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          currentSectionId = section.id;
-        }
-      });
-      
-      navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('data-target') === currentSectionId) {
-          item.classList.add('active');
-        }
-      });
-    }
-    
-    // 快速导航点击事件
-    document.querySelectorAll('.quick-nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        const targetId = this.getAttribute('data-target');
-        const targetElement = document.getElementById(targetId);
-        
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop,
-            behavior: 'smooth'
-          });
-        }
-      });
     });
 
     // 滚动显示动画
@@ -1254,37 +1306,52 @@
     window.location.href = 'web/system-entry.html';
   }
 
+
+
     // Tab导航功能
     const tabBtns = document.querySelectorAll('.tab-btn');
-    const sections = {
-      'features': document.getElementById('features'),
-      'map': document.getElementById('map'),
-      'about': document.getElementById('about')
-    };
 
-    // 点击Tab按钮滚动到对应区域
+    // 默认显示features部分
+    document.querySelector('.features').classList.add('active');
+
+    // 点击Tab按钮切换显示内容
     tabBtns.forEach(btn => {
       btn.addEventListener('click', function() {
         const target = this.getAttribute('data-target');
-        scrollToSection(target);
-      });
-    });
-
-    // 监听滚动，更新Tab激活状态
-    window.addEventListener('scroll', function() {
-      const scrollPos = window.scrollY + 200;
-      
-      let activeTab = 'features';
-      for (const [key, section] of Object.entries(sections)) {
-        if (section && section.offsetTop <= scrollPos) {
-          activeTab = key;
-        }
-      }
-
-      tabBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-target') === activeTab) {
-          btn.classList.add('active');
+        
+        // 页面滚动到顶部，使按钮置顶
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        
+        // 确保按钮区域固定在顶部
+        setTimeout(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'instant'
+          });
+        }, 500);
+        
+        // 更新按钮状态
+        tabBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // 隐藏所有内容区域
+        document.querySelector('.features').classList.remove('active');
+        document.querySelector('.news-section').classList.remove('active');
+        document.querySelector('.map-section').classList.remove('active');
+        document.querySelector('.cta-section').classList.remove('active');
+        
+        // 显示对应的内容区域
+        if (target === 'features') {
+          document.querySelector('.features').classList.add('active');
+        } else if (target === 'news') {
+          document.querySelector('.news-section').classList.add('active');
+        } else if (target === 'map') {
+          document.querySelector('.map-section').classList.add('active');
+        } else if (target === 'about') {
+          document.querySelector('.cta-section').classList.add('active');
         }
       });
     });
